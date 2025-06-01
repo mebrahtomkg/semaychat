@@ -1,0 +1,26 @@
+{
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "tsx": true,
+      "jsx": true
+    },
+    "transform": {
+      "react": {
+        "runtime": "automatic",
+        "refresh": true
+      }
+    },
+    "experimental": {
+      "plugins": [
+        [
+          "@swc/plugin-styled-components",
+          {
+            "ssr": false,
+            "fileName": false
+          }
+        ]
+      ]
+    }
+  }
+}

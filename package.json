@@ -1,0 +1,10 @@
+{
+  "name": "semaychat",
+  "version": "1.0.0",
+  "author": "Mebrahtom Kidane",
+  "scripts": {},
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "prettier": "^3.5.3"
+  }
+}

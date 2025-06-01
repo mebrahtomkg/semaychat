@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="24"
+   height="24"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="addContact.svg"
+   fill="#aaa"
+   stroke-width="0.2"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="19.43"
+     inkscape:cx="7.5656202"
+     inkscape:cy="12.763767"
+     inkscape:window-width="1280"
+     inkscape:window-height="737"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1"
+     showguides="false"
+     showgrid="false" />
+  <defs
+     id="defs1">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 12 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="24 : 12 : 1"
+       inkscape:persp3d-origin="12 : 8 : 1"
+       id="perspective2" />
+    <inkscape:path-effect
+       effect="skeletal"
+       id="path-effect1"
+       is_visible="true"
+       lpeversion="1"
+       pattern="m 10.420877,10.391859 c -0.06605,-0.5359652 0.43819,-0.9423182 0.938235,-0.9512814 0.740693,-0.013277 1.275652,0.6811674 1.250661,1.3859974 -0.03348,0.944275 -0.924752,1.611601 -1.83376,1.55004 C 9.6283653,12.298891 8.8271698,11.20804 8.9265944,10.095093 9.0472846,8.7441039 10.339119,7.8082727 11.655878,7.9462953 c 1.55434,0.1629258 2.625255,1.6565492 2.448177,3.1770457 -0.204704,1.757709 -1.900625,2.963994 -3.624807,2.747556 C 8.5181519,13.624719 7.1763015,11.726161 7.4323121,9.7983278 7.7197511,7.6338302 9.8211863,6.1562757 11.952643,6.452013 c 2.367913,0.3285451 3.981274,2.633032 3.645694,4.968093 -0.0239,0.166281 -0.05704,0.331228 -0.09916,0.493848"
+       copytype="single_stretched"
+       prop_scale="1"
+       scale_y_rel="false"
+       spacing="0"
+       normal_offset="0"
+       tang_offset="0"
+       prop_units="false"
+       vertical_pattern="false"
+       hide_knot="false"
+       fuse_tolerance="0" />
+    <inkscape:path-effect
+       effect="skeletal"
+       id="path-effect6"
+       is_visible="true"
+       lpeversion="1"
+       pattern="M 14.048345,9.5566382 8.8008235,14.410705"
+       copytype="single_stretched"
+       prop_scale="0.55488552"
+       scale_y_rel="false"
+       spacing="0"
+       normal_offset="0"
+       tang_offset="0"
+       prop_units="false"
+       vertical_pattern="false"
+       hide_knot="false"
+       fuse_tolerance="0" />
+    <inkscape:path-effect
+       effect="skeletal"
+       id="path-effect5"
+       is_visible="true"
+       lpeversion="1"
+       pattern="M 14.048345,9.5566382 8.8008235,14.410705"
+       copytype="single_stretched"
+       prop_scale="0.55488552"
+       scale_y_rel="false"
+       spacing="0"
+       normal_offset="0"
+       tang_offset="0"
+       prop_units="false"
+       vertical_pattern="false"
+       hide_knot="false"
+       fuse_tolerance="0" />
+    <inkscape:path-effect
+       effect="skeletal"
+       id="path-effect4"
+       is_visible="true"
+       lpeversion="1"
+       pattern="M 14.048345,9.5566382 8.8008235,14.410705"
+       copytype="single_stretched"
+       prop_scale="0.99492099"
+       scale_y_rel="false"
+       spacing="0"
+       normal_offset="0"
+       tang_offset="0"
+       prop_units="false"
+       vertical_pattern="false"
+       hide_knot="false"
+       fuse_tolerance="0" />
+    <inkscape:path-effect
+       effect="skeletal"
+       id="path-effect3"
+       is_visible="true"
+       lpeversion="1"
+       pattern="M 14.048345,9.5566382 8.8008235,14.410705"
+       copytype="single_stretched"
+       prop_scale="1"
+       scale_y_rel="false"
+       spacing="0"
+       normal_offset="0"
+       tang_offset="0"
+       prop_units="false"
+       vertical_pattern="false"
+       hide_knot="false"
+       fuse_tolerance="0" />
+    <linearGradient
+       id="swatch32"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop32" />
+    </linearGradient>
+    <inkscape:path-effect
+       effect="fill_between_many"
+       method="originald"
+       linkedpaths="#path26,0,1|"
+       id="path-effect30" />
+  </defs>
+  <path
+     d="m 9.0227659,24 h 8.2161621 c 1.411069,0.05167 5.718822,0.610454 5.592185,-2.5 0.123203,-5.073959 -2.65455,-10.849863 -9.320723,-11.000044 l -6.2044432,-0.1 c -3.9640092,-0.06389 -6.1579273,1.38667 -6.1579273,1.38667 l 0.073235,2.448577 c 0,0 2.0474579,-1.400273 6.0846925,-1.335203 L 13.51039,13 c 4.443325,0.468245 6.53707,2.394087 6.922079,8.5 H 17.238928 9.0227659 Z"
+     id="path1"
+     sodipodi:nodetypes="ccccsccsccccc"
+     style="stroke-width:0.2" />
+  <path
+     d="m 10.660631,0.08548255 c 3.074023,0 5.676369,2.21119005 5.676369,5.00867855 0,2.7974884 -2.602346,5.0617249 -5.676369,5.0617249 C 7.5866157,10.155885 5.088,7.8916495 5.088,5.0941611 c 0,-2.7974874 2.4986157,-5.0086776 5.572631,-5.00867855 z m 0,2.11053245 c -1.712465,0 -3.0887374,1.4131271 -3.0887374,2.8981461 0,1.48502 1.3762724,2.7920518 3.0887374,2.7920518 1.712461,1.8e-6 3.192477,-1.3070318 3.192477,-2.7920518 0,-1.4850201 -1.480016,-2.8981461 -3.192477,-2.8981461 z"
+     id="path2"
+     inkscape:transform-center-x="-0.10634164"
+     inkscape:transform-center-y="-0.39014857"
+     sodipodi:nodetypes="ssssssssss"
+     style="stroke-width:0.2" />
+  <path
+     id="path3-7"
+     d="M 3.265752,23.999999 H 5.734248 V 14.581217 H 4.5776119 3.265752 Z"
+     sodipodi:nodetypes="cccccc"
+     style="stroke-width:0.2" />
+  <use
+     x="0"
+     y="0"
+     xlink:href="#path3-7"
+     id="use1"
+     transform="matrix(0,0.99038928,-1.0097042,0,24.289606,14.720867)"
+     style="stroke-width:0.203532" />
+</svg>

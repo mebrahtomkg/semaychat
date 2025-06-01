@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="24"
+   height="24"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="more.svg"
+   fill="#aaa"
+   stroke-width="0"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="19.43"
+     inkscape:cx="12.506433"
+     inkscape:cy="12.197633"
+     inkscape:window-width="1280"
+     inkscape:window-height="737"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <defs
+     id="defs1">
+    <linearGradient
+       id="swatch32"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop32" />
+    </linearGradient>
+    <inkscape:path-effect
+       effect="fill_between_many"
+       method="originald"
+       linkedpaths="#path26,0,1|"
+       id="path-effect30" />
+  </defs>
+  <path
+     style=""
+     id="path1"
+     sodipodi:type="arc"
+     sodipodi:cx="12"
+     sodipodi:cy="3.0926352"
+     sodipodi:rx="2.75"
+     sodipodi:ry="2.75"
+     sodipodi:start="0.38798831"
+     sodipodi:end="0.38765648"
+     sodipodi:arc-type="arc"
+     d="M 14.545598,4.1330345 A 2.75,2.75 0 0 1 10.959812,5.6383195 2.75,2.75 0 0 1 9.4542294,2.0526582 2.75,2.75 0 0 1 13.039766,0.54677828 2.75,2.75 0 0 1 14.545943,4.1321897"
+     sodipodi:open="true" />
+  <use
+     x="0"
+     y="0"
+     xlink:href="#path1"
+     id="use2"
+     transform="translate(0,8.9073648)" />
+  <use
+     x="0"
+     y="0"
+     xlink:href="#path1"
+     id="use3"
+     transform="translate(0,17.877588)" />
+</svg>

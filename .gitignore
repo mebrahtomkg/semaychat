@@ -1,0 +1,10 @@
+/server/dist/
+/server/storage/
+/server/tests/
+/server/ApiTests/
+/server/node_modules/
+/client/node_modules/
+/client/.swc/
+/node_modules/
+
+

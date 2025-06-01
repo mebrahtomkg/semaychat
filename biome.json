@@ -1,0 +1,25 @@
+{
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"indentStyle": "space"
+		}
+	},
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"correctness": {
+				"noUnusedVariables": "warn",
+				"useExhaustiveDependencies": "warn"
+			},
+			"style": {
+				"useImportType": "off",
+				"noUnusedTemplateLiteral": "off"
+			}
+		}
+	}
+}
