@@ -20,14 +20,15 @@ module.exports = {
     open: false,
     static: {
       directory: path.join(__dirname, 'public'),
-      publicPath: '/'
+      publicPath: '/semaychat/'
     }
   },
   output: {
     filename: '[name].[contenthash].js',
     chunkFilename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
-    clean: true
+    clean: true,
+    publicPath: '/semaychat/'
   },
   stats: {
     preset: 'normal'
@@ -72,7 +73,7 @@ module.exports = {
     new ReactRefreshPlugin(),
     new rspack.HtmlRspackPlugin({
       template: path.resolve(__dirname, 'public/index.html'),
-      publicPath: '/'
+      publicPath: '/semaychat/'
     })
   ]
 };
