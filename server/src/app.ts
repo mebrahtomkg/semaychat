@@ -18,7 +18,7 @@ const app = express();
  
 app.use(
   cors({
-    origin: 'http://localhost:8080',
+    origin: 'https://mebrahtomkg.github.io/',
     credentials: true,
   }),
 );
