@@ -5,6 +5,7 @@
 /server/node_modules/
 /client/node_modules/
 /client/.swc/
+/client/dist/
 /node_modules/
 
 

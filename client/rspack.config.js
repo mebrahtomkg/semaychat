@@ -27,7 +27,7 @@ module.exports = {
     filename: '[name].[contenthash].js',
     chunkFilename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
-    clean: false
+    clean: true
   },
   stats: {
     preset: 'normal'

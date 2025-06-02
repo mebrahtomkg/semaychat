@@ -4,7 +4,7 @@
   "author": "Mebrahtom Kidane",
   "scripts": {
     "dev": "rspack serve",
-    "build": "rspack build"
+    "build": "rspack build --mode production"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
