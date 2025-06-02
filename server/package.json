@@ -6,8 +6,10 @@
     "node": ">=20.18.1"
   },
   "scripts": {
-    "dev": "nodemon ./dist/server.js",
     "tsc": "swc src -w -d dist --strip-leading-paths",
+    "dev": "nodemon ./dist/server.js",
+    "build": "swc src -d dist --strip-leading-paths",
+    "start": "nodemon ./dist/server.js",
     "setup": "node server/setup/index.js"
   },
   "dependencies": {
