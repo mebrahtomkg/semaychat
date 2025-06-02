@@ -1,6 +1,10 @@
 import { checkEmail, checkPassword } from './utils';
 import { createAuthToken, filterUserData, verifyPassword } from '../../utils';
-import { AUTH_TOKEN_COOKIE_NAME, AUTH_TOKEN_AGE } from '../../constants';
+import {
+  AUTH_TOKEN_COOKIE_NAME,
+  AUTH_TOKEN_AGE,
+  IS_PRODUCTION
+} from '../../constants';
 import { User } from '../../models';
 import { Request, Response, NextFunction } from 'express';
 
@@ -50,7 +54,11 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     const token = createAuthToken(user.id);
 
     res.cookie(AUTH_TOKEN_COOKIE_NAME, token, {
-      expires: new Date(Date.now() + AUTH_TOKEN_AGE)
+      expires: new Date(Date.now() + AUTH_TOKEN_AGE),
+      httpOnly: true,
+      secure: IS_PRODUCTION,
+      sameSite: IS_PRODUCTION ? 'none' : 'lax',
+      domain: IS_PRODUCTION ? '.onrender.com' : undefined
     });
 
     res.status(200).json({

@@ -75,3 +75,5 @@ export const PUBLIC_DIR = path.resolve(__dirname, '../../../client/public');
 
 // The port in which the server to listen(run)
 export const PORT = 3000;
+
+export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
