@@ -1,5 +1,6 @@
 import path from 'node:path';
 import { VisibilityOption } from '../types';
+import fs from 'node:fs';
 
 export const MAX_NAME_LENGTH = 15;
 
@@ -68,10 +69,16 @@ const STORAGE_DIR = '/storage';
 export const DATABASE_DIR = path.resolve(STORAGE_DIR, 'database');
 
 export const TEMP_FILES_DIR = path.resolve(STORAGE_DIR, 'temp_files');
+if (!fs.existsSync(TEMP_FILES_DIR)) {
+  fs.mkdirSync(TEMP_FILES_DIR, { recursive: true });
+}
 
 export const MESSAGE_FILES_DIR = path.resolve(STORAGE_DIR, 'message_files');
 
 export const PROFILE_PHOTOS_DIR = path.resolve(STORAGE_DIR, 'profile_photos');
+if (!fs.existsSync(PROFILE_PHOTOS_DIR)) {
+  fs.mkdirSync(PROFILE_PHOTOS_DIR, { recursive: true });
+}
 
 export const PUBLIC_DIR = path.resolve(__dirname, '../../../client/public');
 
