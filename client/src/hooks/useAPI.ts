@@ -11,7 +11,7 @@ interface RequestOptions {
   autoCancel?: boolean;
 }
 
-const API_BASE_URL = 'https://semaychat-backend.onrender.com/api';
+const API_BASE_URL = 'https://semaychat-production.up.railway.app/api';
 
 const useAPI = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);

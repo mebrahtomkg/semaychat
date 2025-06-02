@@ -59,9 +59,11 @@ export const MESSAGE_SENDER = {
 
 export const MAX_PROFILE_PHOTO_FILE_SIZE = 2 * 1024 * 1024;
 
-const ROOT_DIR = path.resolve(__dirname, '../../');
+// const ROOT_DIR = path.resolve(__dirname, '../../');
 
-const STORAGE_DIR = path.resolve(ROOT_DIR, 'storage');
+// const STORAGE_DIR = path.resolve(ROOT_DIR, 'storage');
+
+const STORAGE_DIR = '/storage';
 
 export const DATABASE_DIR = path.resolve(STORAGE_DIR, 'database');
 
