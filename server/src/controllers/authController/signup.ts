@@ -1,4 +1,8 @@
-import { AUTH_TOKEN_AGE, AUTH_TOKEN_COOKIE_NAME, IS_PRODUCTION } from '../../constants';
+import {
+  AUTH_TOKEN_AGE,
+  AUTH_TOKEN_COOKIE_NAME,
+  IS_PRODUCTION
+} from '../../constants';
 import User from '../../models/User';
 import { createAuthToken, filterUserData, hashPassword } from '../../utils';
 import { checkEmail, checkFirstName, checkPassword } from './utils';
@@ -56,8 +60,7 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
       expires: new Date(Date.now() + AUTH_TOKEN_AGE),
       httpOnly: true,
       secure: IS_PRODUCTION,
-      sameSite: IS_PRODUCTION ? 'none' : 'lax',
-      domain: IS_PRODUCTION ? '.onrender.com' : undefined
+      sameSite: IS_PRODUCTION ? 'none' : 'lax'
     });
 
     res.status(200).json({
