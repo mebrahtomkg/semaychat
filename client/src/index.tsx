@@ -1,22 +1,20 @@
-'use strict';
-
 import { createRoot } from 'react-dom/client';
-import React, { StrictMode } from 'react';
+import { StrictMode } from 'react';
 import { ready } from './utils';
 import App from './App';
 import store from './store';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router';
+import { HashRouter } from 'react-router';
 
 const doRender = () => {
-	const root = createRoot(document.getElementById('root'));
+  const root = createRoot(document.getElementById('root'));
 
-	root.render(
+  root.render(
     <StrictMode>
       <Provider store={store}>
-        <BrowserRouter>
+        <HashRouter  >
           <App />
-        </BrowserRouter>
+        </HashRouter>
       </Provider>
     </StrictMode>
   );

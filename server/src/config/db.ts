@@ -1,7 +1,6 @@
 import path from 'node:path';
 import { Sequelize } from 'sequelize';
-import { DATABASE_DIR } from '../constants';
-import fs from 'node:fs';
+import { SQLITE_DATABASE_DIR } from '../constants';
 
 // const sequelize = new Sequelize({
 //   dialect: 'mysql',
@@ -13,13 +12,9 @@ import fs from 'node:fs';
 //   }
 // });
 
-if (!fs.existsSync(DATABASE_DIR)) {
-  fs.mkdirSync(DATABASE_DIR, { recursive: true });
-}
-
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: path.join(DATABASE_DIR, 'app_database.sqlite')
+  storage: path.resolve(SQLITE_DATABASE_DIR, 'app_database.sqlite')
 });
 
 export default sequelize;

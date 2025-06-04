@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -11,17 +12,13 @@ import {
   messageRoutes,
   profilePhotoRoutes,
   rootRoutes,
-  userRoutes, 
+  userRoutes
 } from './routes';
+import { FRONTEND_DOMAIN } from './constants';
 
 const app = express();
- 
-app.use(
-  cors({
-    origin: 'https://mebrahtomkg.github.io',
-    credentials: true,
-  }),
-);
+
+app.use(cors({ origin: FRONTEND_DOMAIN, credentials: true }));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(performAuth);
@@ -33,7 +30,6 @@ app.use('/api/chats', authGuard, chatRoutes);
 app.use('/api/messages', authGuard, messageRoutes);
 app.use('/api/contacts', authGuard, contactRoutes);
 app.use('/api/blocked-users', authGuard, blockedUserRoutes);
-
 app.use(errorHandler);
 
 export default app;

@@ -3,9 +3,11 @@
 /server/tests/
 /server/ApiTests/
 /server/node_modules/
+/server/.env
 /client/node_modules/
 /client/.swc/
 /client/dist/
+/client/.env
 /node_modules/
 
 

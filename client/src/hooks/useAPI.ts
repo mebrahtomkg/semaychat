@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import smartFetch, { Method, ResponseResult } from './smartFetch';
+import { API_BASE_URL } from '@/constants';
 
 interface RequestOptions {
   method?: Method;
@@ -10,8 +11,6 @@ interface RequestOptions {
   headers?: HeadersInit;
   autoCancel?: boolean;
 }
-
-const API_BASE_URL = 'https://semaychat-production.up.railway.app/api';
 
 const useAPI = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);

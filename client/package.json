@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "author": "Mebrahtom Kidane",
   "scripts": {
-    "dev": "rspack serve",
-    "build": "rspack build --mode production"
+    "dev": "NODE_ENV=development rspack serve",
+    "build": "NODE_ENV=production rspack build",
+    "pro": "npm run build & nodemon --watch server.js --watch dist server.js"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
@@ -29,6 +30,9 @@
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.34",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
     "swc-loader": "^0.2.6"
   }
 }

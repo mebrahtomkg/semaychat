@@ -1,17 +1,19 @@
+require('dotenv').config();
 const path = require('node:path');
 const ReactRefreshPlugin = require('@rspack/plugin-react-refresh');
 const { rspack } = require('@rspack/core');
+const { IS_PRODUCTION, PUBLIC_PATH } = require('./constants');
 
 module.exports = {
-  mode: 'development',
+  mode: IS_PRODUCTION ? 'production' : 'development',
   context: __dirname,
   cache: true,
   entry: {
     main: './src/index.tsx'
   },
-  devtool: 'source-map',
+  devtool: IS_PRODUCTION ? false : 'source-map',
   devServer: {
-    historyApiFallback: true,
+    // historyApiFallback: { index: PUBLIC_PATH },
     liveReload: false,
     headers: {
       'Access-Control-Allow-Origin': '*',
@@ -20,7 +22,7 @@ module.exports = {
     open: false,
     static: {
       directory: path.join(__dirname, 'public'),
-      publicPath: '/semaychat/'
+      publicPath: PUBLIC_PATH
     }
   },
   output: {
@@ -28,7 +30,7 @@ module.exports = {
     chunkFilename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
-    publicPath: '/semaychat/'
+    publicPath: PUBLIC_PATH
   },
   stats: {
     preset: 'normal'
@@ -73,7 +75,7 @@ module.exports = {
     new ReactRefreshPlugin(),
     new rspack.HtmlRspackPlugin({
       template: path.resolve(__dirname, 'public/index.html'),
-      publicPath: '/semaychat/'
+      publicPath: PUBLIC_PATH
     })
   ]
 };

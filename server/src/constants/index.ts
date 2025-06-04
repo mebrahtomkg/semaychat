@@ -1,6 +1,8 @@
 import path from 'node:path';
 import { VisibilityOption } from '../types';
-import fs from 'node:fs';
+import { DEVELOPMENT_FRONTEND_DOMAIN } from '../config';
+
+export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
 export const MAX_NAME_LENGTH = 15;
 
@@ -60,29 +62,31 @@ export const MESSAGE_SENDER = {
 
 export const MAX_PROFILE_PHOTO_FILE_SIZE = 2 * 1024 * 1024;
 
-// const ROOT_DIR = path.resolve(__dirname, '../../');
+// This is just the absolute pathe of the /server folder
+const ROOT_DIR = path.resolve(__dirname, '../../');
 
-// const STORAGE_DIR = path.resolve(ROOT_DIR, 'storage');
+// Absolute path of a folder to store profile photos, message files, and SQLtie database file.
+const FILES_STORAGE_DIR = IS_PRODUCTION
+  ? process.env.FILES_STORAGE_DIR || path.resolve(ROOT_DIR, 'storage')
+  : path.resolve(ROOT_DIR, 'storage');
 
-const STORAGE_DIR = '/storage';
+export const SQLITE_DATABASE_DIR = path.resolve(FILES_STORAGE_DIR, 'database');
 
-export const DATABASE_DIR = path.resolve(STORAGE_DIR, 'database');
+export const TEMP_FILES_DIR = path.resolve(FILES_STORAGE_DIR, 'temp_files');
 
-export const TEMP_FILES_DIR = path.resolve(STORAGE_DIR, 'temp_files');
-if (!fs.existsSync(TEMP_FILES_DIR)) {
-  fs.mkdirSync(TEMP_FILES_DIR, { recursive: true });
-}
+export const PROFILE_PHOTOS_DIR = path.resolve(
+  FILES_STORAGE_DIR,
+  'profile_photos'
+);
 
-export const MESSAGE_FILES_DIR = path.resolve(STORAGE_DIR, 'message_files');
+export const MESSAGE_FILES_DIR = path.resolve(
+  FILES_STORAGE_DIR,
+  'message_files'
+);
 
-export const PROFILE_PHOTOS_DIR = path.resolve(STORAGE_DIR, 'profile_photos');
-if (!fs.existsSync(PROFILE_PHOTOS_DIR)) {
-  fs.mkdirSync(PROFILE_PHOTOS_DIR, { recursive: true });
-}
-
-export const PUBLIC_DIR = path.resolve(__dirname, '../../../client/public');
+export const FRONTEND_DOMAIN = IS_PRODUCTION
+  ? process.env.FRONTEND_DOMAIN || DEVELOPMENT_FRONTEND_DOMAIN
+  : DEVELOPMENT_FRONTEND_DOMAIN;
 
 // The port in which the server to listen(run)
 export const PORT = 3000;
-
-export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
