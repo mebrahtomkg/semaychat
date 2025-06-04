@@ -2,7 +2,7 @@ require('dotenv').config();
 const path = require('node:path');
 const ReactRefreshPlugin = require('@rspack/plugin-react-refresh');
 const { rspack } = require('@rspack/core');
-const { IS_PRODUCTION, PUBLIC_PATH } = require('./constants');
+const { IS_PRODUCTION, PUBLIC_PATH, API_URL } = require('./constants');
 
 module.exports = {
   mode: IS_PRODUCTION ? 'production' : 'development',
@@ -13,7 +13,6 @@ module.exports = {
   },
   devtool: IS_PRODUCTION ? false : 'source-map',
   devServer: {
-    // historyApiFallback: { index: PUBLIC_PATH },
     liveReload: false,
     headers: {
       'Access-Control-Allow-Origin': '*',
@@ -74,8 +73,9 @@ module.exports = {
   plugins: [
     new ReactRefreshPlugin(),
     new rspack.HtmlRspackPlugin({
+      publicPath: PUBLIC_PATH,
       template: path.resolve(__dirname, 'public/index.html'),
-      publicPath: PUBLIC_PATH
+      templateParameters: { API_URL }
     })
   ]
 };

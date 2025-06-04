@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import cors from 'cors';
+import cors, { CorsOptions } from 'cors';
 import express from 'express';
 import { authGuard, errorHandler, performAuth } from './middlewares';
 import {
@@ -14,11 +14,25 @@ import {
   rootRoutes,
   userRoutes
 } from './routes';
-import { FRONTEND_DOMAIN } from './constants';
+import { ALLOWED_ORIGINS } from './constants';
 
 const app = express();
 
-app.use(cors({ origin: FRONTEND_DOMAIN, credentials: true }));
+const corsOptions: CorsOptions = {
+  origin: (origin, callback) => {
+    // Allow mobile apps and api test tools.
+    if (!origin) return callback(null, true);
+
+    if (ALLOWED_ORIGINS.includes(origin)) {
+      return callback(null, true);
+    }
+
+    callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(performAuth);

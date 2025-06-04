@@ -1,5 +1,11 @@
 import { DarkTheme } from '../themes';
 
+declare global {
+  interface Window {
+    API_URL: string;
+  }
+}
+
 export interface ProfilePhoto {
   id: number;
   userId: number;

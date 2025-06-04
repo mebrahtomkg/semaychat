@@ -12,7 +12,7 @@ const doRender = () => {
   root.render(
     <StrictMode>
       <Provider store={store}>
-        <HashRouter  >
+        <HashRouter>
           <App />
         </HashRouter>
       </Provider>

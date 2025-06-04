@@ -44,3 +44,8 @@ A privacy-focused messaging application with one-to-one chat, file sharing, and 
 - REST API communication
 - JWT authentication
 - File upload/download endpoints
+
+##Deployment
+To deploy the frontend static assents in subdir of an domain:
+create .env in /cleint dir and write PUBLIC_PATH=/your-subdir-name/
+or specify the subdir name in env variables in the deplying server

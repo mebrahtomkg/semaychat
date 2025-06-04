@@ -1,6 +1,5 @@
 import path from 'node:path';
 import { VisibilityOption } from '../types';
-import { DEVELOPMENT_FRONTEND_DOMAIN } from '../config';
 
 export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
@@ -84,9 +83,10 @@ export const MESSAGE_FILES_DIR = path.resolve(
   'message_files'
 );
 
-export const FRONTEND_DOMAIN = IS_PRODUCTION
-  ? process.env.FRONTEND_DOMAIN || DEVELOPMENT_FRONTEND_DOMAIN
-  : DEVELOPMENT_FRONTEND_DOMAIN;
+// TODO console.log the list of allowed origins at server.js
+export const ALLOWED_ORIGINS = IS_PRODUCTION
+  ? process.env.ALLOWED_ORIGINS?.split(',') || []
+  : 'http://localhost:8080';
 
 // The port in which the server to listen(run)
 export const PORT = 3000;
