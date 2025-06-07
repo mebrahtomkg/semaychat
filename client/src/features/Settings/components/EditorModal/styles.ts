@@ -11,7 +11,8 @@ export const EditorModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${(props: StyleProps) => props.theme.backgroundColors?.overlay};
+  background-color: ${(props: StyleProps) =>
+    props.theme.backgroundColors?.overlay};
 `;
 
 export const EditorModalStyled = styled.div<{ $windowWidth: number }>`
@@ -35,7 +36,7 @@ export const EditorModalStyled = styled.div<{ $windowWidth: number }>`
   background-color: ${(props: StyleProps) =>
     props.theme.backgroundColors?.main};
 
-  border-color: ${(props: StyleProps) => props.theme.borderColor};
+  border-color: ${(props: StyleProps) => props.theme.colors.border};
 `;
 
 export const HeaderSection = styled.div`
@@ -45,7 +46,7 @@ export const HeaderSection = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid;
-  border-color: ${(props: StyleProps) => props.theme.dividerColor};
+  border-color: ${(props: StyleProps) => props.theme.colors.border};
 `;
 
 export const Title = styled.h2`
@@ -63,7 +64,7 @@ export const FooterSection = styled.div`
   display: flex;
   justify-content: right;
   border-top: 1px solid;
-  border-color: ${(props: StyleProps) => props.theme.dividerColor};
+  border-color: ${(props: StyleProps) => props.theme.colors.border};
   padding-top: 1rem;
 `;
 
@@ -81,7 +82,7 @@ export const CancelButton = styled(ActionButton)`
   margin-right: 0.5rem;
   padding-left: 1rem;
   padding-right: 1rem;
-  color: ${(props: StyleProps) => props.theme.backgroundColors?.buttonHover};
+  color: ${(props: StyleProps) => props.theme.colors?.transparentButton};
   &:hover {
     background-color: ${(props: StyleProps) =>
       props.theme.backgroundColors?.bright};

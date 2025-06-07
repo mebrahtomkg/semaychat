@@ -83,10 +83,9 @@ export const MESSAGE_FILES_DIR = path.resolve(
   'message_files'
 );
 
-// TODO console.log the list of allowed origins at server.js
 export const ALLOWED_ORIGINS = IS_PRODUCTION
   ? process.env.ALLOWED_ORIGINS?.split(',') || []
-  : 'http://localhost:8080';
+  : ['http://localhost:8080'];
 
 // The port in which the server to listen(run)
 export const PORT = 3000;

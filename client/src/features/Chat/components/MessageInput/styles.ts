@@ -10,9 +10,10 @@ export const MessageInputStyled = styled.div`
   padding: 7px 10px 7px 23px;
   border-radius: 15px;
   cursor: text;
+  border: 1px solid;
 
-  background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors.textInput};
+  border-color: ${(props: StyleProps) => props.theme.colors.border};
+  background-color: ${(props: StyleProps) => props.theme.backgroundColors.main};
 `;
 
 export const GrowingTextArea = styled.textarea`
@@ -21,10 +22,10 @@ export const GrowingTextArea = styled.textarea`
   max-height: 50vh;
   font-size: 1rem;
   font-weight: 400;
-  color: ${(props) => props.theme.messageInput.color};
+  color: #fff;
   background: transparent;
   &::placeholder {
-    color: ${(props) => props.theme.messageInput.placeholder.color};
+    color: ${(props: StyleProps) => props.theme.colors.placeholder};
   }
   &::-webkit-scrollbar {
     display: none;

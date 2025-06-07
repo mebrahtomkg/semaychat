@@ -26,7 +26,7 @@ export const HeaderContainer = styled.div`
   align-items: center;
   background-color: inherit;
   border-bottom: 1px solid;
-  border-color: #3c576e;
+  border-color: ${(props: StyleProps) => props.theme.colors.border};
 `;
 
 export const SearchContainer = styled.div<{ $isLargeScreen: boolean }>`

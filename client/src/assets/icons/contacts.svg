@@ -6,11 +6,11 @@
    height="24"
    viewBox="0 0 24 24"
    version="1.1"
+   id="svg1"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
-   sodipodi:docname="radioButton.svg"
+   sodipodi:docname="contacts.svg"
    fill="#aaa"
    stroke-width="0.2"
-   id="svg1"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -26,16 +26,20 @@
      inkscape:deskcolor="#505050"
      inkscape:document-units="mm"
      inkscape:zoom="19.43"
-     inkscape:cx="6.5877509"
-     inkscape:cy="11.991765"
+     inkscape:cx="12.429233"
+     inkscape:cy="12.763767"
      inkscape:window-width="1280"
      inkscape:window-height="721"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg1"
-     showguides="false"
-     showgrid="false" />
+     showguides="true"
+     showgrid="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid1177" />
+  </sodipodi:namedview>
   <defs
      id="defs1">
     <inkscape:perspective
@@ -140,7 +144,14 @@
        id="path-effect30" />
   </defs>
   <path
-     d="M 12,0 C 5.3917967,-3.9999999e-7 -3.9999999e-7,5.3917967 0,12 0,18.608203 5.3917969,24 12,24 18.608203,24 24,18.608203 24,12 24,5.3917968 18.608203,0 12,0 Z m 0,3 c 4.855426,0 9,4.1445739 9,9 0,4.855426 -4.144574,9 -9,9 -4.855426,0 -9,-4.144574 -9,-9 -3e-7,-4.8554262 4.1445738,-9.0000003 9,-9 z"
-     id="path4"
-     sodipodi:nodetypes="ssssssssss" />
+     d="M 8.0158082,24 C 6.6047392,24.05167 0.83317914,24.825532 0.78084774,21.5 0.76563267,15.110195 4.9980666,11.0778 8.6848767,11 h 6.6618643 c 4.552685,-0.04728 7.947716,4.066178 7.895496,10.5 -0.102451,3.223333 -4.215484,2.5 -7.277894,2.5 z M 15.346741,13.5 H 8.6848767 C 6.787668,13.58986 3.4391651,15.086593 3.568162,21.457615 L 8.0158082,21.5 h 7.9485348 4.692308 c 0.0043,-6.336512 -3.614809,-8.051745 -5.30991,-8 z"
+     id="path1"
+     sodipodi:nodetypes="cccccccccccccc" />
+  <path
+     d="m 11.948131,0 c 3.074023,0 5.676369,2.2111901 5.676369,5.0086785 0,2.7974884 -2.602346,5.0617245 -5.676369,5.0617245 C 8.8741157,10.070402 6.3755,7.8061669 6.3755,5.0086785 6.3755,2.2111912 8.8741157,9.5e-7 11.948131,0 Z m 0,2.1105325 c -1.712465,0 -3.0887374,1.4131271 -3.0887374,2.898146 0,1.48502 1.3762724,2.7920518 3.0887374,2.7920518 1.712461,1.8e-6 3.192477,-1.3070317 3.192477,-2.7920517 0,-1.4850201 -1.480016,-2.8981461 -3.192477,-2.8981461 z"
+     id="path2"
+     inkscape:transform-center-x="-0.10634164"
+     inkscape:transform-center-y="-0.39014857"
+     sodipodi:nodetypes="ssssssssss"
+     style="stroke-width:0.2" />
 </svg>

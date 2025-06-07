@@ -8,7 +8,7 @@ import {
 } from '@/hooks';
 import {
   IconContainer,
-  ImageIcon,
+  MenuButton,
   MenuItemButton,
   MenuItemLabel,
   MenuItemsContainer,
@@ -18,17 +18,18 @@ import {
   ProfileStyled,
   SideBarOverlay,
   SideBarStyled,
-  SidebarToggleButton
+  SingleMenuItemButton,
+  SingleMenuItemContainer
 } from './styles';
 import {
   CloseIcon,
+  ContactsIcon,
   LogoutIcon,
-  NextIcon,
+  MenuIcon,
   SettingsIcon
 } from '@/components/icons';
 import NameInitial from '@/components/NameInitial';
 import Settings from '../Settings';
-import MenuButton from '@/components/MenuButton';
 import { useLocation } from 'react-router';
 
 const SideBar = () => {
@@ -75,7 +76,7 @@ const SideBar = () => {
   const menuItems = [
     {
       onClick: navigateToContacts,
-      icon: <ImageIcon src="/icons/user.png" alt="icon" />,
+      icon: <ContactsIcon />,
       label: 'Contacts'
     },
     {
@@ -99,7 +100,9 @@ const SideBar = () => {
   return (
     <SideBarOverlay $isVisible={isVisible} onClick={handleOverlayClick}>
       {!isLargeScreen && location.pathname === '/' && (
-        <MenuButton onClick={showSidebar} />
+        <MenuButton onClick={showSidebar}>
+          <MenuIcon />
+        </MenuButton>
       )}
 
       {settingsAnimation.isMounted && (
@@ -110,9 +113,16 @@ const SideBar = () => {
       )}
 
       <SideBarStyled $isLargeScreen={isLargeScreen} $isVisible={isVisible}>
-        <SidebarToggleButton onClick={toggleSidebar}>
-          {isVisible ? <CloseIcon /> : <NextIcon />}
-        </SidebarToggleButton>
+        <SingleMenuItemContainer
+          $isVisible={isVisible}
+          $isLargeScreen={isLargeScreen}
+        >
+          <SingleMenuItemButton onClick={toggleSidebar}>
+            <IconContainer>
+              {isVisible ? <CloseIcon /> : <MenuIcon />}
+            </IconContainer>
+          </SingleMenuItemButton>
+        </SingleMenuItemContainer>
 
         <ProfileStyled $isVisible={isVisible} onClick={openSettingsPage}>
           <ProfilePhotoContainer>

@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 
 export const UserStyled = styled(Link)`
-  margin: 0 0.5rem;
+  margin: 0 0.2rem;
   padding: 0.6rem 1rem;
   display: flex;
   align-items: center;

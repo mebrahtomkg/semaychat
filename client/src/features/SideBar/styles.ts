@@ -26,16 +26,20 @@ export const SideBarStyled = styled.div<{
   left: 0;
   bottom: 0;
   width: 12rem;
+
+  border-right: 1px solid;
   transition: transform 0.2s ease-in-out;
 
   background-color: ${(props: StyleProps) =>
     props.theme.backgroundColors?.main};
 
+  border-color: ${(props: StyleProps) => props.theme.colors.border};
+
   ${(props) =>
     props.$isVisible
       ? css`
           transform: translateX(0rem);
-          box-shadow: 22px 17px 20px #1a1e2c;
+          box-shadow: 10px 10px 20px #000000;
         `
       : css`
           transform: translateX(-13rem);
@@ -53,7 +57,7 @@ export const SideBarStyled = styled.div<{
 `;
 
 export const ProfileStyled = styled.div<{ $isVisible: boolean }>`
-  padding: 3rem 0 0.5rem 1rem;
+  padding: 1.5rem 0 0.5rem 1rem;
   overflow: hidden;
   background-color: ${(props: StyleProps) =>
     props.theme.backgroundColors?.bright};
@@ -79,16 +83,6 @@ export const ProfilePhotoContainer = styled.div`
 
 export const ProfilePhotoStyled = styled.img`
   width: 100%;
-`;
-
-export const SidebarToggleButton = styled.button`
-  position: absolute;
-  top: 0.5rem;
-  right: 0.8rem;
-  width: 2rem;
-  height: 2rem;
-  padding: 0.5rem;
-  color: white;
 `;
 
 export const NameStyled = styled.h2`
@@ -117,6 +111,15 @@ export const MenuItemsContainer = styled.div<{
     `}
 `;
 
+export const SingleMenuItemContainer = styled(MenuItemsContainer)`
+  display: flex;
+  justify-content: flex-end;
+  padding: 0;
+
+  background-color: ${(props: StyleProps) =>
+    props.theme.backgroundColors?.bright};
+`;
+
 export const MenuItemButton = styled.button`
   width: 100%;
   padding: 1rem;
@@ -130,11 +133,11 @@ export const MenuItemButton = styled.button`
   }
 `;
 
-export const ImageIcon = styled.img`
-  display: block;
-  width: 20px;
-  height: 20px;
-  opacity: 0.6;
+export const SingleMenuItemButton = styled(MenuItemButton)`
+  width: unset;
+  &:hover {
+    background-color: transparent;
+  }
 `;
 
 export const IconContainer = styled.div`
@@ -151,4 +154,13 @@ export const MenuItemLabel = styled.p`
   text-align: left;
   color: #fff;
   font-size: 1rem;
+`;
+
+export const MenuButton = styled.button`
+  position: fixed;
+  top: 0.6rem;
+  left: 1rem;
+  height: 2.2rem;
+  width: 2.2rem;
+  padding: 0.4rem;
 `;

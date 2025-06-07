@@ -75,7 +75,7 @@ export const NavMenu = styled.div<{ $windowWidth: number }>`
         `}
 
   background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors?.bright};
+    props.theme.backgroundColors?.veryBright};
 `;
 
 export const MenuItemButton = styled.button<{ $isActive: boolean }>`
@@ -89,7 +89,7 @@ export const MenuItemButton = styled.button<{ $isActive: boolean }>`
     props.$isActive &&
     css`
       background-color: ${(props: StyleProps) =>
-        props.theme.backgroundColors?.veryBright};
+        props.theme.backgroundColors?.activeTab};
     `}
 `;
 
@@ -97,7 +97,7 @@ export const MenuDivider = styled.div`
   width: 1px;
   height: 1rem;
   background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors?.veryBright};
+    props.theme.backgroundColors?.tabDivider};
 `;
 
 export const SettingsCategoryContainer = styled.div``;

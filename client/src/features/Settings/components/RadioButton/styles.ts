@@ -12,7 +12,7 @@ export const RadioButtonIconContainer = styled.div`
   position: relative;
   width: 1.5rem;
   height: 1.5rem;
-  color: #2a81c7;
+  color: ${(props: StyleProps) => props.theme.colors.radioButton};
 `;
 
 export const RadioButtonIconStyled = styled(RadioButtonIcon)`

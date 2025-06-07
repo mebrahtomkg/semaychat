@@ -18,5 +18,5 @@ export const ContextMenuStyled = styled.ul`
   padding: 0;
   border-radius: 7px;
   background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors?.bright};
+    props.theme.backgroundColors?.main};
 `;

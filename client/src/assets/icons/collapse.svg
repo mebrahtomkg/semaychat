@@ -6,11 +6,11 @@
    height="24"
    viewBox="0 0 24 24"
    version="1.1"
+   id="svg1"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
-   sodipodi:docname="radioButton.svg"
+   sodipodi:docname="collapse.svg"
    fill="#aaa"
    stroke-width="0.2"
-   id="svg1"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -26,15 +26,15 @@
      inkscape:deskcolor="#505050"
      inkscape:document-units="mm"
      inkscape:zoom="19.43"
-     inkscape:cx="6.5877509"
-     inkscape:cy="11.991765"
+     inkscape:cx="8.6721565"
+     inkscape:cy="12.249099"
      inkscape:window-width="1280"
      inkscape:window-height="721"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg1"
-     showguides="false"
+     showguides="true"
      showgrid="false" />
   <defs
      id="defs1">
@@ -140,7 +140,23 @@
        id="path-effect30" />
   </defs>
   <path
-     d="M 12,0 C 5.3917967,-3.9999999e-7 -3.9999999e-7,5.3917967 0,12 0,18.608203 5.3917969,24 12,24 18.608203,24 24,18.608203 24,12 24,5.3917968 18.608203,0 12,0 Z m 0,3 c 4.855426,0 9,4.1445739 9,9 0,4.855426 -4.144574,9 -9,9 -4.855426,0 -9,-4.144574 -9,-9 -3e-7,-4.8554262 4.1445738,-9.0000003 9,-9 z"
-     id="path4"
-     sodipodi:nodetypes="ssssssssss" />
+     d="m 2.7468226,10.073067 c 0,0 12.5955824,0.01009 20.5955834,0.01009 0.851358,0.232409 0.816618,1.709245 -0.02733,1.96375 L 2.8017445,12.087229 C 1.3456643,11.868062 1.2358178,10.219491 2.7468245,10.032751 Z"
+     id="path2"
+     sodipodi:nodetypes="cccccc"
+     style="stroke-width:0.171001" />
+  <path
+     d="M 1.485332,10.581368 7.1773957,4.794512 C 7.9525246,3.8674235 9.6140756,4.7246383 8.7321787,5.7294573 L 3.8941938,10.541574 Z"
+     id="path5"
+     sodipodi:nodetypes="ccccc"
+     style="stroke-width:0.122979" />
+  <path
+     d="m 1.8088944,11.948497 5.7842306,6.057648 c 0.9436407,0.518914 1.9965305,-0.381312 1.4170461,-1.107171 L 4.1572376,11.915367 Z"
+     id="path6"
+     sodipodi:nodetypes="ccccc"
+     style="stroke-width:0.124494" />
+  <path
+     d="m 0.04034746,19.506898 c 0,0 0.010096,-9.393461 0.010096,-15.3596624 C 0.28303139,3.5123139 1.7610053,3.538222 2.0157079,4.1676179 L 2.056063,19.465942 C 1.8367253,20.551855 0.18688446,20.633765 0,19.506896 Z"
+     id="path2-6"
+     sodipodi:nodetypes="cccccc"
+     style="stroke-width:0.14773" />
 </svg>

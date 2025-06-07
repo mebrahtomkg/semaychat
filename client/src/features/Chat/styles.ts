@@ -20,7 +20,7 @@ export const ChatHeader = styled.div`
   justify-content: space-between;
   background-color: #314352;
   border-bottom: 1px solid;
-  border-color: #3c576e;
+  border-color: ${(props: StyleProps) => props.theme.colors.border};
   background-color: ${(props: StyleProps) => props.theme.backgroundColors.main};
 `;
 

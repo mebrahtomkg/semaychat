@@ -14,20 +14,29 @@ const DarkTheme = {
   },
 
   backgroundColors: {
-    main: '#314352',
-    hover: '#334759',
-    bright: '#3c576e',
-    veryBright: '#466e91',
+    main: '#232328',
+    hover: '#2B2B31',
+    bright: '#2c2c35',
+    veryBright: '#3c3c41',
+    activeTab: '#1e6f82',
+    tabDivider: '#1e6f82',
     overlay: '#0000008f',
-    button: '#4684bb',
-    buttonHover: '#4c99dd',
-    textInput: '#29343e',
+    button: '#1e6f82',
+    buttonHover: '#1e8097',
+    textInput: '#29343e'
   },
 
   textColors: {
     normal: '#f1f1f1',
     title: '#ffffff',
     description: '#9c9c9c'
+  },
+
+  colors: {
+    border: '#464651',
+    radioButton: '#11afd4',
+    transparentButton: '#11afd4',
+    placeholder: '#8f8f8f'
   },
 
   dividerColor: '#3a566e',
@@ -95,27 +104,9 @@ const DarkTheme = {
   cropOverlayMask: {
     outlineColor: '#00000070'
   },
-  contextMenu: {
-    backgroundColor: '#484848'
-  },
-  contextMenuItem: {
-    backgroundColor: '#484848',
-    color: '#eaeaea',
-    hover: {
-      backgroundColor: '#4f5152'
-    }
-  },
 
   nameInitials: {
     backgroundColor: '#005d27'
-  },
-
-  messageInput: {
-    backgroundColor: '#1c2130',
-    color: '#f1f1f1',
-    placeholder: {
-      color: '#99a9b6'
-    }
   }
 };
 

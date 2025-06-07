@@ -13,7 +13,7 @@ export const MenuItemStyled = styled.li`
   color: ${(props: StyleProps) => props.theme.textColors?.normal};
 
   &:hover {
-    background: ${(props: StyleProps) => props.theme.backgroundColors?.veryBright};
+    background-color: ${(props: StyleProps) => props.theme.backgroundColors?.hover};
   }
 `;
 
