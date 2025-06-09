@@ -18,11 +18,16 @@ module.exports = {
       'Access-Control-Allow-Origin': '*',
       'Cache-Control': 'public, max-age=31536000'
     },
-    open: false,
-    static: {
-      directory: path.join(__dirname, 'public'),
-      publicPath: PUBLIC_PATH
-    }
+    open: false
+  },
+  watchOptions: {
+    aggregateTimeout: 30,
+    ignored: [
+      path.resolve(__dirname, '.swc'),
+      path.resolve(__dirname, 'dist'),
+      path.resolve(__dirname, 'node_modules'),
+      path.resolve(__dirname, 'public')
+    ]
   },
   output: {
     filename: '[name].[contenthash].js',
@@ -65,7 +70,23 @@ module.exports = {
         exclude: [/[\\/]node_modules[\\/]/],
         include: path.resolve(__dirname, 'src'),
         use: {
-          loader: 'swc-loader'
+          loader: 'builtin:swc-loader',
+          options: {
+            jsc: {
+              parser: { syntax: 'typescript', tsx: true, jsx: true },
+              transform: {
+                react: { runtime: 'automatic', refresh: true }
+              },
+              experimental: {
+                plugins: [
+                  [
+                    '@swc/plugin-styled-components',
+                    { ssr: false, fileName: false }
+                  ]
+                ]
+              }
+            }
+          }
         }
       }
     ]

@@ -7,8 +7,9 @@ export const FileSelectorModal = styled.div`
   bottom: 0;
   padding: 0 1rem;
   border-radius: 10px;
-  border-bottom-right-radius: 0;
-  background: #1c2130;
+  background-color: #232328;
+  border: 1px solid;
+  border-color: #464651;
   cursor: default;
 `;
 

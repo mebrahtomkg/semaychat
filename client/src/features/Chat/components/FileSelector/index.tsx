@@ -1,6 +1,5 @@
-import React, { FC, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import SendButton from '../SendButton';
-import FileMessageInputTail from './FileMessageInputTail';
 import {
   ActionButtonsContainer,
   FilesContainer,
@@ -10,7 +9,7 @@ import {
   ModalHeader,
   ModalTitle
 } from './styles';
-import { CloseButton } from '../../../../components/buttons';
+import { CloseButton } from '@/components/buttons';
 import ImageFile from './ImageFile';
 import OrdinaryFile from './OrdinaryFile';
 import useFilesSender from './useFilesSender';
@@ -81,7 +80,6 @@ const FileSelector: FC<FileSelectorProps> = ({
           />
         </ActionButtonsContainer>
       </ModalFooter>
-      <FileMessageInputTail />
 
       <input
         type="file"
