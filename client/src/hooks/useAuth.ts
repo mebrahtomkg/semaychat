@@ -1,41 +1,38 @@
-import { useEffect, useRef, useState } from 'react';
-import { useAPI, useAppDispatch, useAppSelector } from '.';
-import { Account } from '../types';
-import { accountFetched } from '../features/Settings/slices/accountSlice';
-import { profilePhotoAdded } from '../features/Settings/slices/profilePhotosSlice';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '.';
+import { Account } from '@/types';
+import { accountFetched } from '@/features/Settings/slices/accountSlice';
+import { profilePhotoAdded } from '@/features/Settings/slices/profilePhotosSlice';
+import { useQuery } from '@tanstack/react-query';
+import { smartFetch } from '@/utils';
+import { API_BASE_URL } from '@/constants';
 
 const useAuth = () => {
   const account = useAppSelector((state) => state.account);
-  const isLoggedIn = account && typeof account.id === 'number';
-
-  const [isFetched, setIsFetched] = useState(false);
-  const fetchTriesRef = useRef<number>(0);
+  const isLoggedIn = typeof account?.id === 'number';
 
   const dispatch = useAppDispatch();
 
-  const { get } = useAPI();
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: ['account'],
+    queryFn: () => smartFetch<Account>(`${API_BASE_URL}/users/me`)
+  });
 
   useEffect(() => {
-    const fetchAuthData = async () => {
-      const { success, data, message, status } =
-        await get<Account>('/users/me');
-      if (status === 401) setIsFetched(true);
-      if (success) {
-        dispatch(accountFetched(data));
-        if (data.profilePhoto) dispatch(profilePhotoAdded(data.profilePhoto));
-        setIsFetched(true);
-      } else {
-        console.error(message);
-        if (fetchTriesRef.current > 2) setIsFetched(true);
+    if (data?.success) {
+      dispatch(accountFetched(data.data));
+      if (data.data.profilePhoto) {
+        dispatch(profilePhotoAdded(data.data.profilePhoto));
       }
-      fetchTriesRef.current++;
-    };
+    }
+  }, [data, dispatch]);
 
-    if (!isLoggedIn && !isFetched) fetchAuthData();
-  }, [dispatch, get, isFetched, isLoggedIn]);
+  if (isError) {
+    console.error(error);
+  }
 
   return {
-    isLoading: !isFetched,
+    isLoading: isPending,
     isLoggedIn
   };
 };

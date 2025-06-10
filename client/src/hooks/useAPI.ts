@@ -1,7 +1,7 @@
 /* global HeadersInit */
 
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
-import smartFetch, { Method, ResponseResult } from './smartFetch';
+import { smartFetch, Method, ResponseResult } from '@/utils';
 import { API_BASE_URL } from '@/constants';
 
 interface RequestOptions {

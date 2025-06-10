@@ -5,6 +5,9 @@ import App from './App';
 import store from './store';
 import { Provider } from 'react-redux';
 import { HashRouter } from 'react-router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 const doRender = () => {
   const root = createRoot(document.getElementById('root'));
@@ -12,9 +15,11 @@ const doRender = () => {
   root.render(
     <StrictMode>
       <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
+        <QueryClientProvider client={queryClient}>
+          <HashRouter>
+            <App />
+          </HashRouter>
+        </QueryClientProvider>
       </Provider>
     </StrictMode>
   );
