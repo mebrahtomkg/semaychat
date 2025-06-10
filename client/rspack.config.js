@@ -78,6 +78,7 @@ module.exports = {
                 react: { runtime: 'automatic', refresh: true }
               },
               experimental: {
+                cacheRoot: process.env.SWC_CACHE_DIR || undefined,
                 plugins: [
                   [
                     '@swc/plugin-styled-components',
