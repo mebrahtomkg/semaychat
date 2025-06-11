@@ -4,25 +4,27 @@ import { Account } from '@/types';
 import { accountFetched } from '@/features/Settings/slices/accountSlice';
 import { profilePhotoAdded } from '@/features/Settings/slices/profilePhotosSlice';
 import { useQuery } from '@tanstack/react-query';
-import { smartFetch } from '@/utils';
-import { API_BASE_URL } from '@/constants';
+import { ApiError, get } from '@/api';
 
 const useAuth = () => {
   const account = useAppSelector((state) => state.account);
-  const isLoggedIn = typeof account?.id === 'number';
 
   const dispatch = useAppDispatch();
-
+ 
   const { isPending, isError, data, error } = useQuery({
     queryKey: ['account'],
-    queryFn: () => smartFetch<Account>(`${API_BASE_URL}/users/me`)
+    queryFn: () => get<Account>(`/users/me`),
+    retry: (failureCount: number, error: Error) =>
+      error instanceof ApiError && error.status === 401
+        ? false
+        : failureCount < 2
   });
 
   useEffect(() => {
-    if (data?.success) {
-      dispatch(accountFetched(data.data));
-      if (data.data.profilePhoto) {
-        dispatch(profilePhotoAdded(data.data.profilePhoto));
+    if (data) {
+      dispatch(accountFetched(data));
+      if (data.profilePhoto) {
+        dispatch(profilePhotoAdded(data.profilePhoto));
       }
     }
   }, [data, dispatch]);
@@ -33,7 +35,7 @@ const useAuth = () => {
 
   return {
     isLoading: isPending,
-    isLoggedIn
+    isLoggedIn: typeof account?.id === 'number'
   };
 };
 

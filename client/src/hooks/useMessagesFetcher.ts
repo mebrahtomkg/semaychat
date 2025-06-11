@@ -1,32 +1,27 @@
-import { useEffect, useState } from 'react';
-import { useAPI, useAppDispatch } from '.';
-import { Message } from '../types';
-import { manyMessagesAdded } from '../features/Chat/slices/messagesSlice';
+import { useEffect } from 'react';
+import { useAppDispatch } from '.';
+import { Message } from '@/types';
+import { manyMessagesAdded } from '@/features/Chat/slices/messagesSlice';
+import { useQuery } from '@tanstack/react-query';
+import { ApiError, get } from '@/api';
 
 const useMessagesFetcher = (partnerId: number) => {
-  const [isFetched, setIsFetched] = useState(false);
-
   const dispatch = useAppDispatch();
 
-  const { get } = useAPI();
+  const { isError, data, error } = useQuery({
+    queryKey: [`/messages/${partnerId}`],
+    queryFn: () => get<Message[]>(`/messages/${partnerId}`),
+    retry: (failureCount: number, error: Error) =>
+      error instanceof ApiError && error.status ? false : failureCount < 2
+  });
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      const { success, data, message, status } = await get<Message[]>(
-        `/messages/${partnerId}`
-      );
+    if (data) dispatch(manyMessagesAdded(data));
+  }, [data, dispatch]);
 
-      if (success) {
-        dispatch(manyMessagesAdded(data));
-      } else {
-        console.error(message);
-      }
-
-      if (success || (status && status >= 400)) setIsFetched(true);
-    };
-
-    if (!isFetched) fetchMessages();
-  }, [dispatch, get, isFetched, partnerId]);
+  if (isError) {
+    console.error(error);
+  }
 };
 
 export default useMessagesFetcher;

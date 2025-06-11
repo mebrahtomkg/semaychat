@@ -5,8 +5,7 @@ import {
   UsersContainer
 } from './styles';
 import useChats from './useChats';
-import useSuggestionsFetcher from './useSuggestionsFetcher';
-import { useAppContext, useChatsFetcher } from '@/hooks';
+import { useAppContext, useChatsFetcher, useSuggestionsFetcher } from '@/hooks';
 import SearchInput from './components/SearchInput';
 import SearchButton from './components/SearchButton';
 import User from './components/User';

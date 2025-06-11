@@ -1,35 +1,31 @@
-import { useEffect, useRef, useState } from 'react';
-import { useAPI, useAppDispatch, useAppSelector } from '.';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '.';
 import { userAdded } from '../usersSlice';
 import { User } from '../types';
+import { useQuery } from '@tanstack/react-query';
+import { ApiError, get } from '@/api';
 
 const useUserFetcher = (userId: number) => {
   const users = useAppSelector((state) => state.users);
 
   const user = users.find((user) => user.id === userId);
 
-  const [isFetched, setIsFetched] = useState(typeof user?.id === 'number');
-  const fetchTriesRef = useRef<number>(0);
-
   const dispatch = useAppDispatch();
 
-  const { get } = useAPI();
+  const { isError, data, error } = useQuery({
+    queryKey: [`/users/${userId}`],
+    queryFn: () => get<User>(`/users/${userId}`),
+    retry: (failureCount: number, error: Error) =>
+      error instanceof ApiError && error.status ? false : failureCount < 2
+  });
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const { success, data, message } = await get<User>(`/users/${userId}`);
-      if (success) {
-        dispatch(userAdded(data));
-        setIsFetched(true);
-      } else {
-        console.error(message);
-        if (fetchTriesRef.current === 2) setIsFetched(true);
-      }
-      fetchTriesRef.current++;
-    };
+    if (data) dispatch(userAdded(data));
+  }, [data, dispatch]);
 
-    if (!isFetched) fetchUser();
-  }, [dispatch, get, isFetched, userId]);
+  if (isError) {
+    console.error(error);
+  }
 
   return user;
 };

@@ -1,44 +1,39 @@
-import { useEffect, useState } from 'react';
-import { useAPI, useAppDispatch, useAppSelector } from '.';
-import { Chat, Message, User } from '../types';
-import { manyUsersAdded } from '../usersSlice';
-import { manyMessagesAdded } from '../features/Chat/slices/messagesSlice';
+import { useEffect } from 'react';
+import { useAppDispatch } from '.';
+import { Chat, Message, User } from '@/types';
+import { manyUsersAdded } from '@/usersSlice';
+import { manyMessagesAdded } from '@/features/Chat/slices/messagesSlice';
+import { useQuery } from '@tanstack/react-query';
+import { ApiError, get } from '@/api';
 
 const useChatsFetcher = () => {
-  const account = useAppSelector((state) => state.account);
-
-  const isLoggedIn = account?.id;
-
-  const [isFetched, setIsFetched] = useState(false);
-
   const dispatch = useAppDispatch();
 
-  const { get } = useAPI();
+  const { isError, data, error } = useQuery({
+    queryKey: ['chats'],
+    queryFn: () => get<Chat[]>('/chats'),
+    retry: (failureCount: number, error: Error) =>
+      error instanceof ApiError && error.status ? false : failureCount < 2
+  });
+
+  if (isError) {
+    console.error(error);
+  }
 
   useEffect(() => {
-    const fetchChats = async () => {
-      const { success, data, message, status } = await get<Chat[]>('/chats');
-      
-      if (success) {
-        const users: User[] = [];
-        const messages: Message[] = [];
+    if (data) {
+      const users: User[] = [];
+      const messages: Message[] = [];
 
-        for (const chat of data) {
-          users.push(chat.partner);
-          messages.push(chat.lastMessage as Message);
-        }
-
-        dispatch(manyUsersAdded(users));
-        dispatch(manyMessagesAdded(messages));
-      } else {
-        console.error(message);
+      for (const chat of data) {
+        users.push(chat.partner);
+        messages.push(chat.lastMessage as Message);
       }
 
-      if (success || (status && status >= 400)) setIsFetched(true);
-    };
-
-    if (isLoggedIn && !isFetched) fetchChats();
-  }, [dispatch, get, isFetched, isLoggedIn]);
+      dispatch(manyUsersAdded(users));
+      dispatch(manyMessagesAdded(messages));
+    }
+  }, [data, dispatch]);
 };
 
 export default useChatsFetcher;
