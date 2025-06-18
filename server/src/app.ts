@@ -1,9 +1,6 @@
 import 'dotenv/config';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
-import cors, { CorsOptions } from 'cors';
-import express from 'express';
-import { authGuard, errorHandler, performAuth } from './middlewares';
+import { ALLOWED_ORIGINS } from '@/constants';
+import { authGuard, errorHandler, performAuth } from '@/middlewares';
 import {
   authRoutes,
   blockedUserRoutes,
@@ -13,8 +10,11 @@ import {
   profilePhotoRoutes,
   rootRoutes,
   userRoutes
-} from './routes';
-import { ALLOWED_ORIGINS } from './constants';
+} from '@/routes';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import cors, { CorsOptions } from 'cors';
+import express from 'express';
 
 const app = express();
 

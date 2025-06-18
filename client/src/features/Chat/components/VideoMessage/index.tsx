@@ -12,7 +12,7 @@ interface VideoMessageProps {
 }
 
 const VideoMessage: FC<VideoMessageProps> = ({ enrichedMessage }) => {
-  const { isSentMessage, status, fileUrl, time } = enrichedMessage;
+  const { isOutgoing, status, fileUrl, time } = enrichedMessage;
 
   return (
     <VideoMessageStyled>
@@ -22,7 +22,7 @@ const VideoMessage: FC<VideoMessageProps> = ({ enrichedMessage }) => {
       </VideoTagStyled>
 
       <VideoMetaContainer>
-        <MessageMeta isOutgoing={isSentMessage} status={status} time={time} />
+        <MessageMeta isOutgoing={isOutgoing} status={status} time={time} />
       </VideoMetaContainer>
     </VideoMessageStyled>
   );

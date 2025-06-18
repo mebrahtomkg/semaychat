@@ -18,7 +18,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
     const { body } = req;
 
-    const email = typeof body.email === 'string' ? body.email.trim() : null;
+    const email = typeof body?.email === 'string' ? body.email.trim() : null;
 
     if (!checkEmail(email)) {
       return res.status(400).json({

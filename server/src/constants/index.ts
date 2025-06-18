@@ -79,12 +79,12 @@ export const PROFILE_PHOTOS_DIR = path.resolve(
 
 export const MESSAGE_FILES_DIR = path.resolve(
   FILES_STORAGE_DIR,
-  'message_files'
+  'message_files'  
 );
 
-export const ALLOWED_ORIGINS = IS_PRODUCTION
-  ? process.env.ALLOWED_ORIGINS?.split(',') || []
-  : ['http://localhost:8080'];
+export const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS?.split(',') || [
+  'http://localhost:8080'
+];
 
 // The port in which the server to listen(run)
 export const PORT = 3000;

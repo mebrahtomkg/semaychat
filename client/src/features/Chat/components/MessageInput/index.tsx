@@ -16,7 +16,6 @@ const MessageInput: FC = () => {
   // character input rerended the whole message components.
   const { chatPartnerId, editingTextRef, onSend } = useChatContext();
 
-
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {

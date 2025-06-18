@@ -2,7 +2,7 @@ import {
   CreationOptional,
   DataTypes,
   InferAttributes,
-  InferCreationAttributes,
+  InferCreationAttributes, 
   Model
 } from 'sequelize';
 import sequelize from '../config/db';
@@ -27,7 +27,7 @@ Attachment.init(
       primaryKey: true
     },
 
-    name: {
+    name: { 
       type: DataTypes.TEXT,
       allowNull: false
     },

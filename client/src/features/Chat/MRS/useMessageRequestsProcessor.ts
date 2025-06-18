@@ -34,12 +34,12 @@ const useMessageRequestsProcessor = (
         body = new FormData();
         body.append('receiverId', `${receiverId}`);
         if (caption) body.append('caption', caption);
-        if (file) body.append('messageFile', file);
+        if (file) body.append('attachment', file);
       } else {
         body = { receiverId, content };
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
       const {
         success,
         data,
@@ -60,7 +60,7 @@ const useMessageRequestsProcessor = (
     async ({ id, content }: MessageUpdatePayload, requestId: number) => {
       const body = { id, content };
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
       const { success, data, message } = await put<Message>('/messages', body);
 
       if (success) {
@@ -80,7 +80,7 @@ const useMessageRequestsProcessor = (
     ) => {
       const query = deleteForReceiver ? '?deleteForReceiver=true' : '';
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
       const { success, message } = await del(`/messages/${id}${query}`);
 
       if (success) {

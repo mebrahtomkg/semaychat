@@ -1,6 +1,6 @@
 import {
   CreationOptional,
-  DataTypes,
+  DataTypes, 
   InferAttributes,
   InferCreationAttributes,
   Model

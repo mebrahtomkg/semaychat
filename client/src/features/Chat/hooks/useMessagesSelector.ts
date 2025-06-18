@@ -34,7 +34,6 @@ const useMessagesSelector = (
   );
 
   return selectedMessages;
-  // return selectedMessages.filter((message) => !message.isFile);
 };
 
 export default useMessagesSelector;

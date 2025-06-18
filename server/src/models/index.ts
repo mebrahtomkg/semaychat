@@ -103,3 +103,12 @@ User.addScope('withBlockedUsers', (where) => ({
     where
   }
 }));
+
+// To fetch a message with its attachment
+Message.addScope('withAttachment', {
+  include: {
+    model: Attachment,
+    as: 'attachment',
+    required: false
+  }
+});

@@ -69,7 +69,7 @@ const ProfilePhotoSettings = () => {
   } = useSelfProfilePhoto(profilePhotos[currentIndex]);
 
   const { isImageFetching, isImageLoading, imageSrc, handleImageLoad } =
-    useImageLoader(photoUrl || null);
+    useImageLoader(photoUrl );
 
   const options = useMemo(() => {
     const items: MenuItemDescriptor[] = [];

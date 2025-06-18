@@ -38,18 +38,23 @@ export interface User {
   lastSeentAt?: number; // Could be privacy protected
 }
 
+export interface Attachment {
+  id: number;
+  name: string;
+  extension: string;
+  size: number;
+  caption: string | null;
+}
+
 export interface Message {
   id: number;
   senderId: number;
   receiverId: number;
-  content?: string;
+  content: string | null;
+  isSeen: boolean;
   createdAt: number;
-  isFile?: boolean;
-  fileName?: string;
-  fileExtension?: string;
-  fileSize?: number;
-  caption?: string;
-  file?: File;
+  editedAt: number;
+  attachment?: Attachment;
 }
 
 export interface Chat {

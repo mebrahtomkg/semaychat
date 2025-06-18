@@ -9,7 +9,6 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import {
   AudioMessage,
   FileMessage,
-  MessageTail,
   PhotoMessage,
   TextMessage,
   VideoMessage
@@ -18,13 +17,14 @@ import { useMessage } from '../../hooks';
 import { EnrichedMessage, PendingMessage, PersistedMessage } from '../../types';
 import MessageDeleteConfirmDialog from '../MessageDeleteConfirmDialog';
 import { MessageContainer, MessageStyled } from './styles';
+import { Message } from '@/types';
 
-interface MessageProps {
-  message: PersistedMessage | PendingMessage;
+interface BaseMessageProps {
+  message: Message;
   isLastInGroup: boolean;
 }
 
-const Message: FC<MessageProps> = ({ message, isLastInGroup }) => {
+const BaseMessage: FC<BaseMessageProps> = ({ message, isLastInGroup }) => {
   const enrichedMessage: EnrichedMessage = useMessage(message);
 
   const { type, isOutgoing, downloadFile, deleteMessage, edit, reply } =
@@ -93,9 +93,6 @@ const Message: FC<MessageProps> = ({ message, isLastInGroup }) => {
     }
   }, [enrichedMessage, onMoreButtonClick, type]);
 
-  const shouldRenderTail =
-    type !== 'photo' && type !== 'video' && isLastInGroup;
-
   const onContextMenuFn =
     type === 'audio' || type === 'file' ? undefined : onContextMenu;
 
@@ -128,4 +125,4 @@ const Message: FC<MessageProps> = ({ message, isLastInGroup }) => {
   );
 };
 
-export default Message;
+export default BaseMessage;

@@ -1,4 +1,8 @@
+import { useAppSelector, useDownload } from '@/hooks';
+import { Message } from '@/types';
 import { useCallback, useContext, useMemo } from 'react';
+import { MRSContext } from '../MRS';
+import type { MessageType } from '../types';
 import {
   formatDateTime,
   formatTime,
@@ -6,12 +10,10 @@ import {
   isImage,
   isVideo
 } from '../utils';
-import { useAppSelector, useDownload } from '@/hooks';
-import type { MessageType, PendingMessage, PersistedMessage } from '../types';
-import { MRSContext } from '../MRS';
 import useChatContext from './useChatContext';
+import { API_BASE_URL } from '@/constants';
 
-const useMessage = (message: PersistedMessage | PendingMessage) => {
+const useMessage = (message: Message) => {
   const selfId = useAppSelector((state) => state.account?.id);
 
   const isOutgoing = message.senderId === selfId;
@@ -40,13 +42,13 @@ const useMessage = (message: PersistedMessage | PendingMessage) => {
     const status = getMessageStatus(message.id);
     switch (status) {
       case 'sending':
-        return message.isFile ? 'Uploading...' : 'Sending...';
+        return message.attachment ? 'Uploading...' : 'Sending...';
       case 'updating':
         return 'Updating...';
       case 'deleting':
         return 'Deleting...';
     }
-  }, [getMessageStatus, message.id, message.isFile]);
+  }, [getMessageStatus, message.id, message.attachment]);
 
   const content = useMemo(
     () => getUpdatingMessageNewContent(message.id) || message.content,
@@ -63,15 +65,18 @@ const useMessage = (message: PersistedMessage | PendingMessage) => {
   const download = useDownload();
 
   const downloadFile = useCallback(() => {
-    if (!message.isFile) return;
+    if (!message.attachment) return;
     download(
       `/messages/file-download/${message.id}`,
       `${message.id}`,
-      `${message.fileExtension}`
+      `${message.attachment.extension}`
     );
   }, [message, download]);
 
-  const fileUrl = useMemo(() => `/messages/file/${message.id}`, [message.id]);
+  const fileUrl = useMemo(
+    () => `${API_BASE_URL}/messages/file/${message.id}`,
+    [message.id]
+  );
 
   const { editMessage, replyMessage } = useChatContext();
 
@@ -84,12 +89,13 @@ const useMessage = (message: PersistedMessage | PendingMessage) => {
   }, [replyMessage, message]);
 
   const type: MessageType = useMemo(() => {
-    if (!message.isFile) return 'text';
-    if (isImage(message.fileExtension)) return 'photo';
-    if (isVideo(message.fileExtension)) return 'video';
-    if (isAudio(message.fileExtension)) return 'audio';
+    if (!message.attachment) return 'text';
+    const extension = message.attachment.extension;
+    if (isImage(extension)) return 'photo';
+    if (isVideo(extension)) return 'video';
+    if (isAudio(extension)) return 'audio';
     return 'file';
-  }, [message.fileExtension, message.isFile]);
+  }, [message.attachment]);
 
   return {
     ...message,

@@ -18,7 +18,7 @@ const list = async (req: Request, res: Response, next: NextFunction) => {
       });
     }
 
-    const messages = await Message.findAll({
+    const messages = await Message.scope(['withAttachment']).findAll({
       where: {
         [Op.or]: [
           {
@@ -39,7 +39,7 @@ const list = async (req: Request, res: Response, next: NextFunction) => {
 
     res.status(200).json({
       success: true,
-      data: cleanMessages,
+      data: messages,
       message: 'Messages retrieved successfully'
     });
   } catch (err) {

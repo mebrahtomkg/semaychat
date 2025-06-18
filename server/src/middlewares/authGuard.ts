@@ -4,9 +4,10 @@ import { isPositiveInteger } from '../utils';
 const authGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!isPositiveInteger(req.userId)) {
-      return res.status(401).json({
+      res.status(401).json({
         message: 'You are not logged in.'
       });
+      return;
     }
 
     next();

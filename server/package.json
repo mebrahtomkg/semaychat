@@ -6,8 +6,9 @@
     "node": ">=20.18.1"
   },
   "scripts": {
+    "dev": "NODE_ENV=development tsx watch ./src/server.ts",
     "tsc": "swc src -w -d dist --strip-leading-paths",
-    "dev": "NODE_ENV=development nodemon ./dist/server.js",
+    "dev-old": "NODE_ENV=development nodemon ./dist/server.js",
     "build": "swc src -d dist --strip-leading-paths",
     "start": "nodemon ./dist/server.js",
     "setup": "node server/setup/index.js"
@@ -21,6 +22,7 @@
     "express": "^5.1.0",
     "formidable": "^3.5.4",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.1",
     "mysql2": "^3.14.1",
     "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7"
@@ -31,7 +33,9 @@
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
+    "@types/multer": "^1.4.13",
     "@types/node": "^22.15.29",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "tsx": "^4.20.3"
   }
 }

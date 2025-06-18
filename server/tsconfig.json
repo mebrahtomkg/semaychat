@@ -8,10 +8,14 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": "."
+    "typeRoots": ["node_modules/@types", "src/types"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist","tests"],
+  "exclude": ["node_modules", "dist", "tests", "storage"],
   "typeAcquisition": {
     "enable": false
   }
