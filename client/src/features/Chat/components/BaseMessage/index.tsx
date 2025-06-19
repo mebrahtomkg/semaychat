@@ -99,6 +99,7 @@ const BaseMessage: FC<BaseMessageProps> = ({ message, isLastInGroup }) => {
   return (
     <MessageStyled $isOutgoing={isOutgoing} $isLastInGroup={isLastInGroup}>
       <MessageContainer
+        $shouldFlexGrow={type === 'audio' || type === 'file'}
         $isTransparentBackground={type === 'photo' || type === 'video'}
         $isLastInGroup={isLastInGroup}
         $isOutgoing={isOutgoing}

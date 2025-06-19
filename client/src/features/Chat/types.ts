@@ -1,3 +1,4 @@
+import { Message } from '@/types';
 import type { useMessage } from './hooks';
 
 export interface PersistedMessage {
@@ -22,9 +23,9 @@ interface MessageRequestBase {
   id: number;
 }
 
-export interface MessageSendRequest extends MessageRequestBase {
+export interface MessageSendRequest {
   type: 'send';
-  payload: PendingMessage;
+  message: Message;
 }
 
 export interface MessageUpdatePayload {

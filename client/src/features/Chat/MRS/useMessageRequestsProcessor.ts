@@ -27,7 +27,7 @@ const useMessageRequestsProcessor = (
     async (message: PendingMessage, requestId: number) => {
       const { receiverId, content, isFile, file, caption } = message;
 
-      const endpoint = isFile ? '/messages/file' : '/messages';
+      const endpoint = isFile ? '/messages/file' : '/messages/text';
 
       let body: FormData | { receiverId: number; content: string };
       if (isFile) {

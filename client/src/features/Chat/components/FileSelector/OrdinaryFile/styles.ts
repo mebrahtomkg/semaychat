@@ -4,6 +4,7 @@ export const OrdinaryFileStyled = styled.div`
   position: relative;
   width: 12rem;
   height: 12rem;
+  margin-left: 0.5rem;
   border: 2px solid #43136d;
   border-radius: 5px;
   background: inherit;
@@ -20,6 +21,8 @@ export const IconWrapper = styled.div`
 `;
 
 export const FileName = styled.p`
+  padding: 0 1rem;
   text-align: center;
   font-size: 1rem;
+  word-break: break-all;
 `;

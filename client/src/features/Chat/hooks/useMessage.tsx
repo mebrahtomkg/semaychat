@@ -44,7 +44,7 @@ const useMessage = (message: Message) => {
       case 'sending':
         return message.attachment ? 'Uploading...' : 'Sending...';
       case 'updating':
-        return 'Updating...';
+        return 'Updating...'; 
       case 'deleting':
         return 'Deleting...';
     }

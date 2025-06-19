@@ -1,7 +1,7 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { PhotoMessageStyled, PhotoImg, PhotoMetaContainer } from './styles';
 import PhotoViewer from '../PhotoViewer';
-import { useImageFileLoader, useImageLoader } from '../../../../hooks';
+import { useImageFileLoader, useImageLoader } from '@/hooks';
 import MessageMeta from '../MessageMeta';
 import { EnrichedMessage } from '../../types';
 

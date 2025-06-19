@@ -1,16 +1,17 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import styled from 'styled-components';
-import { CloseIcon } from '../../../../components/icons';
+import { CloseIcon } from '@/components/icons';
 
 const RemoveButtonStyled = styled.button`
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  width: 2.1rem;
-  height: 2.1rem;
-  padding: 0.65rem;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.5rem;
   border-radius: 50%;
   transition: background-color 0.3s ease-in-out;
+
   background: ${(props) => props.theme.iconButton.backgroundColor};
   color: ${(props) => props.theme.iconButton.color};
   &:hover {

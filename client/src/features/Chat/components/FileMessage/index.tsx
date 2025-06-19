@@ -2,17 +2,17 @@ import React, { FC } from 'react';
 import SmallMoreButton from '../SmallMoreButton';
 import {
   FileExtension,
+  FileIconContainer,
   FileInfoContainer,
   FileMessageStyled,
   FileMetaContainer,
   FileName,
   FileSize,
-  MainContainer,
-  MoreButtonContainer
+  MainSection
 } from './styles';
-import { FileIcon } from '../../../../components/icons';
+import { FileIcon } from '@/components/icons';
 import MessageMeta from '../MessageMeta';
-import { getSizeInAppropriateUnit } from '../../utils';
+import { getSizeInAppropriateUnit, shortenFileName } from '../../utils';
 import { EnrichedMessage } from '../../types';
 
 interface FileMessageProps {
@@ -28,21 +28,23 @@ const FileMessage: FC<FileMessageProps> = ({
 
   return (
     <FileMessageStyled>
-      <MainContainer>
-        <FileIcon />
+      <MainSection>
+        <FileIconContainer>
+          <FileIcon />
+        </FileIconContainer>
 
         <FileInfoContainer>
-          <FileName>{enrichedMessage.fileName}</FileName>
+          <FileName>
+            {shortenFileName(enrichedMessage.attachment.name, 20)}
+          </FileName>
           <FileSize>
-            {getSizeInAppropriateUnit(enrichedMessage.fileSize)}
+            {getSizeInAppropriateUnit(enrichedMessage.attachment.size)}
           </FileSize>
-          <FileExtension>{enrichedMessage.fileExtension}</FileExtension>
+          <FileExtension>{enrichedMessage.attachment.extension}</FileExtension>
         </FileInfoContainer>
+      </MainSection>
 
-        <MoreButtonContainer>
-          <SmallMoreButton onClick={onMoreButtonClick} />
-        </MoreButtonContainer>
-      </MainContainer>
+      <SmallMoreButton onClick={onMoreButtonClick} />
 
       <FileMetaContainer>
         <MessageMeta isOutgoing={isOutgoing} status={status} time={time} />

@@ -2,40 +2,35 @@ import styled from 'styled-components';
 
 export const AudioMessageStyled = styled.div`
   position: relative;
-  display: flex;
-  flex-direction: column;
-`;
-
-export const MainSection = styled.div`
+  padding: 0rem 0rem 1.5rem 1rem;
   display: flex;
 `;
 
 export const ControlArea = styled.div`
-  margin: 1rem 0rem 0rem 1rem;
+  flex-grow: 1;
+  margin-top: 1rem;
   display: flex;
+  align-items: center;
 `;
 
 export const AudioMetaContainer = styled.div`
+  position: absolute;
+  right: 0;
+  bottom: 0;
   display: flex;
   justify-content: flex-end;
   padding: 0rem 0.4rem 0.4rem 0rem;
 `;
 
 export const PlaybackTimeSliderContainer = styled.div`
-  width: 12rem;
-  align-self: center;
-  padding: 0 1rem;
+  flex-grow: 1;
+  margin-right: 1rem;
 `;
 
 export const PlaybackTime = styled.span`
   display: block;
   font-size: 0.9rem;
-  font-weight: 400;
+  white-space: nowrap;
   color: #d2d8dd;
-  background: inherit;
-`;
-
-export const MoreButtonContainer = styled.div`
-  margin-top: 0.3rem;
-  display: flex;
+  background-color: transparent;
 `;

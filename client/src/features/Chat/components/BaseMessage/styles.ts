@@ -27,11 +27,17 @@ export const MessageStyled = styled.div<{
 `;
 
 export const MessageContainer = styled.div<{
+  $shouldFlexGrow: boolean;
   $isLastInGroup: boolean;
   $isOutgoing: boolean;
   $isTransparentBackground: boolean;
 }>`
   max-width: 65%;
+  ${(props) =>
+    props.$shouldFlexGrow &&
+    css`
+      flex-grow: 1;
+    `}
   border-radius: 15px;
   cursor: pointer;
 

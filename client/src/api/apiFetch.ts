@@ -38,7 +38,12 @@ const apiFetch = async <D>(
   }
 
   try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, init);
+    const url =
+      endpoint.startsWith('http://') || endpoint.startsWith('https://')
+        ? endpoint
+        : `${API_BASE_URL}${endpoint}`;
+
+    const response = await fetch(url, init);
 
     if (!response.ok) {
       const errorResponse = await response.json();

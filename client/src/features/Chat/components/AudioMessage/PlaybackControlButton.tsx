@@ -1,13 +1,14 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import styled from 'styled-components';
-import { PauseIcon, PlayIcon } from '../../../../components/icons';
+import { PauseIcon, PlayIcon } from '@/components/icons';
 
 const PlaybackControlButtonStyled = styled.button`
   width: 2.5rem;
+  min-width: 2.5rem;
   height: 2.5rem;
   padding: 0.65rem;
-  align-self: center;
-  border-radius: 40px;
+  margin-right: 1rem;
+  border-radius: 50%;
   background: #2f43b1;
   color: #d1d1d1;
 `;

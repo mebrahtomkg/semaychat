@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/media-has-caption */
 import React, { FC } from 'react';
 import PlaybackControlButton from './PlaybackControlButton';
 import SmallMoreButton from '../SmallMoreButton';
@@ -6,8 +5,6 @@ import {
   AudioMessageStyled,
   AudioMetaContainer,
   ControlArea,
-  MainSection,
-  MoreButtonContainer,
   PlaybackTime,
   PlaybackTimeSliderContainer
 } from './styles';
@@ -41,34 +38,28 @@ const AudioMessage: FC<AudioMessageProps> = ({
 
   return (
     <AudioMessageStyled>
-      <MainSection>
-        <audio
-          ref={audioElementRef}
-          onTimeUpdate={handleTimeUpdate}
-          onEnded={handlePlaybackEnded}
-          onLoadedMetadata={handleLoadedMetadata}
-        >
-          <source src={fileUrl} type="audio/mp3" />
-        </audio>
+      {/* biome-ignore lint/a11y/useMediaCaption: <explanation> */}
+      <audio
+        ref={audioElementRef}
+        onTimeUpdate={handleTimeUpdate}
+        onEnded={handlePlaybackEnded}
+        onLoadedMetadata={handleLoadedMetadata}
+      >
+        <source src={fileUrl} type="audio/mp3" />
+      </audio>
 
-        <ControlArea>
-          <PlaybackControlButton
-            isPlaying={isPlaying}
-            onClick={togglePlayback}
+      <ControlArea>
+        <PlaybackControlButton isPlaying={isPlaying} onClick={togglePlayback} />
+        <PlaybackTimeSliderContainer>
+          <PlaybackTimeSlider
+            timePercentage={timePercentage}
+            onTimePercentageUpdate={setTimePercentage}
           />
-          <PlaybackTimeSliderContainer>
-            <PlaybackTimeSlider
-              timePercentage={timePercentage}
-              onTimePercentageUpdate={setTimePercentage}
-            />
-            <PlaybackTime>{playbackTime}</PlaybackTime>
-          </PlaybackTimeSliderContainer>
-        </ControlArea>
+          <PlaybackTime>{playbackTime}</PlaybackTime>
+        </PlaybackTimeSliderContainer>
+      </ControlArea>
 
-        <MoreButtonContainer>
-          <SmallMoreButton onClick={onMoreButtonClick} />
-        </MoreButtonContainer>
-      </MainSection>
+      <SmallMoreButton onClick={onMoreButtonClick} />
 
       <AudioMetaContainer>
         <MessageMeta isOutgoing={isOutgoing} status={status} time={time} />

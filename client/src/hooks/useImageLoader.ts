@@ -2,16 +2,16 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ApiError, get } from '@/api';
 import { useQuery } from '@tanstack/react-query';
 
-const useImageLoader = (endpoint: string | null | undefined) => {
+const useImageLoader = (imageUrl: string | null | undefined) => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [isImageLoading, setIsImageLoading] = useState(false);
   const objectUrlRef = useRef<string | null>(null);
 
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ['image', endpoint],
+    queryKey: ['image', imageUrl],
     queryFn: async () => {
-      if (!endpoint) return null;
-      const blob = await get<Blob>(endpoint, { responseType: 'blob' });
+      if (!imageUrl) return null;
+      const blob = await get<Blob>(imageUrl, { responseType: 'blob' });
       return URL.createObjectURL(blob);
     },
     retry: (failureCount: number, error: Error) =>
