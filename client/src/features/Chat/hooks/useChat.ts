@@ -1,25 +1,27 @@
-import { useCallback, useContext, useRef, useState } from 'react';
-import { PersistedMessage } from '../types';
-import { MRSContext } from '../MRS';
-import { useAppSelector } from '@/hooks';
+import { useCallback, useRef, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import {
+  messageUpdateRequestAdded,
+  textMessageSendRequestAdded
+} from '../slices/messageRequestsSlice';
+import { Message } from '@/types';
 
 type EditorState =
-  | { mode: 'edit'; message: PersistedMessage }
-  | { mode: 'reply'; message: PersistedMessage }
+  | { mode: 'edit'; message: Message }
+  | { mode: 'reply'; message: Message }
   | { mode: 'new' };
 
 const useChat = (chatPartnerId: number) => {
   const selfId = useAppSelector((state) => state.account?.id);
+  const dispatch = useAppDispatch();
 
   const editingTextRef = useRef<string>('');
 
   const [editorState, setEditorState] = useState<EditorState>({ mode: 'new' });
 
-  const editMessage = useCallback( 
-    (message: PersistedMessage) => {
-      const canBeEdited =
-        message?.id && message.content && message.senderId === selfId;
-      if (canBeEdited) {
+  const editMessage = useCallback(
+    (message: Message) => {
+      if (message.content && message.senderId === selfId) {
         editingTextRef.current = message.content;
         setEditorState({ mode: 'edit', message });
       }
@@ -27,24 +29,30 @@ const useChat = (chatPartnerId: number) => {
     [selfId]
   );
 
-  const replyMessage = useCallback((message: PersistedMessage) => {
+  const replyMessage = useCallback((message: Message) => {
     if (message?.id) setEditorState({ mode: 'reply', message });
   }, []);
-
-  const MRS = useContext(MRSContext);
-  if (!MRS) throw Error('Invalid MRSContext');
-  const { updateMessage, sendTextMessage } = MRS;
 
   const onSend = useCallback(
     (value: string) => {
       if (editorState.mode === 'edit') {
-        updateMessage(editorState.message.id, value.trim());
+        dispatch(
+          messageUpdateRequestAdded({
+            messageId: editorState.message.id,
+            newContent: value.trim()
+          })
+        );
       } else {
-        sendTextMessage(chatPartnerId, value.trim());
+        dispatch(
+          textMessageSendRequestAdded({
+            receiverId: chatPartnerId,
+            content: value.trim()
+          })
+        );
       }
       setEditorState({ mode: 'new' });
     },
-    [editorState, updateMessage, sendTextMessage, chatPartnerId]
+    [editorState, dispatch, chatPartnerId]
   );
 
   return {

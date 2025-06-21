@@ -1,10 +1,17 @@
-import { useCallback, useContext, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { getFileExtension, isImage, shortenFileName } from '../../utils';
 import { Attachment } from './types';
-import { MRSContext } from '../../MRS';
+import { useAppDispatch } from '@/hooks';
+import { fileMessageSendRequestAdded } from '../../slices/messageRequestsSlice';
 
-const useFilesSender = (files: File[], chatPartnerId: number, onClose) => {
+const useFilesSender = (
+  files: File[],
+  chatPartnerId: number,
+  onClose: () => void
+) => {
   const lastIdRef = useRef<number>(1);
+
+  const dispatch = useAppDispatch();
 
   const createAttachment = useCallback(
     (file: File): Attachment => ({
@@ -51,16 +58,18 @@ const useFilesSender = (files: File[], chatPartnerId: number, onClose) => {
     return `${attachments.length} file${attachments.length > 1 ? 's' : ''} selected`;
   }, [attachments.length]);
 
-  const MRS = useContext(MRSContext);
-  if (!MRS) throw Error('Invalid MRSContext');
-  const { sendFileMessage } = MRS;
-
   const sendAttachments = useCallback(() => {
     attachments.map((attachment) => {
-      sendFileMessage(chatPartnerId, attachment.file, attachment.caption);
+      dispatch(
+        fileMessageSendRequestAdded({
+          receiverId: chatPartnerId,
+          file: attachment.file,
+          caption: attachment.caption
+        })
+      );
     });
     onClose();
-  }, [attachments, chatPartnerId, onClose, sendFileMessage]);
+  }, [attachments, chatPartnerId, onClose, dispatch]);
 
   return {
     attachments,

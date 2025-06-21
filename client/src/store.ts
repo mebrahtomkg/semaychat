@@ -1,11 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import profilePhotosReducer from './features/Settings/slices/profilePhotosSlice';
-import accountReducer from './features/Settings/slices/accountSlice';
-import usersReducer from './usersSlice';
-import messagesReducer from './features/Chat/slices/messagesSlice';
-import chatsReducer from './features/Chat/slices/chatsSlice';
-import contactsReducer from './contactsSlice';
-import blockedUsersReducer from './blockedUsersSlice';
+import profilePhotosReducer from '@/features/Settings/slices/profilePhotosSlice';
+import accountReducer from '@/features/Settings/slices/accountSlice';
+import usersReducer from '@/usersSlice';
+import messagesReducer from '@/features/Chat/slices/messagesSlice';
+import chatsReducer from '@/features/Chat/slices/chatsSlice';
+import messageRequestsReducer from '@/features/Chat/slices/messageRequestsSlice';
+import contactsReducer from '@/contactsSlice';
+import blockedUsersReducer from '@/blockedUsersSlice';
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,8 @@ const store = configureStore({
     messages: messagesReducer,
 
     chats: chatsReducer,
+
+    messageRequests: messageRequestsReducer,
 
     users: usersReducer,
 

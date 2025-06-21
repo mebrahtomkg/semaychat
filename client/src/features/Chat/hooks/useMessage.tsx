@@ -1,7 +1,6 @@
-import { useAppSelector, useDownload } from '@/hooks';
+import { useAppDispatch, useAppSelector, useDownload } from '@/hooks';
 import { Message } from '@/types';
-import { useCallback, useContext, useMemo } from 'react';
-import { MRSContext } from '../MRS';
+import { useCallback, useMemo } from 'react';
 import type { MessageType } from '../types';
 import {
   formatDateTime,
@@ -12,9 +11,14 @@ import {
 } from '../utils';
 import useChatContext from './useChatContext';
 import { API_BASE_URL } from '@/constants';
+import { messageDeleteRequestAdded } from '../slices/messageRequestsSlice';
+import useMessageStatus from './useMessageStatus';
+import useMessageContent from './useMessageContent';
 
 const useMessage = (message: Message) => {
   const selfId = useAppSelector((state) => state.account?.id);
+
+  const dispatch = useAppDispatch();
 
   const isOutgoing = message.senderId === selfId;
 
@@ -30,36 +34,23 @@ const useMessage = (message: Message) => {
     [message.createdAt]
   );
 
-  const MRS = useContext(MRSContext);
-  if (!MRS) throw Error('Invalid MRSContext');
-  const {
-    getMessageStatus,
-    getUpdatingMessageNewContent,
-    deleteMessage: deleteMessageReal
-  } = MRS;
-
-  const status = useMemo(() => {
-    const status = getMessageStatus(message.id);
-    switch (status) {
-      case 'sending':
-        return message.attachment ? 'Uploading...' : 'Sending...';
-      case 'updating':
-        return 'Updating...'; 
-      case 'deleting':
-        return 'Deleting...';
-    }
-  }, [getMessageStatus, message.id, message.attachment]);
-
-  const content = useMemo(
-    () => getUpdatingMessageNewContent(message.id) || message.content,
-    [getUpdatingMessageNewContent, message.content, message.id]
+  const status = useMessageStatus(
+    message.id,
+    typeof message.attachment?.name === 'string'
   );
+
+  const content = useMessageContent(message.id, message.content);
 
   const deleteMessage = useCallback(
     (deleteForReceiver = true) => {
-      deleteMessageReal(message.id, deleteForReceiver);
+      dispatch(
+        messageDeleteRequestAdded({
+          messageId: message.id,
+          deleteForReceiver
+        })
+      );
     },
-    [deleteMessageReal, message.id]
+    [dispatch, message.id]
   );
 
   const download = useDownload();

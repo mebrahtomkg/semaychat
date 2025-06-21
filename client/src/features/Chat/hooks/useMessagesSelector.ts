@@ -1,36 +1,22 @@
-import { useContext, useMemo } from 'react';
-import { useAppSelector } from '../../../hooks';
-import type { PersistedMessage, PendingMessage } from '../types';
-import { MRSContext } from '../MRS';
+import { useMemo } from 'react';
+import { useAppSelector } from '@/hooks';
+import { Message } from '@/types';
+import usePendingMessages from './usePendingMessages';
 
-const useMessagesSelector = (
-  chatPartnerId: number
-): (PersistedMessage | PendingMessage)[] => {
-  const messages = useAppSelector((state) => state.messages);
-
-  const thisChatMessages = useMemo(
-    () =>
-      messages.filter(
-        (message: PersistedMessage) =>
-          message.receiverId === chatPartnerId ||
-          message.senderId === chatPartnerId
-      ),
-    [chatPartnerId, messages]
+const useMessagesSelector = (chatPartnerId: number): Message[] => {
+  const messages = useAppSelector((state) =>
+    state.messages.filter(
+      (message) =>
+        message.receiverId === chatPartnerId ||
+        message.senderId === chatPartnerId
+    )
   );
 
-  const MRS = useContext(MRSContext);
-  if (!MRS) throw Error('Invalid MRSContext');
-  const { pendingMessages } = MRS;
-
-  const thisChatPendingMessages = useMemo(
-    () =>
-      pendingMessages.filter((message) => message.receiverId === chatPartnerId),
-    [chatPartnerId, pendingMessages]
-  );
+  const pendingMessages = usePendingMessages(chatPartnerId);
 
   const selectedMessages = useMemo(
-    () => [...thisChatMessages, ...thisChatPendingMessages],
-    [thisChatMessages, thisChatPendingMessages]
+    () => [...messages, ...pendingMessages],
+    [messages, pendingMessages]
   );
 
   return selectedMessages;

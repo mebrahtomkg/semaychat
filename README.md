@@ -21,7 +21,6 @@ A privacy-focused messaging application with one-to-one chat, file sharing, and 
 
 - Supports all file types
 - Photo/video/audio previews
-- Document sharing with previews
 
 ### ⚙️ Account Management
 
@@ -45,7 +44,8 @@ A privacy-focused messaging application with one-to-one chat, file sharing, and 
 - JWT authentication
 - File upload/download endpoints
 
-##Deployment
-To deploy the frontend static assents in subdir of an domain:
-create .env in /cleint dir and write PUBLIC_PATH=/your-subdir-name/
-or specify the subdir name in env variables in the deplying server
+## Deployment
+
+To deploy the frontend static assets in subdir of an domain:
+create .env in /cleint dir and write PUBLIC_PATH=your-subdir-name
+or specify the subdir name in env variables in the deplying server.

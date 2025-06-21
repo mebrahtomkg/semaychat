@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { Chat } from '../../../types';
+import { Chat } from '@/types';
 
 const initialState: Chat[] = [];
 
@@ -10,7 +10,7 @@ export const chatsSlice = createSlice({
   initialState,
 
   reducers: {
-    chatsFetched(state, action: PayloadAction<Chat[]>) {
+    chatsFetched(_state, action: PayloadAction<Chat[]>) {
       return action.payload;
     }
   }

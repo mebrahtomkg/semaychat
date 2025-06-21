@@ -17,16 +17,16 @@ const PhotoMessage: FC<PhotoMessageProps> = ({ enrichedMessage }) => {
   const closePhotoViewer = () => setIsPhotoViewerVisible(false);
 
   const { imageSrc: imageSrcFromUrl, handleImageLoad: handleImageLoadFromUrl } =
-    useImageLoader(fileUrl);
+    useImageLoader(fileUrl); 
 
   const {
     imageSrc: imageSrcFromFile,
     handleImageLoad: handleImageLoadFromFile
-  } = useImageFileLoader(enrichedMessage.file);
+  } = useImageFileLoader(enrichedMessage.attachment?.file);
 
-  const imageSrc = enrichedMessage.file ? imageSrcFromFile : imageSrcFromUrl;
+  const imageSrc = enrichedMessage.attachment?.file ? imageSrcFromFile : imageSrcFromUrl;
 
-  const handleImageLoad = enrichedMessage.file
+  const handleImageLoad = enrichedMessage.attachment?.file
     ? handleImageLoadFromFile
     : handleImageLoadFromUrl;
 

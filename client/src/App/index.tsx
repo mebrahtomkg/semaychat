@@ -8,16 +8,14 @@ import useApp from './useApp';
 import Profile from '@/features/Profile';
 import { GlobalStyle } from '@/styles';
 import { AppContainer, PageContainer } from './styles';
-import useMessageRequestSystem, { MRSContext } from '@/features/Chat/MRS';
 import { useAuth, useBlockedUsersFetcher, useContactsFetcher } from '@/hooks';
 import Spinner from '@/components/spinner';
 import AppContext from './AppContext';
+import MessageRequestsProcessor from '@/features/Chat/MessageRequestsProcessor';
 
 const App = () => {
   const app = useApp();
   const { theme, isLargeScreen } = app;
-
-  const MRS = useMessageRequestSystem();
 
   const { isLoading, isLoggedIn } = useAuth();
 
@@ -31,23 +29,23 @@ const App = () => {
       <GlobalStyle />
 
       {isLoggedIn ? (
-        <MRSContext value={MRS}>
-          <AppContext value={app}>
-            <AppContainer $isLargeScreen={isLargeScreen}>
-              <SideBar />
+        <AppContext.Provider value={app}>
+          <MessageRequestsProcessor />
 
-              {isLargeScreen && <Home />}
+          <AppContainer $isLargeScreen={isLargeScreen}>
+            <SideBar />
 
-              <PageContainer>
-                <Routes>
-                  {!isLargeScreen && <Route index element={<Home />} />}
-                  <Route path="/chat/:chatPartnerId" element={<Chat />} />
-                  <Route path="/profile/:userId" element={<Profile />} />
-                </Routes>
-              </PageContainer>
-            </AppContainer>
-          </AppContext>
-        </MRSContext>
+            {isLargeScreen && <Home />}
+
+            <PageContainer>
+              <Routes>
+                {!isLargeScreen && <Route index element={<Home />} />}
+                <Route path="/chat/:chatPartnerId" element={<Chat />} />
+                <Route path="/profile/:userId" element={<Profile />} />
+              </Routes>
+            </PageContainer>
+          </AppContainer>
+        </AppContext.Provider>
       ) : (
         <Guest />
       )}

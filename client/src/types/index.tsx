@@ -43,7 +43,8 @@ export interface Attachment {
   name: string;
   extension: string;
   size: number;
-  caption: string | null;
+  caption: string | null | undefined;
+  file?: File;
 }
 
 export interface Message {
@@ -67,3 +68,52 @@ export type Theme = typeof DarkTheme;
 export interface StyleProps {
   theme: Partial<Theme>;
 }
+
+interface BaseMessageRequest {
+  requestId: number;
+  requestType:
+    | 'TEXT_MESSAGE_SEND'
+    | 'FILE_MESSAGE_SEND'
+    | 'MESSAGE_UPDATE'
+    | 'MESSAGE_DELETE';
+  payload: object;
+}
+
+export interface TextMessageSendRequest extends BaseMessageRequest {
+  requestType: 'TEXT_MESSAGE_SEND';
+  payload: {
+    receiverId: number;
+    content: string;
+  };
+}
+
+export interface FileMessageSendRequest extends BaseMessageRequest {
+  requestType: 'FILE_MESSAGE_SEND';
+  payload: {
+    receiverId: number;
+    file: File;
+    caption?: string;
+  };
+}
+
+export interface MessageUpdateRequest extends BaseMessageRequest {
+  requestType: 'MESSAGE_UPDATE';
+  payload: {
+    messageId: number;
+    newContent: string;
+  };
+}
+
+export interface MessageDeleteRequest extends BaseMessageRequest {
+  requestType: 'MESSAGE_DELETE';
+  payload: {
+    messageId: number;
+    deleteForReceiver?: boolean;
+  };
+}
+
+export type MessageRequest =
+  | TextMessageSendRequest
+  | FileMessageSendRequest
+  | MessageUpdateRequest
+  | MessageDeleteRequest;
