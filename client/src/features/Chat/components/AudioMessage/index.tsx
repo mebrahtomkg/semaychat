@@ -11,18 +11,18 @@ import {
 import useAudioPlaybackController from './useAudioPlaybackController';
 import PlaybackTimeSlider from './PlaybackTimeSlider';
 import MessageMeta from '../MessageMeta';
-import { EnrichedMessage } from '../../types';
+import { MessageInfo } from '../../types';
 
 interface AudioMessageProps {
-  enrichedMessage: EnrichedMessage;
+  messageInfo: MessageInfo;
   onMoreButtonClick: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 const AudioMessage: FC<AudioMessageProps> = ({
-  enrichedMessage,
+  messageInfo,
   onMoreButtonClick
 }) => {
-  const { isOutgoing, status, fileUrl, time } = enrichedMessage;
+  const { isOutgoing, status, fileUrl, time } = messageInfo;
 
   const {
     audioElementRef,

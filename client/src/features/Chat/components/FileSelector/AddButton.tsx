@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import styled, { css } from 'styled-components';
-import { AddIcon } from '../../../../components/icons';
+import { AddIcon } from '@/components/icons';
 
 const AddButtonStyled = styled.button<{ $isDisabled?: boolean }>`
   margin-right: 1rem;

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useAppSelector } from '@/hooks';
 import { Message } from '@/types';
-import usePendingMessages from './usePendingMessages';
+import { usePendingMessages } from '.';
 
 const useMessagesSelector = (chatPartnerId: number): Message[] => {
   const messages = useAppSelector((state) =>

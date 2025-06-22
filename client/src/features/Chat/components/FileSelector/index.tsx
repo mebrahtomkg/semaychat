@@ -14,7 +14,7 @@ import ImageFile from './ImageFile';
 import OrdinaryFile from './OrdinaryFile';
 import useFilesSender from './useFilesSender';
 import AddButton from './AddButton';
-import useFilesSelector from '../../hooks/useFilesSelector';
+import { useFilesSelector } from '../../hooks';
 
 interface FileSelectorProps {
   files: File[];

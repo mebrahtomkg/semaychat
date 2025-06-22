@@ -13,18 +13,21 @@ import {
 import { FileIcon } from '@/components/icons';
 import MessageMeta from '../MessageMeta';
 import { getSizeInAppropriateUnit, shortenFileName } from '../../utils';
-import { EnrichedMessage } from '../../types';
+import { Message } from '@/types';
+import { MessageInfo } from '../../types';
 
 interface FileMessageProps {
-  enrichedMessage: EnrichedMessage;
+  message: Message;
+  messageInfo: MessageInfo;
   onMoreButtonClick: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 const FileMessage: FC<FileMessageProps> = ({
-  enrichedMessage,
+  message,
+  messageInfo,
   onMoreButtonClick
 }) => {
-  const { isOutgoing, status, time } = enrichedMessage;
+  const { isOutgoing, status, time } = messageInfo;
 
   return (
     <FileMessageStyled>
@@ -35,12 +38,12 @@ const FileMessage: FC<FileMessageProps> = ({
 
         <FileInfoContainer>
           <FileName>
-            {shortenFileName(enrichedMessage.attachment.name, 20)}
+            {shortenFileName(message.attachment?.name as string, 20)}
           </FileName>
           <FileSize>
-            {getSizeInAppropriateUnit(enrichedMessage.attachment.size)}
+            {getSizeInAppropriateUnit(message.attachment?.size as number)}
           </FileSize>
-          <FileExtension>{enrichedMessage.attachment.extension}</FileExtension>
+          <FileExtension>{message.attachment?.extension}</FileExtension>
         </FileInfoContainer>
       </MainSection>
 

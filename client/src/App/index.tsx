@@ -11,7 +11,7 @@ import { AppContainer, PageContainer } from './styles';
 import { useAuth, useBlockedUsersFetcher, useContactsFetcher } from '@/hooks';
 import Spinner from '@/components/spinner';
 import AppContext from './AppContext';
-import MessageRequestsProcessor from '@/features/Chat/MessageRequestsProcessor';
+import { MessageRequestsProcessor } from '@/features/Chat/components';
 
 const App = () => {
   const app = useApp();

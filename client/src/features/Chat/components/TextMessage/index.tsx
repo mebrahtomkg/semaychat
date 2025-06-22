@@ -1,14 +1,19 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Content, HiddenMeta, TextMessageStyled, VisibleMeta } from './styles';
 import MessageMeta from '../MessageMeta';
-import { EnrichedMessage } from '../../types';
+import { Message } from '@/types';
+import { MessageInfo } from '../../types';
+import { useMessageContent } from '../../hooks';
 
 interface TextMessageProps {
-  enrichedMessage: EnrichedMessage;
+  message: Message;
+  messageInfo: MessageInfo;
 }
 
-const TextMessage: FC<TextMessageProps> = ({ enrichedMessage }) => {
-  const { content, isOutgoing, status, time } = enrichedMessage;
+const TextMessage: FC<TextMessageProps> = ({ message, messageInfo }) => {
+  const { isOutgoing, status, time } = messageInfo;
+
+  const content = useMessageContent(message.id, message.content);
 
   return (
     <TextMessageStyled $isOutgoing={isOutgoing}>

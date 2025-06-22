@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
-import { SendIcon } from '../../../components/icons';
+import { SendIcon } from '@/components/icons';
 import { StyleProps } from '@/types';
 
 const SendButtonStyled = styled.button<{ $isDisabled?: boolean }>`

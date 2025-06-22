@@ -44,7 +44,7 @@ export interface Attachment {
   extension: string;
   size: number;
   caption: string | null | undefined;
-  file?: File;
+  file?: File;// Only exists on frontend
 }
 
 export interface Message {

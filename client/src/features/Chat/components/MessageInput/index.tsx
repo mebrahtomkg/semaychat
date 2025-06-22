@@ -8,7 +8,7 @@ import {
   GrowingTextArea,
   MessageInputStyled
 } from './styles';
-import useChatContext from '../../hooks/useChatContext';
+import { useChatContext } from '../../hooks';
 
 const MessageInput: FC = () => {
   // Uplifting state variable of this component to useChat made the message input

@@ -15,7 +15,7 @@ const useMessageContent = (
         req.requestType === 'MESSAGE_UPDATE' &&
         req.payload.messageId === messageId
     )
-  );
+  ); 
 
   const content = useMemo(
     () =>

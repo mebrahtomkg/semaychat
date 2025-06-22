@@ -3,30 +3,34 @@ import { PhotoMessageStyled, PhotoImg, PhotoMetaContainer } from './styles';
 import PhotoViewer from '../PhotoViewer';
 import { useImageFileLoader, useImageLoader } from '@/hooks';
 import MessageMeta from '../MessageMeta';
-import { EnrichedMessage } from '../../types';
+import { MessageInfo } from '../../types';
+import { Message } from '@/types';
 
 interface PhotoMessageProps {
-  enrichedMessage: EnrichedMessage;
+  message: Message;
+  messageInfo: MessageInfo;
 }
 
-const PhotoMessage: FC<PhotoMessageProps> = ({ enrichedMessage }) => {
-  const { fileUrl, isOutgoing, status, time } = enrichedMessage;
+const PhotoMessage: FC<PhotoMessageProps> = ({ message, messageInfo }) => {
+  const { chatPartnerId, fileUrl, isOutgoing, status, time } = messageInfo;
 
   const [isPhotoViewerVisible, setIsPhotoViewerVisible] = useState(false);
   const openPhotoViewer = () => setIsPhotoViewerVisible(true);
   const closePhotoViewer = () => setIsPhotoViewerVisible(false);
 
   const { imageSrc: imageSrcFromUrl, handleImageLoad: handleImageLoadFromUrl } =
-    useImageLoader(fileUrl); 
+    useImageLoader(fileUrl);
 
   const {
     imageSrc: imageSrcFromFile,
     handleImageLoad: handleImageLoadFromFile
-  } = useImageFileLoader(enrichedMessage.attachment?.file);
+  } = useImageFileLoader(message.attachment?.file);
 
-  const imageSrc = enrichedMessage.attachment?.file ? imageSrcFromFile : imageSrcFromUrl;
+  const imageSrc = message.attachment?.file
+    ? imageSrcFromFile
+    : imageSrcFromUrl;
 
-  const handleImageLoad = enrichedMessage.attachment?.file
+  const handleImageLoad = message.attachment?.file
     ? handleImageLoadFromFile
     : handleImageLoadFromUrl;
 
@@ -45,7 +49,11 @@ const PhotoMessage: FC<PhotoMessageProps> = ({ enrichedMessage }) => {
       </PhotoMetaContainer>
 
       {isPhotoViewerVisible && (
-        <PhotoViewer photo={enrichedMessage} onClose={closePhotoViewer} />
+        <PhotoViewer
+          chatPartnerId={chatPartnerId}
+          targetMessageId={message.id}
+          onClose={closePhotoViewer}
+        />
       )}
     </PhotoMessageStyled>
   );

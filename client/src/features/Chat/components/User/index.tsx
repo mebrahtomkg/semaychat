@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import {
   CircularPhoto,
   Name,
@@ -7,10 +7,10 @@ import {
   Status,
   UserContainer
 } from './styles';
-import { CenteredImage } from '../../../../styles';
-import { useUser, useImageLoader, useAppContext } from '../../../../hooks';
-import { User as IUser } from '../../../../types';
-import NameInitial from '../../../../components/NameInitial';
+import { CenteredImage } from '@/styles';
+import { useUser, useImageLoader, useAppContext } from '@/hooks';
+import { User as IUser } from '@/types';
+import NameInitial from '@/components/NameInitial';
 
 interface UserProps {
   userId: number; // Needed incase the user wasn't fatched already

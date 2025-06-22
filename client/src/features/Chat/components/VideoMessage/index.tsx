@@ -4,15 +4,15 @@ import {
   VideoMetaContainer,
   VideoTagStyled
 } from './styles';
+import { MessageInfo } from '../../types';
 import MessageMeta from '../MessageMeta';
-import { EnrichedMessage } from '../../types';
 
 interface VideoMessageProps {
-  enrichedMessage: EnrichedMessage;
+  messageInfo: MessageInfo;
 }
 
-const VideoMessage: FC<VideoMessageProps> = ({ enrichedMessage }) => {
-  const { isOutgoing, status, fileUrl, time } = enrichedMessage;
+const VideoMessage: FC<VideoMessageProps> = ({ messageInfo }) => {
+  const { isOutgoing, status, fileUrl, time } = messageInfo;
 
   return (
     <VideoMessageStyled>

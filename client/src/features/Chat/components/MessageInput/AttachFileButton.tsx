@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import styled from 'styled-components';
-import { AttachmentIcon } from '../../../../components/icons';
+import { AttachmentIcon } from '@/components/icons';
 
 const AttachFileButtonStyled = styled.button`
   margin-right: 0.5rem;

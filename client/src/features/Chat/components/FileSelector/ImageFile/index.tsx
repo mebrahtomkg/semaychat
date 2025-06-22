@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import { FC, useCallback } from 'react';
 import {
   CaptionInput,
   ImageFileStyled,
@@ -8,7 +8,7 @@ import {
 } from './styles';
 import { Attachment } from '../types';
 import RemoveButton from '../RemoveButton';
-import { useImageFileLoader } from '../../../../../hooks';
+import { useImageFileLoader } from '@/hooks';
 
 interface ImageFileProps {
   attachment: Attachment;

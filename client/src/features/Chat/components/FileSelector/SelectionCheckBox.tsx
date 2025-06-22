@@ -1,6 +1,5 @@
-import React from 'react';
 import styled, { css } from 'styled-components';
-import { SelectedIcon } from '../../../../components/icons';
+import { SelectedIcon } from '@/components/icons';
 
 const SelectionCheckBoxStyled = styled.button<{ $isChecked: boolean }>`
   position: absolute;

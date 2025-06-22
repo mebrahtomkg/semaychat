@@ -13,11 +13,10 @@ import {
   TextMessage,
   VideoMessage
 } from '..';
-import { useMessage } from '../../hooks';
-import { EnrichedMessage, PendingMessage, PersistedMessage } from '../../types';
 import MessageDeleteConfirmDialog from '../MessageDeleteConfirmDialog';
 import { MessageContainer, MessageStyled } from './styles';
 import { Message } from '@/types';
+import { useMessageActions, useMessageInfo } from '../../hooks';
 
 interface BaseMessageProps {
   message: Message;
@@ -25,10 +24,12 @@ interface BaseMessageProps {
 }
 
 const BaseMessage: FC<BaseMessageProps> = ({ message, isLastInGroup }) => {
-  const enrichedMessage: EnrichedMessage = useMessage(message);
+  const messageInfo = useMessageInfo(message);
 
-  const { type, isOutgoing, downloadFile, deleteMessage, edit, reply } =
-    enrichedMessage;
+  const { type, isOutgoing } = messageInfo;
+
+  const { edit, reply, downloadFile, deleteMessage } =
+    useMessageActions(message);
 
   const [isDeleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
   const openDeleteConfirm = useCallback(
@@ -71,27 +72,28 @@ const BaseMessage: FC<BaseMessageProps> = ({ message, isLastInGroup }) => {
   const messageComponent = useMemo(() => {
     switch (type) {
       case 'text':
-        return <TextMessage enrichedMessage={enrichedMessage} />;
+        return <TextMessage messageInfo={messageInfo} message={message} />;
       case 'photo':
-        return <PhotoMessage enrichedMessage={enrichedMessage} />;
+        return <PhotoMessage messageInfo={messageInfo} message={message} />;
       case 'video':
-        return <VideoMessage enrichedMessage={enrichedMessage} />;
+        return <VideoMessage messageInfo={messageInfo} />;
       case 'audio':
         return (
           <AudioMessage
-            enrichedMessage={enrichedMessage}
+            messageInfo={messageInfo}
             onMoreButtonClick={onMoreButtonClick}
           />
         );
       case 'file':
         return (
           <FileMessage
+            messageInfo={messageInfo}
             onMoreButtonClick={onMoreButtonClick}
-            enrichedMessage={enrichedMessage}
+            message={message}
           />
         );
     }
-  }, [enrichedMessage, onMoreButtonClick, type]);
+  }, [messageInfo, message, onMoreButtonClick, type]);
 
   const onContextMenuFn =
     type === 'audio' || type === 'file' ? undefined : onContextMenu;

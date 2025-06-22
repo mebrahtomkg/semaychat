@@ -1,10 +1,10 @@
 import { useCallback, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { Message } from '@/types';
 import {
   messageUpdateRequestAdded,
   textMessageSendRequestAdded
 } from '../slices/messageRequestsSlice';
-import { Message } from '@/types';
 
 type EditorState =
   | { mode: 'edit'; message: Message }

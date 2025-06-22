@@ -5,10 +5,7 @@ import { Message } from '@/types';
 import { type FC, useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router';
 import ChatContext from './ChatContext';
-import { MessageInput, User } from './components';
-import BaseMessage from './components/BaseMessage';
-import useChat from './hooks/useChat';
-import useMessagesSelector from './hooks/useMessagesSelector';
+import { BaseMessage, MessageInput, User } from './components';
 import {
   ChatFooter,
   ChatHeader,
@@ -17,6 +14,7 @@ import {
   ChatStyled,
   Gap
 } from './styles';
+import { useChat, useMessagesSelector } from './hooks';
 
 const Chat: FC = () => {
   const params = useParams();

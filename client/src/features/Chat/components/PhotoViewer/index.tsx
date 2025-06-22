@@ -1,63 +1,75 @@
-import React, { useMemo } from 'react';
-import ContextMenu, {
-  useContextMenu
-} from '../../../../components/ContextMenu';
-import usePhotoSelector from './usePhotoSelector';
-import {
-  DeleteIcon,
-  DownloadIcon,
-  ReplyIcon
-} from '../../../../components/icons';
+import { FC, useMemo } from 'react';
+import ContextMenu, { useContextMenu } from '@/components/ContextMenu';
+import { DeleteIcon, DownloadIcon, ReplyIcon } from '@/components/icons';
 import {
   BackButton,
   MoreButton,
   NextButton,
   PreviousButton
-} from '../../../../components/buttons';
+} from '@/components/buttons';
 import {
   PhotoHeaderSection,
   PhotoIndexIndicator,
   PhotoMetaContainer,
   PhotoMetaText
-} from '../../../../styles';
+} from '@/styles';
 import { PhotoViewerModal, ProgressContainer, ProgressText } from './styles';
 import {
   useImageLoader,
   usePhotoNavigation,
   useAccount,
-  useUser
-} from '../../../../hooks';
-import useMessage from '../../hooks/useMessage';
-import Spinner from '../../../../Spinner';
-import TinySpinner from '../../../../components/TinySpinner';
-import FlexibleImage from '../../../../components/FlexibleImage';
+  useAppSelector
+} from '@/hooks';
+import TinySpinner from '@/components/TinySpinner';
+import FlexibleImage from '@/components/FlexibleImage';
+import { isImage } from '../../utils';
+import useUser from '@/hooks/useUserPro';
+import { useMessageActions, useMessageInfo } from '../../hooks';
 
-const PhotoViewer = ({ photo, onClose }) => {
+interface PhotoViewerProps {
+  chatPartnerId: number;
+  targetMessageId: number;
+  onClose: () => void;
+}
+
+const PhotoViewer: FC<PhotoViewerProps> = ({
+  chatPartnerId,
+  targetMessageId,
+  onClose
+}) => {
+  const photoMessages = useAppSelector((state) =>
+    state.messages.filter(
+      (message) =>
+        isImage(message.attachment?.extension) &&
+        (message.senderId === chatPartnerId ||
+          message.receiverId === chatPartnerId)
+    )
+  );
+
   const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =
     useContextMenu();
 
-  const { photos, targetIndex } = usePhotoSelector(photo);
+  const targetIndex = useMemo(() => {
+    for (let i = 0; i < photoMessages.length; i++) {
+      if (photoMessages[i].id === targetMessageId) return i;
+    }
+  }, [photoMessages, targetMessageId]);
 
-  const photosCount = photos.length;
+  const photosCount = photoMessages.length;
 
   const { currentIndex, handleNext, handlePrevious, photoIndexIndicator } =
     usePhotoNavigation(photosCount, targetIndex);
 
-  const {
-    isSentMessage,
-    messagePartnerId,
-    dateTime,
-    fileUrl,
-    isDoingRequest,
-    deleteMessage,
-    downloadFile
-  } = useMessage(photos[currentIndex]);
+  const { isOutgoing, dateTime, fileUrl } = useMessageInfo(
+    photoMessages[currentIndex]
+  );
+
+  const { deleteMessage, downloadFile, reply } = useMessageActions(
+    photoMessages[currentIndex]
+  );
 
   const { isImageFetching, isImageLoading, imageSrc, handleImageLoad } =
     useImageLoader(fileUrl);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const reply = () => console.error('Reply not implemented');
 
   const options = useMemo(
     () => [
@@ -68,9 +80,9 @@ const PhotoViewer = ({ photo, onClose }) => {
     [reply, downloadFile, deleteMessage]
   );
 
-  const { fullName: partnerFullName } = useUser(messagePartnerId);
+  const { fullName: partnerFullName } = useUser(chatPartnerId);
   const { fullName: selfFullName } = useAccount();
-  const senderFullName = isSentMessage ? selfFullName : partnerFullName;
+  const senderFullName = isOutgoing ? selfFullName : partnerFullName;
 
   return (
     <PhotoViewerModal aria-modal="true" aria-label="Photo Viewer">
@@ -116,8 +128,6 @@ const PhotoViewer = ({ photo, onClose }) => {
           <PhotoMetaText>{dateTime}</PhotoMetaText>
         </PhotoMetaContainer>
       )}
-
-      {isDoingRequest && <Spinner />}
 
       {isContextMenuVisible && (
         <ContextMenu

@@ -5,7 +5,7 @@ import {
   TickIconContainer,
   Time
 } from './styles';
-import { TickIcon } from '../../../../components/icons';
+import { TickIcon } from '@/components/icons';
 
 const MessageMeta = ({ isOutgoing, status, time }) => {
   return (

@@ -1,6 +1,6 @@
-import React, { FC, useCallback } from 'react';
+import { FC, useCallback } from 'react';
 import { FileName, IconWrapper, OrdinaryFileStyled } from './styles';
-import { FileIcon } from '../../../../../components/icons';
+import { FileIcon } from '@/components/icons';
 import { Attachment } from '../types';
 import RemoveButton from '../RemoveButton';
 
