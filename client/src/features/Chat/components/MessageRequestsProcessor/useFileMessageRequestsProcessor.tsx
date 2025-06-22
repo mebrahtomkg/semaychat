@@ -2,6 +2,7 @@ import { ApiError, post } from '@/api';
 import { messageRequestDeleted } from '@/features/Chat/slices/messageRequestsSlice';
 import { messageAdded } from '@/features/Chat/slices/messagesSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { getMessageRequestFile } from '@/services/messageRequestFilesStore';
 import { createAppSelector } from '@/store';
 import { Message } from '@/types';
 import { useQuery } from '@tanstack/react-query';
@@ -28,7 +29,14 @@ const useFileMessageRequestsProcessor = () => {
   const queryFn = useCallback(async () => {
     if (!request) return null;
 
-    const { receiverId, file, caption } = request.payload;
+    const { receiverId, fileId, caption } = request.payload;
+
+    const file = getMessageRequestFile(fileId);
+
+    if (!file) {
+      console.log('File not found in store!');
+      return null;
+    }
 
     const body = new FormData();
     body.append('receiverId', `${receiverId}`);

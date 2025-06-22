@@ -3,6 +3,7 @@ import { Message } from '@/types';
 import { useMemo } from 'react';
 import { getFileExtension } from '../utils';
 import { createAppSelector } from '@/store';
+import { getMessageRequestFile } from '@/services/messageRequestFilesStore';
 
 const selectPendingMessagesByReceiverId = createAppSelector(
   [
@@ -41,15 +42,18 @@ const usePendingMessages = (receiverId: number) => {
       };
 
       if (req.requestType === 'FILE_MESSAGE_SEND') {
-        const { file, caption } = req.payload;
-        message.attachment = {
-          id: 0, // Not usefull at frontend
-          name: file.name,
-          extension: getFileExtension(file.name) || '',
-          caption,
-          size: file.size,
-          file
-        };
+        const { fileId, caption } = req.payload;
+        const file = getMessageRequestFile(fileId);
+        if (file) {
+          message.attachment = {
+            id: 0, // Not usefull at frontend
+            name: file.name,
+            extension: getFileExtension(file.name) || '',
+            caption,
+            size: file.size,
+            file
+          };
+        }
       }
 
       return message;

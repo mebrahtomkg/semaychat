@@ -10,7 +10,7 @@ import {
 
 let lastUniqueId = 0;
 
-const getUniqueId = () => {
+export const getUniqueId = () => {
   return ++lastUniqueId;
 };
 
@@ -31,7 +31,6 @@ export const messageRequestsSlice = createSlice({
         requestId: getUniqueId(),
         payload: action.payload
       };
-
       return [...state, request];
     },
 
@@ -44,7 +43,6 @@ export const messageRequestsSlice = createSlice({
         requestId: getUniqueId(),
         payload: action.payload
       };
-
       return [...state, request];
     },
 
@@ -57,7 +55,6 @@ export const messageRequestsSlice = createSlice({
         requestId: getUniqueId(),
         payload: action.payload
       };
-
       return [...state, request];
     },
 
@@ -70,7 +67,6 @@ export const messageRequestsSlice = createSlice({
         requestId: getUniqueId(),
         payload: action.payload
       };
-
       return [...state, request];
     },
 

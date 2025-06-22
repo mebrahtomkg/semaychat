@@ -2,7 +2,11 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import { getFileExtension, isImage, shortenFileName } from '../../utils';
 import { Attachment } from './types';
 import { useAppDispatch } from '@/hooks';
-import { fileMessageSendRequestAdded } from '../../slices/messageRequestsSlice';
+import {
+  fileMessageSendRequestAdded,
+  getUniqueId
+} from '../../slices/messageRequestsSlice';
+import { addMessageRequestFile } from '@/services/messageRequestFilesStore';
 
 const useFilesSender = (
   files: File[],
@@ -60,10 +64,12 @@ const useFilesSender = (
 
   const sendAttachments = useCallback(() => {
     attachments.map((attachment) => {
+      const fileId = getUniqueId();
+      addMessageRequestFile(fileId, attachment.file);
       dispatch(
         fileMessageSendRequestAdded({
           receiverId: chatPartnerId,
-          file: attachment.file,
+          fileId,
           caption: attachment.caption
         })
       );

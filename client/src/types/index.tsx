@@ -44,7 +44,7 @@ export interface Attachment {
   extension: string;
   size: number;
   caption: string | null | undefined;
-  file?: File;// Only exists on frontend
+  file?: File; // Only exists on frontend
 }
 
 export interface Message {
@@ -91,7 +91,7 @@ export interface FileMessageSendRequest extends BaseMessageRequest {
   requestType: 'FILE_MESSAGE_SEND';
   payload: {
     receiverId: number;
-    file: File;
+    fileId: number;
     caption?: string;
   };
 }
