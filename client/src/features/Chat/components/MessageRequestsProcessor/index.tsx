@@ -10,16 +10,19 @@ import { Message } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import useFileMessageRequestsProcessor from './useFileMessageRequestsProcessor';
+import { createAppSelector } from '@/store';
+
+// Selects the first request from the request Queue of messageRequests
+// File message sending requests are filtering out. they are handled in other custom hook.
+const selectRequest = createAppSelector(
+  [(state) => state.messageRequests],
+
+  (requests) =>
+    requests.filter((req) => req.requestType !== 'FILE_MESSAGE_SEND')[0]
+);
 
 const MessageRequestsProcessor = () => {
-  // Getting the first request from the request Queue of messageRequests
-  // File message sending requests are filtering out. they are handled in other custom hook.
-  const request = useAppSelector(
-    (state) =>
-      state.messageRequests.filter(
-        (req) => req.requestType !== 'FILE_MESSAGE_SEND'
-      )[0]
-  );
+  const request = useAppSelector((state) => selectRequest(state));
 
   // Process file message requests in parallel with the light message requests.
   useFileMessageRequestsProcessor();
@@ -73,6 +76,8 @@ const MessageRequestsProcessor = () => {
     }
 
     dispatch(messageRequestDeleted(request.requestId));
+
+    return null; // Just prevents react query warning for not returnig data
   }, [request, dispatch]);
 
   const retry = useCallback((_failureCount: number, error: Error) => {
