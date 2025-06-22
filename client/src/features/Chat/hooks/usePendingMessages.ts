@@ -2,18 +2,28 @@ import { useAppSelector } from '@/hooks';
 import { Message } from '@/types';
 import { useMemo } from 'react';
 import { getFileExtension } from '../utils';
+import { createAppSelector } from '@/store';
 
-const usePendingMessages = (receiverId: number) => {
-  const selfId = useAppSelector((state) => state.account?.id);
+const selectPendingMessagesByReceiverId = createAppSelector(
+  [
+    (state) => state.messageRequests,
+    (_state, receiverId: number) => receiverId
+  ],
 
-  // Deep filter from redux to avoid unnecessary rerender.
-  const requests = useAppSelector((state) =>
-    state.messageRequests.filter(
+  (messageRequests, receiverId) =>
+    messageRequests.filter(
       (req) =>
         (req.requestType === 'TEXT_MESSAGE_SEND' ||
           req.requestType === 'FILE_MESSAGE_SEND') &&
         req.payload.receiverId === receiverId
     )
+);
+
+const usePendingMessages = (receiverId: number) => {
+  const selfId = useAppSelector((state) => state.account?.id);
+
+  const requests = useAppSelector((state) =>
+    selectPendingMessagesByReceiverId(state, receiverId)
   );
 
   const pendingMessages: Message[] = useMemo(() => {

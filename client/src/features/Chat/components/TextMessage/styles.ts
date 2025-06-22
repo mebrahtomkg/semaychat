@@ -17,6 +17,7 @@ export const Content = styled.span`
   font-weight: 500;
   line-height: 1.35;
   color: inherit;
+  word-break: break-all;
 `;
 
 export const TextMsgMetaContainer = styled.div`

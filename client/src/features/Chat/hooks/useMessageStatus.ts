@@ -1,18 +1,23 @@
 import { useAppSelector } from '@/hooks';
+import { createAppSelector } from '@/store';
 import { useMemo } from 'react';
 
-const useMessageStatus = (messageId: number, hasAttachment: boolean) => {
-  // Deep filter from redux to avoid unnecessary rerender. only target this message.
-  // Also just pick the frist request. It is unlikely that multiple requests happen at
-  // the same time for one message.
-  const [request] = useAppSelector((state) =>
-    state.messageRequests.filter(
+const selectTargetMessageRequest = createAppSelector(
+  [(state) => state.messageRequests, (_state, messageId: number) => messageId],
+
+  (requests, messageId) =>
+    requests.filter(
       (req) =>
         messageId > 0 &&
         (req.requestType === 'MESSAGE_UPDATE' ||
           req.requestType === 'MESSAGE_DELETE') &&
         req.payload.messageId === messageId
-    )
+    )[0] // Just pick the frist. It is unlikely more requests exist at a time for one message
+);
+
+const useMessageStatus = (messageId: number, hasAttachment: boolean) => {
+  const request = useAppSelector((state) =>
+    selectTargetMessageRequest(state, messageId)
   );
 
   const status = useMemo(() => {

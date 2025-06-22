@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, createSelector } from '@reduxjs/toolkit';
 import profilePhotosReducer from '@/features/Settings/slices/profilePhotosSlice';
 import accountReducer from '@/features/Settings/slices/accountSlice';
 import usersReducer from '@/usersSlice';
@@ -31,5 +31,7 @@ const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
+
+export const createAppSelector = createSelector.withTypes<RootState>();
 
 export default store;
