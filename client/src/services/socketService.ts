@@ -6,13 +6,14 @@ import {
   messageUpdated
 } from '@/features/Chat/slices/messagesSlice';
 import { Message } from '@/types';
+import { API_BASE_URL } from '@/constants';
 
 let socket: Socket;
 
 const initSocketService = (dispatch: AppDispatch) => {
   if (socket) return;
 
-  socket = io('http://localhost:3000', {
+  socket = io(API_BASE_URL.replace('/api', ''), {
     withCredentials: true
   });
 
