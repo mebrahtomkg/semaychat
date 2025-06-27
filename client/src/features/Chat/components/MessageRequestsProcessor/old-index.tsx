@@ -11,7 +11,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import useFileMessageRequestsProcessor from './useFileMessageRequestsProcessor';
 import { createAppSelector } from '@/store';
-import { emitWithAck } from '@/services/socketService';
 
 // Selects the first request from the request Queue of messageRequests
 // File message sending requests are filtering out. they are handled in other custom hook.
@@ -50,34 +49,27 @@ const MessageRequestsProcessor = () => {
       case 'TEXT_MESSAGE_SEND':
         {
           const { receiverId, content } = request.payload;
-          const message = await emitWithAck<Message>('send_text_message', {
+          const message = await post<Message>('/messages/text', {
             receiverId,
             content
           });
-
-          if (message) dispatch(messageAdded(message));
+          dispatch(messageAdded(message));
         }
         break;
 
       case 'MESSAGE_UPDATE':
         {
-          // const { messageId: id, newContent: content } = request.payload;
-          // const message = await put<Message>('/messages/text', { id, content });
-          // dispatch(messageUpdated(message));
-
-          const { messageId, newContent: content } = request.payload;
-          const message = await emitWithAck<Message>('update_text_message', {
-            messageId,
-            content
-          });
-          if (message) dispatch(messageUpdated(message));
+          const { messageId: id, newContent: content } = request.payload;
+          const message = await put<Message>('/messages/text', { id, content });
+          dispatch(messageUpdated(message));
         }
         break;
 
       case 'MESSAGE_DELETE':
         {
           const { messageId, deleteForReceiver } = request.payload;
-          await emitWithAck('delete_message', { messageId, deleteForReceiver });
+          const query = deleteForReceiver ? '?deleteForReceiver=true' : '';
+          await del(`/messages/${messageId}${query}`);
           dispatch(messageDeleted(messageId));
         }
         break;
@@ -89,8 +81,7 @@ const MessageRequestsProcessor = () => {
   }, [request, dispatch]);
 
   const retry = useCallback((_failureCount: number, error: Error) => {
-    // return !(error instanceof ApiError && error.status);
-    return false;
+    return !(error instanceof ApiError && error.status);
   }, []);
 
   const { isError, error } = useQuery({ queryKey, queryFn, retry });

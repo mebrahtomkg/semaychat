@@ -14,7 +14,8 @@ import { SQLITE_DATABASE_DIR } from '../constants';
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: path.resolve(SQLITE_DATABASE_DIR, 'app_database.sqlite')
+  storage: path.resolve(SQLITE_DATABASE_DIR, 'app_database.sqlite'),
+  logging: false
 });
 
 export default sequelize;

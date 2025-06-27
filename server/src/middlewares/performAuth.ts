@@ -9,23 +9,23 @@ interface AuthTokenBody {
 /**
  * Middleware to perform auth gracefully without showing errors.
  * Sets req.userId to the Authenticated user id.
- *
- * @param req
- * @param res
- * @param next
  */
-const performAuth = (req: Request, res: Response, next: NextFunction) => {
+const performAuth = (req: Request, _res: Response, next: NextFunction) => {
   try {
     const token = req.cookies[AUTH_TOKEN_COOKIE_NAME];
 
-    if (!token) return next();
+    if (!token) {
+      next();
+      return;
+    }
 
-    jwt.verify(token, JWT_SECRET_KEY, (error: Error, decoded: AuthTokenBody) => {
-      if (error) return next();
-
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    jwt.verify(token, JWT_SECRET_KEY, (error: any, decoded: any) => {
       // Other codes in the system can know if the user is loggedin
       // by checking the existance of userId property on req object.
-      req.userId = decoded.id;
+      if (!error) {
+        req.userId = (decoded as AuthTokenBody).id;
+      }
 
       next();
     });

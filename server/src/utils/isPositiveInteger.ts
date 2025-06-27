@@ -1,3 +1,4 @@
-const isPositiveInteger = (value) => Number.isInteger(value) && value > 0;
+const isPositiveInteger = (value: unknown) =>
+  typeof value === 'number' && Number.isInteger(value) && value > 0;
 
 export default isPositiveInteger;

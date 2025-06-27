@@ -12,12 +12,15 @@ import { useAuth, useBlockedUsersFetcher, useContactsFetcher } from '@/hooks';
 import Spinner from '@/components/spinner';
 import AppContext from './AppContext';
 import { MessageRequestsProcessor } from '@/features/Chat/components';
+import useSocket from '@/hooks/useSocket';
 
 const App = () => {
   const app = useApp();
   const { theme, isLargeScreen } = app;
 
   const { isLoading, isLoggedIn } = useAuth();
+
+  useSocket();
 
   useContactsFetcher();
   useBlockedUsersFetcher();

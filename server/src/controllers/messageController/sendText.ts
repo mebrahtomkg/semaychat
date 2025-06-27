@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import commitSendingMessage from './commitSendingMessage';
 import { isPositiveInteger } from '@/utils';
 import sequelize from '@/config/db';
+import { sendTextMessageToClient } from '@/socket';
+import { Message } from '@/models';
 
 const sendText = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -50,6 +52,10 @@ const sendText = async (req: Request, res: Response, next: NextFunction) => {
       transaction.commit();
 
       res.status(status).json({ message, success, data });
+
+      if (status === 200) {
+        sendTextMessageToClient(data as Message);
+      }
     } catch (err) {
       transaction.rollback();
       throw err;
