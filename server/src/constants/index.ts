@@ -12,7 +12,7 @@ export const MAX_BIO_LENGTH = 80;
 
 export const AUTH_TOKEN_COOKIE_NAME = 'auth_token';
 export const AUTH_TOKEN_AGE = 1000 * 60 * 60 * 60 * 60;
-export const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || 'temp-secret-key';
+export const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || 'temp-secret-key-1';
 
 /** Number of rounds to use for hashing password. */
 export const PASSWORD_HASHING_ROUNDS = 5;
@@ -65,7 +65,7 @@ export const MAX_PROFILE_PHOTO_FILE_SIZE = 2 * 1024 * 1024;
 const ROOT_DIR = path.resolve(__dirname, '../../');
 
 // Absolute path of a folder to store profile photos, message files, and SQLtie database file.
-const FILES_STORAGE_DIR =
+export const FILES_STORAGE_DIR =
   process.env.FILES_STORAGE_DIR || path.resolve(ROOT_DIR, 'storage');
 
 export const SQLITE_DATABASE_DIR = path.resolve(FILES_STORAGE_DIR, 'database');
@@ -79,7 +79,7 @@ export const PROFILE_PHOTOS_DIR = path.resolve(
 
 export const MESSAGE_FILES_DIR = path.resolve(
   FILES_STORAGE_DIR,
-  'message_files'  
+  'message_files'
 );
 
 export const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS?.split(',') || [

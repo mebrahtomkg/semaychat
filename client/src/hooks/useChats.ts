@@ -1,36 +1,27 @@
-import { useEffect, useState } from 'react';
-import { useAppSelector } from '../../hooks';
-import { Chat, Message } from '../../types';
+import { Chat } from '@/types';
+import { useQuery } from '@tanstack/react-query';
+import { ApiError, get } from '@/api';
+import { useMemo } from 'react';
+import { useAppSelector } from '.';
 
 const useChats = () => {
-  const account = useAppSelector((state) => state.account);
-  if (!account) throw new Error('Invalid account!');
-
-  const messages = useAppSelector((state) => state.messages);
   const users = useAppSelector((state) => state.users);
   const contacts = useAppSelector((state) => state.contacts);
   const blockedUsers = useAppSelector((state) => state.blockedUsers);
 
-  const [chats, setChats] = useState<Chat[]>([]);
+  const { isError, data, error } = useQuery({
+    queryKey: ['chats'],
+    queryFn: () => get<Chat[]>('/chats'),
+    retry: (failureCount: number, error: Error) =>
+      error instanceof ApiError && error.status ? false : failureCount < 2
+  });
 
-  useEffect(() => {
-    const chatsMap = new Map<number, Message>();
-    messages.forEach((message) => {
-      const partnerId =
-        message.senderId === account.id ? message.receiverId : message.senderId;
+  if (isError) {
+    console.error(error);
+  }
 
-      const existing = chatsMap.get(partnerId);
-      if (!existing || message.createdAt > existing.createdAt) {
-        chatsMap.set(partnerId, message);
-      }
-    });
-
-    const chats: Chat[] = [];
-
-    for (const [partnerId, lastMessage] of chatsMap) {
-      const partner = users.find((user) => user.id === partnerId);
-      if (partner) chats.push({ partner, lastMessage });
-    }
+  const chatsList = useMemo(() => {
+    const chats = data || [];
 
     // Sort by recent
     chats.sort((a, b) =>
@@ -66,10 +57,10 @@ const useChats = () => {
       }
     }
 
-    setChats(chats);
-  }, [account.id, blockedUsers, contacts, messages, users]);
+    return chats;
+  }, [data, contacts, users, blockedUsers]);
 
-  return chats;
+  return chatsList;
 };
 
 export default useChats;

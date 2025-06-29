@@ -118,8 +118,11 @@ const deleteMessage = async (
           message: 'Message deleted successfully.'
         });
 
-        if (!isDeletedSoftlyByPartner) {
-          emitToUser(partnerId, 'message_deleted', messageId);
+        if (!isDeletedSoftlyByPartner && deleteForReceiver) {
+          emitToUser(partnerId, 'message_deleted', {
+            partnerId: socket.userId,
+            messageId
+          });
         }
 
         return;
@@ -188,8 +191,11 @@ const deleteMessage = async (
         message: 'Message deleted successfully.'
       });
 
-      if (!isDeletedSoftlyByPartner) {
-        emitToUser(partnerId, 'message_deleted', messageId);
+      if (!isDeletedSoftlyByPartner && deleteForReceiver) {
+        emitToUser(partnerId, 'message_deleted', {
+          partnerId: socket.userId,
+          messageId
+        });
       }
     } catch (error) {
       await transaction.rollback();

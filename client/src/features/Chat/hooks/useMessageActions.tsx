@@ -11,12 +11,12 @@ const useMessageActions = (message: Message) => {
     (deleteForReceiver = true) => {
       dispatch(
         messageDeleteRequestAdded({
-          messageId: message.id,
+          message: message,
           deleteForReceiver
         })
       );
     },
-    [dispatch, message.id]
+    [dispatch, message]
   );
 
   const download = useDownload();

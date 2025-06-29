@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { ALLOWED_ORIGINS } from '@/constants';
 import { authGuard, errorHandler, performAuth } from '@/middlewares';
 import {

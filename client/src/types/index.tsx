@@ -107,7 +107,7 @@ export interface MessageUpdateRequest extends BaseMessageRequest {
 export interface MessageDeleteRequest extends BaseMessageRequest {
   requestType: 'MESSAGE_DELETE';
   payload: {
-    messageId: number;
+    message: Message;
     deleteForReceiver?: boolean;
   };
 }

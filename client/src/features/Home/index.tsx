@@ -4,11 +4,11 @@ import {
   SearchContainer,
   UsersContainer
 } from './styles';
-import useChats from './useChats';
 import { useAppContext, useChatsFetcher, useSuggestionsFetcher } from '@/hooks';
 import SearchInput from './components/SearchInput';
 import SearchButton from './components/SearchButton';
 import User from './components/User';
+import useChats from '@/hooks/useChats';
 
 const Home = () => {
   const { isLargeScreen } = useAppContext();

@@ -15,7 +15,7 @@ export const messagesSlice = createSlice({
 
       const otherExistingMessages = state.filter(
         (message) =>
-          !newMessages.some((newMessage) => newMessage.id === message.id)
+          !newMessages.some((newMessage) => newMessage?.id === message?.id)
       );
 
       return [...otherExistingMessages, ...newMessages];

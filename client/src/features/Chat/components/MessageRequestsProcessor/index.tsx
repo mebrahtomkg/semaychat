@@ -1,17 +1,11 @@
-import { ApiError, del, post, put } from '@/api';
 import { messageRequestDeleted } from '@/features/Chat/slices/messageRequestsSlice';
-import {
-  messageAdded,
-  messageDeleted,
-  messageUpdated
-} from '@/features/Chat/slices/messagesSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { Message } from '@/types';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import useFileMessageRequestsProcessor from './useFileMessageRequestsProcessor';
 import { createAppSelector } from '@/store';
-import { emitWithAck } from '@/services/socketService';
+import { emitWithAck } from '@/services/socket';
 
 // Selects the first request from the request Queue of messageRequests
 // File message sending requests are filtering out. they are handled in other custom hook.
@@ -24,6 +18,10 @@ const selectRequest = createAppSelector(
 
 const MessageRequestsProcessor = () => {
   const request = useAppSelector((state) => selectRequest(state));
+
+  const selfId = useAppSelector((state) => state.account?.id);
+
+  const queryClient = useQueryClient();
 
   // Process file message requests in parallel with the light message requests.
   useFileMessageRequestsProcessor();
@@ -55,30 +53,56 @@ const MessageRequestsProcessor = () => {
             content
           });
 
-          if (message) dispatch(messageAdded(message));
+          queryClient.setQueryData(
+            ['messages', receiverId],
+            (oldMessages: Message[]) => {
+              if (!oldMessages) return [message];
+              return [...oldMessages, message];
+            }
+          );
         }
         break;
 
       case 'MESSAGE_UPDATE':
         {
-          // const { messageId: id, newContent: content } = request.payload;
-          // const message = await put<Message>('/messages/text', { id, content });
-          // dispatch(messageUpdated(message));
-
           const { messageId, newContent: content } = request.payload;
           const message = await emitWithAck<Message>('update_text_message', {
             messageId,
             content
           });
-          if (message) dispatch(messageUpdated(message));
+          if (message) {
+            queryClient.setQueryData(
+              ['messages', message.receiverId],
+              (oldMessages: Message[]) => {
+                if (!oldMessages) return [];
+
+                return oldMessages.map((oldMessage) =>
+                  oldMessage.id === message.id ? message : oldMessage
+                );
+              }
+            );
+          }
         }
         break;
 
       case 'MESSAGE_DELETE':
         {
-          const { messageId, deleteForReceiver } = request.payload;
-          await emitWithAck('delete_message', { messageId, deleteForReceiver });
-          dispatch(messageDeleted(messageId));
+          const { message, deleteForReceiver } = request.payload;
+          await emitWithAck('delete_message', {
+            messageId: message.id,
+            deleteForReceiver
+          });
+          const partnerId =
+            message.senderId === selfId ? message.receiverId : message.senderId;
+          queryClient.setQueryData(
+            ['messages', partnerId],
+            (oldMessages: Message[]) =>
+              oldMessages
+                ? oldMessages.filter(
+                    (oldMessage) => oldMessage.id !== message.id
+                  )
+                : []
+          );
         }
         break;
     }
@@ -86,7 +110,7 @@ const MessageRequestsProcessor = () => {
     dispatch(messageRequestDeleted(request.requestId));
 
     return null; // Just prevents react query warning for not returnig data
-  }, [request, dispatch]);
+  }, [request, dispatch, queryClient, selfId]);
 
   const retry = useCallback((_failureCount: number, error: Error) => {
     // return !(error instanceof ApiError && error.status);

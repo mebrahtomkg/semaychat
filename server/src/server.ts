@@ -1,5 +1,6 @@
+import 'dotenv/config'; // Must be at the top of app entry file.
 import setup from './setup';
-import { ALLOWED_ORIGINS, PORT } from './constants';
+import { ALLOWED_ORIGINS, FILES_STORAGE_DIR, PORT } from './constants';
 import app from './app';
 import { createServer } from 'node:http';
 import initSocket from './socket';
@@ -19,4 +20,5 @@ httpServer.listen(PORT, () => {
     'Allowed origins:',
     allowedOrigins || 'No origin is allowed. browsers maynot work!'
   );
+  console.log('Files and SQLite database storage dir:', FILES_STORAGE_DIR);
 });

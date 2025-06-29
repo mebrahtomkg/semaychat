@@ -15,6 +15,7 @@ import {
   Gap
 } from './styles';
 import { useChat, useMessagesSelector } from './hooks';
+import useChatMessages from './hooks/useChatMessages';
 
 const Chat: FC = () => {
   const params = useParams();
@@ -29,7 +30,7 @@ const Chat: FC = () => {
 
   useMessagesFetcher(chatPartnerId);
 
-  const messages: Message[] = useMessagesSelector(chatPartnerId);
+  const messages: Message[] = useChatMessages(chatPartnerId);
 
   const messagesInComponent = useMemo(
     () =>

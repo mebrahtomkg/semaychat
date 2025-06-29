@@ -19,9 +19,9 @@ router.get('/setup', async (req, res, next) => {
         password: await hashPassword('tttt')
       },
       {
-        firstName: 'Chrome',
-        email: 'c@e.c',
-        password: await hashPassword('cccc')
+        firstName: 'Edge',
+        email: 'e@e.c',
+        password: await hashPassword('eeee')
       },
       {
         firstName: 'Firefox',

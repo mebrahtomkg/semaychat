@@ -5,12 +5,11 @@ import App from './App';
 import store from './store';
 import { Provider } from 'react-redux';
 import { HashRouter } from 'react-router';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-const queryClient = new QueryClient();
+import { QueryClientProvider } from '@tanstack/react-query';
+import queryClient from '@/queryClient';
 
 const doRender = () => {
-  const root = createRoot(document.getElementById('root'));
+  const root = createRoot(document.getElementById('root') as HTMLElement);
 
   root.render(
     <StrictMode>
