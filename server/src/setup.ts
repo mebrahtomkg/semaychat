@@ -5,9 +5,13 @@ import {
   SQLITE_DATABASE_DIR,
   TEMP_FILES_DIR
 } from './constants';
+import { databaseConfig } from './config/db';
 
 const setup = () => {
-  if (!fs.existsSync(SQLITE_DATABASE_DIR)) {
+  if (
+    databaseConfig.dialect === 'sqlite' &&
+    !fs.existsSync(SQLITE_DATABASE_DIR)
+  ) {
     fs.mkdirSync(SQLITE_DATABASE_DIR, { recursive: true });
   }
 

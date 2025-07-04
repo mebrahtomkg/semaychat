@@ -4,6 +4,7 @@ import { ALLOWED_ORIGINS, FILES_STORAGE_DIR, PORT } from './constants';
 import app from './app';
 import { createServer } from 'node:http';
 import initSocket from './socket';
+import { databaseConfig } from './config/db';
 
 // Perform setups before the server starts.
 setup();
@@ -20,5 +21,6 @@ httpServer.listen(PORT, () => {
     'Allowed origins:',
     allowedOrigins || 'No origin is allowed. browsers maynot work!'
   );
-  console.log('Files and SQLite database storage dir:', FILES_STORAGE_DIR);
+  console.log('Database config:', databaseConfig);
+  console.log('Files storage dir:', FILES_STORAGE_DIR);
 });

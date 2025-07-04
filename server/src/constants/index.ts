@@ -64,11 +64,13 @@ export const MAX_PROFILE_PHOTO_FILE_SIZE = 2 * 1024 * 1024;
 // This is just the absolute pathe of the /server folder
 const ROOT_DIR = path.resolve(__dirname, '../../');
 
-// Absolute path of a folder to store profile photos, message files, and SQLtie database file.
+// Absolute path of a folder to store profile photos, message files, and temp files.
 export const FILES_STORAGE_DIR =
   process.env.FILES_STORAGE_DIR || path.resolve(ROOT_DIR, 'storage');
 
-export const SQLITE_DATABASE_DIR = path.resolve(FILES_STORAGE_DIR, 'database');
+// Absolute path of a folder to store SQLtie database file.
+export const SQLITE_DATABASE_DIR =
+  process.env.SQLITE_DB_STORAGE || path.resolve(FILES_STORAGE_DIR, 'database');
 
 export const TEMP_FILES_DIR = path.resolve(FILES_STORAGE_DIR, 'temp_files');
 
