@@ -5,14 +5,14 @@ import {
   InferCreationAttributes,
   Model
 } from 'sequelize';
-import sequelize from '../config/db';
+import sequelize from '@/config/db';
 import {
   EMAIL_VISIBILITY,
   LAST_SEEN_VISIBILITY,
   PROFILE_PHOTOS_VISIBILITY,
   MESSAGE_SENDER
-} from '../constants';
-import { VisibilityOption } from '../types';
+} from '@/constants';
+import { VisibilityOption } from '@/types';
 import BlockedUser from './BlockedUser';
 import Contact from './Contact';
 import ProfilePhoto from './ProfilePhoto';
@@ -40,7 +40,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
 User.init(
   {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
@@ -78,7 +78,7 @@ User.init(
     },
 
     profilePhotoId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: true
     },
 
@@ -109,7 +109,11 @@ User.init(
     lastSeenAt: {
       type: DataTypes.BIGINT,
       allowNull: false,
-      defaultValue: () => Date.now()
+      defaultValue: () => Date.now(),
+      get() {
+        const value = this.getDataValue('lastSeenAt');
+        return value === null ? null : Number.parseInt(`${value}`, 10);
+      }
     }
   },
   {

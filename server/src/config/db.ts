@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { Dialect, Options, Sequelize } from 'sequelize';
-import { SQLITE_DATABASE_DIR } from '../constants';
+import { SQLITE_DATABASE_DIR } from '@/constants';
 
 const options: Options = {
   dialect: (process.env.DB_DIALECT as Dialect) || 'sqlite',
@@ -29,10 +29,6 @@ switch (options.dialect) {
       ssl: {
         require: true, // This enforces SSL
         rejectUnauthorized: false
-      },
-      connect: {
-        // Options passed directly to the `pg` driver's `Client` constructor
-        family: 4 // Force IPv4 (AF_INET) connection
       }
     };
   }

@@ -5,7 +5,7 @@ import {
   InferCreationAttributes,
   Model
 } from 'sequelize';
-import sequelize from '../config/db';
+import sequelize from '@/config/db';
 import User from './User';
 
 class BlockedUser extends Model<
@@ -16,25 +16,25 @@ class BlockedUser extends Model<
   declare blockerId: number;
   declare blockedId: number;
 
-  declare user?: User;// The blocked user as a User model
+  declare user?: User; // The blocked user as a User model
 }
 
 BlockedUser.init(
   {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
     },
 
     blockerId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
 
     blockedId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false
     }
   },

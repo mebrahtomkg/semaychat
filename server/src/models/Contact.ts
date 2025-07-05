@@ -5,36 +5,36 @@ import {
   InferCreationAttributes,
   Model
 } from 'sequelize';
-import sequelize from '../config/db';
+import sequelize from '@/config/db';
 import User from './User';
 
 class Contact extends Model<
   InferAttributes<Contact>,
   InferCreationAttributes<Contact>
 > {
-  id: CreationOptional<number>;
-  adderId: number; // Id of the user who added the contact
-  addedId: number; // Id of a user who is added by ther adder.
+  declare id: CreationOptional<number>;
+  declare adderId: number; // Id of the user who added the contact
+  declare addedId: number; // Id of a user who is added by ther adder.
 
-  user?: User; // The contact as a User model
+  declare user?: User; // The contact as a User model
 }
 
 Contact.init(
   {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
     },
 
     adderId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
 
     addedId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false
     }
   },

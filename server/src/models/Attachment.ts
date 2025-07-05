@@ -2,10 +2,10 @@ import {
   CreationOptional,
   DataTypes,
   InferAttributes,
-  InferCreationAttributes, 
+  InferCreationAttributes,
   Model
 } from 'sequelize';
-import sequelize from '../config/db';
+import sequelize from '@/config/db';
 
 class Attachment extends Model<
   InferAttributes<Attachment>,
@@ -21,13 +21,13 @@ class Attachment extends Model<
 Attachment.init(
   {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
     },
 
-    name: { 
+    name: {
       type: DataTypes.TEXT,
       allowNull: false
     },
@@ -38,7 +38,7 @@ Attachment.init(
     },
 
     size: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
 

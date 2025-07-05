@@ -5,7 +5,7 @@ import {
   InferCreationAttributes,
   Model
 } from 'sequelize';
-import sequelize from '../config/db';
+import sequelize from '@/config/db';
 import User from './User';
 import Message from './Message';
 
@@ -29,34 +29,35 @@ class Chat extends Model<InferAttributes<Chat>, InferCreationAttributes<Chat>> {
 Chat.init(
   {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
 
     user1Id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
 
     user2Id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
 
     lastMessageIdForUser1: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: true
     },
 
     lastMessageIdForUser2: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: true
     }
   },
   {
     tableName: 'chats',
+    timestamps: false,
     sequelize
   }
 );

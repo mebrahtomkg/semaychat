@@ -5,7 +5,7 @@ import {
   InferCreationAttributes,
   Model
 } from 'sequelize';
-import sequelize from '../config/db';
+import sequelize from '@/config/db';
 
 class ProfilePhoto extends Model<
   InferAttributes<ProfilePhoto>,
@@ -19,21 +19,25 @@ class ProfilePhoto extends Model<
 ProfilePhoto.init(
   {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
     },
 
     userId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
 
     createdAt: {
       type: DataTypes.BIGINT,
       allowNull: false,
-      defaultValue: () => Date.now()
+      defaultValue: () => Date.now(),
+      get() {
+        const value = this.getDataValue('createdAt');
+        return value === null ? null : Number.parseInt(`${value}`, 10);
+      }
     }
   },
   {

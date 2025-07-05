@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "author": "Mebrahtom Kidane",
   "engines": {
-    "node": ">=20.18.1 <=22.16.0"
+    "node": ">=20.18.1"
   },
   "scripts": {
     "dev": "NODE_ENV=development tsx watch ./src/server.ts",

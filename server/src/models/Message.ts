@@ -1,11 +1,11 @@
 import {
   CreationOptional,
-  DataTypes, 
+  DataTypes,
   InferAttributes,
   InferCreationAttributes,
   Model
 } from 'sequelize';
-import sequelize from '../config/db';
+import sequelize from '@/config/db';
 import Attachment from './Attachment';
 
 class Message extends Model<
@@ -29,19 +29,19 @@ class Message extends Model<
 Message.init(
   {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
     },
 
     senderId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
 
     receiverId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
 
@@ -51,7 +51,7 @@ Message.init(
     },
 
     attachmentId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: true
     },
 
@@ -76,13 +76,21 @@ Message.init(
     createdAt: {
       type: DataTypes.BIGINT,
       allowNull: false,
-      defaultValue: () => Date.now()
+      defaultValue: () => Date.now(),
+      get() {
+        const value = this.getDataValue('createdAt');
+        return value === null ? null : Number.parseInt(`${value}`, 10);
+      }
     },
 
     editedAt: {
       type: DataTypes.BIGINT,
       allowNull: false,
-      defaultValue: () => Date.now()
+      defaultValue: () => Date.now(),
+      get() {
+        const value = this.getDataValue('editedAt');
+        return value === null ? null : Number.parseInt(`${value}`, 10);
+      }
     }
   },
   {
