@@ -3,6 +3,8 @@ import { Request, Response, NextFunction } from 'express';
 import { isPositiveInteger } from '@/utils';
 import { Message } from '@/models';
 import { MESSAGE_FILES_DIR } from '@/constants';
+import { downloadFile } from '@/services/supabase';
+import mime from 'mime-types';
 
 const readFile = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -20,7 +22,7 @@ const readFile = async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
 
-    const message = await Message.findByPk(messageId);
+    const message = await Message.scope('withAttachment').findByPk(messageId);
 
     if (!message) {
       res.status(404).json({
@@ -41,16 +43,37 @@ const readFile = async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
 
-    if (!message.attachmentId) {
+    if (!message.attachment) {
       res.status(409).json({
         message: 'This is not a file message.'
       });
       return;
     }
 
-    const filePath = path.resolve(MESSAGE_FILES_DIR, `${message.attachmentId}`);
+    // const filePath = path.resolve(
+    //   MESSAGE_FILES_DIR,
+    //   `${message.attachment.id}`
+    // );
+    // res.status(200).sendFile(filePath);
 
-    res.status(200).sendFile(filePath);
+    const blob = await downloadFile('message-files', message.attachment.id);
+
+    const arrayBuffer = await blob.arrayBuffer(); // Get ArrayBuffer from Blob
+    const fileBuffer = Buffer.from(arrayBuffer); // Convert ArrayBuffer to Node.js Buffer
+
+    res.setHeader(
+      'Content-Type',
+      mime.lookup(message.attachment.name) || 'application/octet-stream'
+    );
+
+    res.setHeader(
+      'Content-Disposition',
+      `inline; filename="${message.attachment.name}"`
+    );
+
+    res.setHeader('Content-Length', fileBuffer.length);
+
+    res.status(200).send(fileBuffer);
   } catch (err) {
     next(err);
   }

@@ -6,6 +6,7 @@ import { MESSAGE_FILES_DIR } from '@/constants';
 import { getFileExtension, isPositiveInteger } from '@/utils';
 import { Attachment } from '@/models';
 import sequelize from '@/config/db';
+import { uploadFile } from '@/services/supabase';
 
 const sendFile = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -66,14 +67,20 @@ const sendFile = async (req: Request, res: Response, next: NextFunction) => {
         attachmentId: attachment.id
       });
 
-      await fs.rename(
+      // await fs.rename(
+      //   filepath,
+      //   path.resolve(MESSAGE_FILES_DIR, `${attachment.id}`)
+      // );
+
+      const storageInfo = await uploadFile(
+        'message-files',
         filepath,
-        path.resolve(MESSAGE_FILES_DIR, `${attachment.id}`)
+        attachment.id
       );
 
       await transaction.commit();
 
-      res.status(status).json({ message, success, data });
+      res.status(status).json({ message, storageInfo, success, data });
     } catch (err) {
       await transaction.rollback();
       throw err;
