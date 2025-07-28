@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { InfoItem, InfoItemDesc, InfoItemTitle, InfoStyled } from './styles';
-import { User } from '../../../types';
+import { User } from '@/types';
 
 interface UserInfoProps {
   user?: User;

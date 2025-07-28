@@ -44,7 +44,6 @@ const App = () => {
               <Routes>
                 {!isLargeScreen && <Route index element={<Home />} />}
                 <Route path="/chat/:chatPartnerId" element={<Chat />} />
-                <Route path="/profile/:userId" element={<Profile />} />
               </Routes>
             </PageContainer>
           </AppContainer>

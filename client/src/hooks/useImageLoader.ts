@@ -4,7 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 
 const useImageLoader = (imageUrl: string | null | undefined) => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
+
   const [isImageLoading, setIsImageLoading] = useState(false);
+
   const objectUrlRef = useRef<string | null>(null);
 
   const { isLoading, isError, data, error } = useQuery({
@@ -14,6 +16,7 @@ const useImageLoader = (imageUrl: string | null | undefined) => {
       const blob = await get<Blob>(imageUrl, { responseType: 'blob' });
       return URL.createObjectURL(blob);
     },
+    staleTime: 0,
     retry: (failureCount: number, error: Error) =>
       error instanceof ApiError && error.status ? false : failureCount < 2
   });

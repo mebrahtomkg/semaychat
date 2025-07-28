@@ -5,7 +5,7 @@ import { Message } from '@/types';
 import { type FC, useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router';
 import ChatContext from './ChatContext';
-import { BaseMessage, MessageInput, User } from './components';
+import { BaseMessage, MessageInput, ChatPartner } from './components';
 import {
   ChatFooter,
   ChatHeader,
@@ -14,7 +14,7 @@ import {
   ChatStyled,
   Gap
 } from './styles';
-import { useChat, useMessagesSelector } from './hooks';
+import { useChat } from './hooks';
 import useChatMessages from './hooks/useChatMessages';
 
 const Chat: FC = () => {
@@ -65,7 +65,7 @@ const Chat: FC = () => {
       <ChatStyled>
         <ChatHeader>
           {!isLargeScreen && <BackLink />}
-          <User userId={chatPartnerId} user={user} />
+          <ChatPartner user={user} />
           <MoreButton onClick={() => undefined} />
         </ChatHeader>
 

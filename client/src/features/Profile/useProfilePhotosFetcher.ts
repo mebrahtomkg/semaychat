@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { useAPI } from '../../../hooks';
-import { ProfilePhoto } from '../../../types';
+import { useAPI } from '@/hooks';
+import { ProfilePhoto } from '@/types';
 
 const useProfilePhotosFetcher = (userId?: number) => {
   const [profilePhotos, setProfilePhotos] = useState<ProfilePhoto[]>([]);

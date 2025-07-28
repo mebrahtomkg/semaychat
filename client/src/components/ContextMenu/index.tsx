@@ -3,6 +3,8 @@ import { ContextMenuOverlay, ContextMenuStyled } from './styles';
 import MenuItem from './MenuItem';
 import { ContextMenuControlProps, MenuItemDescriptor } from './types';
 
+export type { ContextMenuControlProps, MenuItemDescriptor } from './types';
+
 export { default as useContextMenu } from './useContextMenu';
 
 interface ContextMenuProps {

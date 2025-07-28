@@ -1,5 +1,16 @@
-import { Link } from 'react-router';
 import styled, { css } from 'styled-components';
+
+export const ProfileLink = styled.div<{ $isLargeScreen: boolean }>`
+  ${(props) =>
+    props.$isLargeScreen
+      ? css`
+          margin-left: 1rem;
+        `
+      : css`
+          margin-left: 3rem;
+        `}
+  flex-grow: 2;
+`;
 
 export const UserContainer = styled.div`
   display: flex;
@@ -17,18 +28,6 @@ export const CircularPhoto = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-`;
-
-export const ProfileLink = styled(Link)<{ $isLargeScreen: boolean }>`
-  ${(props) =>
-    props.$isLargeScreen
-      ? css`
-          margin-left: 1rem;
-        `
-      : css`
-          margin-left: 3rem;
-        `}
-  flex-grow: 2;
 `;
 
 export const NameContainer = styled.div``;

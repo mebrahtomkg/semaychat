@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, MouseEvent, useState } from 'react';
 import {
   CircularPhoto,
   Name,
@@ -9,23 +9,32 @@ import {
 } from './styles';
 import { CenteredImage } from '@/styles';
 import { useUser, useImageLoader, useAppContext } from '@/hooks';
-import { User as IUser } from '@/types';
 import NameInitial from '@/components/NameInitial';
+import { User } from '@/types';
+import Profile from '@/features/Profile';
 
-interface UserProps {
-  userId: number; // Needed incase the user wasn't fatched already
-  user?: IUser;
+interface ChatPartnerProps {
+  user?: User;
 }
 
-const User: FC<UserProps> = ({ userId, user }) => {
+const ChatPartner: FC<ChatPartnerProps> = ({ user }) => {
   const { fullName, nameInitials, photoUrl } = useUser(user);
-
   const { imageSrc, handleImageLoad } = useImageLoader(photoUrl);
-
   const { isLargeScreen } = useAppContext();
 
+  const [isProfileVisible, setIsProfileVisible] = useState(false);
+  const openProfile = () => setIsProfileVisible(true);
+  const closeProfile = (e: MouseEvent) => {
+    e.stopPropagation();
+    setIsProfileVisible(false);
+  };
+
   return (
-    <ProfileLink $isLargeScreen={isLargeScreen} to={`/profile/${userId}`}>
+    <ProfileLink
+      role="button"
+      $isLargeScreen={isLargeScreen}
+      onClick={openProfile}
+    >
       <UserContainer>
         <CircularPhoto>
           {imageSrc ? (
@@ -44,8 +53,12 @@ const User: FC<UserProps> = ({ userId, user }) => {
           <Status>{'Last seen recently'}</Status>
         </NameContainer>
       </UserContainer>
+
+      {user && isProfileVisible && (
+        <Profile user={user} onClose={closeProfile} />
+      )}
     </ProfileLink>
   );
 };
 
-export default User;
+export default ChatPartner;

@@ -11,6 +11,5 @@ export { default as PhotoViewer } from './PhotoViewer';
 export { default as SendButton } from './SendButton';
 export { default as SmallMoreButton } from './SmallMoreButton';
 export { default as TextMessage } from './TextMessage';
-export { default as User } from './User';
+export { default as ChatPartner } from './ChatPartner';
 export { default as VideoMessage } from './VideoMessage';
-
