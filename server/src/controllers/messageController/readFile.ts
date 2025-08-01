@@ -1,10 +1,9 @@
-import path from 'node:path';
 import { Request, Response, NextFunction } from 'express';
 import { isPositiveInteger } from '@/utils';
 import { Message } from '@/models';
-import { MESSAGE_FILES_DIR } from '@/constants';
-import { downloadFile } from '@/services/supabase';
+import { MESSAGE_FILES_BUCKET } from '@/constants';
 import mime from 'mime-types';
+import storageService from '@/services/StorageService';
 
 const readFile = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -50,30 +49,28 @@ const readFile = async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
 
-    // const filePath = path.resolve(
-    //   MESSAGE_FILES_DIR,
-    //   `${message.attachment.id}`
-    // );
-    // res.status(200).sendFile(filePath);
-
-    const blob = await downloadFile('message-files', message.attachment.id);
-
-    const arrayBuffer = await blob.arrayBuffer(); // Get ArrayBuffer from Blob
-    const fileBuffer = Buffer.from(arrayBuffer); // Convert ArrayBuffer to Node.js Buffer
-
-    res.setHeader(
-      'Content-Type',
-      mime.lookup(message.attachment.name) || 'application/octet-stream'
+    const result = await storageService.getFile(
+      MESSAGE_FILES_BUCKET,
+      message.attachment.id
     );
 
-    res.setHeader(
-      'Content-Disposition',
-      `inline; filename="${message.attachment.name}"`
-    );
+    if (typeof result === 'string') {
+      res.status(200).sendFile(result);
+    } else {
+      res.setHeader(
+        'Content-Type',
+        mime.lookup(message.attachment.name) || 'application/octet-stream'
+      );
 
-    res.setHeader('Content-Length', fileBuffer.length);
+      res.setHeader(
+        'Content-Disposition',
+        `inline; filename="${message.attachment.name}"`
+      );
 
-    res.status(200).send(fileBuffer);
+      res.setHeader('Content-Length', result.length);
+
+      res.status(200).send(result);
+    }
   } catch (err) {
     next(err);
   }

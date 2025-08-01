@@ -5,7 +5,7 @@ import usePendingMessages from './usePendingMessages';
 import { useMemo } from 'react';
 
 const useChatMessages = (partnerId: number) => {
-  const { isError, data, error, isFetching } = useQuery({
+  const { isError, data, error } = useQuery({
     queryKey: ['messages', partnerId],
     queryFn: () => get<Message[]>(`/messages/${partnerId}`),
     retry: (failureCount: number, error: Error) =>
@@ -14,10 +14,6 @@ const useChatMessages = (partnerId: number) => {
 
   if (isError) {
     console.error(error);
-  }
-
-  if (isFetching) {
-    console.log('fetching messages of', partnerId);
   }
 
   const pendingMessages = usePendingMessages(partnerId);

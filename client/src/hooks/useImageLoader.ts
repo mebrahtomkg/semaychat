@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
 import { ApiError, get } from '@/api';
 import { useQuery } from '@tanstack/react-query';
 
@@ -38,8 +44,8 @@ const useImageLoader = (imageUrl: string | null | undefined) => {
 
   if (isError) console.error(error);
 
-  const handleImageLoad = useCallback((e) => {
-    URL.revokeObjectURL(e.target.src);
+  const handleImageLoad = useCallback((e: SyntheticEvent<HTMLImageElement>) => {
+    URL.revokeObjectURL(e.currentTarget.src);
     setIsImageLoading(false);
   }, []);
 

@@ -52,7 +52,7 @@ const uploadPhoto = async (req: Request, res: Response, next: NextFunction) => {
       );
 
       await fs.rename(
-        file.filepath,
+        file.filepath, 
         path.resolve(PROFILE_PHOTOS_DIR, `${profilePhoto.id}`)
       );
 

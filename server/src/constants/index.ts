@@ -61,6 +61,14 @@ export const MESSAGE_SENDER = {
 
 export const MAX_PROFILE_PHOTO_FILE_SIZE = 2 * 1024 * 1024;
 
+export const FILES_STORAGE_TYPE_OPTIONS = {
+  localdisk: 'localdisk',
+  supabase: 'supabase'
+};
+
+export const FILES_STORAGE_TYPE =
+  process.env.FILES_STORAGE_TYPE || FILES_STORAGE_TYPE_OPTIONS.localdisk;
+
 // This is just the absolute pathe of the /server folder
 const ROOT_DIR = path.resolve(__dirname, '../../');
 
@@ -79,9 +87,11 @@ export const PROFILE_PHOTOS_DIR = path.resolve(
   'profile_photos'
 );
 
+export const MESSAGE_FILES_BUCKET = 'message_files';
+
 export const MESSAGE_FILES_DIR = path.resolve(
   FILES_STORAGE_DIR,
-  'message_files'
+  MESSAGE_FILES_BUCKET
 );
 
 export const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS?.split(',') || [

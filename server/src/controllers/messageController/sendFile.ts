@@ -1,12 +1,10 @@
-import path from 'node:path';
-import fs from 'node:fs/promises';
 import { Request, Response, NextFunction } from 'express';
 import commitSendingMessage from './commitSendingMessage';
-import { MESSAGE_FILES_DIR } from '@/constants';
+import { MESSAGE_FILES_BUCKET } from '@/constants';
 import { getFileExtension, isPositiveInteger } from '@/utils';
 import { Attachment } from '@/models';
 import sequelize from '@/config/db';
-import { uploadFile } from '@/services/supabase';
+import storageService from '@/services/StorageService';
 
 const sendFile = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -67,20 +65,15 @@ const sendFile = async (req: Request, res: Response, next: NextFunction) => {
         attachmentId: attachment.id
       });
 
-      // await fs.rename(
-      //   filepath,
-      //   path.resolve(MESSAGE_FILES_DIR, `${attachment.id}`)
-      // );
-
-      const storageInfo = await uploadFile(
-        'message-files',
+      await storageService.saveFile(
+        MESSAGE_FILES_BUCKET,
         filepath,
         attachment.id
       );
 
       await transaction.commit();
 
-      res.status(status).json({ message, storageInfo, success, data });
+      res.status(status).json({ message, success, data });
     } catch (err) {
       await transaction.rollback();
       throw err;

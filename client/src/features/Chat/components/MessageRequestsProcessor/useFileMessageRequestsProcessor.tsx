@@ -1,11 +1,10 @@
 import { ApiError, post } from '@/api';
 import { messageRequestDeleted } from '@/features/Chat/slices/messageRequestsSlice';
-import { messageAdded } from '@/features/Chat/slices/messagesSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { getMessageRequestFile } from '@/services/messageRequestFilesStore';
 import { createAppSelector } from '@/store';
 import { Message } from '@/types';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 
 // Selects the first file message request from the request Queue of messageRequests
@@ -18,6 +17,8 @@ const selectRequest = createAppSelector(
 
 const useFileMessageRequestsProcessor = () => {
   const request = useAppSelector((state) => selectRequest(state));
+
+  const queryClient = useQueryClient();
 
   const dispatch = useAppDispatch();
 
@@ -45,11 +46,18 @@ const useFileMessageRequestsProcessor = () => {
 
     const message = await post<Message>('/messages/file', body);
 
-    dispatch(messageAdded(message));
+    queryClient.setQueryData(
+      ['messages', receiverId],
+      (oldMessages: Message[]) => {
+        if (!oldMessages) return [message];
+        return [...oldMessages, message];
+      }
+    );
+
     dispatch(messageRequestDeleted(request.requestId));
 
     return null;
-  }, [request, dispatch]);
+  }, [request, dispatch, queryClient]);
 
   const retry = useCallback((_failureCount: number, error: Error) => {
     return !(error instanceof ApiError && error.status);
@@ -57,7 +65,10 @@ const useFileMessageRequestsProcessor = () => {
 
   const { isError, error } = useQuery({ queryKey, queryFn, retry });
 
-  if (isError) console.log('File Message request error:', error);
+  if (isError) {
+    console.log('File Message request error:', error);
+    // dispatch(messageRequestDeleted(request.requestId));
+  }
 };
 
 export default useFileMessageRequestsProcessor;
