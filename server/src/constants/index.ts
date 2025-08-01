@@ -87,7 +87,7 @@ export const PROFILE_PHOTOS_DIR = path.resolve(
   'profile_photos'
 );
 
-export const MESSAGE_FILES_BUCKET = 'message_files';
+export const MESSAGE_FILES_BUCKET = 'message-files';
 
 export const MESSAGE_FILES_DIR = path.resolve(
   FILES_STORAGE_DIR,
