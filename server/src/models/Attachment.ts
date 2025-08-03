@@ -13,7 +13,6 @@ class Attachment extends Model<
 > {
   declare id: CreationOptional<number>;
   declare name: string;
-  declare extension: string;
   declare size: number;
   declare caption: string | null;
 }
@@ -29,11 +28,6 @@ Attachment.init(
 
     name: {
       type: DataTypes.TEXT,
-      allowNull: false
-    },
-
-    extension: {
-      type: DataTypes.STRING,
       allowNull: false
     },
 

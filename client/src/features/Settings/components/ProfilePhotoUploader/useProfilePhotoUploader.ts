@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { profilePhotoAdded } from '../../slices/profilePhotosSlice';
 import { getSizeInAppropriateUnit, isImageFile } from './utils';
-import { useAPI, useAppDispatch } from '../../../../hooks';
-import { ProfilePhoto } from '../../../../types';
+import { useAPI, useAppDispatch } from '@/hooks';
+import { ProfilePhoto } from '@/types';
 
 const MIN_IMAGE_FILE_SIZE = 1 * 1024;
 const MAX_IMAGE_FILE_SIZE = 5 * 1024 * 1024;
@@ -22,7 +22,7 @@ const UPLOAD_ERRORS = {
   UNKNOWN_ERROR: 'Photo upload failed for unknown reason. Please try again.'
 };
 
-const validateImageFile = (file) => {
+const validateImageFile = (file: File) => {
   if (!(file instanceof File)) return IMAGE_ERRORS.INVALID_FILE;
   if (!isImageFile(file)) return IMAGE_ERRORS.INVALID_FILE_TYPE;
   if (file.size < MIN_IMAGE_FILE_SIZE) return IMAGE_ERRORS.SIZE_TOO_SMALL;
@@ -100,9 +100,10 @@ const useProfilePhotoUploader = ({
       }
     } catch (err) {
       console.error(
-        err.message || 'Unknown error occured at profile photo upload.'
+        (err as Error).message ||
+          'Unknown error occured at profile photo upload.'
       );
-      setError(err.message || UPLOAD_ERRORS.UNKNOWN_ERROR);
+      setError((err as Error).message || UPLOAD_ERRORS.UNKNOWN_ERROR);
     }
     isDoingUploadRef.current = false;
   }, [imageCropperFunc, post, dispatch, onClose]);

@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { getFileExtension, isImage, shortenFileName } from '../../utils';
+import { isImage, shortenFileName } from '../../utils';
 import { Attachment } from './types';
 import { useAppDispatch } from '@/hooks';
 import {
@@ -7,6 +7,7 @@ import {
   getUniqueId
 } from '../../slices/messageRequestsSlice';
 import { addMessageRequestFile } from '@/services/messageRequestFilesStore';
+import { getFileExtension } from '@/utils';
 
 const useFilesSender = (
   files: File[],

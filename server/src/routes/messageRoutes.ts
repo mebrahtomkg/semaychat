@@ -3,7 +3,7 @@ import { sendFile, list, readFile } from '../controllers/messageController';
 import multer from 'multer';
 import { TEMP_FILES_DIR } from '@/constants';
 
-const router = express.Router();
+const router = express.Router(); 
 
 router.get('/:partnerId', list);
 router.get('/file/:messageId', readFile);

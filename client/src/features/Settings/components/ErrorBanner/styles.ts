@@ -1,5 +1,5 @@
+import { CenteredModal } from '@/styles';
 import styled from 'styled-components';
-import { CenteredModal } from '../../../../styles';
 
 export const ErrorBannerModal = styled(CenteredModal)`
   display: flex;
@@ -10,7 +10,9 @@ export const ErrorBannerModal = styled(CenteredModal)`
 export const ErrorText = styled.p`
   margin: auto;
   margin-right: 1rem;
+  word-break: break-word;
   font-size: 1.04rem;
   font-weight: 500;
+
   color: ${(props) => props.theme.errorBanner.color};
 `;

@@ -1,7 +1,6 @@
 import { useAppSelector } from '@/hooks';
 import { Message } from '@/types';
 import { useMemo } from 'react';
-import { getFileExtension } from '../utils';
 import { createAppSelector } from '@/store';
 import { getMessageRequestFile } from '@/services/messageRequestFilesStore';
 
@@ -48,7 +47,6 @@ const usePendingMessages = (receiverId: number) => {
           message.attachment = {
             id: 0, // Not usefull at frontend
             name: file.name,
-            extension: getFileExtension(file.name) || '',
             caption,
             size: file.size,
             file

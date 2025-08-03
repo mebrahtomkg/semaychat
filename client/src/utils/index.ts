@@ -1,6 +1,8 @@
 export * from './smartFetch';
 export { default as smartFetch } from './smartFetch';
 
+export { default as getFileExtension } from './getFileExtension';
+
 export function ready(handler) {
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', handler);

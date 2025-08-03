@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
-import { FullScreenOverlay } from '../../../../styles';
+import { FC } from 'react';
 import { ErrorBannerModal, ErrorText } from './styles';
-import { CloseButton } from '../../../../components/buttons';
+import { FullScreenOverlay } from '@/styles';
+import { CloseButton } from '@/components/buttons';
 
 interface ErrorBannerProps {
   error: string;

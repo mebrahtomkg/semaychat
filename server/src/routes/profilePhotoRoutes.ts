@@ -7,10 +7,15 @@ import {
   uploadPhoto,
   deletePhoto
 } from '../controllers/profilePhotoController';
+import multer from 'multer';
+import { TEMP_FILES_DIR } from '@/constants';
 
 const router = express.Router();
 
-router.post('/me', uploadPhoto);
+const upload = multer({ dest: TEMP_FILES_DIR });
+
+router.post('/me', upload.single('profilePhoto'), uploadPhoto);
+
 router.get('/me', listMyPhotos);
 router.delete('/me/:photoId', deletePhoto);
 

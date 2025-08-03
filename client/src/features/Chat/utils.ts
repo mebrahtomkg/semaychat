@@ -53,10 +53,6 @@ export function fileListToArray(fileList: FileList): File[] {
   return Array.from(fileList);
 }
 
-export function getFileExtension(fileName: string) {
-  return fileName.split('.').pop();
-}
-
 export function shortenFileName(fileName: string, maxLength: number) {
   if (typeof fileName !== 'string' || !fileName) return fileName;
   if (fileName.length <= maxLength) return fileName;

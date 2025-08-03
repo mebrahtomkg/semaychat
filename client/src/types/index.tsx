@@ -41,7 +41,6 @@ export interface User {
 export interface Attachment {
   id: number;
   name: string;
-  extension: string;
   size: number;
   caption: string | null | undefined;
   file?: File; // Only exists on frontend

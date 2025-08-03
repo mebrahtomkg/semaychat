@@ -1,59 +1,55 @@
-import { formidable } from 'formidable';
-import path from 'node:path';
-import fs from 'node:fs/promises';
-
 import {
-  PROFILE_PHOTOS_DIR,
-  TEMP_FILES_DIR,
-  MAX_PROFILE_PHOTO_FILE_SIZE
-} from '../../constants';
-import { ProfilePhoto, User } from '../../models';
-import sequelize from '../../config/db';
+  MAX_PROFILE_PHOTO_FILE_SIZE,
+  PROFILE_PHOTOS_BUCKET
+} from '@/constants';
 import { Request, Response, NextFunction } from 'express';
+import sequelize from '@/config/db';
+import { ProfilePhoto, User } from '@/models';
+import storageService from '@/services/StorageService';
 
 const uploadPhoto = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.userId) {
-      return res.status(401).json({ message: 'Not Authenticated!' });
+      res.status(401).json({ message: 'Not Authenticated!' });
+      return;
     }
 
-    const form = formidable({
-      uploadDir: TEMP_FILES_DIR,
-      keepExtensions: false
-    });
-
-    const formData = await form.parse(req);
-
-    const file = formData?.[1]?.profilePhoto?.[0];
+    const file = req.file;
 
     if (!file) {
-      return res.status(400).json({
-        message: 'Invalid file'
+      res.status(400).json({
+        message: 'No file provided!'
       });
+      return;
     }
 
-    if (file.size > MAX_PROFILE_PHOTO_FILE_SIZE) {
+    const { path: filepath, size, originalname: name } = file;
+
+    if (size > MAX_PROFILE_PHOTO_FILE_SIZE) {
       const maxSizeInMB = Math.round(
         MAX_PROFILE_PHOTO_FILE_SIZE / (1024 * 1024)
       );
 
-      // TODO delete the uploaded file
-      return res.status(400).json({
+      res.status(400).json({
         message: `Image file size too big. Maximum allowed size is ${maxSizeInMB} MB`
       });
+
+      // TODO delete the uploaded file
+      return;
     }
 
     const transaction = await sequelize.transaction();
 
     try {
       const profilePhoto = await ProfilePhoto.create(
-        { userId: req.userId },
+        { userId: req.userId, name, size },
         { transaction }
       );
 
-      await fs.rename(
-        file.filepath, 
-        path.resolve(PROFILE_PHOTOS_DIR, `${profilePhoto.id}`)
+      await storageService.saveFile(
+        PROFILE_PHOTOS_BUCKET,
+        filepath,
+        profilePhoto.id
       );
 
       await User.update(

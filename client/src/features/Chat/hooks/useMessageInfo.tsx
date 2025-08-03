@@ -10,6 +10,7 @@ import {
 } from '../utils';
 import { API_BASE_URL } from '@/constants';
 import { useMessageStatus } from '.';
+import { getFileExtension } from '@/utils';
 
 type MessageType = 'text' | 'photo' | 'audio' | 'video' | 'file';
 
@@ -43,7 +44,7 @@ const useMessageInfo = (message: Message) => {
 
   const type: MessageType = useMemo(() => {
     if (!message.attachment) return 'text';
-    const extension = message.attachment.extension;
+    const extension = getFileExtension(message.attachment.name);
     if (isImage(extension)) return 'photo';
     if (isVideo(extension)) return 'video';
     if (isAudio(extension)) return 'audio';

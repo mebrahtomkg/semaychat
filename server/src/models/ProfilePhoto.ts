@@ -13,6 +13,8 @@ class ProfilePhoto extends Model<
 > {
   declare id: CreationOptional<number>;
   declare userId: number;
+  declare name: string;
+  declare size: number;
   declare createdAt: CreationOptional<number>;
 }
 
@@ -26,6 +28,16 @@ ProfilePhoto.init(
     },
 
     userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+
+    name: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+
+    size: {
       type: DataTypes.INTEGER,
       allowNull: false
     },

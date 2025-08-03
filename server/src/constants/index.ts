@@ -82,17 +82,9 @@ export const SQLITE_DATABASE_DIR =
 
 export const TEMP_FILES_DIR = path.resolve(FILES_STORAGE_DIR, 'temp_files');
 
-export const PROFILE_PHOTOS_DIR = path.resolve(
-  FILES_STORAGE_DIR,
-  'profile_photos'
-);
+export const PROFILE_PHOTOS_BUCKET = 'profile-photos';
 
 export const MESSAGE_FILES_BUCKET = 'message-files';
-
-export const MESSAGE_FILES_DIR = path.resolve(
-  FILES_STORAGE_DIR,
-  MESSAGE_FILES_BUCKET
-);
 
 export const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS?.split(',') || [
   'http://localhost:8080'

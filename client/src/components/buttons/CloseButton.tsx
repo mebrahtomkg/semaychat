@@ -1,10 +1,10 @@
-import React from 'react';
 import { CloseIcon } from '../icons';
 import styled from 'styled-components';
 import type { StyleProps } from '../../types';
 
 const CloseButtonStyled = styled.button`
   width: 2.7rem;
+  min-width: 2.7rem;
   height: 2.7rem;
   padding: 0.85rem;
   border-radius: 50%;
