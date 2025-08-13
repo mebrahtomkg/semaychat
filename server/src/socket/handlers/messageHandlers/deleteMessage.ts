@@ -3,8 +3,8 @@ import sequelize from '@/config/db';
 import { Chat, Message } from '@/models';
 import { Acknowledgement, AuthenticatedSocket } from '@/types';
 import { isPositiveInteger } from '@/utils';
-import { IS_PRODUCTION } from '@/constants';
 import { emitToUser } from '@/socket/emitter';
+import { IS_PRODUCTION } from '@/config/general';
 
 interface MessageDeletePayload {
   messageId: number;

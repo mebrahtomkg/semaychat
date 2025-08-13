@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import { AUTH_TOKEN_COOKIE_NAME, JWT_SECRET_KEY } from '../constants';
 import { Request, Response, NextFunction } from 'express';
+import { AUTH_TOKEN_COOKIE_NAME, JWT_SECRET_KEY } from '@/config/general';
 
 interface AuthTokenBody {
   id: number;

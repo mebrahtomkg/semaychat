@@ -1,4 +1,4 @@
-import { IS_PRODUCTION } from '@/constants';
+import { IS_PRODUCTION } from '@/config/general';
 import { Message } from '@/models';
 import { emitToUser } from '@/socket/emitter';
 import { Acknowledgement, AuthenticatedSocket } from '@/types';

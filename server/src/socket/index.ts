@@ -1,4 +1,3 @@
-import { ALLOWED_ORIGINS } from '@/constants';
 import { Server as HttpServer } from 'node:http';
 import { Server } from 'socket.io';
 import { performSocketAuth } from './middlewares';
@@ -7,6 +6,7 @@ import { AuthenticatedSocket } from '@/types';
 import { initEmitter } from './emitter';
 import { isPositiveInteger } from '@/utils';
 import { addSocketUser, removeSocketUser } from './socketUsers';
+import { ALLOWED_ORIGINS } from '@/config/general';
 
 let isInitialized = false;
 

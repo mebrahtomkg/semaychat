@@ -1,4 +1,4 @@
-import { AUTH_TOKEN_COOKIE_NAME } from '../../constants';
+import { AUTH_TOKEN_COOKIE_NAME } from '@/config/general';
 import { Request, Response, NextFunction } from 'express';
 
 const logout = async (req: Request, res: Response, next: NextFunction) => {

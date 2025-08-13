@@ -3,7 +3,7 @@ import {
   AUTH_TOKEN_COOKIE_NAME,
   AUTH_TOKEN_AGE,
   IS_PRODUCTION
-} from '@/constants';
+} from '@/config/general';
 import { User } from '@/models';
 import { createAuthToken, filterUserData, verifyPassword } from '@/utils';
 import { Request, Response, NextFunction } from 'express';

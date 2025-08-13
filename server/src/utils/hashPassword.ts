@@ -1,5 +1,5 @@
+import { PASSWORD_HASHING_ROUNDS } from '@/config/general';
 import bcrypt from 'bcryptjs';
-import { PASSWORD_HASHING_ROUNDS } from '../constants';
 
 /**
  * Generates a hash for the given password.

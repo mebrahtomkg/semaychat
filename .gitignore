@@ -1,13 +1,13 @@
-/server/dist/
-/server/storage/
-/server/tests/
-/server/ApiTests/
-/server/node_modules/
-/server/.env
+/client/dist/
 /client/node_modules/
 /client/.swc/
-/client/dist/
 /client/.env
 /node_modules/
-
+/server/ApiTests/
+/server/database/
+/server/dist/
+/server/node_modules/
+/server/storage/
+/server/temp_files/
+/server/.env
 

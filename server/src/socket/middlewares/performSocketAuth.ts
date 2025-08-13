@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io';
 import { parse } from 'cookie';
 import jwt from 'jsonwebtoken';
-import { AUTH_TOKEN_COOKIE_NAME, JWT_SECRET_KEY } from '@/constants';
+import { AUTH_TOKEN_COOKIE_NAME, JWT_SECRET_KEY } from '@/config/general';
 
 export interface AuthenticatedSocket extends Socket {
   userId?: number;

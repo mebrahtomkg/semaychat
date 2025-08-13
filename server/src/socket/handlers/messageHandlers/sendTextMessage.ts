@@ -2,8 +2,8 @@ import commitSendingMessage from './commitSendingMessage';
 import { isPositiveInteger } from '@/utils';
 import sequelize from '@/config/db';
 import { Acknowledgement, AuthenticatedSocket } from '@/types';
-import { IS_PRODUCTION } from '@/constants';
 import { emitToUser } from '@/socket/emitter';
+import { IS_PRODUCTION } from '@/config/general';
 
 interface TextMessageSendPayload {
   receiverId: number;

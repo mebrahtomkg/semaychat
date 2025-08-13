@@ -20,3 +20,5 @@ interface SocketResponse {
 }
 
 export type Acknowledgement = (response: SocketResponse) => void;
+
+export type StorageType = 'localdisk' | 'supabase';

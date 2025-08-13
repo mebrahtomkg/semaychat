@@ -3,7 +3,7 @@ import {
   MAX_PWD_LENGTH,
   MAX_NAME_LENGTH,
   MAX_BIO_LENGTH
-} from '../../constants';
+} from '../../config/general';
 
 export const checkEmail = (email) => {
   if (typeof email !== 'string') return false;

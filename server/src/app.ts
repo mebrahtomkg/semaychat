@@ -1,4 +1,3 @@
-import { ALLOWED_ORIGINS } from '@/constants';
 import { authGuard, errorHandler, performAuth } from '@/middlewares';
 import {
   authRoutes,
@@ -14,6 +13,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors, { CorsOptions } from 'cors';
 import express from 'express';
+import { ALLOWED_ORIGINS } from './config/general';
 
 const app = express();
 

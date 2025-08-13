@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import commitSendingMessage from './commitSendingMessage';
-import { MESSAGE_FILES_BUCKET } from '@/constants';
-import { getFileExtension, isPositiveInteger } from '@/utils';
+import { isPositiveInteger } from '@/utils';
 import { Attachment } from '@/models';
 import sequelize from '@/config/db';
-import storageService from '@/services/StorageService';
+import { MESSAGE_FILES_BUCKET } from '@/config/general';
+import storage from '@/config/storage';
 
 const sendFile = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -48,13 +48,11 @@ const sendFile = async (req: Request, res: Response, next: NextFunction) => {
 
     const { path: filepath, size, originalname: name } = file;
 
-    const extension = getFileExtension(name) || '';
-
     const transaction = await sequelize.transaction();
 
     try {
       const attachment = await Attachment.create(
-        { name, extension, size, caption },
+        { name, size, caption },
         { transaction }
       );
 
@@ -65,11 +63,7 @@ const sendFile = async (req: Request, res: Response, next: NextFunction) => {
         attachmentId: attachment.id
       });
 
-      await storageService.saveFile(
-        MESSAGE_FILES_BUCKET,
-        filepath,
-        attachment.id
-      );
+      await storage.saveFile(MESSAGE_FILES_BUCKET, filepath, attachment.id);
 
       await transaction.commit();
 

@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { isPositiveInteger } from '@/utils';
 import { Message } from '@/models';
-import { MESSAGE_FILES_BUCKET } from '@/constants';
 import mime from 'mime-types';
-import storageService from '@/services/StorageService';
+import { MESSAGE_FILES_BUCKET } from '@/config/general';
+import storage from '@/config/storage';
 
 const readFile = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -49,7 +49,7 @@ const readFile = async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
 
-    const result = await storageService.getFile(
+    const result = await storage.getFile(
       MESSAGE_FILES_BUCKET,
       message.attachment.id
     );

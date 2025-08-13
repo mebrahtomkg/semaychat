@@ -1,11 +1,11 @@
-import {
-  MAX_PROFILE_PHOTO_FILE_SIZE,
-  PROFILE_PHOTOS_BUCKET
-} from '@/constants';
 import { Request, Response, NextFunction } from 'express';
 import sequelize from '@/config/db';
 import { ProfilePhoto, User } from '@/models';
-import storageService from '@/services/StorageService';
+import {
+  MAX_PROFILE_PHOTO_FILE_SIZE,
+  PROFILE_PHOTOS_BUCKET
+} from '@/config/general';
+import storage from '@/config/storage';
 
 const uploadPhoto = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -46,11 +46,7 @@ const uploadPhoto = async (req: Request, res: Response, next: NextFunction) => {
         { transaction }
       );
 
-      await storageService.saveFile(
-        PROFILE_PHOTOS_BUCKET,
-        filepath,
-        profilePhoto.id
-      );
+      await storage.saveFile(PROFILE_PHOTOS_BUCKET, filepath, profilePhoto.id);
 
       await User.update(
         { profilePhotoId: profilePhoto.id },

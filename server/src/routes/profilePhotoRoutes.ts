@@ -8,11 +8,11 @@ import {
   deletePhoto
 } from '../controllers/profilePhotoController';
 import multer from 'multer';
-import { TEMP_FILES_DIR } from '@/constants';
+import { TEMP_FILES_STORAGE_DIR } from '@/config/general';
 
 const router = express.Router();
 
-const upload = multer({ dest: TEMP_FILES_DIR });
+const upload = multer({ dest: TEMP_FILES_STORAGE_DIR });
 
 router.post('/me', upload.single('profilePhoto'), uploadPhoto);
 

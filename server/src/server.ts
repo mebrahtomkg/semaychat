@@ -1,34 +1,29 @@
-import 'dotenv/config'; // Must be at the top of app entry file.
-import setup from './setup';
-import {
-  ALLOWED_ORIGINS,
-  FILES_STORAGE_DIR,
-  FILES_STORAGE_TYPE,
-  PORT
-} from './constants';
-import app from './app';
+import 'dotenv/config'; // Side effect import to load env vars. Must be the first thing to do.
+
+console.log('========== SemayChat ===========');
+
+import '@/config/general'; // Side effect import to configure and setup app
+import '@/config/db'; // Side effect import to configure and setup database
+import '@/config/storage'; // Side effect import to configure and setup storage.
+
+import { testDatabaseConnection } from '@/config/db';
 import { createServer } from 'node:http';
+import app from './app';
 import initSocket from './socket';
-import { databaseConfig } from './config/db';
+import { PORT } from '@/config/general';
 
-// Perform setups before the server starts.
-setup();
+const startServer = async () => {
+  // Test database connection before the server starts.
+  await testDatabaseConnection();
 
-const httpServer = createServer(app);
+  const httpServer = createServer(app);
 
-// Initialize Socket.IO
-initSocket(httpServer);
+  // Initialize Socket.IO
+  initSocket(httpServer);
 
-httpServer.listen(PORT, () => {
-  console.log(`SemayChat server running on port ${PORT}`);
-  const allowedOrigins = ALLOWED_ORIGINS.join('  ');
-  console.log(
-    'Allowed origins:',
-    allowedOrigins || 'No origin is allowed. browsers maynot work!'
-  );
-  console.log('Database config:', databaseConfig);
+  httpServer.listen(PORT, () => {
+    console.log(`SemayChat server running on port ${PORT}`);
+  });
+};
 
-  console.log('Files storage type:', FILES_STORAGE_TYPE);
-
-  console.log('Files storage dir:', FILES_STORAGE_DIR);
-});
+startServer();

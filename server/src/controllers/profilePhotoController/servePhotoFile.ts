@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { getFileExtension, isPositiveInteger } from '@/utils';
 import { ProfilePhoto } from '@/models';
-import storageService from '@/services/StorageService';
-import { PROFILE_PHOTOS_BUCKET } from '@/constants';
 import mime from 'mime-types';
+import storage from '@/config/storage';
+import { PROFILE_PHOTOS_BUCKET } from '@/config/general';
 
 const servePhotoFile = async (
   req: Request,
@@ -32,7 +32,7 @@ const servePhotoFile = async (
       return;
     }
 
-    const result = await storageService.getFile(
+    const result = await storage.getFile(
       PROFILE_PHOTOS_BUCKET,
       profilePhoto.id
     );

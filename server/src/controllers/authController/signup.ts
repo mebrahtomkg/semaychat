@@ -1,12 +1,12 @@
+import { User } from '@/models';
+import { checkEmail, checkFirstName, checkPassword } from './utils';
+import { Request, Response, NextFunction } from 'express';
+import { createAuthToken, filterUserData, hashPassword } from '@/utils';
 import {
   AUTH_TOKEN_AGE,
   AUTH_TOKEN_COOKIE_NAME,
   IS_PRODUCTION
-} from '../../constants';
-import User from '../../models/User';
-import { createAuthToken, filterUserData, hashPassword } from '../../utils';
-import { checkEmail, checkFirstName, checkPassword } from './utils';
-import { Request, Response, NextFunction } from 'express';
+} from '@/config/general';
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
   try {

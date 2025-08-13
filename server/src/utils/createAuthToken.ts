@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import { JWT_SECRET_KEY } from '../constants';
 import isPositiveInteger from './isPositiveInteger';
+import { JWT_SECRET_KEY } from '@/config/general';
 
 /**
  * Creates auth token using jwt

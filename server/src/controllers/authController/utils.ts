@@ -1,8 +1,8 @@
 import {
-  MIN_PWD_LENGTH,
+  MAX_NAME_LENGTH,
   MAX_PWD_LENGTH,
-  MAX_NAME_LENGTH
-} from '../../constants';
+  MIN_PWD_LENGTH
+} from '@/config/general';
 
 export const checkEmail = (email) => {
   if (typeof email !== 'string') return false;

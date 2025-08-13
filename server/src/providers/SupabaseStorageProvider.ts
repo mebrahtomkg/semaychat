@@ -1,23 +1,12 @@
 import { IStorageProvider } from '@/interfaces';
 import fs from 'node:fs/promises';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { SupabaseClient } from '@supabase/supabase-js';
 
 export default class SupabaseStorageProvider implements IStorageProvider {
   private readonly supabase: SupabaseClient;
 
-  constructor() {
-    if (!process.env.SUPABASE_URL) {
-      throw Error('SUPABASE_URL cannot be empty.');
-    }
-
-    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      throw Error('SUPABASE_SERVICE_ROLE_KEY cannot be empty.');
-    }
-
-    this.supabase = createClient(
-      process.env.SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY
-    );
+  constructor(supabase: SupabaseClient) {
+    this.supabase = supabase;
   }
 
   public async saveFile(bucket: string, filePath: string, fileId: number) {
