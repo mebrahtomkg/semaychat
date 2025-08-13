@@ -1,9 +1,9 @@
 import express from 'express';
 import { sendFile, list, readFile } from '../controllers/messageController';
 import multer from 'multer';
-import { TEMP_FILES_STORAGE_DIR } from '@/config/general';
+import { TEMP_FILES_STORAGE_DIR } from '@/config/storage';
 
-const router = express.Router(); 
+const router = express.Router();
 
 router.get('/:partnerId', list);
 router.get('/file/:messageId', readFile);

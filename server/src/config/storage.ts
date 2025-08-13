@@ -15,13 +15,12 @@ const storageType: StorageType =
 
 console.log(`Storage Type: ${storageType}`);
 
+const storageDir = process.env.STORAGE_DIR || path.resolve(ROOT_DIR, 'storage');
+
 let storage: IStorageProvider;
 
 switch (storageType) {
   case 'localdisk': {
-    const storageDir =
-      process.env.STORAGE_DIR || path.resolve(ROOT_DIR, 'storage');
-
     console.log(`Storage Dir: ${storageDir}`);
 
     const profilePhotosDir = path.resolve(storageDir, PROFILE_PHOTOS_BUCKET);
@@ -66,3 +65,11 @@ switch (storageType) {
 }
 
 export default storage;
+
+export const TEMP_FILES_STORAGE_DIR = path.resolve(storageDir, 'temp_files');
+
+if (!fs.existsSync(TEMP_FILES_STORAGE_DIR)) {
+  fs.mkdirSync(TEMP_FILES_STORAGE_DIR, { recursive: true });
+}
+
+console.log('TEMP_FILES_STORAGE_DIR:', TEMP_FILES_STORAGE_DIR);

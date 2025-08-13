@@ -8,6 +8,5 @@
 /server/dist/
 /server/node_modules/
 /server/storage/
-/server/temp_files/
 /server/.env
 

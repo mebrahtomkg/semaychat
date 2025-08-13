@@ -8,7 +8,7 @@ import {
   deletePhoto
 } from '../controllers/profilePhotoController';
 import multer from 'multer';
-import { TEMP_FILES_STORAGE_DIR } from '@/config/general';
+import { TEMP_FILES_STORAGE_DIR } from '@/config/storage';
 
 const router = express.Router();
 

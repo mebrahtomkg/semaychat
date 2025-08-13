@@ -1,5 +1,4 @@
 import path from 'node:path';
-import fs from 'node:fs';
 
 export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 console.log('Deployment mode:', process.env.NODE_ENV);
@@ -23,14 +22,6 @@ export const MAX_PROFILE_PHOTO_FILE_SIZE = 2 * 1024 * 1024;
 // This is just the absolute path of the /server folder
 export const ROOT_DIR = path.resolve(__dirname, '../../');
 console.log('Server root dir:', ROOT_DIR);
-
-export const TEMP_FILES_STORAGE_DIR =
-  process.env.TEMP_FILES_STORAGE_DIR || path.resolve(ROOT_DIR, 'temp_files');
-
-if (!fs.existsSync(TEMP_FILES_STORAGE_DIR)) {
-  fs.mkdirSync(TEMP_FILES_STORAGE_DIR, { recursive: true });
-}
-console.log('TEMP_FILES_STORAGE_DIR:', TEMP_FILES_STORAGE_DIR);
 
 export const PROFILE_PHOTOS_BUCKET = 'profile-photos';
 export const MESSAGE_FILES_BUCKET = 'message-files';
