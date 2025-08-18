@@ -1,5 +1,7 @@
 import path from 'node:path';
 
+console.log('=============== SemayChat ========================');
+
 export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 console.log('Deployment mode:', process.env.NODE_ENV);
 
