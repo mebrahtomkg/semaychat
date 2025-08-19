@@ -2,7 +2,10 @@
   "name": "semaychat",
   "version": "1.0.0",
   "author": "Mebrahtom Kidane",
-  "scripts": {},
+  "scripts": {
+    "lint": "biome lint ./server/src ./client/src",
+    "lint:safefix": "biome lint --write ./server/src ./client/src"
+  },
   "devDependencies": {
     "@biomejs/biome": "^2.2.0",
     "prettier": "^3.5.3"
