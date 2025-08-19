@@ -14,7 +14,7 @@ const hashPassword = (password: string) => {
       if (error) {
         reject(error);
       } else {
-        resolve(hash);
+        resolve(hash as string);
       }
     })
   );
