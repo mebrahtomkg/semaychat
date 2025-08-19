@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.swc/
+pnpm-lock.yaml
+pnpm-workspace.yaml
+.env
+.env.example
+/server/ApiTests/
+/server/database/
+/server/storage/
