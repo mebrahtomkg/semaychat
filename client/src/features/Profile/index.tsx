@@ -83,7 +83,7 @@ const Profile: FC<ProfileProps> = ({ user, onClose }) => {
     useImageLoader(photoUrl || null);
 
   const options = useMemo(() => {
-    let items: MenuItemDescriptor[] = [];
+    const items: MenuItemDescriptor[] = [];
 
     if (!isFullScreenMode) {
       if (isBlocked) {

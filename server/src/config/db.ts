@@ -18,7 +18,7 @@ const options: Options = {
   logging: false
 };
 
-let databaseUri: string | undefined = undefined;
+let databaseUri: string | undefined ;
 
 switch (dialect) {
   case 'sqlite': {
