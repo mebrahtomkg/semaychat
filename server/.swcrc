@@ -6,7 +6,7 @@
       "dynamicImport": true,
       "decorators": false
     },
-    "target": "es2022",
+    "target": "es2024",
     "keepClassNames": true,
     "transform": {
       "useDefineForClassFields": false,
@@ -20,8 +20,9 @@
     }
   },
   "module": {
-    "type": "commonjs",
-    "noInterop": false
+    "type": "es6",
+    "resolveFully": true,
+    "outFileExtension": "js",
   },
   "minify": false
 }

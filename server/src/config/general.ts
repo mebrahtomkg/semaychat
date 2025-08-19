@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 console.log('=============== SemayChat ========================');
 
@@ -20,6 +21,12 @@ export const PASSWORD_HASHING_ROUNDS = 5;
 console.log('PASSWORD_HASHING_ROUNDS:', PASSWORD_HASHING_ROUNDS);
 
 export const MAX_PROFILE_PHOTO_FILE_SIZE = 2 * 1024 * 1024;
+
+// Get the current file's path using import.meta.url
+const __filename = fileURLToPath(import.meta.url);
+
+// Get the current directory's path from the file path
+const __dirname = path.dirname(__filename);
 
 // This is just the absolute path of the /server folder
 export const ROOT_DIR = path.resolve(__dirname, '../../');

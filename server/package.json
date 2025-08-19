@@ -2,13 +2,15 @@
   "name": "semaychat-backend",
   "version": "1.0.0",
   "author": "Mebrahtom Kidane",
+  "type": "module",
   "engines": {
     "node": ">=20.18.1"
   },
   "scripts": {
     "dev": "NODE_ENV=development tsx watch ./src/server.ts",
     "build": "swc src -d dist --strip-leading-paths",
-    "start": "node ./dist/server.js"
+    "start": "node ./dist/server.js",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.3",
@@ -31,6 +33,7 @@
   "devDependencies": {
     "@swc/cli": "^0.7.7",
     "@swc/core": "^1.11.29",
+    "@types/body-parser": "^1.19.6",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
@@ -38,6 +41,7 @@
     "@types/mime-types": "^3.0.1",
     "@types/multer": "^1.4.13",
     "@types/node": "^22.15.29",
-    "tsx": "^4.20.3"
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.2"
   }
 }

@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-    "target": "ESNext",
-    "module": "ESNext",
-    "strict": true,
+    "target": "es2024",
+    "module": "es2022",
     "moduleResolution": "bundler",
+    "strict": true,
+    "noImplicitAny": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "outDir": "dist",
     "typeRoots": ["node_modules/@types", "src/types"],
     "baseUrl": ".",
     "paths": {
@@ -15,7 +16,7 @@
     }
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "tests", "storage"],
+  "exclude": ["node_modules", "dist"],
   "typeAcquisition": {
     "enable": false
   }
