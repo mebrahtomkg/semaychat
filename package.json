@@ -4,7 +4,8 @@
   "author": "Mebrahtom Kidane",
   "scripts": {
     "lint": "biome lint ./server/src ./client/src",
-    "lint:safefix": "biome lint --write ./server/src ./client/src"
+    "lint:fix:safe": "biome lint --write ./server/src ./client/src",
+    "lint:fix:unsafe": "biome lint --write --unsafe ./server/src ./client/src"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.0",
