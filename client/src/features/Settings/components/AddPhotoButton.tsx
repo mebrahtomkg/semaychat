@@ -1,4 +1,4 @@
-import React from 'react';
+
 import styled from 'styled-components';
 import { AddPhotoIcon } from '../../../components/icons';
 import { StyleProps } from '../../../types';

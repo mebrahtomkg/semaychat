@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import EmailInput, { checkEmail } from './EmailInput';
 import PasswordInput, { checkPassword } from './PasswordInput';
 import { Link } from 'react-router';

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import styled from 'styled-components';
 import { NextIcon } from '../icons';
 import { PhotoNavButton } from '../../styles';

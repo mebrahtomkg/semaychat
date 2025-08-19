@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import NameInput, { checkName } from './NameInput';
 import EmailInput, { checkEmail } from './EmailInput';
 import PasswordInput, { checkPassword } from './PasswordInput';

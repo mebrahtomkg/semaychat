@@ -1,5 +1,4 @@
 import { SearchIcon } from '@/components/icons';
-import React from 'react';
 import styled from 'styled-components';
 
 const SearchButtonStyled = styled.button`

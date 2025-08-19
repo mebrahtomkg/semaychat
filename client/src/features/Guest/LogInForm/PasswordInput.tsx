@@ -1,4 +1,4 @@
-import React from 'react';
+
 import TextInput from '../TextInput';
 
 const MIN_PASSWORD_LENGTH = 4;

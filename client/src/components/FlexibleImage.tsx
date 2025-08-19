@@ -1,5 +1,5 @@
 /* eslint-disable styled-components-a11y/alt-text */
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 export const FlexibleImageStyled = styled.img<{ $isBlur?: boolean }>`

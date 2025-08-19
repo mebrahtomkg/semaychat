@@ -1,4 +1,4 @@
-import React from 'react';
+
 import TextInput from '../TextInput';
 
 const MAX_NAME_LENGTH = 25;
