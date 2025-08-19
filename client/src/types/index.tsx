@@ -6,6 +6,8 @@ declare global {
   }
 }
 
+export type VisibilityOption = 'everybody' | 'contacts' | 'nobody';
+
 export interface ProfilePhoto {
   id: number;
   userId: number;
@@ -19,10 +21,10 @@ export interface Account {
   lastName: string;
   username: string;
   bio: string;
-  emailVisibility: string;
-  lastSeenVisibility: string;
-  profilePhotosVisibility: string;
-  messageSender: string;
+  emailVisibility: VisibilityOption;
+  lastSeenVisibility: VisibilityOption;
+  profilePhotosVisibility: VisibilityOption;
+  messageSender: VisibilityOption;
   profilePhoto?: ProfilePhoto;
 }
 

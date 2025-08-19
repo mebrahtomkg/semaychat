@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, MouseEventHandler } from 'react';
 import {
   RadioButtonIconStyled,
   RadioButtonBallIconStyled,
@@ -11,7 +11,7 @@ interface RadioButtonProps {
   isChecked: boolean;
   label: string;
   value: string;
-  onCheck: (e: unknown) => void;
+  onCheck: MouseEventHandler<SVGElement>;
 }
 
 const RadioButton: FC<RadioButtonProps> = ({

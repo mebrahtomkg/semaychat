@@ -1,10 +1,11 @@
-export interface PrivacySettingConfigItem {
-  title: string;
-  visibilityChoices: string[];
-}
+import { VisibilityOption } from '@/types';
 
-export interface SettingsItem {
+export interface PrivacySetting {
+  settingkey:
+    | 'emailVisibility'
+    | 'lastSeenVisibility'
+    | 'profilePhotosVisibility'
+    | 'messageSender';
   title: string;
-  description: string;
-  onClick?: () => void;
+  visibilityOptions: VisibilityOption[];
 }

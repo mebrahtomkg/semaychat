@@ -1,49 +1,34 @@
-export const VISIBILITY_OPTIONS = {
-  everybody: 'everybody',
-  contacts: 'contacts',
-  nobody: 'nobody'
+import { VisibilityOption } from '@/types';
+import { PrivacySetting } from './types';
+
+export const VISIBILITY_OPTION_LABELS: Record<VisibilityOption, string> = {
+  everybody: 'Everybody',
+  contacts: 'My Contacts',
+  nobody: 'Only Me'
 };
 
-export const VISIBILITY_OPTION_LABELS = {
-  [VISIBILITY_OPTIONS.everybody]: 'Everybody',
-  [VISIBILITY_OPTIONS.contacts]: 'My Contacts',
-  [VISIBILITY_OPTIONS.nobody]: 'Only Me'
-};
-
-export const PRIVACY_SETTINGS_CONFIG = {
-  emailVisibility: {
+export const PRIVACY_SETTINGS: PrivacySetting[] = [
+  {
+    settingkey: 'emailVisibility',
     title: 'Who can see your email address?',
-    visibilityChoices: [
-      VISIBILITY_OPTIONS.everybody,
-      VISIBILITY_OPTIONS.contacts,
-      VISIBILITY_OPTIONS.nobody
-    ]
+    visibilityOptions: ['everybody', 'contacts', 'nobody']
   },
 
-  lastSeenVisibility: {
+  {
+    settingkey: 'lastSeenVisibility',
     title: 'Who can see your last seen time?',
-    visibilityChoices: [
-      VISIBILITY_OPTIONS.everybody,
-      VISIBILITY_OPTIONS.contacts,
-      VISIBILITY_OPTIONS.nobody
-    ]
+    visibilityOptions: ['everybody', 'contacts', 'nobody']
   },
 
-  profilePhotosVisibility: {
+  {
+    settingkey: 'profilePhotosVisibility',
     title: 'Who can see your profile photos?',
-    visibilityChoices: [
-      VISIBILITY_OPTIONS.everybody,
-      VISIBILITY_OPTIONS.contacts,
-      VISIBILITY_OPTIONS.nobody
-    ]
+    visibilityOptions: ['everybody', 'contacts', 'nobody']
   },
 
-  messageSender: {
+  {
+    settingkey: 'messageSender',
     title: 'Who can send you messages?',
-    visibilityChoices: [
-      VISIBILITY_OPTIONS.everybody,
-      VISIBILITY_OPTIONS.contacts,
-      VISIBILITY_OPTIONS.nobody
-    ]
+    visibilityOptions: ['everybody', 'contacts', 'nobody']
   }
-};
+];

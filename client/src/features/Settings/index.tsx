@@ -1,5 +1,13 @@
-import { type CSSProperties, type FC, useMemo, useState } from 'react';
+import { BackButton, CloseButton } from '@/components/buttons';
+import { NextIcon } from '@/components/icons';
+import { useAnimation, useAppContext } from '@/hooks';
+import { useMemo, useState, type CSSProperties, type FC } from 'react';
+import BioEditor from './components/BioEditor';
+import NameEditor from './components/NameEditor';
+import PasswordEditor from './components/PasswordEditor';
+import PrivacyEditor from './components/PrivacyEditor';
 import ProfilePhotoSettings from './components/ProfilePhotoSettings';
+import UsernameEditor from './components/UsernameEditor';
 import {
   ArrowIconContainer,
   Description,
@@ -15,15 +23,8 @@ import {
   SettingsPageOverlay,
   Title
 } from './styles';
-import UsernameEditor from './components/UsernameEditor';
-import NameEditor from './components/NameEditor';
-import BioEditor from './components/BioEditor';
-import { NextIcon } from '@/components/icons';
 import useSettings from './useSettings';
-import PasswordEditor from './components/PasswordEditor';
-import PrivacyEditor from './components/PrivacyEditor';
-import { BackButton, CloseButton } from '@/components/buttons';
-import { useAppContext, useAnimation } from '@/hooks';
+import { PrivacySetting } from './types';
 
 type SettingsCategory = 'account' | 'profilePhoto' | 'security' | 'privacy';
 
@@ -217,7 +218,7 @@ const Settings: FC<SettingsProps> = ({ animationStyle, onClose }) => {
 
         {privacyEditorAnimation.isMounted && (
           <PrivacyEditor
-            settingKey={modalPayload as string}
+            privacySetting={modalPayload as PrivacySetting}
             onClose={closeModal}
             animationStyle={privacyEditorAnimation.animationStyle}
           />

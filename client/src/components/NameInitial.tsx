@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 const NameInitialsContainer = styled.div`
@@ -7,7 +6,6 @@ const NameInitialsContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #005d27;
   border-radius: inherit;
   background-color: ${(props) => props.theme.nameInitials.backgroundColor};
 `;

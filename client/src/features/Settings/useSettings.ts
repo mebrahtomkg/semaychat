@@ -1,7 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
-import { useAccount } from '@/hooks';
-import { PRIVACY_SETTINGS_CONFIG, VISIBILITY_OPTION_LABELS } from './constants';
-import type { SettingsItem } from './types';
+import { useAccount, useAppSelector } from '@/hooks';
+import { PRIVACY_SETTINGS, VISIBILITY_OPTION_LABELS } from './constants';
 
 type ModalName =
   | 'UsernameEditor'
@@ -10,17 +9,17 @@ type ModalName =
   | 'PasswordEditor'
   | 'PrivacyEditor';
 
+interface SettingsItem {
+  title: string;
+  description: string;
+  onClick?: () => void;
+}
+
 const useSettings = () => {
-  const {
-    email,
-    username,
-    bio,
-    emailVisibility,
-    lastSeenVisibility,
-    profilePhotosVisibility,
-    messageSender,
-    fullName,
-  } = useAccount();
+  const account = useAppSelector((state) => state.account);
+  if (!account) throw new Error('Invalid account!');
+
+  const { email, username, bio, fullName } = useAccount();
 
   const [activeModal, setActiveModal] = useState<ModalName | null>(null);
   const [modalPayload, setModalPayload] = useState<unknown>(null);
@@ -36,22 +35,24 @@ const useSettings = () => {
     () => [
       {
         title: username ? `@${username}` : 'Username',
-        description: username ? `Click to change username` : 'Click to add username',
-        onClick: () => openModal('UsernameEditor'),
+        description: username
+          ? `Click to change username`
+          : 'Click to add username',
+        onClick: () => openModal('UsernameEditor')
       },
       {
         title: fullName,
         description: 'Name',
-        onClick: () => openModal('NameEditor'),
+        onClick: () => openModal('NameEditor')
       },
       {
         title: bio ? bio : 'Bio',
         description: bio ? 'Bio' : 'Add a few words about yourself',
-        onClick: () => openModal('BioEditor'),
+        onClick: () => openModal('BioEditor')
       },
-      { title: email || '', description: 'Email', onClick: undefined },
+      { title: email || '', description: 'Email', onClick: undefined }
     ],
-    [bio, email, fullName, openModal, username],
+    [bio, email, fullName, openModal, username]
   );
 
   const securitySettingsItems: SettingsItem[] = useMemo(
@@ -59,47 +60,26 @@ const useSettings = () => {
       {
         title: 'Password',
         description: 'Click to change password',
-        onClick: () => openModal('PasswordEditor'),
+        onClick: () => openModal('PasswordEditor')
       },
       {
         title: 'Blocked Users',
         description: 'You blocked 0 users',
-        onClick: undefined,
-      },
+        onClick: undefined
+      }
     ],
-    [openModal],
+    [openModal]
   );
 
   const privacySettingsItems: SettingsItem[] = useMemo(
-    () => [
-      {
-        title: PRIVACY_SETTINGS_CONFIG.emailVisibility.title,
-        description: VISIBILITY_OPTION_LABELS[emailVisibility],
-        onClick: () => openModal('PrivacyEditor', 'emailVisibility'),
-      },
-      {
-        title: PRIVACY_SETTINGS_CONFIG.lastSeenVisibility.title,
-        description: VISIBILITY_OPTION_LABELS[lastSeenVisibility],
-        onClick: () => openModal('PrivacyEditor', 'lastSeenVisibility'),
-      },
-      {
-        title: PRIVACY_SETTINGS_CONFIG.profilePhotosVisibility.title,
-        description: VISIBILITY_OPTION_LABELS[profilePhotosVisibility],
-        onClick: () => openModal('PrivacyEditor', 'profilePhotosVisibility'),
-      },
-      {
-        title: PRIVACY_SETTINGS_CONFIG.messageSender.title,
-        description: VISIBILITY_OPTION_LABELS[messageSender],
-        onClick: () => openModal('PrivacyEditor', 'messageSender'),
-      },
-    ],
-    [
-      emailVisibility,
-      lastSeenVisibility,
-      messageSender,
-      openModal,
-      profilePhotosVisibility,
-    ],
+    () =>
+      PRIVACY_SETTINGS.map((privacySetting) => ({
+        title: privacySetting.title,
+        description:
+          VISIBILITY_OPTION_LABELS[account[privacySetting.settingkey]],
+        onClick: () => openModal('PrivacyEditor', privacySetting)
+      })),
+    [openModal, account]
   );
 
   return {
@@ -108,7 +88,7 @@ const useSettings = () => {
     privacySettingsItems,
     activeModal,
     modalPayload,
-    closeModal,
+    closeModal
   };
 };
 
