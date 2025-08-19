@@ -2,11 +2,12 @@
 /client/node_modules/
 /client/.swc/
 /client/.env
+
 /node_modules/
+
 /server/ApiTests/
 /server/database/
 /server/dist/
 /server/node_modules/
 /server/storage/
 /server/.env
-
