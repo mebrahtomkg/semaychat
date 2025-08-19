@@ -1,9 +1,6 @@
 {
-  "javascript": {
-    "formatter": {
-      "quoteStyle": "single",
-      "indentStyle": "space"
-    }
+  "formatter": {
+    "enabled": false
   },
   "assist": {
     "actions": {
