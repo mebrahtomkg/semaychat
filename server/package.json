@@ -7,11 +7,8 @@
   },
   "scripts": {
     "dev": "NODE_ENV=development tsx watch ./src/server.ts",
-    "tsc": "swc src -w -d dist --strip-leading-paths",
-    "dev-old": "NODE_ENV=development nodemon ./dist/server.js",
     "build": "swc src -d dist --strip-leading-paths",
-    "start": "nodemon ./dist/server.js",
-    "setup": "node server/setup/index.js"
+    "start": "node ./dist/server.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.3",
@@ -22,11 +19,9 @@
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "formidable": "^3.5.4",
     "jsonwebtoken": "^9.0.2",
     "mime-types": "^3.0.1",
     "multer": "^2.0.1",
-    "mysql2": "^3.14.1",
     "pg": "^8.16.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.7",
@@ -43,7 +38,6 @@
     "@types/mime-types": "^3.0.1",
     "@types/multer": "^1.4.13",
     "@types/node": "^22.15.29",
-    "nodemon": "^3.1.10",
     "tsx": "^4.20.3"
   }
 }
