@@ -5,7 +5,7 @@ const authGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!isPositiveInteger(req.userId)) {
       res.status(401).json({
-        message: 'You are not logged in.'
+        message: 'You are not logged in.',
       });
       return;
     }

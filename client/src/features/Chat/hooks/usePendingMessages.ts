@@ -7,7 +7,7 @@ import { getMessageRequestFile } from '@/services/messageRequestFilesStore';
 const selectPendingMessagesByReceiverId = createAppSelector(
   [
     (state) => state.messageRequests,
-    (_state, receiverId: number) => receiverId
+    (_state, receiverId: number) => receiverId,
   ],
 
   (messageRequests, receiverId) =>
@@ -15,15 +15,15 @@ const selectPendingMessagesByReceiverId = createAppSelector(
       (req) =>
         (req.requestType === 'TEXT_MESSAGE_SEND' ||
           req.requestType === 'FILE_MESSAGE_SEND') &&
-        req.payload.receiverId === receiverId
-    )
+        req.payload.receiverId === receiverId,
+    ),
 );
 
 const usePendingMessages = (receiverId: number) => {
   const selfId = useAppSelector((state) => state.account?.id);
 
   const requests = useAppSelector((state) =>
-    selectPendingMessagesByReceiverId(state, receiverId)
+    selectPendingMessagesByReceiverId(state, receiverId),
   );
 
   const pendingMessages: Message[] = useMemo(() => {
@@ -37,7 +37,7 @@ const usePendingMessages = (receiverId: number) => {
           req.requestType === 'TEXT_MESSAGE_SEND' ? req.payload.content : null,
         createdAt: 0,
         editedAt: 0,
-        isSeen: false
+        isSeen: false,
       };
 
       if (req.requestType === 'FILE_MESSAGE_SEND') {
@@ -49,7 +49,7 @@ const usePendingMessages = (receiverId: number) => {
             name: file.name,
             caption,
             size: file.size,
-            file
+            file,
           };
         }
       }

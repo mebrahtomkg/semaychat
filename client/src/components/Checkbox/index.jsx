@@ -1,5 +1,3 @@
-
-
 import styled from 'styled-components';
 import CheckBoxTick from './CheckBoxTick';
 

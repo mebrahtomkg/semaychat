@@ -9,20 +9,20 @@ const MAX_TRANSITION_DURATION = DURATION; // Max duration used in the css transi
 const INITIAL_STYLE = {
   opacity: '0.0',
   transform: 'scale(0.8)',
-  transition: TRANSITION
+  transition: TRANSITION,
 };
 
 const FINAL_STYLE = {
   opacity: '1.0',
   transform: 'scale(1.0)',
-  transition: TRANSITION
+  transition: TRANSITION,
 };
 
 type AnimationStatus = 'entering' | 'exiting';
 
 const useAnimation = (isVisible: boolean) => {
   const [status, setStatus] = useState<AnimationStatus | undefined>(
-    isVisible ? 'entering' : undefined
+    isVisible ? 'entering' : undefined,
   );
   const [isMounted, setIsMounted] = useState<boolean>(isVisible);
   const [style, setStyle] = useState<CSSProperties | undefined>(INITIAL_STYLE);
@@ -57,7 +57,7 @@ const useAnimation = (isVisible: boolean) => {
         setStyle(FINAL_STYLE);
         enteringTimer.setTimer(
           () => setStyle(undefined),
-          MAX_TRANSITION_DURATION
+          MAX_TRANSITION_DURATION,
         );
         break;
 
@@ -65,7 +65,7 @@ const useAnimation = (isVisible: boolean) => {
         setStyle(INITIAL_STYLE);
         exitingTimer.setTimer(
           () => setIsMounted(false),
-          MAX_TRANSITION_DURATION
+          MAX_TRANSITION_DURATION,
         );
         break;
     }

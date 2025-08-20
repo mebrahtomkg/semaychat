@@ -4,7 +4,7 @@ import {
   RadioButtonBallIconStyled,
   RadioButtonContainer,
   RadioButtonLabel,
-  RadioButtonIconContainer
+  RadioButtonIconContainer,
 } from './styles';
 
 interface RadioButtonProps {
@@ -18,7 +18,7 @@ const RadioButton: FC<RadioButtonProps> = ({
   isChecked,
   label,
   value,
-  onCheck
+  onCheck,
 }) => {
   return (
     <RadioButtonContainer>

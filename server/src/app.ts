@@ -7,7 +7,7 @@ import {
   messageRoutes,
   profilePhotoRoutes,
   rootRoutes,
-  userRoutes
+  userRoutes,
 } from '@/routes';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -28,7 +28,7 @@ const corsOptions: CorsOptions = {
 
     callback(new Error('Not allowed by CORS'));
   },
-  credentials: true
+  credentials: true,
 };
 
 app.use(cors(corsOptions));

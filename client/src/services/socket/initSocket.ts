@@ -10,7 +10,7 @@ const initSocket = () => {
   isInitialized = true;
 
   const socket = io(API_BASE_URL.replace('/api', ''), {
-    withCredentials: true
+    withCredentials: true,
   });
 
   socket.on('connect', () => {

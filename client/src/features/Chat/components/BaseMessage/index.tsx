@@ -3,7 +3,7 @@ import {
   DeleteIcon,
   DownloadIcon,
   EditIcon,
-  ReplyIcon
+  ReplyIcon,
 } from '@/components/icons';
 import { FC, useCallback, useMemo, useState } from 'react';
 import {
@@ -11,7 +11,7 @@ import {
   FileMessage,
   PhotoMessage,
   TextMessage,
-  VideoMessage
+  VideoMessage,
 } from '..';
 import MessageDeleteConfirmDialog from '../MessageDeleteConfirmDialog';
 import { MessageContainer, MessageStyled } from './styles';
@@ -34,19 +34,19 @@ const BaseMessage: FC<BaseMessageProps> = ({ message, isLastInGroup }) => {
   const [isDeleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
   const openDeleteConfirm = useCallback(
     () => setDeleteConfirmVisible(true),
-    []
+    [],
   );
 
   const closeDeleteConfirm = useCallback(
     () => setDeleteConfirmVisible(false),
-    []
+    [],
   );
 
   const {
     isContextMenuVisible,
     onContextMenu,
     onMoreButtonClick,
-    contextMenuControlProps
+    contextMenuControlProps,
   } = useContextMenu();
 
   const contextMenuItems = useMemo(() => {
@@ -58,13 +58,13 @@ const BaseMessage: FC<BaseMessageProps> = ({ message, isLastInGroup }) => {
       items.push({
         icon: <DownloadIcon />,
         label: 'Save',
-        action: downloadFile
+        action: downloadFile,
       });
     }
     items.push({
       icon: <DeleteIcon />,
       label: 'Delete',
-      action: openDeleteConfirm
+      action: openDeleteConfirm,
     });
     return items;
   }, [reply, type, isOutgoing, edit, downloadFile, openDeleteConfirm]);

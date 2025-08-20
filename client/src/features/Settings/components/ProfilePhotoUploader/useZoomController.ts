@@ -9,11 +9,11 @@ const useZoomController = () => {
       const step = 5 * direction;
       const newZoomPercentage = Math.max(
         0,
-        Math.min(100, zoomPercentage + step)
+        Math.min(100, zoomPercentage + step),
       );
       setZoomPercentage(newZoomPercentage);
     },
-    [zoomPercentage]
+    [zoomPercentage],
   );
 
   const imageWidth = useMemo(() => {
@@ -24,7 +24,7 @@ const useZoomController = () => {
     imageWidth,
     zoomPercentage,
     updateZoomPercentage: setZoomPercentage,
-    adjustZoomOnWheelEvent
+    adjustZoomOnWheelEvent,
   };
 };
 

@@ -17,19 +17,19 @@ const sendFile = async (req: Request, res: Response, next: NextFunction) => {
       typeof req.body?.receiverId === 'string'
         ? req.body.receiverId.trim()
         : '',
-      10
+      10,
     );
 
     if (!isPositiveInteger(receiverId)) {
       res.status(400).json({
-        message: 'Invalid receiver id.'
+        message: 'Invalid receiver id.',
       });
       return;
     }
 
     if (req.userId === receiverId) {
       res.status(400).json({
-        message: 'You cannot send message to yourself.'
+        message: 'You cannot send message to yourself.',
       });
       return;
     }
@@ -41,7 +41,7 @@ const sendFile = async (req: Request, res: Response, next: NextFunction) => {
 
     if (!file) {
       res.status(400).json({
-        message: 'No file attached.'
+        message: 'No file attached.',
       });
       return;
     }
@@ -53,14 +53,14 @@ const sendFile = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const attachment = await Attachment.create(
         { name, size, caption },
-        { transaction }
+        { transaction },
       );
 
       const { status, message, success, data } = await commitSendingMessage({
         transaction,
         senderId: req.userId,
         receiverId,
-        attachmentId: attachment.id
+        attachmentId: attachment.id,
       });
 
       await storage.saveFile(MESSAGE_FILES_BUCKET, filepath, attachment.id);

@@ -13,7 +13,7 @@ const useContactsFetcher = () => {
     queryKey: ['/contacts'],
     queryFn: () => get<User[]>('/contacts'),
     retry: (failureCount: number, error: Error) =>
-      error instanceof ApiError && error.status ? false : failureCount < 2
+      error instanceof ApiError && error.status ? false : failureCount < 2,
   });
 
   useEffect(() => {

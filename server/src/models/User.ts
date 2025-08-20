@@ -3,14 +3,14 @@ import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
-  Model
+  Model,
 } from 'sequelize';
 import sequelize from '@/config/db';
 import {
   EMAIL_VISIBILITY,
   LAST_SEEN_VISIBILITY,
   PROFILE_PHOTOS_VISIBILITY,
-  MESSAGE_SENDER
+  MESSAGE_SENDER,
 } from '@/constants';
 import { VisibilityOption } from '@/types';
 import BlockedUser from './BlockedUser';
@@ -43,67 +43,67 @@ User.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
-      primaryKey: true
+      primaryKey: true,
     },
 
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
     },
 
     password: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
 
     firstName: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
 
     lastName: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
     },
 
     username: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
     },
 
     bio: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
     },
 
     profilePhotoId: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
     },
 
     emailVisibility: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: EMAIL_VISIBILITY.defaultValue
+      defaultValue: EMAIL_VISIBILITY.defaultValue,
     },
 
     lastSeenVisibility: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: LAST_SEEN_VISIBILITY.defaultValue
+      defaultValue: LAST_SEEN_VISIBILITY.defaultValue,
     },
 
     profilePhotosVisibility: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: PROFILE_PHOTOS_VISIBILITY.defaultValue
+      defaultValue: PROFILE_PHOTOS_VISIBILITY.defaultValue,
     },
 
     messageSender: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: MESSAGE_SENDER.defaultValue
+      defaultValue: MESSAGE_SENDER.defaultValue,
     },
 
     lastSeenAt: {
@@ -113,14 +113,14 @@ User.init(
       get() {
         const value = this.getDataValue('lastSeenAt');
         return value === null ? null : Number.parseInt(`${value}`, 10);
-      }
-    }
+      },
+    },
   },
   {
     tableName: 'users',
     timestamps: false,
-    sequelize
-  }
+    sequelize,
+  },
 );
 
 export default User;

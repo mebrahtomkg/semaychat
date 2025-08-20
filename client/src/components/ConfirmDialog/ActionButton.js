@@ -1,5 +1,3 @@
-
-
 import styled from 'styled-components';
 
 const ActionButton = styled.button`

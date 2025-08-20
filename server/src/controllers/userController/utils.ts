@@ -2,7 +2,7 @@ import {
   MIN_PWD_LENGTH,
   MAX_PWD_LENGTH,
   MAX_NAME_LENGTH,
-  MAX_BIO_LENGTH
+  MAX_BIO_LENGTH,
 } from '../../config/general';
 
 export const checkEmail = (userEmail: string) => {

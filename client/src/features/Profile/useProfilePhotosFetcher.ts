@@ -12,7 +12,7 @@ const useProfilePhotosFetcher = (userId?: number) => {
   useEffect(() => {
     const fetchPhotos = async () => {
       const { success, data, message } = await get<ProfilePhoto[]>(
-        `/profile-photos/user/${userId}`
+        `/profile-photos/user/${userId}`,
       );
 
       if (success) {

@@ -4,7 +4,7 @@ import { useDebounce } from '.';
 const usePhotoNavigation = (
   photosCount: number,
   initialIndex = 0,
-  resetNavWhenPhotosCountIncreases = false
+  resetNavWhenPhotosCountIncreases = false,
 ) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
@@ -29,7 +29,7 @@ const usePhotoNavigation = (
         if (e.key === 'ArrowLeft') handlePrevious();
         if (e.key === 'ArrowRight') handleNext();
       }, 400),
-    [debounce, handlePrevious, handleNext]
+    [debounce, handlePrevious, handleNext],
   );
 
   useEffect(() => {
@@ -54,14 +54,14 @@ const usePhotoNavigation = (
 
   const photoIndexIndicator = useMemo(
     () => `${currentIndex + 1} of ${photosCount}`,
-    [currentIndex, photosCount]
+    [currentIndex, photosCount],
   );
 
   return {
     currentIndex,
     handleNext,
     handlePrevious,
-    photoIndexIndicator
+    photoIndexIndicator,
   };
 };
 

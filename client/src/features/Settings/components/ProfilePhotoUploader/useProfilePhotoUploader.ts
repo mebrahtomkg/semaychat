@@ -13,13 +13,13 @@ const IMAGE_ERRORS = {
   SIZE_TOO_SMALL: `Image size too small. 
                       Minimum size is ${getSizeInAppropriateUnit(MIN_IMAGE_FILE_SIZE)}.`,
   SIZE_TOO_BIG: `Image size too big.
-                    Maximum size is ${getSizeInAppropriateUnit(MAX_IMAGE_FILE_SIZE)}.`
+                    Maximum size is ${getSizeInAppropriateUnit(MAX_IMAGE_FILE_SIZE)}.`,
 };
 
 const UPLOAD_ERRORS = {
   CROPPING_FAILED: 'Image cropping failed. Please try again.',
   NETWORK_ERROR: 'Network error. Please try again.', // Not used
-  UNKNOWN_ERROR: 'Photo upload failed for unknown reason. Please try again.'
+  UNKNOWN_ERROR: 'Photo upload failed for unknown reason. Please try again.',
 };
 
 const validateImageFile = (file: File) => {
@@ -33,7 +33,7 @@ const validateImageFile = (file: File) => {
 const useProfilePhotoUploader = ({
   file,
   onClose,
-  imageCropperFunc
+  imageCropperFunc,
 }: {
   file: File;
   onClose: () => void;
@@ -88,7 +88,7 @@ const useProfilePhotoUploader = ({
 
       const { success, data, message } = await post<ProfilePhoto>(
         '/profile-photos/me',
-        formData
+        formData,
       );
 
       if (success) {
@@ -101,7 +101,7 @@ const useProfilePhotoUploader = ({
     } catch (err) {
       console.error(
         (err as Error).message ||
-          'Unknown error occured at profile photo upload.'
+          'Unknown error occured at profile photo upload.',
       );
       setError((err as Error).message || UPLOAD_ERRORS.UNKNOWN_ERROR);
     }

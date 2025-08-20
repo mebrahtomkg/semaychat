@@ -9,7 +9,7 @@ const filterMessageData = (message: Message): Partial<Message> => {
     createdAt,
     editedAt,
     attachment,
-    isSeen
+    isSeen,
   } = message;
 
   return {
@@ -20,7 +20,7 @@ const filterMessageData = (message: Message): Partial<Message> => {
     attachment,
     isSeen,
     createdAt,
-    editedAt
+    editedAt,
   };
 };
 

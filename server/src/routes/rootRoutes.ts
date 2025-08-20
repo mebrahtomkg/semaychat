@@ -25,43 +25,43 @@ router.get(
         {
           firstName: 'Tom',
           email: 't@e.c',
-          password: await hashPassword('tttt')
+          password: await hashPassword('tttt'),
         },
         {
           firstName: 'Edge',
           email: 'e@e.c',
-          password: await hashPassword('eeee')
+          password: await hashPassword('eeee'),
         },
         {
           firstName: 'Firefox',
           email: 'f@e.c',
-          password: await hashPassword('ffff')
+          password: await hashPassword('ffff'),
         },
         {
           firstName: 'Safari',
           email: 's@e.c',
-          password: await hashPassword('ssss')
+          password: await hashPassword('ssss'),
         },
         {
           firstName: 'Opera',
           email: 'o@e.c',
-          password: await hashPassword('oooo')
+          password: await hashPassword('oooo'),
         },
         {
           firstName: 'Bravo',
           email: 'b@e.c',
-          password: await hashPassword('bbbb')
-        }
+          password: await hashPassword('bbbb'),
+        },
       ]);
 
       res.status(200).json({
         message: `Models were synchronized successfully. eg. ${User.tableName}`,
-        users
+        users,
       });
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 export default router;

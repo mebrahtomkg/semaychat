@@ -1,7 +1,7 @@
 import {
   MAX_NAME_LENGTH,
   MAX_PWD_LENGTH,
-  MIN_PWD_LENGTH
+  MIN_PWD_LENGTH,
 } from '@/config/general';
 
 export const checkEmail = (userEmail: string) => {

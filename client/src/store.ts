@@ -24,8 +24,8 @@ const store = configureStore({
 
     contacts: contactsReducer,
 
-    blockedUsers: blockedUsersReducer
-  }
+    blockedUsers: blockedUsersReducer,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -26,7 +26,7 @@ const useSelfProfilePhoto = (photo: ProfilePhoto) => {
     photoDateTime,
     downloadPhoto,
     isDoingRequest: isLoading,
-    deletePhoto
+    deletePhoto,
   };
 };
 

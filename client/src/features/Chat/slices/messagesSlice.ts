@@ -15,7 +15,7 @@ export const messagesSlice = createSlice({
 
       const otherExistingMessages = state.filter(
         (message) =>
-          !newMessages.some((newMessage) => newMessage?.id === message?.id)
+          !newMessages.some((newMessage) => newMessage?.id === message?.id),
       );
 
       return [...otherExistingMessages, ...newMessages];
@@ -25,7 +25,7 @@ export const messagesSlice = createSlice({
       const newMessage = action.payload;
 
       const otherExistingMessages = state.filter(
-        (message) => message.id !== newMessage.id
+        (message) => message.id !== newMessage.id,
       );
 
       return [...otherExistingMessages, newMessage];
@@ -33,14 +33,14 @@ export const messagesSlice = createSlice({
 
     messageUpdated(state, action: PayloadAction<Message>) {
       return state.map((message) =>
-        message.id === action.payload.id ? action.payload : message
+        message.id === action.payload.id ? action.payload : message,
       );
     },
 
     messageDeleted(state, action: PayloadAction<number>) {
       return state.filter((message) => message.id !== action.payload);
-    }
-  }
+    },
+  },
 });
 
 export default messagesSlice.reducer;
@@ -49,5 +49,5 @@ export const {
   manyMessagesAdded,
   messageAdded,
   messageUpdated,
-  messageDeleted
+  messageDeleted,
 } = messagesSlice.actions;

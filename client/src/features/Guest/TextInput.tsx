@@ -1,4 +1,3 @@
-
 import styled from 'styled-components';
 
 export const InputGroup = styled.div`
@@ -45,7 +44,7 @@ export default function TextInput({
   onChangeListener,
   onEnter,
   error,
-  shakeError
+  shakeError,
 }) {
   const onInputMount = (element) => {
     if (element && shouldFocus) {
@@ -66,9 +65,9 @@ export default function TextInput({
           { transform: 'translateX(12px)' },
           { transform: 'translateX(0px)' },
           { transform: 'translateX(12px)' },
-          { transform: 'translateX(0px)' }
+          { transform: 'translateX(0px)' },
         ],
-        700
+        700,
       );
     }
   };

@@ -6,7 +6,7 @@ const useImageCropper = () => {
     imageWidth,
     zoomPercentage,
     updateZoomPercentage,
-    adjustZoomOnWheelEvent
+    adjustZoomOnWheelEvent,
   } = useZoomController();
 
   const croppingViewportRef = useRef<HTMLDivElement | null>(null);
@@ -21,18 +21,18 @@ const useImageCropper = () => {
 
   const dragStartPositionsRef = useRef({
     imagePosition: { x: 0, y: 0 },
-    pointerPosition: { x: 0, y: 0 }
+    pointerPosition: { x: 0, y: 0 },
   });
 
   const startImageDrag = useCallback(
     (clientX, clientY) => {
       dragStartPositionsRef.current = {
         imagePosition: { x: imagePosition.x, y: imagePosition.y },
-        pointerPosition: { x: clientX, y: clientY }
+        pointerPosition: { x: clientX, y: clientY },
       };
       isDragging.current = true;
     },
-    [imagePosition]
+    [imagePosition],
   );
 
   const updateImagePosition = useCallback((clientX, clientY) => {
@@ -43,7 +43,7 @@ const useImageCropper = () => {
     const yDistance = clientY - pointerPosition.y;
     setImagePosition({
       x: imgPosition.x + xDistance,
-      y: imgPosition.y + yDistance
+      y: imgPosition.y + yDistance,
     });
   }, []);
 
@@ -62,7 +62,7 @@ const useImageCropper = () => {
       URL.revokeObjectURL(e.target.src);
       recenterImage();
     },
-    [recenterImage]
+    [recenterImage],
   );
 
   const snapImageToCenterIfOutOfBounds = useCallback(() => {
@@ -116,13 +116,13 @@ const useImageCropper = () => {
             0,
             0,
             destWidth,
-            destHeight
+            destHeight,
           );
         }
 
         canvas.toBlob((blob) => resolve(blob), 'image/png');
       }),
-    [imagePosition]
+    [imagePosition],
   );
 
   const handlePointerUp = useCallback(() => {
@@ -150,21 +150,21 @@ const useImageCropper = () => {
 
   const handleMouseDown = useCallback(
     (e) => startImageDrag(e.clientX, e.clientY),
-    [startImageDrag]
+    [startImageDrag],
   );
 
   const handleTouchStart = useCallback(
     (e) => startImageDrag(e.touches[0].clientX, e.touches[0].clientY),
-    [startImageDrag]
+    [startImageDrag],
   );
 
   const imageStyle = useMemo(
     () => ({
       transform: `translate(${imagePosition.x}px, ${imagePosition.y}px)`,
       width: `${imageWidth}%`,
-      transition: !isDragging.current ? 'transform 0.7s ease-in-out' : 'none'
+      transition: !isDragging.current ? 'transform 0.7s ease-in-out' : 'none',
     }),
-    [imagePosition, imageWidth]
+    [imagePosition, imageWidth],
   );
 
   return {
@@ -178,7 +178,7 @@ const useImageCropper = () => {
     adjustZoomOnWheelEvent,
     zoomPercentage,
     updateZoomPercentage,
-    cropImage
+    cropImage,
   };
 };
 

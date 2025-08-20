@@ -3,7 +3,7 @@ import sequelize from '@/config/db';
 import { ProfilePhoto, User } from '@/models';
 import {
   MAX_PROFILE_PHOTO_FILE_SIZE,
-  PROFILE_PHOTOS_BUCKET
+  PROFILE_PHOTOS_BUCKET,
 } from '@/config/general';
 import storage from '@/config/storage';
 
@@ -18,7 +18,7 @@ const uploadPhoto = async (req: Request, res: Response, next: NextFunction) => {
 
     if (!file) {
       res.status(400).json({
-        message: 'No file provided!'
+        message: 'No file provided!',
       });
       return;
     }
@@ -27,11 +27,11 @@ const uploadPhoto = async (req: Request, res: Response, next: NextFunction) => {
 
     if (size > MAX_PROFILE_PHOTO_FILE_SIZE) {
       const maxSizeInMB = Math.round(
-        MAX_PROFILE_PHOTO_FILE_SIZE / (1024 * 1024)
+        MAX_PROFILE_PHOTO_FILE_SIZE / (1024 * 1024),
       );
 
       res.status(400).json({
-        message: `Image file size too big. Maximum allowed size is ${maxSizeInMB} MB`
+        message: `Image file size too big. Maximum allowed size is ${maxSizeInMB} MB`,
       });
 
       // TODO delete the uploaded file
@@ -43,7 +43,7 @@ const uploadPhoto = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const profilePhoto = await ProfilePhoto.create(
         { userId: req.userId, name, size },
-        { transaction }
+        { transaction },
       );
 
       await storage.saveFile(PROFILE_PHOTOS_BUCKET, filepath, profilePhoto.id);
@@ -52,8 +52,8 @@ const uploadPhoto = async (req: Request, res: Response, next: NextFunction) => {
         { profilePhotoId: profilePhoto.id },
         {
           where: { id: req.userId },
-          transaction
-        }
+          transaction,
+        },
       );
 
       await transaction.commit();
@@ -61,7 +61,7 @@ const uploadPhoto = async (req: Request, res: Response, next: NextFunction) => {
       res.status(200).json({
         success: true,
         data: profilePhoto,
-        message: 'Profile photo uploaded successfully'
+        message: 'Profile photo uploaded successfully',
       });
     } catch (err) {
       await transaction.rollback();

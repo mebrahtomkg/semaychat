@@ -7,7 +7,7 @@ import {
   FileSelectorModal,
   ModalFooter,
   ModalHeader,
-  ModalTitle
+  ModalTitle,
 } from './styles';
 import { CloseButton } from '@/components/buttons';
 import ImageFile from './ImageFile';
@@ -25,7 +25,7 @@ interface FileSelectorProps {
 const FileSelector: FC<FileSelectorProps> = ({
   files,
   chatPartnerId,
-  onClose
+  onClose,
 }) => {
   const {
     attachments,
@@ -33,7 +33,7 @@ const FileSelector: FC<FileSelectorProps> = ({
     removeAttachment,
     updateAttachmentCaption,
     addFiles,
-    sendAttachments
+    sendAttachments,
   } = useFilesSender(files, chatPartnerId, onClose);
 
   const attachmentComponents = useMemo(
@@ -52,9 +52,9 @@ const FileSelector: FC<FileSelectorProps> = ({
             attachment={attachment}
             onRemove={removeAttachment}
           />
-        )
+        ),
       ),
-    [attachments, removeAttachment, updateAttachmentCaption]
+    [attachments, removeAttachment, updateAttachmentCaption],
   );
 
   const { fileInputRef, handleFileChange, triggerFileSelection } =

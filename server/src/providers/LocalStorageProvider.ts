@@ -12,7 +12,7 @@ export default class LocalStorageProvider implements IStorageProvider {
   public async saveFile(bucket: string, filePath: string, fileId: number) {
     await fs.rename(
       filePath,
-      path.resolve(this.storageDir, bucket, `${fileId}`)
+      path.resolve(this.storageDir, bucket, `${fileId}`),
     );
   }
 

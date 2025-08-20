@@ -9,16 +9,16 @@ module.exports = {
   context: __dirname,
   cache: true,
   entry: {
-    main: './src/index.tsx'
+    main: './src/index.tsx',
   },
   devtool: IS_PRODUCTION ? false : 'source-map',
   devServer: {
     liveReload: false,
     headers: {
       'Access-Control-Allow-Origin': '*',
-      'Cache-Control': 'public, max-age=31536000'
+      'Cache-Control': 'public, max-age=31536000',
     },
-    open: false
+    open: false,
   },
   watchOptions: {
     aggregateTimeout: 30,
@@ -26,18 +26,18 @@ module.exports = {
       path.resolve(__dirname, '.swc'),
       path.resolve(__dirname, 'dist'),
       path.resolve(__dirname, 'node_modules'),
-      path.resolve(__dirname, 'public')
-    ]
+      path.resolve(__dirname, 'public'),
+    ],
   },
   output: {
     filename: '[name].[contenthash].js',
     chunkFilename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
-    publicPath: PUBLIC_PATH
+    publicPath: PUBLIC_PATH,
   },
   stats: {
-    preset: 'normal'
+    preset: 'normal',
   },
   optimization: {
     splitChunks: {
@@ -45,16 +45,16 @@ module.exports = {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendor',
-          chunks: 'all'
-        }
-      }
-    }
+          chunks: 'all',
+        },
+      },
+    },
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src')
+      '@': path.resolve(__dirname, 'src'),
     },
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
   module: {
     rules: [
@@ -63,7 +63,7 @@ module.exports = {
         exclude: [/[\\/]node_modules[\\/]/],
         include: path.resolve(__dirname, 'src'),
         issuer: /\.[jt]sx?$/,
-        use: ['@svgr/webpack']
+        use: ['@svgr/webpack'],
       },
       {
         test: /\.(js|jsx|ts|tsx)$/,
@@ -75,29 +75,29 @@ module.exports = {
             jsc: {
               parser: { syntax: 'typescript', tsx: true, jsx: true },
               transform: {
-                react: { runtime: 'automatic', refresh: true }
+                react: { runtime: 'automatic', refresh: true },
               },
               experimental: {
                 cacheRoot: process.env.SWC_CACHE_DIR || undefined,
                 plugins: [
                   [
                     '@swc/plugin-styled-components',
-                    { ssr: false, fileName: false }
-                  ]
-                ]
-              }
-            }
-          }
-        }
-      }
-    ]
+                    { ssr: false, fileName: false },
+                  ],
+                ],
+              },
+            },
+          },
+        },
+      },
+    ],
   },
   plugins: [
     new ReactRefreshPlugin(),
     new rspack.HtmlRspackPlugin({
       publicPath: PUBLIC_PATH,
       template: path.resolve(__dirname, 'public/index.html'),
-      templateParameters: { API_URL }
-    })
-  ]
+      templateParameters: { API_URL },
+    }),
+  ],
 };

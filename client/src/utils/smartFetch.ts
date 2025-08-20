@@ -27,13 +27,13 @@ export interface ResponseResult<D> {
 
 const smartFetch = async <D>(
   url: string,
-  options?: FetchOptions
+  options?: FetchOptions,
 ): Promise<ResponseResult<D>> => {
   const { method, body, responseType, signal, headers }: FetchOptions = {
     method: 'GET',
     responseType: 'json',
     headers: {},
-    ...(options || {})
+    ...(options || {}),
   };
 
   if (!['GET', 'POST', 'PUT', 'DELETE'].includes(method.toUpperCase()))
@@ -45,7 +45,7 @@ const smartFetch = async <D>(
   const init: RequestInit = {
     method: method.toUpperCase(),
     credentials: 'include',
-    headers
+    headers,
   };
 
   if (body && ['POST', 'PUT'].includes(method.toUpperCase())) {
@@ -88,7 +88,7 @@ const smartFetch = async <D>(
     return {
       success: false,
       data: undefined as D,
-      message: err.message || 'Something went wrong'
+      message: err.message || 'Something went wrong',
     };
   }
 };

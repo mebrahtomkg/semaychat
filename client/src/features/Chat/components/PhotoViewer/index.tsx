@@ -5,20 +5,20 @@ import {
   BackButton,
   MoreButton,
   NextButton,
-  PreviousButton
+  PreviousButton,
 } from '@/components/buttons';
 import {
   PhotoHeaderSection,
   PhotoIndexIndicator,
   PhotoMetaContainer,
-  PhotoMetaText
+  PhotoMetaText,
 } from '@/styles';
 import { PhotoViewerModal, ProgressContainer, ProgressText } from './styles';
 import {
   useImageLoader,
   usePhotoNavigation,
   useAccount,
-  useAppSelector
+  useAppSelector,
 } from '@/hooks';
 import TinySpinner from '@/components/TinySpinner';
 import FlexibleImage from '@/components/FlexibleImage';
@@ -35,15 +35,15 @@ interface PhotoViewerProps {
 const PhotoViewer: FC<PhotoViewerProps> = ({
   chatPartnerId,
   targetMessageId,
-  onClose
+  onClose,
 }) => {
   const photoMessages = useAppSelector((state) =>
     state.messages.filter(
       (message) =>
         isImage(message.attachment?.extension) &&
         (message.senderId === chatPartnerId ||
-          message.receiverId === chatPartnerId)
-    )
+          message.receiverId === chatPartnerId),
+    ),
   );
 
   const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =
@@ -61,11 +61,11 @@ const PhotoViewer: FC<PhotoViewerProps> = ({
     usePhotoNavigation(photosCount, targetIndex);
 
   const { isOutgoing, dateTime, fileUrl } = useMessageInfo(
-    photoMessages[currentIndex]
+    photoMessages[currentIndex],
   );
 
   const { deleteMessage, downloadFile, reply } = useMessageActions(
-    photoMessages[currentIndex]
+    photoMessages[currentIndex],
   );
 
   const { isImageFetching, isImageLoading, imageSrc, handleImageLoad } =
@@ -75,9 +75,9 @@ const PhotoViewer: FC<PhotoViewerProps> = ({
     () => [
       { icon: <ReplyIcon />, label: 'Reply', action: reply },
       { icon: <DownloadIcon />, label: 'Save', action: downloadFile },
-      { icon: <DeleteIcon />, label: 'Delete', action: deleteMessage }
+      { icon: <DeleteIcon />, label: 'Delete', action: deleteMessage },
     ],
-    [reply, downloadFile, deleteMessage]
+    [reply, downloadFile, deleteMessage],
   );
 
   const { fullName: partnerFullName } = useUser(chatPartnerId);

@@ -8,14 +8,14 @@ const handleMessageReceive = (message: Message) => {
     (oldMessages: Message[]) => {
       if (!oldMessages) return [message];
       return [...oldMessages, message];
-    }
+    },
   );
 
   queryClient.setQueryData(['chats'], (oldChats: Chat[]) => {
     return oldChats?.map((chat) =>
       chat.partner.id === message.senderId
         ? { ...chat, lastMessage: message }
-        : chat
+        : chat,
     );
   });
 

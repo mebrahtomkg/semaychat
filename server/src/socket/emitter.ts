@@ -13,7 +13,7 @@ export const initEmitter = (server: Server) => {
 export const emitToUser = (
   userId: number,
   eventName: string,
-  data: unknown
+  data: unknown,
 ) => {
   if (!io) throw Error('Emitter not initialized!');
 

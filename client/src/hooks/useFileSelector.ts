@@ -22,7 +22,7 @@ const useFileSelector = (onFileSelect) => {
     fileInputRef,
     handleFileChange,
     triggerFileSelection,
-    selectedFile
+    selectedFile,
   };
 };
 

@@ -16,7 +16,7 @@ const hashPassword = (password: string) => {
       } else {
         resolve(hash as string);
       }
-    })
+    }),
   );
 };
 

@@ -2,19 +2,19 @@ import { useState } from 'react';
 import {
   checkConfirmPassword,
   checkCurrentPassword,
-  checkNewPassword
+  checkNewPassword,
 } from './utils';
 import useAccountUpdater from '../../hooks/useAccountUpdater';
 
 export const PASSWORD_UPDATE_STEPS = {
   NEW_PASSWORD: 'new_password',
   CONFIRM_PASSWORD: 'confirm_password',
-  CURRENT_PASSWORD: 'current_password'
+  CURRENT_PASSWORD: 'current_password',
 };
 
 const usePasswordUpdate = (onClose) => {
   const [currentStep, setCurrentStep] = useState(
-    PASSWORD_UPDATE_STEPS.NEW_PASSWORD
+    PASSWORD_UPDATE_STEPS.NEW_PASSWORD,
   );
 
   const [newPassword, setNewPassword] = useState('');
@@ -46,7 +46,7 @@ const usePasswordUpdate = (onClose) => {
   const updatePassword = async () => {
     const { success, message } = await updateAccount({
       newPassword: newPassword.trim(),
-      password: currentPassword.trim()
+      password: currentPassword.trim(),
     });
     if (success) {
       onClose();
@@ -142,7 +142,7 @@ const usePasswordUpdate = (onClose) => {
     handleBackNav,
     handleNextNav,
 
-    isLoading: isUpdating
+    isLoading: isUpdating,
   };
 };
 

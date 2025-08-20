@@ -16,7 +16,7 @@ interface SocketResponse<Data> {
 
 export const emitWithAck = async <Result = unknown>(
   eventName: string,
-  payload: unknown
+  payload: unknown,
 ): Promise<Result | undefined> => {
   if (!socket) throw Error('Emitter socket not initialized!');
 

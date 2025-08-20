@@ -3,7 +3,7 @@ import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
-  Model
+  Model,
 } from 'sequelize';
 import sequelize from '@/config/db';
 import Attachment from './Attachment';
@@ -32,45 +32,45 @@ Message.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
-      primaryKey: true
+      primaryKey: true,
     },
 
     senderId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
 
     receiverId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
 
     content: {
       type: DataTypes.TEXT,
-      allowNull: true
+      allowNull: true,
     },
 
     attachmentId: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
     },
 
     isSeen: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: false
+      defaultValue: false,
     },
 
     isDeletedBySender: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: false
+      defaultValue: false,
     },
 
     isDeletedByReceiver: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: false
+      defaultValue: false,
     },
 
     createdAt: {
@@ -80,7 +80,7 @@ Message.init(
       get() {
         const value = this.getDataValue('createdAt');
         return value === null ? null : Number.parseInt(`${value}`, 10);
-      }
+      },
     },
 
     editedAt: {
@@ -90,14 +90,14 @@ Message.init(
       get() {
         const value = this.getDataValue('editedAt');
         return value === null ? null : Number.parseInt(`${value}`, 10);
-      }
-    }
+      },
+    },
   },
   {
     tableName: 'messages',
     timestamps: false,
-    sequelize
-  }
+    sequelize,
+  },
 );
 
 export default Message;

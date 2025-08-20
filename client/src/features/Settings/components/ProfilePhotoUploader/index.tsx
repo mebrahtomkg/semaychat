@@ -7,7 +7,7 @@ import {
   CroppingViewport,
   LoadingText,
   LoadingTextContainer,
-  PositionableImage
+  PositionableImage,
 } from './styles';
 import Spinner from '../../../../Spinner';
 import useImageCropper from './useImageCropper';
@@ -25,7 +25,7 @@ interface ProfilePhotoUploaderProps {
 
 const ProfilePhotoUploader: FC<ProfilePhotoUploaderProps> = ({
   file,
-  onClose
+  onClose,
 }) => {
   const {
     croppingViewportRef,
@@ -38,11 +38,11 @@ const ProfilePhotoUploader: FC<ProfilePhotoUploaderProps> = ({
     adjustZoomOnWheelEvent,
     zoomPercentage,
     updateZoomPercentage,
-    cropImage
+    cropImage,
   } = useImageCropper();
 
   const { error, imageSrc, uploadPhoto, isUploading } = useProfilePhotoUploader(
-    { file, onClose, imageCropperFunc: cropImage }
+    { file, onClose, imageCropperFunc: cropImage },
   );
 
   if (error) return <ErrorBanner error={error} onClose={onClose} />;

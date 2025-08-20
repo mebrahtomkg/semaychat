@@ -1,7 +1,7 @@
 export interface Attachment {
-    id: number;
-    file: File;
-    isImage: boolean;
-    displayName: string;
-    caption?: string;
-  }
+  id: number;
+  file: File;
+  isImage: boolean;
+  displayName: string;
+  caption?: string;
+}

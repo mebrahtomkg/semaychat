@@ -9,5 +9,5 @@ const API_URL = IS_PRODUCTION
 module.exports = {
   IS_PRODUCTION,
   PUBLIC_PATH,
-  API_URL
+  API_URL,
 };

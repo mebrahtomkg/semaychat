@@ -3,7 +3,7 @@ import NameInput, { checkName } from './NameInput';
 import EmailInput, { checkEmail } from './EmailInput';
 import PasswordInput, { checkPassword } from './PasswordInput';
 import ConfirmPasswordInput, {
-  checkConfirmPassword
+  checkConfirmPassword,
 } from './ConfirmPasswordInput';
 import { Link } from 'react-router';
 import { ButtonPrimary, FormTitle } from '../LogInForm';
@@ -23,7 +23,7 @@ export default function SignUpForm() {
     confirmPassword: '',
     confirmPasswordError: '',
     shakeErrors: false,
-    activeField: 'name'
+    activeField: 'name',
   });
 
   const onChangeListener = (event) => {
@@ -33,7 +33,7 @@ export default function SignUpForm() {
       [name]: value,
       [`${name}Error`]: null,
       activeField: name,
-      shakeErrors: false
+      shakeErrors: false,
     }));
   };
 
@@ -60,13 +60,13 @@ export default function SignUpForm() {
         emailError,
         passwordError,
         confirmPasswordError,
-        shakeErrors: true
+        shakeErrors: true,
       }));
     } else {
       const { success, data, message } = await post<Account>('/auth/signup', {
         firstName: name,
         email,
-        password
+        password,
       });
       if (success && data) {
         dispatch(accountFetched(data));
@@ -74,7 +74,7 @@ export default function SignUpForm() {
         setState((prevState) => ({
           ...prevState,
           confirmPasswordError: message || '',
-          shakeErrors: true
+          shakeErrors: true,
         }));
         console.error(message);
       }
@@ -95,7 +95,7 @@ export default function SignUpForm() {
           onChangeListener,
           onEnter,
           error: state.nameError,
-          shakeError
+          shakeError,
         }}
       />
       <EmailInput
@@ -105,7 +105,7 @@ export default function SignUpForm() {
           onChangeListener,
           onEnter,
           error: state.emailError,
-          shakeError
+          shakeError,
         }}
       />
       <PasswordInput
@@ -115,7 +115,7 @@ export default function SignUpForm() {
           onChangeListener,
           onEnter,
           error: state.passwordError,
-          shakeError
+          shakeError,
         }}
       />
       <ConfirmPasswordInput
@@ -125,7 +125,7 @@ export default function SignUpForm() {
           onChangeListener,
           onEnter,
           error: state.confirmPasswordError,
-          shakeError
+          shakeError,
         }}
       />
       <SubmitButton onSubmitHandler={onSubmitHandler} />

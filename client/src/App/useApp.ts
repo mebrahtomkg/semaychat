@@ -15,7 +15,7 @@ const useApp = () => {
 
   const themeObject = useMemo(
     () => (theme === 'dark' ? DarkTheme : LightTheme),
-    [theme]
+    [theme],
   );
 
   const isLargeScreen = windowWidth >= 768; // >= tablet
@@ -28,7 +28,7 @@ const useApp = () => {
     toggleTheme,
     isLargeScreen,
     currentRoutePath: currentPath,
-    previousRoutePath: previousPath
+    previousRoutePath: previousPath,
   };
 };
 

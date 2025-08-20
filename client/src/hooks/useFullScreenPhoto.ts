@@ -5,7 +5,7 @@ const useFullScreenPhoto = () => {
 
   const toggleFullScreenMode = useCallback(
     () => setIsFullScreenMode((prevValue) => !prevValue),
-    []
+    [],
   );
 
   const exitFullScreenMode = useCallback(() => setIsFullScreenMode(false), []);

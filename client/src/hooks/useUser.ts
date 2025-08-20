@@ -12,12 +12,12 @@ const useUser = (user?: User) => {
 
   const fullName = useMemo(
     () => calculateFullName(user?.firstName, user?.lastName),
-    [user?.firstName, user?.lastName]
+    [user?.firstName, user?.lastName],
   );
 
   const nameInitials = useMemo(
     () => calculateNameInitials(user?.firstName, user?.lastName),
-    [user?.firstName, user?.lastName]
+    [user?.firstName, user?.lastName],
   );
 
   const photoUrl = useMemo(
@@ -25,17 +25,17 @@ const useUser = (user?: User) => {
       user?.profilePhoto?.id
         ? `/profile-photos/${user.profilePhoto.id}/file`
         : null,
-    [user?.profilePhoto?.id]
+    [user?.profilePhoto?.id],
   );
 
   const isBlocked = useMemo(
     () => (user ? blockedUsers.includes(user.id) : false),
-    [blockedUsers, user]
+    [blockedUsers, user],
   );
 
   const isContact = useMemo(
     () => (user ? contacts.includes(user.id) : false),
-    [contacts, user]
+    [contacts, user],
   );
 
   const { post, del } = useAPI();
@@ -44,7 +44,7 @@ const useUser = (user?: User) => {
   const blockUser = useCallback(async () => {
     if (!user || isBlocked) return;
     const { success, message } = await post(`/blocked-users`, {
-      userId: user.id
+      userId: user.id,
     });
     if (success) {
       dispatch(blockedUserAdded(user.id));
@@ -66,7 +66,7 @@ const useUser = (user?: User) => {
   const addToContacts = useCallback(async () => {
     if (!user || isContact) return;
     const { success, message } = await post('/contacts', {
-      userId: user.id
+      userId: user.id,
     });
     if (success) {
       dispatch(contactAdded(user.id));
@@ -94,7 +94,7 @@ const useUser = (user?: User) => {
     blockUser,
     unblockUser,
     addToContacts,
-    removeFromContacts
+    removeFromContacts,
   };
 };
 

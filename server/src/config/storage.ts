@@ -1,7 +1,7 @@
 import {
   MESSAGE_FILES_BUCKET,
   PROFILE_PHOTOS_BUCKET,
-  ROOT_DIR
+  ROOT_DIR,
 } from './general';
 import path from 'node:path';
 import { StorageType } from '@/types';
@@ -44,18 +44,18 @@ switch (storageType) {
 
     if (!supabaseUrl) {
       throw Error(
-        'STORAGE_TYPE is set to supabase, but SUPABASE_URL is not provided!'
+        'STORAGE_TYPE is set to supabase, but SUPABASE_URL is not provided!',
       );
     }
 
     if (!supabaseServiceRoleKey) {
       throw Error(
-        'STORAGE_TYPE is set to supabase, but SUPABASE_SERVICE_ROLE_KEY is not provided!'
+        'STORAGE_TYPE is set to supabase, but SUPABASE_SERVICE_ROLE_KEY is not provided!',
       );
     }
 
     storage = new SupabaseStorageProvider(
-      createClient(supabaseUrl, supabaseServiceRoleKey)
+      createClient(supabaseUrl, supabaseServiceRoleKey),
     );
     break;
   }

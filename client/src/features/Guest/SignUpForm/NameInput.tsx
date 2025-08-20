@@ -1,4 +1,3 @@
-
 import TextInput from '../TextInput';
 
 const MAX_NAME_LENGTH = 25;
@@ -9,7 +8,7 @@ export default function NameInput({
   onChangeListener,
   onEnter,
   error,
-  shakeError
+  shakeError,
 }) {
   return (
     <TextInput
@@ -21,7 +20,7 @@ export default function NameInput({
         onChangeListener,
         onEnter,
         error,
-        shakeError
+        shakeError,
       }}
     />
   );

@@ -10,7 +10,7 @@ const useSpinner = () => {
   return {
     isSpinnerVisible: isVisible,
     showSpinner,
-    closeSpinner
+    closeSpinner,
   };
 };
 

@@ -1,4 +1,3 @@
-
 import styled, { css, keyframes } from 'styled-components';
 
 const rotate = keyframes`${css`

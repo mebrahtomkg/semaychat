@@ -17,7 +17,7 @@ interface AuthTokenPayload {
  */
 const performSocketAuth = (
   socket: AuthenticatedSocket,
-  next: (err?: Error) => void
+  next: (err?: Error) => void,
 ) => {
   try {
     const cookieHeader = socket.handshake.headers.cookie;

@@ -9,7 +9,7 @@ const useDebounce = () => {
       clearTimer();
       setTimer(fn, ms);
     },
-    [clearTimer, setTimer]
+    [clearTimer, setTimer],
   );
 
   return { debounce };

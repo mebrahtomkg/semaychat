@@ -12,7 +12,7 @@ const useMessagesFetcher = (partnerId: number) => {
     queryKey: [`/messages/${partnerId}`],
     queryFn: () => get<Message[]>(`/messages/${partnerId}`),
     retry: (failureCount: number, error: Error) =>
-      error instanceof ApiError && error.status ? false : failureCount < 2
+      error instanceof ApiError && error.status ? false : failureCount < 2,
   });
 
   useEffect(() => {

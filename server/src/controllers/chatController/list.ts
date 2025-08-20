@@ -9,50 +9,50 @@ const list = async (req: Request, res: Response, next: NextFunction) => {
 
     const chats = await Chat.findAll({
       where: {
-        [Op.or]: [{ user1Id: requesterId }, { user2Id: requesterId }]
+        [Op.or]: [{ user1Id: requesterId }, { user2Id: requesterId }],
       },
       include: [
         {
           model: User.scope([
             'withProfilePhoto',
             { method: ['withBlockedUsers', { blockedId: requesterId }] },
-            { method: ['withContacts', { addedId: requesterId }] }
+            { method: ['withContacts', { addedId: requesterId }] },
           ]),
           as: 'user1',
           where: {
-            id: { [Op.not]: requesterId }
+            id: { [Op.not]: requesterId },
           },
-          required: false
+          required: false,
         },
         {
           model: User.scope([
             'withProfilePhoto',
             { method: ['withBlockedUsers', { blockedId: requesterId }] },
-            { method: ['withContacts', { addedId: requesterId }] }
+            { method: ['withContacts', { addedId: requesterId }] },
           ]),
           as: 'user2',
           where: {
-            id: { [Op.not]: requesterId }
+            id: { [Op.not]: requesterId },
           },
-          required: false
+          required: false,
         },
         {
           model: Message,
           as: 'lastMessageForUser1',
           required: false,
           where: {
-            '$Chat.user1Id$': requesterId
-          }
+            '$Chat.user1Id$': requesterId,
+          },
         },
         {
           model: Message,
           as: 'lastMessageForUser2',
           required: false,
           where: {
-            '$Chat.user2Id$': requesterId
-          }
-        }
-      ]
+            '$Chat.user2Id$': requesterId,
+          },
+        },
+      ],
     });
 
     const transformedChats = chats.map((chat) => {
@@ -66,7 +66,7 @@ const list = async (req: Request, res: Response, next: NextFunction) => {
         requesterIsBlocked: user.blockedUsers
           ? user.blockedUsers.length > 0
           : false,
-        requesterIsContact: user.contacts ? user.contacts.length > 0 : false
+        requesterIsContact: user.contacts ? user.contacts.length > 0 : false,
       });
 
       const lastMessage = lastMessageForUser1 || lastMessageForUser2;
@@ -77,7 +77,7 @@ const list = async (req: Request, res: Response, next: NextFunction) => {
     res.status(200).json({
       success: true,
       data: transformedChats,
-      message: 'Chats retrieved successfully'
+      message: 'Chats retrieved successfully',
     });
   } catch (err) {
     next(err);

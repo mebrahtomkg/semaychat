@@ -8,24 +8,24 @@ const readUser = async (req: Request, res: Response, next: NextFunction) => {
 
     const id = parseInt(
       typeof req.params.userId === 'string' ? req.params.userId : '',
-      10
+      10,
     );
 
     if (!isPositiveInteger(id)) {
       return res.status(400).json({
-        message: 'Invalid user id.'
+        message: 'Invalid user id.',
       });
     }
 
     const user = await User.scope([
       'withProfilePhoto',
       { method: ['withBlockedUsers', { blockedId: requesterId }] },
-      { method: ['withContacts', { addedId: requesterId }] }
+      { method: ['withContacts', { addedId: requesterId }] },
     ]).findByPk(id);
 
     if (!user) {
       return res.status(404).json({
-        message: 'User not found.'
+        message: 'User not found.',
       });
     }
 
@@ -33,13 +33,13 @@ const readUser = async (req: Request, res: Response, next: NextFunction) => {
       requesterIsBlocked: user.blockedUsers
         ? user.blockedUsers.length > 0
         : false,
-      requesterIsContact: user.contacts ? user.contacts.length > 0 : false
+      requesterIsContact: user.contacts ? user.contacts.length > 0 : false,
     });
 
     res.status(200).json({
       success: true,
       data: cleanUser,
-      message: 'User fetched successfully.'
+      message: 'User fetched successfully.',
     });
   } catch (err) {
     next(err);

@@ -10,20 +10,20 @@ const selectMessagesByPartner = createAppSelector(
     messages.filter(
       (message) =>
         message.receiverId === chatPartnerId ||
-        message.senderId === chatPartnerId
-    )
+        message.senderId === chatPartnerId,
+    ),
 );
 
 const useMessagesSelector = (chatPartnerId: number): Message[] => {
   const messages = useAppSelector((state) =>
-    selectMessagesByPartner(state, chatPartnerId)
+    selectMessagesByPartner(state, chatPartnerId),
   );
 
   const pendingMessages = usePendingMessages(chatPartnerId);
 
   const selectedMessages = useMemo(
     () => [...messages, ...pendingMessages],
-    [messages, pendingMessages]
+    [messages, pendingMessages],
   );
 
   return selectedMessages;

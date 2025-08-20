@@ -17,7 +17,7 @@ interface PrivacyEditorProps {
 const PrivacyEditor: FC<PrivacyEditorProps> = ({
   privacySetting,
   animationStyle,
-  onClose
+  onClose,
 }) => {
   const account = useAppSelector((state) => state.account);
   if (!account) throw new Error('Invalid account!');
@@ -33,7 +33,7 @@ const PrivacyEditor: FC<PrivacyEditorProps> = ({
 
   const updateSetting = async () => {
     const { success, message } = await updateAccount({
-      [settingkey]: value
+      [settingkey]: value,
     });
 
     if (success) {

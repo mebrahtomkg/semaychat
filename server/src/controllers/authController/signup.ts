@@ -5,14 +5,14 @@ import { createAuthToken, filterUserData, hashPassword } from '@/utils';
 import {
   AUTH_TOKEN_AGE,
   AUTH_TOKEN_COOKIE_NAME,
-  IS_PRODUCTION
+  IS_PRODUCTION,
 } from '@/config/general';
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (req.userId) {
       return res.status(400).json({
-        message: 'You are already signedup'
+        message: 'You are already signedup',
       });
     }
 
@@ -23,7 +23,7 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
 
     if (!checkFirstName(firstName)) {
       return res.status(400).json({
-        message: 'Invalid Name.'
+        message: 'Invalid Name.',
       });
     }
 
@@ -31,7 +31,7 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
 
     if (!checkEmail(email)) {
       return res.status(400).json({
-        message: 'Invalid Email.'
+        message: 'Invalid Email.',
       });
     }
 
@@ -40,13 +40,13 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
 
     if (!checkPassword(password)) {
       return res.status(400).json({
-        message: 'Password invalid or too short.'
+        message: 'Password invalid or too short.',
       });
     }
 
     if (await User.findOne({ where: { email } })) {
       return res.status(409).json({
-        message: 'The eamil already exists.'
+        message: 'The eamil already exists.',
       });
     }
 
@@ -60,13 +60,13 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
       expires: new Date(Date.now() + AUTH_TOKEN_AGE),
       httpOnly: true,
       secure: IS_PRODUCTION,
-      sameSite: IS_PRODUCTION ? 'none' : 'lax'
+      sameSite: IS_PRODUCTION ? 'none' : 'lax',
     });
 
     res.status(200).json({
       success: true,
       data: filterUserData(user.toJSON()),
-      message: 'Signup successful'
+      message: 'Signup successful',
     });
   } catch (err) {
     next(err);

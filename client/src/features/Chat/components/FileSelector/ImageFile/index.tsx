@@ -4,7 +4,7 @@ import {
   ImageFileStyled,
   ImageStyled,
   ProgressText,
-  ProgressTextContainer
+  ProgressTextContainer,
 } from './styles';
 import { Attachment } from '../types';
 import RemoveButton from '../RemoveButton';
@@ -19,20 +19,20 @@ interface ImageFileProps {
 const ImageFile: FC<ImageFileProps> = ({
   attachment,
   onRemove,
-  onCaptionChange
+  onCaptionChange,
 }) => {
   const { imageSrc, isImageLoading, handleImageLoad } = useImageFileLoader(
-    attachment.file
+    attachment.file,
   );
 
   const remove = useCallback(
     () => onRemove(attachment.id),
-    [attachment.id, onRemove]
+    [attachment.id, onRemove],
   );
 
   const handleCaptionInput = useCallback(
     (e) => onCaptionChange(attachment.id, e.currentTarget.value),
-    [attachment.id, onCaptionChange]
+    [attachment.id, onCaptionChange],
   );
 
   const caption =

@@ -1,9 +1,8 @@
-
 import {
   MessageMetaStyled,
   ProgressText,
   TickIconContainer,
-  Time
+  Time,
 } from './styles';
 import { TickIcon } from '@/components/icons';
 

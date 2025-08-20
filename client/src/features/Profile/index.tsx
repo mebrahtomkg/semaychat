@@ -1,7 +1,7 @@
 import { FC, MouseEvent, useMemo } from 'react';
 import ContextMenu, {
   MenuItemDescriptor,
-  useContextMenu
+  useContextMenu,
 } from '@/components/ContextMenu';
 import FlexibleImage from '@/components/FlexibleImage';
 import NameInitial from '@/components/NameInitial';
@@ -11,14 +11,14 @@ import {
   CloseButton,
   MoreButton,
   NextButton,
-  PreviousButton
+  PreviousButton,
 } from '@/components/buttons';
 import {
   AddContactIcon,
   BlockUserIcon,
   DownloadIcon,
   RemoveContactIcon,
-  UnblockUserIcon
+  UnblockUserIcon,
 } from '@/components/icons';
 import {
   useAppContext,
@@ -26,13 +26,13 @@ import {
   useImageLoader,
   usePhotoNavigation,
   useProfilePhoto,
-  useUser
+  useUser,
 } from '@/hooks';
 import {
   PhotoHeaderSection,
   PhotoIndexIndicator,
   PhotoMetaContainer,
-  PhotoMetaText
+  PhotoMetaText,
 } from '@/styles';
 import { User } from '@/types';
 import useProfilePhotosFetcher from './useProfilePhotosFetcher';
@@ -40,7 +40,7 @@ import {
   Name,
   ProfileModal,
   ProfileModalOverlay,
-  ProfilePhotoStyled
+  ProfilePhotoStyled,
 } from './styles';
 import UserInfo from './UserInfo';
 
@@ -60,7 +60,7 @@ const Profile: FC<ProfileProps> = ({ user, onClose }) => {
     blockUser,
     unblockUser,
     addToContacts,
-    removeFromContacts
+    removeFromContacts,
   } = useUser(user);
 
   const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =
@@ -76,7 +76,7 @@ const Profile: FC<ProfileProps> = ({ user, onClose }) => {
     usePhotoNavigation(photosCount);
 
   const { photoUrl, photoDateTime, downloadPhoto } = useProfilePhoto(
-    profilePhotos[currentIndex]
+    profilePhotos[currentIndex],
   );
 
   const { isImageFetching, isImageLoading, imageSrc, handleImageLoad } =
@@ -90,13 +90,13 @@ const Profile: FC<ProfileProps> = ({ user, onClose }) => {
         items.push({
           icon: <UnblockUserIcon />,
           label: 'Unblock user',
-          action: unblockUser
+          action: unblockUser,
         });
       } else {
         items.push({
           icon: <BlockUserIcon />,
           label: 'Block user',
-          action: blockUser
+          action: blockUser,
         });
       }
 
@@ -104,13 +104,13 @@ const Profile: FC<ProfileProps> = ({ user, onClose }) => {
         items.push({
           icon: <RemoveContactIcon />,
           label: 'Remove contact',
-          action: removeFromContacts
+          action: removeFromContacts,
         });
       } else {
         items.push({
           icon: <AddContactIcon />,
           label: 'Add contact',
-          action: addToContacts
+          action: addToContacts,
         });
       }
     }
@@ -119,7 +119,7 @@ const Profile: FC<ProfileProps> = ({ user, onClose }) => {
       items.push({
         icon: <DownloadIcon />,
         label: 'Download',
-        action: downloadPhoto
+        action: downloadPhoto,
       });
     }
 
@@ -133,7 +133,7 @@ const Profile: FC<ProfileProps> = ({ user, onClose }) => {
     blockUser,
     removeFromContacts,
     addToContacts,
-    downloadPhoto
+    downloadPhoto,
   ]);
 
   const handleBackClick = (e: MouseEvent) => {

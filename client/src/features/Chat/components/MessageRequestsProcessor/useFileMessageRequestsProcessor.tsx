@@ -12,7 +12,7 @@ const selectRequest = createAppSelector(
   [(state) => state.messageRequests],
 
   (requests) =>
-    requests.filter((req) => req.requestType === 'FILE_MESSAGE_SEND')[0]
+    requests.filter((req) => req.requestType === 'FILE_MESSAGE_SEND')[0],
 );
 
 const useFileMessageRequestsProcessor = () => {
@@ -24,7 +24,7 @@ const useFileMessageRequestsProcessor = () => {
 
   const queryKey = useMemo(
     () => (request ? ['/messages/file', request.requestId] : ['']),
-    [request]
+    [request],
   );
 
   const queryFn = useCallback(async () => {
@@ -51,7 +51,7 @@ const useFileMessageRequestsProcessor = () => {
       (oldMessages: Message[]) => {
         if (!oldMessages) return [message];
         return [...oldMessages, message];
-      }
+      },
     );
 
     dispatch(messageRequestDeleted(request.requestId));

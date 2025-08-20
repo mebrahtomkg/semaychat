@@ -12,11 +12,11 @@ const useMessageActions = (message: Message) => {
       dispatch(
         messageDeleteRequestAdded({
           message: message,
-          deleteForReceiver
-        })
+          deleteForReceiver,
+        }),
       );
     },
-    [dispatch, message]
+    [dispatch, message],
   );
 
   const download = useDownload();
@@ -26,7 +26,7 @@ const useMessageActions = (message: Message) => {
     download(
       `/messages/file-download/${message.id}`,
       `${message.id}`,
-      `${message.attachment.extension}`
+      `${message.attachment.extension}`,
     );
   }, [message, download]);
 
@@ -44,7 +44,7 @@ const useMessageActions = (message: Message) => {
     edit,
     reply,
     downloadFile,
-    deleteMessage
+    deleteMessage,
   };
 };
 

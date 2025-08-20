@@ -5,7 +5,7 @@ export const MessageInputStyled = styled.div`
   position: relative;
   flex-grow: 1;
   max-width: 40rem;
-  display: flex; 
+  display: flex;
   margin-right: 10px;
   padding: 7px 10px 7px 23px;
   border-radius: 15px;

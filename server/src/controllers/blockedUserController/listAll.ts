@@ -10,10 +10,10 @@ const listAll = async (req: Request, res: Response, next: NextFunction) => {
         model: User.scope([
           'withProfilePhoto',
           { method: ['withContacts', { addedId: req.userId }] },
-          { method: ['withBlockedUsers', { blockedId: req.userId }] }
+          { method: ['withBlockedUsers', { blockedId: req.userId }] },
         ]),
-        as: 'user'
-      }
+        as: 'user',
+      },
     });
 
     const transformedBlockedUsers = blockedUsers.map((blockedUser) => {
@@ -25,14 +25,14 @@ const listAll = async (req: Request, res: Response, next: NextFunction) => {
         requesterIsBlocked: user.blockedUsers
           ? user.blockedUsers.length > 0
           : false,
-        requesterIsContact: user.contacts ? user.contacts.length > 0 : false
+        requesterIsContact: user.contacts ? user.contacts.length > 0 : false,
       });
     });
 
     res.status(200).json({
       success: true,
       data: transformedBlockedUsers,
-      message: 'blocked users fetched successfully.'
+      message: 'blocked users fetched successfully.',
     });
   } catch (err) {
     next(err);

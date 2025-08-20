@@ -15,10 +15,10 @@ console.log(`Database dialect: ${dialect}`);
 
 const options: Options = {
   dialect,
-  logging: false
+  logging: false,
 };
 
-let databaseUri: string | undefined ;
+let databaseUri: string | undefined;
 
 switch (dialect) {
   case 'sqlite': {
@@ -39,7 +39,7 @@ switch (dialect) {
     const postgresDatabaseUri = process.env.POSTGRES_DATABASE_URI;
     if (!postgresDatabaseUri) {
       throw new Error(
-        'DATABASE_DIALECT is set to "postgres", but POSTGRES_DATABASE_URI is not provided!'
+        'DATABASE_DIALECT is set to "postgres", but POSTGRES_DATABASE_URI is not provided!',
       );
     }
 
@@ -50,8 +50,8 @@ switch (dialect) {
     options.dialectOptions = {
       ssl: {
         require: true,
-        rejectUnauthorized: false
-      }
+        rejectUnauthorized: false,
+      },
     };
     break;
   }

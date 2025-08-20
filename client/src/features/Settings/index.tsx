@@ -21,7 +21,7 @@ import {
   SettingsPage,
   SettingsPageHeader,
   SettingsPageOverlay,
-  Title
+  Title,
 } from './styles';
 import useSettings from './useSettings';
 import { PrivacySetting } from './types';
@@ -42,7 +42,7 @@ const Settings: FC<SettingsProps> = ({ animationStyle, onClose }) => {
     privacySettingsItems,
     activeModal,
     modalPayload,
-    closeModal
+    closeModal,
   } = useSettings();
 
   const [category, setCategory] = useState<SettingsCategory>('profilePhoto');
@@ -65,7 +65,7 @@ const Settings: FC<SettingsProps> = ({ animationStyle, onClose }) => {
         </SettingsItemContainer>
       )),
 
-    [accountSettingsItems]
+    [accountSettingsItems],
   );
 
   const securitySettingsElements = useMemo(
@@ -85,7 +85,7 @@ const Settings: FC<SettingsProps> = ({ animationStyle, onClose }) => {
           </ArrowIconContainer>
         </SettingsItemContainer>
       )),
-    [securitySettingsItems]
+    [securitySettingsItems],
   );
 
   const privacySettingsElements = useMemo(
@@ -105,11 +105,11 @@ const Settings: FC<SettingsProps> = ({ animationStyle, onClose }) => {
           </ArrowIconContainer>
         </SettingsItemContainer>
       )),
-    [privacySettingsItems]
+    [privacySettingsItems],
   );
 
   const usernameEditorAnimation = useAnimation(
-    activeModal === 'UsernameEditor'
+    activeModal === 'UsernameEditor',
   );
 
   const nameEditorAnimation = useAnimation(activeModal === 'NameEditor');
@@ -117,7 +117,7 @@ const Settings: FC<SettingsProps> = ({ animationStyle, onClose }) => {
   const bioEditorAnimation = useAnimation(activeModal === 'BioEditor');
 
   const passwordEditorAnimation = useAnimation(
-    activeModal === 'PasswordEditor'
+    activeModal === 'PasswordEditor',
   );
 
   const privacyEditorAnimation = useAnimation(activeModal === 'PrivacyEditor');

@@ -12,12 +12,12 @@ const useAccount = () => {
 
   const fullName = useMemo(
     () => calculateFullName(firstName, lastName),
-    [firstName, lastName]
+    [firstName, lastName],
   );
 
   const nameInitials = useMemo(
     () => calculateNameInitials(firstName, lastName),
-    [firstName, lastName]
+    [firstName, lastName],
   );
 
   const photoUrl = useMemo(() => {
@@ -41,7 +41,7 @@ const useAccount = () => {
     fullName,
     nameInitials,
     photoUrl,
-    logout
+    logout,
   };
 };
 

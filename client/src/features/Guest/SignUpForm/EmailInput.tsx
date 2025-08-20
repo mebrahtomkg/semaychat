@@ -1,4 +1,3 @@
-
 import TextInput from '../TextInput';
 
 export default function EmailInput({
@@ -7,7 +6,7 @@ export default function EmailInput({
   onChangeListener,
   onEnter,
   error,
-  shakeError
+  shakeError,
 }) {
   return (
     <TextInput
@@ -20,7 +19,7 @@ export default function EmailInput({
         onChangeListener,
         onEnter,
         error,
-        shakeError
+        shakeError,
       }}
     />
   );

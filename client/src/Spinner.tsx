@@ -1,5 +1,3 @@
-
-
 import styled, { css, keyframes } from 'styled-components';
 
 const SpinnerPage = styled.div`
@@ -41,7 +39,7 @@ const SpinnerCanvas = styled.canvas`
 `;
 
 export default function Spinner() {
-  const onMount = element => {
+  const onMount = (element) => {
     if (element) {
       const ctx = element.getContext('2d');
       ctx.clearRect(0, 0, 120, 120);
@@ -52,9 +50,9 @@ export default function Spinner() {
       ctx.arc(60, 60, 35, 0, 1.7 * Math.PI);
       ctx.stroke();
     }
-  };    
+  };
   return (
-    <SpinnerPage>      
+    <SpinnerPage>
       <SpinnerContainer>
         <SpinnerCanvas ref={onMount} width="120" height="120" />
       </SpinnerContainer>

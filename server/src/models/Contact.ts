@@ -3,7 +3,7 @@ import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
-  Model
+  Model,
 } from 'sequelize';
 import sequelize from '@/config/db';
 import User from './User';
@@ -25,24 +25,24 @@ Contact.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
-      primaryKey: true
+      primaryKey: true,
     },
 
     adderId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
 
     addedId: {
       type: DataTypes.INTEGER,
-      allowNull: false
-    }
+      allowNull: false,
+    },
   },
   {
     tableName: 'contacts',
     timestamps: false,
-    sequelize
-  }
+    sequelize,
+  },
 );
 
 export default Contact;

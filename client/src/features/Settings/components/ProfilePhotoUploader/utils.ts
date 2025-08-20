@@ -15,7 +15,7 @@ const IMAGE_EXTENSIONS = [
   'avif',
   'jp2',
   'j2k',
-  'hdr'
+  'hdr',
 ];
 
 export const getFileExtension = (file) => {

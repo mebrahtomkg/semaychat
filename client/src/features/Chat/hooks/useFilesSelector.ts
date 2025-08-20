@@ -25,7 +25,7 @@ const useFilesSelector = (onFilesSelect?: (files: File[]) => void) => {
     fileInputRef,
     handleFileChange,
     triggerFileSelection,
-    selectedFiles
+    selectedFiles,
   };
 };
 

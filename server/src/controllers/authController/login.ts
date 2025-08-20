@@ -2,7 +2,7 @@ import { checkEmail, checkPassword } from './utils';
 import {
   AUTH_TOKEN_COOKIE_NAME,
   AUTH_TOKEN_AGE,
-  IS_PRODUCTION
+  IS_PRODUCTION,
 } from '@/config/general';
 import { User } from '@/models';
 import { createAuthToken, filterUserData, verifyPassword } from '@/utils';
@@ -12,7 +12,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (req.userId) {
       res.status(400).json({
-        message: 'You are already logged in'
+        message: 'You are already logged in',
       });
       return;
     }
@@ -23,7 +23,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
     if (!checkEmail(email)) {
       res.status(400).json({
-        message: 'Invalid email'
+        message: 'Invalid email',
       });
       return;
     }
@@ -33,25 +33,25 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
     if (!checkPassword(password)) {
       res.status(400).json({
-        message: 'Invalid password'
+        message: 'Invalid password',
       });
       return;
     }
 
     const user = await User.scope('withProfilePhoto').findOne({
-      where: { email }
+      where: { email },
     });
 
     if (!user) {
       res.status(404).json({
-        message: 'No user found with the specified email.'
+        message: 'No user found with the specified email.',
       });
       return;
     }
 
     if (!(await verifyPassword(password, user.password))) {
       res.status(401).json({
-        message: 'Incorrect password!'
+        message: 'Incorrect password!',
       });
       return;
     }
@@ -62,13 +62,13 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       expires: new Date(Date.now() + AUTH_TOKEN_AGE),
       httpOnly: true,
       secure: IS_PRODUCTION,
-      sameSite: IS_PRODUCTION ? 'none' : 'lax'
+      sameSite: IS_PRODUCTION ? 'none' : 'lax',
     });
 
     res.status(200).json({
       success: true,
       data: filterUserData(user.toJSON()),
-      message: 'Login successful'
+      message: 'Login successful',
     });
   } catch (err) {
     next(err);

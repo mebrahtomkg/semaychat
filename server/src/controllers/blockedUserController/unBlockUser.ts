@@ -6,25 +6,25 @@ const unBlockUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = parseInt(
       typeof req.params.userId === 'string' ? req.params.userId.trim() : '',
-      10
+      10,
     );
 
     if (!isPositiveInteger(userId)) {
       return res.status(400).json({
-        message: 'Invalid user id.'
+        message: 'Invalid user id.',
       });
     }
 
     await BlockedUser.destroy({
       where: {
         blockerId: req.userId,
-        blockedId: userId
-      }
+        blockedId: userId,
+      },
     });
 
     res.status(200).json({
       success: true,
-      message: 'User unblocked successfully.'
+      message: 'User unblocked successfully.',
     });
   } catch (error) {
     next(error);

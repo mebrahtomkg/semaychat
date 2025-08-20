@@ -5,12 +5,12 @@ import { useDownload } from '.';
 const useProfilePhoto = (photo) => {
   const photoUrl = useMemo(
     () => (photo ? `/profile-photos/${photo.id}/file` : undefined),
-    [photo]
+    [photo],
   );
 
   const photoDateTime = useMemo(
     () => photo && formatDateTime(photo.createdAt),
-    [photo]
+    [photo],
   );
 
   const download = useDownload();

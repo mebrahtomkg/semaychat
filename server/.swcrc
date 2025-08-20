@@ -22,7 +22,7 @@
   "module": {
     "type": "es6",
     "resolveFully": true,
-    "outFileExtension": "js",
+    "outFileExtension": "js"
   },
   "minify": false
 }

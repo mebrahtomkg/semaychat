@@ -19,8 +19,8 @@ export const blockedUsersSlice = createSlice({
 
     blockedUserDeleted(state, action: PayloadAction<number>) {
       return state.filter((blockedUser) => blockedUser !== action.payload);
-    }
-  }
+    },
+  },
 });
 
 export default blockedUsersSlice.reducer;

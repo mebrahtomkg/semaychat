@@ -1,4 +1,3 @@
-
 import styled from 'styled-components';
 import { BackIcon } from '../icons';
 

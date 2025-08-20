@@ -6,7 +6,7 @@ import {
   ConfirmDialogStyled,
   DialogButtonsContainer,
   DialogMessage,
-  DialogTitle
+  DialogTitle,
 } from './styles';
 import CheckBox from './Checkbox';
 
@@ -19,7 +19,7 @@ interface MessageDeleteConfirmDialogProps {
 const MessageDeleteConfirmDialog: FC<MessageDeleteConfirmDialogProps> = ({
   isOutgoing,
   onDelete,
-  onClose
+  onClose,
 }) => {
   const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
   const toggleCheckBox = () => setIsCheckBoxChecked((prevValue) => !prevValue);

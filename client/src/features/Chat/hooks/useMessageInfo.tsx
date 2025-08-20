@@ -6,7 +6,7 @@ import {
   formatTime,
   isAudio,
   isImage,
-  isVideo
+  isVideo,
 } from '../utils';
 import { API_BASE_URL } from '@/constants';
 import { useMessageStatus } from '.';
@@ -23,23 +23,23 @@ const useMessageInfo = (message: Message) => {
 
   const time = useMemo(
     () => (message.createdAt ? formatTime(message.createdAt) : '??'),
-    [message.createdAt]
+    [message.createdAt],
   );
 
   const dateTime = useMemo(
     () => (message.createdAt ? formatDateTime(message.createdAt) : ''),
-    [message.createdAt]
+    [message.createdAt],
   );
 
   const status = useMessageStatus(
     message.id,
-    typeof message.attachment?.name === 'string'
+    typeof message.attachment?.name === 'string',
   );
 
   const fileUrl = useMemo(
     () =>
       message.id > 0 ? `${API_BASE_URL}/messages/file/${message.id}` : null,
-    [message.id]
+    [message.id],
   );
 
   const type: MessageType = useMemo(() => {
@@ -58,7 +58,7 @@ const useMessageInfo = (message: Message) => {
     status,
     time,
     dateTime,
-    fileUrl
+    fileUrl,
   };
 };
 

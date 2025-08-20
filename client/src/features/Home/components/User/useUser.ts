@@ -12,12 +12,12 @@ const useUser = (user: User) => {
 
   const fullName = useMemo(
     () => calculateFullName(firstName, lastName),
-    [firstName, lastName]
+    [firstName, lastName],
   );
 
   const nameInitials = useMemo(
     () => calculateNameInitials(firstName, lastName),
-    [firstName, lastName]
+    [firstName, lastName],
   );
 
   return { photoUrl, nameInitials, fullName, id: user.id };

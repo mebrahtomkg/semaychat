@@ -1,4 +1,3 @@
-
 import TextInput from '../TextInput';
 
 const MIN_PASSWORD_LENGTH = 4;
@@ -9,7 +8,7 @@ export default function PasswordInput({
   onChangeListener,
   onEnter,
   error,
-  shakeError
+  shakeError,
 }) {
   return (
     <TextInput
@@ -22,7 +21,7 @@ export default function PasswordInput({
         onChangeListener,
         onEnter,
         error,
-        shakeError
+        shakeError,
       }}
     />
   );

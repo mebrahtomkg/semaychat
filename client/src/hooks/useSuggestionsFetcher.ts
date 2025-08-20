@@ -12,7 +12,7 @@ const useSuggestionsFetcher = () => {
     queryKey: ['/users/suggestions'],
     queryFn: () => get<User[]>('/users/suggestions'),
     retry: (failureCount: number, error: Error) =>
-      error instanceof ApiError && error.status ? false : failureCount < 2
+      error instanceof ApiError && error.status ? false : failureCount < 2,
   });
 
   useEffect(() => {

@@ -11,12 +11,12 @@ const readFile = async (req: Request, res: Response, next: NextFunction) => {
       typeof req.params.messageId === 'string'
         ? req.params.messageId.trim()
         : '',
-      10
+      10,
     );
 
     if (!isPositiveInteger(messageId)) {
       res.status(400).json({
-        message: 'Invalid message id.'
+        message: 'Invalid message id.',
       });
       return;
     }
@@ -25,7 +25,7 @@ const readFile = async (req: Request, res: Response, next: NextFunction) => {
 
     if (!message) {
       res.status(404).json({
-        message: 'Message not found.'
+        message: 'Message not found.',
       });
       return;
     }
@@ -37,21 +37,21 @@ const readFile = async (req: Request, res: Response, next: NextFunction) => {
 
     if (!canAccess) {
       res.status(403).json({
-        message: 'You have no permision to access this file'
+        message: 'You have no permision to access this file',
       });
       return;
     }
 
     if (!message.attachment) {
       res.status(409).json({
-        message: 'This is not a file message.'
+        message: 'This is not a file message.',
       });
       return;
     }
 
     const result = await storage.getFile(
       MESSAGE_FILES_BUCKET,
-      message.attachment.id
+      message.attachment.id,
     );
 
     if (typeof result === 'string') {
@@ -59,12 +59,12 @@ const readFile = async (req: Request, res: Response, next: NextFunction) => {
     } else {
       res.setHeader(
         'Content-Type',
-        mime.lookup(message.attachment.name) || 'application/octet-stream'
+        mime.lookup(message.attachment.name) || 'application/octet-stream',
       );
 
       res.setHeader(
         'Content-Disposition',
-        `inline; filename="${message.attachment.name}"`
+        `inline; filename="${message.attachment.name}"`,
       );
 
       res.setHeader('Content-Length', result.length);

@@ -45,12 +45,12 @@ const useAudioPlaybackController = () => {
 
   const timePercentage = useMemo(
     () => (currentTime / duration) * 100,
-    [currentTime, duration]
+    [currentTime, duration],
   );
 
   const playbackTime = useMemo(
     () => `${formatMediaTime(currentTime)} / ${formatMediaTime(duration)}`,
-    [currentTime, duration]
+    [currentTime, duration],
   );
 
   return {
@@ -62,7 +62,7 @@ const useAudioPlaybackController = () => {
     timePercentage,
     setTimePercentage,
     togglePlayback,
-    playbackTime
+    playbackTime,
   };
 };
 

@@ -1,4 +1,3 @@
-
 import styled from 'styled-components';
 import { NextIcon } from '../icons';
 import { PhotoNavButton } from '../../styles';

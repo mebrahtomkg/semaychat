@@ -6,7 +6,7 @@ import AttachFileButton from './AttachFileButton';
 import {
   ActionButtonsContainer,
   GrowingTextArea,
-  MessageInputStyled
+  MessageInputStyled,
 } from './styles';
 import { useChatContext } from '../../hooks';
 
@@ -38,7 +38,7 @@ const MessageInput: FC = () => {
   const handleInput = useCallback(
     (e: React.FormEvent<HTMLTextAreaElement>) =>
       setValue(e.currentTarget.value),
-    []
+    [],
   );
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const MessageInput: FC = () => {
         handleSend();
       }
     },
-    [handleSend]
+    [handleSend],
   );
 
   const [isFileSelectorVisible, setIsFileSelectorVisible] = useState(false);
@@ -79,7 +79,7 @@ const MessageInput: FC = () => {
     fileInputRef,
     handleFileChange,
     triggerFileSelection,
-    selectedFiles
+    selectedFiles,
   } = useFilesSelector(openFileSelector);
 
   return (

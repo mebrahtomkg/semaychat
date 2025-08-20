@@ -12,7 +12,7 @@ interface OrdinaryFileProps {
 const OrdinaryFile: FC<OrdinaryFileProps> = ({ attachment, onRemove }) => {
   const remove = useCallback(
     () => onRemove(attachment.id),
-    [attachment.id, onRemove]
+    [attachment.id, onRemove],
   );
 
   return (

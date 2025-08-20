@@ -4,14 +4,14 @@ import ApiError from './ApiError';
 
 const apiFetch = async <D>(
   endpoint: string,
-  options?: FetchOptions
+  options?: FetchOptions,
 ): Promise<D> => {
   const {
     method = 'GET',
     responseType = 'json',
     headers = {},
     body,
-    signal
+    signal,
   } = options || {};
 
   if (!['GET', 'POST', 'PUT', 'DELETE'].includes(method.toUpperCase()))
@@ -23,7 +23,7 @@ const apiFetch = async <D>(
   const init: RequestInit = {
     method: method.toUpperCase(),
     credentials: 'include',
-    headers
+    headers,
   };
 
   if (body && ['POST', 'PUT'].includes(method.toUpperCase())) {
@@ -66,7 +66,7 @@ const apiFetch = async <D>(
     if (error instanceof ApiError) throw error;
 
     throw new ApiError(
-      error.message || 'Something went wrong while fetching data.'
+      error.message || 'Something went wrong while fetching data.',
     );
   }
 };

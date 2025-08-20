@@ -13,16 +13,16 @@ const selectTargetRequest = createAppSelector(
       (req) =>
         messageId > 0 &&
         req.requestType === 'MESSAGE_UPDATE' &&
-        req.payload.messageId === messageId
-    )[0]
+        req.payload.messageId === messageId,
+    )[0],
 );
 
 const useMessageContent = (
   messageId: number,
-  messageContent: string | null
+  messageContent: string | null,
 ) => {
   const request = useAppSelector((state) =>
-    selectTargetRequest(state, messageId)
+    selectTargetRequest(state, messageId),
   );
 
   const content = useMemo(
@@ -30,7 +30,7 @@ const useMessageContent = (
       request?.requestType === 'MESSAGE_UPDATE'
         ? request.payload.newContent
         : messageContent,
-    [request, messageContent]
+    [request, messageContent],
   );
 
   return content;

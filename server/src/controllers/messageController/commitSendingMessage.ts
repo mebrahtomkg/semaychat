@@ -23,33 +23,33 @@ const commitSendingMessage = async ({
   senderId,
   receiverId,
   content = null,
-  attachmentId = null
+  attachmentId = null,
 }: MessageMainProps): Promise<MessageSendResponse> => {
   const [[sender], [receiver]] = await Promise.all([
     User.scope({
-      method: ['withBlockedUsers', { blockedId: receiverId }]
+      method: ['withBlockedUsers', { blockedId: receiverId }],
     }).findAll({
       where: { id: senderId },
-      limit: 1
+      limit: 1,
     }),
 
     User.scope([
       {
-        method: ['withBlockedUsers', { blockedId: senderId }]
+        method: ['withBlockedUsers', { blockedId: senderId }],
       },
       {
-        method: ['withContacts', { addedId: senderId }]
-      }
+        method: ['withContacts', { addedId: senderId }],
+      },
     ]).findAll({
       where: { id: receiverId },
-      limit: 1
-    })
+      limit: 1,
+    }),
   ]);
 
   if (!receiver) {
     return {
       status: 409,
-      message: 'Cannot send message to non existed user.'
+      message: 'Cannot send message to non existed user.',
     };
   }
 
@@ -57,7 +57,7 @@ const commitSendingMessage = async ({
   if (sender.blockedUsers?.length) {
     return {
       status: 403,
-      message: 'You cannot send message to a user you blocked.'
+      message: 'You cannot send message to a user you blocked.',
     };
   }
 
@@ -78,7 +78,7 @@ const commitSendingMessage = async ({
   if (!receiverCanAcceptThisMessage) {
     return {
       status: 403,
-      message: 'Receiver is not accepting messages.'
+      message: 'Receiver is not accepting messages.',
     };
   }
 
@@ -87,10 +87,10 @@ const commitSendingMessage = async ({
       where: {
         // Ensure consistent order to prevent duplicate chat rows
         user1Id: Math.min(senderId, receiverId),
-        user2Id: Math.max(senderId, receiverId)
+        user2Id: Math.max(senderId, receiverId),
       },
       transaction,
-      lock: transaction.LOCK.UPDATE
+      lock: transaction.LOCK.UPDATE,
     }),
 
     Message.create(
@@ -102,10 +102,10 @@ const commitSendingMessage = async ({
         // If the sender is blocked by the receiver, soft delete the message for
         // the receiver. so that the message will not be visible by the receiver.
         // only the sender can see the message.
-        isDeletedByReceiver: senderIsBlockedByReceiver
+        isDeletedByReceiver: senderIsBlockedByReceiver,
       },
-      { transaction }
-    )
+      { transaction },
+    ),
   ]);
 
   let valuesToUpdate: {
@@ -113,7 +113,7 @@ const commitSendingMessage = async ({
     lastMessageIdForUser2?: number;
   } = {
     lastMessageIdForUser1: message.id,
-    lastMessageIdForUser2: message.id
+    lastMessageIdForUser2: message.id,
   };
 
   // If the sender is blocked by receiver, only update sender's last message's id.
@@ -127,19 +127,19 @@ const commitSendingMessage = async ({
   const [theMessage] = await Promise.all([
     Message.scope('withAttachment').findOne({
       where: {
-        id: message.id
+        id: message.id,
       },
-      transaction
+      transaction,
     }),
 
-    chat.update(valuesToUpdate, { transaction })
+    chat.update(valuesToUpdate, { transaction }),
   ]);
 
   return {
     status: 200,
     message: 'Message sent successfully.',
     success: true,
-    data: filterMessageData(theMessage as Message)
+    data: filterMessageData(theMessage as Message),
   };
 };
 

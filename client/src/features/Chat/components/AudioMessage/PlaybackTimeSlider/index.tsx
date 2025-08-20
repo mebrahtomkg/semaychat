@@ -3,7 +3,7 @@ import {
   PlaybackTimeSliderStyled,
   SliderProgress,
   SliderThumb,
-  SliderTrack
+  SliderTrack,
 } from './styles';
 
 interface PlaybackTimeSliderProps {
@@ -13,7 +13,7 @@ interface PlaybackTimeSliderProps {
 
 const PlaybackTimeSlider: FC<PlaybackTimeSliderProps> = ({
   timePercentage,
-  onTimePercentageUpdate
+  onTimePercentageUpdate,
 }) => {
   const isDragging = useRef<boolean>(false);
 
@@ -35,7 +35,7 @@ const PlaybackTimeSlider: FC<PlaybackTimeSliderProps> = ({
       if (clientX <= trackRect.left) onTimePercentageUpdate(0);
       if (clientX >= trackRect.right) onTimePercentageUpdate(100);
     },
-    [onTimePercentageUpdate]
+    [onTimePercentageUpdate],
   );
 
   const handleSliderClick = useCallback(
@@ -46,7 +46,7 @@ const PlaybackTimeSlider: FC<PlaybackTimeSliderProps> = ({
       const percentage = ((e.clientX - trackRect.left) / trackRect.width) * 100;
       onTimePercentageUpdate(percentage);
     },
-    [onTimePercentageUpdate]
+    [onTimePercentageUpdate],
   );
 
   const endThumbDrag = useCallback(() => {
@@ -72,7 +72,7 @@ const PlaybackTimeSlider: FC<PlaybackTimeSliderProps> = ({
 
   const sliderProgressStyle = useMemo(
     () => ({ width: `${timePercentage}%` }),
-    [timePercentage]
+    [timePercentage],
   );
 
   return (

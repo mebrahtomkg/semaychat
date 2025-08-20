@@ -25,20 +25,20 @@ const useAPI = () => {
   const request = useCallback(
     async <D>(
       endpoint: string,
-      options?: RequestOptions
+      options?: RequestOptions,
     ): Promise<ResponseResult<D>> => {
       const {
         method,
         body,
         headers,
         responseType,
-        autoCancel
+        autoCancel,
       }: RequestOptions = {
         method: 'GET',
         headers: {},
         responseType: 'json',
         autoCancel: true,
-        ...(options || {})
+        ...(options || {}),
       };
 
       try {
@@ -52,7 +52,7 @@ const useAPI = () => {
           body,
           headers,
           responseType,
-          signal: abortControllerRef.current.signal
+          signal: abortControllerRef.current.signal,
         });
 
         return data;
@@ -64,7 +64,7 @@ const useAPI = () => {
         setIsLoading(false);
       }
     },
-    [abortRequest]
+    [abortRequest],
   );
 
   useEffect(() => abortRequest, [abortRequest]);
@@ -73,7 +73,7 @@ const useAPI = () => {
     () => ({
       async get<D>(
         endpoint: string,
-        options?: RequestOptions
+        options?: RequestOptions,
       ): Promise<ResponseResult<D>> {
         return await request(endpoint, { ...options, method: 'GET' });
       },
@@ -81,7 +81,7 @@ const useAPI = () => {
       async post<D>(
         endpoint: string,
         body: object | FormData,
-        options?: RequestOptions
+        options?: RequestOptions,
       ): Promise<ResponseResult<D>> {
         return await request(endpoint, { ...options, body, method: 'POST' });
       },
@@ -89,19 +89,19 @@ const useAPI = () => {
       async put<D>(
         endpoint: string,
         body: object | FormData,
-        options?: RequestOptions
+        options?: RequestOptions,
       ): Promise<ResponseResult<D>> {
         return await request(endpoint, { ...options, body, method: 'PUT' });
       },
 
       async del<D>(
         endpoint: string,
-        options?: RequestOptions
+        options?: RequestOptions,
       ): Promise<ResponseResult<D>> {
         return await request(endpoint, { ...options, method: 'DELETE' });
-      }
+      },
     }),
-    [request]
+    [request],
   );
 
   return { isLoading, request, ...requestMethods };

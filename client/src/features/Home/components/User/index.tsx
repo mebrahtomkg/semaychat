@@ -9,7 +9,7 @@ import {
   Photo,
   ProfilePhotoContainer,
   TextPhoto,
-  UserStyled
+  UserStyled,
 } from './styles';
 import { useImageLoader } from '../../../../hooks';
 import { User as IUser, Message } from '../../../../types';

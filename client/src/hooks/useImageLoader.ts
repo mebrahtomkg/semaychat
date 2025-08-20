@@ -3,7 +3,7 @@ import {
   useCallback,
   useEffect,
   useRef,
-  useState
+  useState,
 } from 'react';
 import { ApiError, get } from '@/api';
 import { useQuery } from '@tanstack/react-query';
@@ -24,7 +24,7 @@ const useImageLoader = (imageUrl: string | null | undefined) => {
     },
     staleTime: 0,
     retry: (failureCount: number, error: Error) =>
-      error instanceof ApiError && error.status ? false : failureCount < 2
+      error instanceof ApiError && error.status ? false : failureCount < 2,
   });
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const useImageLoader = (imageUrl: string | null | undefined) => {
     isImageFetching: isLoading,
     isImageLoading,
     imageSrc,
-    handleImageLoad
+    handleImageLoad,
   };
 };
 

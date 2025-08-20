@@ -38,7 +38,7 @@ const applyUserPrivacy = (userData: User, options: Options) => {
     profilePhotosVisibility,
     messageSender,
 
-    profilePhoto
+    profilePhoto,
   } = userData;
 
   const user: FilteredUserData = { id, firstName, lastName, username, bio };

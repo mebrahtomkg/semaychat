@@ -15,20 +15,20 @@ const suggestions = async (req: Request, res: Response, next: NextFunction) => {
     const [chats, blockedUsers, contacts] = await Promise.all([
       Chat.findAll({
         where: {
-          [Op.or]: [{ user1Id: requesterId }, { user2Id: requesterId }]
+          [Op.or]: [{ user1Id: requesterId }, { user2Id: requesterId }],
         },
-        attributes: ['user1Id', 'user2Id']
+        attributes: ['user1Id', 'user2Id'],
       }),
 
       BlockedUser.findAll({
         where: { blockerId: requesterId },
-        attributes: ['blockedId']
+        attributes: ['blockedId'],
       }),
 
       Contact.findAll({
         where: { adderId: requesterId },
-        attributes: ['addedId']
-      })
+        attributes: ['addedId'],
+      }),
     ]);
 
     const knownUsersId = [requesterId];
@@ -44,33 +44,33 @@ const suggestions = async (req: Request, res: Response, next: NextFunction) => {
     contacts.forEach((contact) => knownUsersId.push(contact.addedId));
 
     blockedUsers.forEach((blockedUser) =>
-      knownUsersId.push(blockedUser.blockedId)
+      knownUsersId.push(blockedUser.blockedId),
     );
 
     if (knownUsersId.length > 50) {
       return res.status(409).json({
-        message: 'Not eligible for suggestion. User has enough known people.'
+        message: 'Not eligible for suggestion. User has enough known people.',
       });
     }
 
     // Fetch users that are not in chats, blockedUsers, contacts of the user
     const users = await User.scope(['withProfilePhoto']).findAll({
       where: {
-        id: { [Op.notIn]: knownUsersId }
-      }
+        id: { [Op.notIn]: knownUsersId },
+      },
     });
 
     const transformedUsers = users.map((user) =>
       applyUserPrivacy(user.toJSON(), {
         requesterIsBlocked: false,
-        requesterIsContact: false
-      })
+        requesterIsContact: false,
+      }),
     );
 
     res.status(200).json({
       success: true,
       data: transformedUsers,
-      message: 'Users fetched successfully.'
+      message: 'Users fetched successfully.',
     });
   } catch (err) {
     next(err);

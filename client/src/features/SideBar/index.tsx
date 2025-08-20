@@ -4,7 +4,7 @@ import {
   useAccount,
   useAnimation,
   useAppContext,
-  useImageLoader
+  useImageLoader,
 } from '@/hooks';
 import {
   IconContainer,
@@ -19,14 +19,14 @@ import {
   SideBarOverlay,
   SideBarStyled,
   SingleMenuItemButton,
-  SingleMenuItemContainer
+  SingleMenuItemContainer,
 } from './styles';
 import {
   CloseIcon,
   ContactsIcon,
   LogoutIcon,
   MenuIcon,
-  SettingsIcon
+  SettingsIcon,
 } from '@/components/icons';
 import NameInitial from '@/components/NameInitial';
 import Settings from '../Settings';
@@ -47,7 +47,7 @@ const SideBar = () => {
   const hideSidebar = useCallback(() => setIsSidebarVisible(false), []);
   const toggleSidebar = useCallback(
     () => setIsSidebarVisible((prevValue) => !prevValue),
-    []
+    [],
   );
 
   const isVisible = isSidebarVisible;
@@ -77,18 +77,18 @@ const SideBar = () => {
     {
       onClick: navigateToContacts,
       icon: <ContactsIcon />,
-      label: 'Contacts'
+      label: 'Contacts',
     },
     {
       onClick: openSettingsPage,
       icon: <SettingsIcon />,
-      label: 'Settings'
+      label: 'Settings',
     },
     {
       onClick: logout,
       icon: <LogoutIcon />,
-      label: 'Log out'
-    }
+      label: 'Log out',
+    },
   ];
 
   const location = useLocation();

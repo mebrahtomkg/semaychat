@@ -3,7 +3,7 @@ import {
   updateMyAccount,
   readMyAccount,
   suggestions,
-  readUser
+  readUser,
 } from '../controllers/userController';
 
 const router = express.Router();

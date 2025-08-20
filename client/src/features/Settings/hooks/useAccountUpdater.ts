@@ -10,20 +10,23 @@ const useAccountUpdater = () => {
 
   const dispatch = useAppDispatch();
 
-  const updateAccount = useCallback(async (accountData: Partial<Account>) => {
-    setIsUpdating(true);
+  const updateAccount = useCallback(
+    async (accountData: Partial<Account>) => {
+      setIsUpdating(true);
 
-    const { success, data, message } = await put<Account>(
-      '/users/me',
-      accountData
-    );
+      const { success, data, message } = await put<Account>(
+        '/users/me',
+        accountData,
+      );
 
-    if (success) dispatch(accountUpdated(data));
+      if (success) dispatch(accountUpdated(data));
 
-    setIsUpdating(false);
-    
-    return { success, message };
-  }, [dispatch, put]);
+      setIsUpdating(false);
+
+      return { success, message };
+    },
+    [dispatch, put],
+  );
 
   return { updateAccount, isUpdating };
 };

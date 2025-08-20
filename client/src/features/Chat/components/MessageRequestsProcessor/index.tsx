@@ -13,7 +13,7 @@ const selectRequest = createAppSelector(
   [(state) => state.messageRequests],
 
   (requests) =>
-    requests.filter((req) => req.requestType !== 'FILE_MESSAGE_SEND')[0]
+    requests.filter((req) => req.requestType !== 'FILE_MESSAGE_SEND')[0],
 );
 
 const MessageRequestsProcessor = () => {
@@ -50,7 +50,7 @@ const MessageRequestsProcessor = () => {
           const { receiverId, content } = request.payload;
           const message = await emitWithAck<Message>('send_text_message', {
             receiverId,
-            content
+            content,
           });
 
           queryClient.setQueryData(
@@ -58,7 +58,7 @@ const MessageRequestsProcessor = () => {
             (oldMessages: Message[]) => {
               if (!oldMessages) return [message];
               return [...oldMessages, message];
-            }
+            },
           );
         }
         break;
@@ -68,7 +68,7 @@ const MessageRequestsProcessor = () => {
           const { messageId, newContent: content } = request.payload;
           const message = await emitWithAck<Message>('update_text_message', {
             messageId,
-            content
+            content,
           });
           if (message) {
             queryClient.setQueryData(
@@ -77,9 +77,9 @@ const MessageRequestsProcessor = () => {
                 if (!oldMessages) return [];
 
                 return oldMessages.map((oldMessage) =>
-                  oldMessage.id === message.id ? message : oldMessage
+                  oldMessage.id === message.id ? message : oldMessage,
                 );
-              }
+              },
             );
           }
         }
@@ -90,7 +90,7 @@ const MessageRequestsProcessor = () => {
           const { message, deleteForReceiver } = request.payload;
           await emitWithAck('delete_message', {
             messageId: message.id,
-            deleteForReceiver
+            deleteForReceiver,
           });
           const partnerId =
             message.senderId === selfId ? message.receiverId : message.senderId;
@@ -99,9 +99,9 @@ const MessageRequestsProcessor = () => {
             (oldMessages: Message[]) =>
               oldMessages
                 ? oldMessages.filter(
-                    (oldMessage) => oldMessage.id !== message.id
+                    (oldMessage) => oldMessage.id !== message.id,
                   )
-                : []
+                : [],
           );
         }
         break;

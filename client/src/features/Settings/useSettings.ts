@@ -38,21 +38,21 @@ const useSettings = () => {
         description: username
           ? `Click to change username`
           : 'Click to add username',
-        onClick: () => openModal('UsernameEditor')
+        onClick: () => openModal('UsernameEditor'),
       },
       {
         title: fullName,
         description: 'Name',
-        onClick: () => openModal('NameEditor')
+        onClick: () => openModal('NameEditor'),
       },
       {
         title: bio ? bio : 'Bio',
         description: bio ? 'Bio' : 'Add a few words about yourself',
-        onClick: () => openModal('BioEditor')
+        onClick: () => openModal('BioEditor'),
       },
-      { title: email || '', description: 'Email', onClick: undefined }
+      { title: email || '', description: 'Email', onClick: undefined },
     ],
-    [bio, email, fullName, openModal, username]
+    [bio, email, fullName, openModal, username],
   );
 
   const securitySettingsItems: SettingsItem[] = useMemo(
@@ -60,15 +60,15 @@ const useSettings = () => {
       {
         title: 'Password',
         description: 'Click to change password',
-        onClick: () => openModal('PasswordEditor')
+        onClick: () => openModal('PasswordEditor'),
       },
       {
         title: 'Blocked Users',
         description: 'You blocked 0 users',
-        onClick: undefined
-      }
+        onClick: undefined,
+      },
     ],
-    [openModal]
+    [openModal],
   );
 
   const privacySettingsItems: SettingsItem[] = useMemo(
@@ -77,9 +77,9 @@ const useSettings = () => {
         title: privacySetting.title,
         description:
           VISIBILITY_OPTION_LABELS[account[privacySetting.settingkey]],
-        onClick: () => openModal('PrivacyEditor', privacySetting)
+        onClick: () => openModal('PrivacyEditor', privacySetting),
       })),
-    [openModal, account]
+    [openModal, account],
   );
 
   return {
@@ -88,7 +88,7 @@ const useSettings = () => {
     privacySettingsItems,
     activeModal,
     modalPayload,
-    closeModal
+    closeModal,
   };
 };
 

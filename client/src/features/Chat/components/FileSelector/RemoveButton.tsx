@@ -26,7 +26,7 @@ interface RemoveButtonProps {
 
 const RemoveButton: FC<RemoveButtonProps> = ({
   onClick,
-  ariaLabel = 'Remove'
+  ariaLabel = 'Remove',
 }) => (
   <RemoveButtonStyled type="button" aria-label={ariaLabel} onClick={onClick}>
     <CloseIcon />

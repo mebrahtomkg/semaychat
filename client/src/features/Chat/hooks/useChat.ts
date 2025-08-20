@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { Message } from '@/types';
 import {
   messageUpdateRequestAdded,
-  textMessageSendRequestAdded
+  textMessageSendRequestAdded,
 } from '../slices/messageRequestsSlice';
 
 type EditorState =
@@ -26,7 +26,7 @@ const useChat = (chatPartnerId: number) => {
         setEditorState({ mode: 'edit', message });
       }
     },
-    [selfId]
+    [selfId],
   );
 
   const replyMessage = useCallback((message: Message) => {
@@ -39,20 +39,20 @@ const useChat = (chatPartnerId: number) => {
         dispatch(
           messageUpdateRequestAdded({
             messageId: editorState.message.id,
-            newContent: value.trim()
-          })
+            newContent: value.trim(),
+          }),
         );
       } else {
         dispatch(
           textMessageSendRequestAdded({
             receiverId: chatPartnerId,
-            content: value.trim()
-          })
+            content: value.trim(),
+          }),
         );
       }
       setEditorState({ mode: 'new' });
     },
-    [editorState, dispatch, chatPartnerId]
+    [editorState, dispatch, chatPartnerId],
   );
 
   return {
@@ -61,7 +61,7 @@ const useChat = (chatPartnerId: number) => {
     chatPartnerId,
 
     replyMessage,
-    editMessage
+    editMessage,
   };
 };
 

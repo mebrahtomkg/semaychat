@@ -12,7 +12,7 @@ import {
   ChatMessagesList,
   ChatMessagesListContainer,
   ChatStyled,
-  Gap
+  Gap,
 } from './styles';
 import { useChat } from './hooks';
 import useChatMessages from './hooks/useChatMessages';
@@ -44,7 +44,7 @@ const Chat: FC = () => {
           }
         />
       )),
-    [messages]
+    [messages],
   );
 
   const chatRef = useRef<HTMLDivElement | null>(null);

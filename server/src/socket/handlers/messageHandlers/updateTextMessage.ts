@@ -12,13 +12,13 @@ interface TextMessageUpdatePayload {
 const updateTextMessage = async (
   socket: AuthenticatedSocket,
   payload: TextMessageUpdatePayload,
-  acknowledgement: Acknowledgement
+  acknowledgement: Acknowledgement,
 ) => {
   try {
     if (!payload || typeof payload !== 'object') {
       return acknowledgement({
         status: 'error',
-        message: 'Invalid message info.'
+        message: 'Invalid message info.',
       });
     }
 
@@ -27,7 +27,7 @@ const updateTextMessage = async (
     if (!isPositiveInteger(messageId)) {
       return acknowledgement({
         status: 'error',
-        message: 'Invalid message id.'
+        message: 'Invalid message id.',
       });
     }
 
@@ -36,7 +36,7 @@ const updateTextMessage = async (
     if (!message) {
       return acknowledgement({
         status: 'error',
-        message: 'Message does not exist.'
+        message: 'Message does not exist.',
       });
     }
 
@@ -45,14 +45,14 @@ const updateTextMessage = async (
     if (message.senderId !== userId) {
       return acknowledgement({
         status: 'error',
-        message: 'You cannot edit this message.'
+        message: 'You cannot edit this message.',
       });
     }
 
     if (message.attachment) {
       return acknowledgement({
         status: 'error',
-        message: 'File message cannot be edited.'
+        message: 'File message cannot be edited.',
       });
     }
 
@@ -62,14 +62,14 @@ const updateTextMessage = async (
     if (!content) {
       return acknowledgement({
         status: 'error',
-        message: 'Invalid message content.'
+        message: 'Invalid message content.',
       });
       // Also Check content for xss security, filter it.
     }
 
     await Message.update(
       { content, editedAt: Date.now() },
-      { where: { id: messageId } }
+      { where: { id: messageId } },
     );
 
     const updatedMessage = await Message.findByPk(messageId);
@@ -77,7 +77,7 @@ const updateTextMessage = async (
     acknowledgement({
       status: 'ok',
       message: 'Message updated successfully.',
-      data: updatedMessage?.toJSON()
+      data: updatedMessage?.toJSON(),
     });
 
     const isSentMessage = message.senderId === userId;
@@ -96,7 +96,7 @@ const updateTextMessage = async (
       status: 'error',
       message: IS_PRODUCTION
         ? 'INTERNAL SERVER ERROR'
-        : `INTERNAL SERVER ERROR: ${(err as Error).toString()}  ${(err as Error).stack}`
+        : `INTERNAL SERVER ERROR: ${(err as Error).toString()}  ${(err as Error).stack}`,
     });
   }
 };

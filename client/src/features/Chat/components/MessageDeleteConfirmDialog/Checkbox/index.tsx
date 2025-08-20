@@ -4,7 +4,7 @@ import {
   CheckBoxIconStyled,
   CheckBoxLabel,
   CheckBoxStyled,
-  CheckBoxTickIconStyled
+  CheckBoxTickIconStyled,
 } from './styles';
 
 interface CheckBoxProps {

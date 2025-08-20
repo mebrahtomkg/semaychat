@@ -13,7 +13,7 @@ const createAuthToken = (userId: number): string => {
   }
 
   const token = jwt.sign({ id: userId }, JWT_SECRET_KEY, {
-    expiresIn: '10000h'
+    expiresIn: '10000h',
   });
 
   return token;

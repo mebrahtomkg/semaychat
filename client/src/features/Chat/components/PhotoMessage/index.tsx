@@ -23,7 +23,7 @@ const PhotoMessage: FC<PhotoMessageProps> = ({ message, messageInfo }) => {
 
   const {
     imageSrc: imageSrcFromFile,
-    handleImageLoad: handleImageLoadFromFile
+    handleImageLoad: handleImageLoadFromFile,
   } = useImageFileLoader(message.attachment?.file);
 
   const imageSrc = message.attachment?.file

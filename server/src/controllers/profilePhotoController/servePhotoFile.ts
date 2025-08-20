@@ -8,17 +8,17 @@ import { PROFILE_PHOTOS_BUCKET } from '@/config/general';
 const servePhotoFile = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const photoId = Number.parseInt(
       typeof req.params.photoId === 'string' ? req.params.photoId : '',
-      10
+      10,
     );
 
     if (!isPositiveInteger(photoId)) {
       res.status(400).json({
-        message: 'Invalid profile photo id.'
+        message: 'Invalid profile photo id.',
       });
       return;
     }
@@ -27,14 +27,14 @@ const servePhotoFile = async (
 
     if (!profilePhoto) {
       res.status(404).json({
-        message: 'Profile photo not found.'
+        message: 'Profile photo not found.',
       });
       return;
     }
 
     const result = await storage.getFile(
       PROFILE_PHOTOS_BUCKET,
-      profilePhoto.id
+      profilePhoto.id,
     );
 
     if (typeof result === 'string') {
@@ -42,14 +42,14 @@ const servePhotoFile = async (
     } else {
       res.setHeader(
         'Content-Type',
-        mime.lookup(profilePhoto.name) || 'application/octet-stream'
+        mime.lookup(profilePhoto.name) || 'application/octet-stream',
       );
 
       const ext = getFileExtension(profilePhoto.name);
 
       res.setHeader(
         'Content-Disposition',
-        `inline; filename="${profilePhoto.id}.${ext}"`
+        `inline; filename="${profilePhoto.id}.${ext}"`,
       );
 
       res.setHeader('Content-Length', result.length);

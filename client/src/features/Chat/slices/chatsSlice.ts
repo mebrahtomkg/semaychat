@@ -12,8 +12,8 @@ export const chatsSlice = createSlice({
   reducers: {
     chatsFetched(_state, action: PayloadAction<Chat[]>) {
       return action.payload;
-    }
-  }
+    },
+  },
 });
 
 export default chatsSlice.reducer;

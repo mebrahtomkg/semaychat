@@ -20,8 +20,8 @@ export const profilePhotosSlice = createSlice({
 
     profilePhotoDeleted(state, action: PayloadAction<number>) {
       return state.filter((profilePhoto) => profilePhoto.id !== action.payload);
-    }
-  }
+    },
+  },
 });
 
 export const { profilePhotosFetched, profilePhotoAdded, profilePhotoDeleted } =

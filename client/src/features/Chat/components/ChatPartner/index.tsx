@@ -5,7 +5,7 @@ import {
   NameContainer,
   ProfileLink,
   Status,
-  UserContainer
+  UserContainer,
 } from './styles';
 import { CenteredImage } from '@/styles';
 import { useUser, useImageLoader, useAppContext } from '@/hooks';

@@ -1,5 +1,3 @@
-
-
 import styled from 'styled-components';
 
 const ConfirmDialogWin = styled.div`

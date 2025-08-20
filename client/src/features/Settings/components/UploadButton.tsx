@@ -14,7 +14,7 @@ const UploadButtonDisabled = styled(DisabledPrimaryButton)`
 
 interface UploadButtonProps {
   isDisabled: boolean;
-  onClick: () => void; 
+  onClick: () => void;
 }
 
 const UploadButton: FC<UploadButtonProps> = ({ isDisabled, onClick }) => {

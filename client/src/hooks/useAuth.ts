@@ -10,14 +10,14 @@ const useAuth = () => {
   const account = useAppSelector((state) => state.account);
 
   const dispatch = useAppDispatch();
- 
+
   const { isPending, isError, data, error } = useQuery({
     queryKey: ['account'],
     queryFn: () => get<Account>(`/users/me`),
     retry: (failureCount: number, error: Error) =>
       error instanceof ApiError && error.status === 401
         ? false
-        : failureCount < 2
+        : failureCount < 2,
   });
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const useAuth = () => {
 
   return {
     isLoading: isPending,
-    isLoggedIn: typeof account?.id === 'number'
+    isLoggedIn: typeof account?.id === 'number',
   };
 };
 

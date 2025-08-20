@@ -7,7 +7,7 @@ export { default as ApiError } from './ApiError';
 
 export const get = async <D>(
   endpoint: string,
-  options?: FetchOptions
+  options?: FetchOptions,
 ): Promise<D> => {
   return await apiFetch(endpoint, { ...options, method: 'GET' });
 };
@@ -15,7 +15,7 @@ export const get = async <D>(
 export const post = async <D>(
   endpoint: string,
   body: object | FormData,
-  options?: FetchOptions
+  options?: FetchOptions,
 ): Promise<D> => {
   return await apiFetch(endpoint, { ...options, body, method: 'POST' });
 };
@@ -23,14 +23,14 @@ export const post = async <D>(
 export const put = async <D>(
   endpoint: string,
   body: object | FormData,
-  options?: FetchOptions
+  options?: FetchOptions,
 ): Promise<D> => {
   return await apiFetch(endpoint, { ...options, body, method: 'PUT' });
 };
 
 export const del = async <D>(
   endpoint: string,
-  options?: FetchOptions
+  options?: FetchOptions,
 ): Promise<D> => {
   return await apiFetch(endpoint, { ...options, method: 'DELETE' });
 };

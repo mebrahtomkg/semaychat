@@ -3,7 +3,7 @@ import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
-  Model
+  Model,
 } from 'sequelize';
 import sequelize from '@/config/db';
 
@@ -23,29 +23,29 @@ Attachment.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
-      primaryKey: true
+      primaryKey: true,
     },
 
     name: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
     },
 
     size: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
 
     caption: {
       type: DataTypes.STRING,
-      allowNull: true
-    }
+      allowNull: true,
+    },
   },
   {
     tableName: 'attachments',
     timestamps: false,
-    sequelize
-  }
+    sequelize,
+  },
 );
 
 export default Attachment;

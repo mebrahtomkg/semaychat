@@ -19,8 +19,8 @@ export const contactsSlice = createSlice({
 
     contactDeleted(state, action: PayloadAction<number>) {
       return state.filter((contact) => contact !== action.payload);
-    }
-  }
+    },
+  },
 });
 
 export default contactsSlice.reducer;

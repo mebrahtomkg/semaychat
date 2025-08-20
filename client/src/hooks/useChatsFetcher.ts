@@ -13,7 +13,7 @@ const useChatsFetcher = () => {
     queryKey: ['chats'],
     queryFn: () => get<Chat[]>('/chats'),
     retry: (failureCount: number, error: Error) =>
-      error instanceof ApiError && error.status ? false : failureCount < 2
+      error instanceof ApiError && error.status ? false : failureCount < 2,
   });
 
   if (isError) {

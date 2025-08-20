@@ -14,13 +14,13 @@ interface MessageDeletePayload {
 const deleteMessage = async (
   socket: AuthenticatedSocket,
   payload: MessageDeletePayload,
-  acknowledgement: Acknowledgement
+  acknowledgement: Acknowledgement,
 ) => {
   try {
     if (!payload || typeof payload !== 'object') {
       return acknowledgement({
         status: 'error',
-        message: 'Invalid message info.'
+        message: 'Invalid message info.',
       });
     }
 
@@ -31,7 +31,7 @@ const deleteMessage = async (
     if (!isPositiveInteger(messageId)) {
       return acknowledgement({
         status: 'error',
-        message: 'Invalid message id.'
+        message: 'Invalid message id.',
       });
     }
 
@@ -40,14 +40,14 @@ const deleteMessage = async (
     try {
       const message = await Message.findByPk(messageId, {
         transaction,
-        lock: transaction.LOCK.UPDATE
+        lock: transaction.LOCK.UPDATE,
       });
 
       if (!message) {
         await transaction.rollback();
         return acknowledgement({
           status: 'error',
-          message: 'Message not found.'
+          message: 'Message not found.',
         });
       }
 
@@ -67,7 +67,7 @@ const deleteMessage = async (
         await transaction.rollback();
         return acknowledgement({
           status: 'error',
-          message: 'Message already deleted.'
+          message: 'Message already deleted.',
         });
       }
 
@@ -78,7 +78,7 @@ const deleteMessage = async (
         await transaction.rollback();
         return acknowledgement({
           status: 'error',
-          message: 'You have no permission to delete this message.'
+          message: 'You have no permission to delete this message.',
         });
       }
 
@@ -87,11 +87,11 @@ const deleteMessage = async (
         where: {
           [Op.or]: [
             { lastMessageIdForUser1: messageId },
-            { lastMessageIdForUser2: messageId }
-          ]
+            { lastMessageIdForUser2: messageId },
+          ],
         },
         transaction,
-        lock: transaction.LOCK.UPDATE
+        lock: transaction.LOCK.UPDATE,
       });
 
       const shouldDestroy = isSentMessage
@@ -106,7 +106,7 @@ const deleteMessage = async (
           isSentMessage
             ? { isDeletedBySender: true }
             : { isDeletedByReceiver: true },
-          { transaction }
+          { transaction },
         );
       }
 
@@ -115,13 +115,13 @@ const deleteMessage = async (
 
         acknowledgement({
           status: 'ok',
-          message: 'Message deleted successfully.'
+          message: 'Message deleted successfully.',
         });
 
         if (!isDeletedSoftlyByPartner && deleteForReceiver) {
           emitToUser(partnerId, 'message_deleted', {
             partnerId: socket.userId,
-            messageId
+            messageId,
           });
         }
 
@@ -137,18 +137,18 @@ const deleteMessage = async (
               {
                 senderId: user1Id,
                 receiverId: user2Id,
-                isDeletedBySender: false
+                isDeletedBySender: false,
               },
               {
                 receiverId: user1Id,
                 senderId: user2Id,
-                isDeletedByReceiver: false
-              }
-            ]
+                isDeletedByReceiver: false,
+              },
+            ],
           },
           order: [['createdAt', 'DESC']],
           limit: 1,
-          transaction
+          transaction,
         }),
 
         Message.findAll({
@@ -157,19 +157,19 @@ const deleteMessage = async (
               {
                 senderId: user2Id,
                 receiverId: user1Id,
-                isDeletedBySender: false
+                isDeletedBySender: false,
               },
               {
                 receiverId: user2Id,
                 senderId: user1Id,
-                isDeletedByReceiver: false
-              }
-            ]
+                isDeletedByReceiver: false,
+              },
+            ],
           },
           order: [['createdAt', 'DESC']],
           limit: 1,
-          transaction
-        })
+          transaction,
+        }),
       ]);
 
       const lastMessageIdForUser1 = lastMessagesForUser1[0]?.id || null;
@@ -178,7 +178,7 @@ const deleteMessage = async (
       if (lastMessageIdForUser1 || lastMessageIdForUser2) {
         await chat.update(
           { lastMessageIdForUser1, lastMessageIdForUser2 },
-          { transaction }
+          { transaction },
         );
       } else {
         await chat.destroy({ transaction });
@@ -188,13 +188,13 @@ const deleteMessage = async (
 
       acknowledgement({
         status: 'ok',
-        message: 'Message deleted successfully.'
+        message: 'Message deleted successfully.',
       });
 
       if (!isDeletedSoftlyByPartner && deleteForReceiver) {
         emitToUser(partnerId, 'message_deleted', {
           partnerId: socket.userId,
-          messageId
+          messageId,
         });
       }
     } catch (error) {
@@ -206,7 +206,7 @@ const deleteMessage = async (
       status: 'error',
       message: IS_PRODUCTION
         ? 'INTERNAL SERVER ERROR'
-        : `INTERNAL SERVER ERROR: ${(err as Error).toString()}  ${(err as Error).stack}`
+        : `INTERNAL SERVER ERROR: ${(err as Error).toString()}  ${(err as Error).stack}`,
     });
   }
 };

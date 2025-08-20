@@ -5,7 +5,7 @@ import {
   listUserPhotos,
   servePhotoFile,
   uploadPhoto,
-  deletePhoto
+  deletePhoto,
 } from '../controllers/profilePhotoController';
 import multer from 'multer';
 import { TEMP_FILES_STORAGE_DIR } from '@/config/storage';

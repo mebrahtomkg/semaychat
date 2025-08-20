@@ -9,12 +9,12 @@ const list = async (req: Request, res: Response, next: NextFunction) => {
       typeof req.params.partnerId === 'string'
         ? req.params.partnerId.trim()
         : '',
-      10
+      10,
     );
 
     if (!isPositiveInteger(partnerId)) {
       return res.status(400).json({
-        message: 'Invalid partner id.'
+        message: 'Invalid partner id.',
       });
     }
 
@@ -23,24 +23,24 @@ const list = async (req: Request, res: Response, next: NextFunction) => {
         [Op.or]: [
           {
             senderId: req.userId,
-            receiverId: partnerId
+            receiverId: partnerId,
           },
           {
             senderId: partnerId,
-            receiverId: req.userId
-          }
-        ]
-      }
+            receiverId: req.userId,
+          },
+        ],
+      },
     });
 
     const cleanMessages = messages.map((message) =>
-      filterMessageData(message.toJSON())
+      filterMessageData(message.toJSON()),
     );
 
     res.status(200).json({
       success: true,
       data: messages,
-      message: 'Messages retrieved successfully'
+      message: 'Messages retrieved successfully',
     });
   } catch (err) {
     next(err);

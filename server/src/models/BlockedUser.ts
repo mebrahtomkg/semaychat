@@ -3,7 +3,7 @@ import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
-  Model
+  Model,
 } from 'sequelize';
 import sequelize from '@/config/db';
 import User from './User';
@@ -25,24 +25,24 @@ BlockedUser.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
-      primaryKey: true
+      primaryKey: true,
     },
 
     blockerId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
 
     blockedId: {
       type: DataTypes.INTEGER,
-      allowNull: false
-    }
+      allowNull: false,
+    },
   },
   {
     tableName: 'blockedusers',
     timestamps: false,
-    sequelize
-  }
+    sequelize,
+  },
 );
 
 export default BlockedUser;

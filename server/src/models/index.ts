@@ -10,13 +10,13 @@ export { User, ProfilePhoto, Message, Attachment, Chat, Contact, BlockedUser };
 
 User.belongsTo(ProfilePhoto, {
   foreignKey: 'profilePhotoId',
-  as: 'profilePhoto'
+  as: 'profilePhoto',
 });
 
 // To get a message with its attachment
 Message.belongsTo(Attachment, {
   foreignKey: 'attachmentId',
-  as: 'attachment'
+  as: 'attachment',
 });
 
 User.hasMany(Chat, { foreignKey: 'user1Id' });
@@ -28,37 +28,37 @@ Chat.belongsTo(User, { foreignKey: 'user2Id', as: 'user2' });
 Chat.belongsTo(Message, {
   foreignKey: 'lastMessageIdForUser1',
   as: 'lastMessageForUser1',
-  onDelete: 'SET NULL'
+  onDelete: 'SET NULL',
 });
 
 Chat.belongsTo(Message, {
   foreignKey: 'lastMessageIdForUser2',
   as: 'lastMessageForUser2',
-  onDelete: 'SET NULL'
+  onDelete: 'SET NULL',
 });
 
 // Helps us to get the  actual contact as a user model.
 Contact.belongsTo(User, {
   foreignKey: 'addedId',
-  as: 'user'
+  as: 'user',
 });
 
 // Helps us to get a list of contacts added by a user.
 User.hasMany(Contact, {
   foreignKey: 'adderId',
-  as: 'contacts'
+  as: 'contacts',
 });
 
 // To get bolcked user as a user.
 BlockedUser.belongsTo(User, {
   foreignKey: 'blockedId',
-  as: 'user'
+  as: 'user',
 });
 
 // Helps us to get a list of blocked users of a user.
 User.hasMany(BlockedUser, {
   foreignKey: 'blockerId',
-  as: 'blockedUsers'
+  as: 'blockedUsers',
 });
 
 // To fetch a user with his/her current profile photo
@@ -66,8 +66,8 @@ User.addScope('withProfilePhoto', {
   include: {
     model: ProfilePhoto,
     as: 'profilePhoto',
-    required: false
-  }
+    required: false,
+  },
 });
 
 /**
@@ -83,8 +83,8 @@ User.addScope('withContacts', (where) => ({
     as: 'contacts',
     required: false,
     attributes: [],
-    where
-  }
+    where,
+  },
 }));
 
 /**
@@ -100,8 +100,8 @@ User.addScope('withBlockedUsers', (where) => ({
     as: 'blockedUsers',
     required: false,
     attributes: [],
-    where
-  }
+    where,
+  },
 }));
 
 // To fetch a message with its attachment
@@ -109,6 +109,6 @@ Message.addScope('withAttachment', {
   include: {
     model: Attachment,
     as: 'attachment',
-    required: false
-  }
+    required: false,
+  },
 });

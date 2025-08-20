@@ -22,7 +22,7 @@ export default function LogInForm() {
     password: '',
     passwordError: '',
     shakeErrors: false,
-    activeField: 'email'
+    activeField: 'email',
   });
 
   const onChangeListener = (event) => {
@@ -32,7 +32,7 @@ export default function LogInForm() {
       [name]: value,
       [`${name}Error`]: null,
       activeField: name,
-      shakeErrors: false
+      shakeErrors: false,
     }));
   };
 
@@ -50,12 +50,12 @@ export default function LogInForm() {
         ...prevState,
         emailError,
         passwordError,
-        shakeErrors: true
+        shakeErrors: true,
       }));
     } else {
       const { success, data, message } = await post<Account>('/auth/login', {
         email,
-        password
+        password,
       });
 
       if (success) {
@@ -64,7 +64,7 @@ export default function LogInForm() {
         setState((prevState) => ({
           ...prevState,
           passwordError: message || '',
-          shakeErrors: true
+          shakeErrors: true,
         }));
         console.error(success);
       }
@@ -85,7 +85,7 @@ export default function LogInForm() {
           onChangeListener,
           onEnter,
           error: state.emailError,
-          shakeError
+          shakeError,
         }}
       />
       <PasswordInput
@@ -95,7 +95,7 @@ export default function LogInForm() {
           onChangeListener,
           onEnter,
           error: state.passwordError,
-          shakeError
+          shakeError,
         }}
       />
       <LogInButton onClickHandler={doLogin} />

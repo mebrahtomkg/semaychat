@@ -20,7 +20,7 @@ const doRender = () => {
           </HashRouter>
         </QueryClientProvider>
       </Provider>
-    </StrictMode>
+    </StrictMode>,
   );
 };
 

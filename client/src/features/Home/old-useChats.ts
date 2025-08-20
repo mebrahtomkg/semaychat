@@ -37,7 +37,7 @@ const useChats = () => {
     chats.sort((a, b) =>
       b.lastMessage && a.lastMessage
         ? b.lastMessage.createdAt - a.lastMessage.createdAt
-        : 0
+        : 0,
     );
 
     // If chat list are not enough, add users from contact list.
@@ -56,7 +56,7 @@ const useChats = () => {
     if (chats.length < 10) {
       for (const user of users) {
         const isBlocked = blockedUsers.some(
-          (blockedUser) => blockedUser === user.id
+          (blockedUser) => blockedUser === user.id,
         );
 
         if (!isBlocked && !chats.some((chat) => chat.partner.id === user.id)) {

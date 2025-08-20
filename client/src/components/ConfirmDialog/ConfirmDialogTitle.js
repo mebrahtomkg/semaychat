@@ -1,5 +1,3 @@
-
-
 import styled from 'styled-components';
 
 const ConfirmDialogTitle = styled.h3`

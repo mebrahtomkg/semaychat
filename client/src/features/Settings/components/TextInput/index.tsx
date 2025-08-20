@@ -4,7 +4,7 @@ import {
   InputStyled,
   LabelStyled,
   LabelWrapper,
-  TextInputContainer
+  TextInputContainer,
 } from './styles';
 
 interface TextInputProps {
@@ -30,7 +30,7 @@ const TextInput: FC<TextInputProps> = ({
   onChange,
   onEnterPress,
   helperText,
-  errorMessage
+  errorMessage,
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const infoRef = useRef<HTMLSpanElement | null>(null);
@@ -47,9 +47,9 @@ const TextInput: FC<TextInputProps> = ({
           { transform: 'translateX(12px)' },
           { transform: 'translateX(0px)' },
           { transform: 'translateX(12px)' },
-          { transform: 'translateX(0px)' }
+          { transform: 'translateX(0px)' },
         ],
-        700
+        700,
       );
     }
   }, [errorMessage]);

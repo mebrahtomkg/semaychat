@@ -3,7 +3,7 @@ import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
-  Model
+  Model,
 } from 'sequelize';
 import sequelize from '@/config/db';
 import User from './User';
@@ -32,34 +32,34 @@ Chat.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true
+      autoIncrement: true,
     },
 
     user1Id: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
 
     user2Id: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
 
     lastMessageIdForUser1: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
     },
 
     lastMessageIdForUser2: {
       type: DataTypes.INTEGER,
-      allowNull: true
-    }
+      allowNull: true,
+    },
   },
   {
     tableName: 'chats',
     timestamps: false,
-    sequelize
-  }
+    sequelize,
+  },
 );
 
 export default Chat;

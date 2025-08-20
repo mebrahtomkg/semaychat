@@ -1,4 +1,3 @@
-
 import styled from 'styled-components';
 import { AddPhotoIcon } from '../../../components/icons';
 import { StyleProps } from '../../../types';
@@ -25,7 +24,7 @@ const AddPhotoButtonStyled = styled.button`
 const AddPhotoButton = ({ onClick, ...restProps }) => {
   return (
     <AddPhotoButtonStyled type="button" onClick={onClick} {...restProps}>
-      <AddPhotoIcon   />
+      <AddPhotoIcon />
     </AddPhotoButtonStyled>
   );
 };

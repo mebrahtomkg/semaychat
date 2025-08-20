@@ -6,12 +6,12 @@ const deletePhoto = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = parseInt(
       typeof req.params.photoId === 'string' ? req.params.photoId.trim() : '',
-      10
+      10,
     );
 
     if (!isPositiveInteger(id)) {
       return res.status(400).json({
-        message: 'Invalid profile photo id.'
+        message: 'Invalid profile photo id.',
       });
     }
 
@@ -19,13 +19,13 @@ const deletePhoto = async (req: Request, res: Response, next: NextFunction) => {
 
     if (!photo) {
       return res.status(404).json({
-        message: 'Profile photo not found'
+        message: 'Profile photo not found',
       });
     }
 
     if (photo.userId !== req.userId) {
       return res.status(403).json({
-        message: 'That profile photo is not yours to delete'
+        message: 'That profile photo is not yours to delete',
       });
     }
 
@@ -34,7 +34,7 @@ const deletePhoto = async (req: Request, res: Response, next: NextFunction) => {
 
     res.status(200).json({
       success: true,
-      message: 'Photo deleted successfully.'
+      message: 'Photo deleted successfully.',
     });
   } catch (err) {
     next(err);

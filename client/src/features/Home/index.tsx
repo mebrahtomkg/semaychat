@@ -2,7 +2,7 @@ import {
   HeaderContainer,
   HomePage,
   SearchContainer,
-  UsersContainer
+  UsersContainer,
 } from './styles';
 import { useAppContext, useChatsFetcher, useSuggestionsFetcher } from '@/hooks';
 import SearchInput from './components/SearchInput';

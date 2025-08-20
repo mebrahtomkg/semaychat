@@ -65,7 +65,7 @@ export function shortenFileName(fileName: string, maxLength: number) {
   const DOTS_COUNT = 3;
   const charsNearExt = onlyName.slice(
     onlyName.length - CHARS_NEAR_EXT_COUNT,
-    onlyName.length
+    onlyName.length,
   );
   const realMaxLength =
     maxLength - DOTS_COUNT - CHARS_NEAR_EXT_COUNT - 1 - extension.length;
@@ -92,7 +92,7 @@ const IMAGE_EXTENSIONS = [
   'avif',
   'jp2',
   'j2k',
-  'hdr'
+  'hdr',
 ];
 
 const AUDIO_EXTENSIONS = [
@@ -105,7 +105,7 @@ const AUDIO_EXTENSIONS = [
   'aif',
   'wma',
   'm4a',
-  'opus'
+  'opus',
 ];
 
 const VIDEO_EXTENSIONS = [
@@ -116,7 +116,7 @@ const VIDEO_EXTENSIONS = [
   'mov',
   'flv',
   'wmv',
-  'mkv'
+  'mkv',
 ];
 
 export function isImage(extension?: string): boolean {

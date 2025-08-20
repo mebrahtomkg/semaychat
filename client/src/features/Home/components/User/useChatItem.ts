@@ -8,13 +8,13 @@ const useChatItem = (user: User, lastMessage?: Message) => {
 
   const messagePreview = useMemo(
     () => lastMessage?.content,
-    [lastMessage?.content]
+    [lastMessage?.content],
   );
 
   const messageDateTime = useMemo(
     () =>
       lastMessage?.createdAt ? formatDateTime(lastMessage.createdAt) : null,
-    [lastMessage?.createdAt]
+    [lastMessage?.createdAt],
   );
 
   return { fullName, nameInitials, photoUrl, messagePreview, messageDateTime };

@@ -20,7 +20,7 @@ interface PlaybackControlButtonProps {
 
 const PlaybackControlButton: FC<PlaybackControlButtonProps> = ({
   isPlaying,
-  onClick
+  onClick,
 }) => (
   <PlaybackControlButtonStyled type="button" onClick={onClick}>
     {isPlaying ? <PauseIcon /> : <PlayIcon />}

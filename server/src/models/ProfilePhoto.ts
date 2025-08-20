@@ -3,7 +3,7 @@ import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
-  Model
+  Model,
 } from 'sequelize';
 import sequelize from '@/config/db';
 
@@ -24,22 +24,22 @@ ProfilePhoto.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
-      primaryKey: true
+      primaryKey: true,
     },
 
     userId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
 
     name: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
     },
 
     size: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
 
     createdAt: {
@@ -49,14 +49,14 @@ ProfilePhoto.init(
       get() {
         const value = this.getDataValue('createdAt');
         return value === null ? null : Number.parseInt(`${value}`, 10);
-      }
-    }
+      },
+    },
   },
   {
     tableName: 'profilephotos',
     timestamps: false,
-    sequelize
-  }
+    sequelize,
+  },
 );
 
 export default ProfilePhoto;

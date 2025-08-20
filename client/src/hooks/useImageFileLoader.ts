@@ -28,7 +28,7 @@ const useImageFileLoader = (file?: File) => {
   return {
     isImageLoading: isLoading,
     imageSrc,
-    handleImageLoad
+    handleImageLoad,
   };
 };
 

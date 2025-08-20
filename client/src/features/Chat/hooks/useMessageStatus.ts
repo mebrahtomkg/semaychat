@@ -11,13 +11,13 @@ const selectTargetMessageRequest = createAppSelector(
         messageId > 0 &&
         (req.requestType === 'MESSAGE_UPDATE' ||
           req.requestType === 'MESSAGE_DELETE') &&
-        req.payload.messageId === messageId
-    )[0] // Just pick the frist. It is unlikely more requests exist at a time for one message
+        req.payload.messageId === messageId,
+    )[0], // Just pick the frist. It is unlikely more requests exist at a time for one message
 );
 
 const useMessageStatus = (messageId: number, hasAttachment: boolean) => {
   const request = useAppSelector((state) =>
-    selectTargetMessageRequest(state, messageId)
+    selectTargetMessageRequest(state, messageId),
   );
 
   const status = useMemo(() => {

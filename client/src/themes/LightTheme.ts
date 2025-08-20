@@ -2,7 +2,7 @@ const LightTheme = {
   mainFgColor: '#fff',
   mainBgColor: '#f1f1f1',
   titleFgColor: '',
-  descFgColor: ''
+  descFgColor: '',
 };
 
 export default LightTheme;

@@ -13,8 +13,8 @@ export const usersSlice = createSlice({
     manyUsersAdded(state, action: PayloadAction<User[]>) {
       const newUsers = action.payload;
 
-      const otherExistingUsers = state.filter((user) =>
-        !newUsers.some((newUser) => newUser.id === user.id)
+      const otherExistingUsers = state.filter(
+        (user) => !newUsers.some((newUser) => newUser.id === user.id),
       );
 
       return [...otherExistingUsers, ...newUsers];
@@ -26,8 +26,8 @@ export const usersSlice = createSlice({
       const otherExistingUsers = state.filter((user) => user.id !== newUser.id);
 
       return [...otherExistingUsers, newUser];
-    }
-  }
+    },
+  },
 });
 
 export default usersSlice.reducer;

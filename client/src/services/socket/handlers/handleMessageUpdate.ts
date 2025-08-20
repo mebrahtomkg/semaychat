@@ -7,9 +7,9 @@ const handleMessageUpdate = (message: Message) => {
     (oldMessages: Message[]) => {
       if (!oldMessages) return undefined;
       return oldMessages.map((oldMessage) =>
-        oldMessage.id === message.id ? message : oldMessage
+        oldMessage.id === message.id ? message : oldMessage,
       );
-    }
+    },
   );
 
   queryClient.setQueryData(['chats'], (oldChats: Chat[]) => {
@@ -18,7 +18,7 @@ const handleMessageUpdate = (message: Message) => {
     return oldChats.map((chat) =>
       chat.lastMessage?.id === message.id
         ? { ...chat, lastMessage: message }
-        : chat
+        : chat,
     );
   });
 };

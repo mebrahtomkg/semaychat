@@ -4,17 +4,17 @@ import { useAppSelector } from '.';
 
 const useUser = (userId?: number) => {
   const [user] = useAppSelector((state) =>
-    state.users.filter((user) => user.id === userId)
+    state.users.filter((user) => user.id === userId),
   );
 
   const fullName = useMemo(
     () => (user ? calculateFullName(user.firstName, user.lastName) : '??'),
-    [user]
+    [user],
   );
 
   const nameInitials = useMemo(
     () => (user ? calculateNameInitials(user.firstName, user.lastName) : '??'),
-    [user]
+    [user],
   );
 
   const photoUrl = useMemo(
@@ -22,13 +22,13 @@ const useUser = (userId?: number) => {
       user?.profilePhoto?.id
         ? `/profile-photos/${user.profilePhoto.id}/file`
         : null,
-    [user?.profilePhoto?.id]
+    [user?.profilePhoto?.id],
   );
 
   return {
     fullName,
     nameInitials,
-    photoUrl
+    photoUrl,
   };
 };
 

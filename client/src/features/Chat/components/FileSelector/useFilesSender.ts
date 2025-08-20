@@ -4,7 +4,7 @@ import { Attachment } from './types';
 import { useAppDispatch } from '@/hooks';
 import {
   fileMessageSendRequestAdded,
-  getUniqueId
+  getUniqueId,
 } from '../../slices/messageRequestsSlice';
 import { addMessageRequestFile } from '@/services/messageRequestFilesStore';
 import { getFileExtension } from '@/utils';
@@ -12,7 +12,7 @@ import { getFileExtension } from '@/utils';
 const useFilesSender = (
   files: File[],
   chatPartnerId: number,
-  onClose: () => void
+  onClose: () => void,
 ) => {
   const lastIdRef = useRef<number>(1);
 
@@ -23,25 +23,25 @@ const useFilesSender = (
       id: lastIdRef.current++,
       file,
       isImage: isImage(getFileExtension(file.name)),
-      displayName: shortenFileName(file.name, 40)
+      displayName: shortenFileName(file.name, 40),
     }),
-    []
+    [],
   );
 
   const [attachments, setAttachments] = useState<Attachment[]>(() =>
-    files.map(createAttachment)
+    files.map(createAttachment),
   );
 
   const addFiles = useCallback(
     (files: File[]) => {
       setAttachments([...attachments, ...files.map(createAttachment)]);
     },
-    [attachments, createAttachment]
+    [attachments, createAttachment],
   );
 
   const removeAttachment = useCallback((attachmentId: number) => {
     setAttachments((prevAttachments) =>
-      prevAttachments.filter((attachment) => attachment.id !== attachmentId)
+      prevAttachments.filter((attachment) => attachment.id !== attachmentId),
     );
   }, []);
 
@@ -51,11 +51,11 @@ const useFilesSender = (
         prevAttachments.map((attachment) =>
           attachment.id === attachmentId
             ? { ...attachment, caption: newCaption }
-            : attachment
-        )
+            : attachment,
+        ),
       );
     },
-    []
+    [],
   );
 
   const selectionInfo = useMemo(() => {
@@ -71,8 +71,8 @@ const useFilesSender = (
         fileMessageSendRequestAdded({
           receiverId: chatPartnerId,
           fileId,
-          caption: attachment.caption
-        })
+          caption: attachment.caption,
+        }),
       );
     });
     onClose();
@@ -84,7 +84,7 @@ const useFilesSender = (
     removeAttachment,
     updateAttachmentCaption,
     addFiles,
-    sendAttachments
+    sendAttachments,
   };
 };
 

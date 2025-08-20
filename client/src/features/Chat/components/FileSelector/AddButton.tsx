@@ -32,7 +32,7 @@ interface AddButtonProps {
 const AddButton: FC<AddButtonProps> = ({
   onClick,
   isDisabled = false,
-  ariaLabel = 'Add'
+  ariaLabel = 'Add',
 }) => (
   <AddButtonStyled
     type="button"

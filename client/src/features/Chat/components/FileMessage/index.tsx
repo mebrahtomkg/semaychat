@@ -8,7 +8,7 @@ import {
   FileMetaContainer,
   FileName,
   FileSize,
-  MainSection
+  MainSection,
 } from './styles';
 import { FileIcon } from '@/components/icons';
 import MessageMeta from '../MessageMeta';
@@ -25,7 +25,7 @@ interface FileMessageProps {
 const FileMessage: FC<FileMessageProps> = ({
   message,
   messageInfo,
-  onMoreButtonClick
+  onMoreButtonClick,
 }) => {
   const { isOutgoing, status, time } = messageInfo;
 

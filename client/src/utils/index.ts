@@ -22,7 +22,7 @@ export const calculateFullName = (firstName, lastName) => {
 export const calculateNameInitials = (firstName, lastName) => {
   const initials = [
     firstName ? firstName[0] : '',
-    lastName ? lastName[0] : ''
+    lastName ? lastName[0] : '',
   ].filter((name) => (name ? true : false));
 
   return initials.join('').toUpperCase() || '?'; // Default to '?' if no initials found;

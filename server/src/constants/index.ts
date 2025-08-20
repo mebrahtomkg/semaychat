@@ -3,7 +3,7 @@ import { VisibilityOption } from '@/types';
 export const VISIBILITY_OPTIONS: Record<string, VisibilityOption> = {
   everybody: 'everybody',
   contacts: 'contacts',
-  nobody: 'nobody'
+  nobody: 'nobody',
 };
 
 export const EMAIL_VISIBILITY = {
@@ -11,8 +11,8 @@ export const EMAIL_VISIBILITY = {
   visibilityChoices: [
     VISIBILITY_OPTIONS.everybody,
     VISIBILITY_OPTIONS.contacts,
-    VISIBILITY_OPTIONS.nobody
-  ]
+    VISIBILITY_OPTIONS.nobody,
+  ],
 };
 
 export const LAST_SEEN_VISIBILITY = {
@@ -20,8 +20,8 @@ export const LAST_SEEN_VISIBILITY = {
   visibilityChoices: [
     VISIBILITY_OPTIONS.everybody,
     VISIBILITY_OPTIONS.contacts,
-    VISIBILITY_OPTIONS.nobody
-  ]
+    VISIBILITY_OPTIONS.nobody,
+  ],
 };
 
 export const PROFILE_PHOTOS_VISIBILITY = {
@@ -29,8 +29,8 @@ export const PROFILE_PHOTOS_VISIBILITY = {
   visibilityChoices: [
     VISIBILITY_OPTIONS.everybody,
     VISIBILITY_OPTIONS.contacts,
-    VISIBILITY_OPTIONS.nobody
-  ]
+    VISIBILITY_OPTIONS.nobody,
+  ],
 };
 
 export const MESSAGE_SENDER = {
@@ -38,6 +38,6 @@ export const MESSAGE_SENDER = {
   visibilityChoices: [
     VISIBILITY_OPTIONS.everybody,
     VISIBILITY_OPTIONS.contacts,
-    VISIBILITY_OPTIONS.nobody
-  ]
+    VISIBILITY_OPTIONS.nobody,
+  ],
 };

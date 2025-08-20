@@ -20,7 +20,7 @@ const ContextMenu: FC<ContextMenuProps> = ({ menuItems, controlProps }) => {
       closeMenu();
       action();
     },
-    [closeMenu]
+    [closeMenu],
   );
 
   const menuList = useMemo(
@@ -33,7 +33,7 @@ const ContextMenu: FC<ContextMenuProps> = ({ menuItems, controlProps }) => {
           onClick={() => executeMenuItemAction(menuItem.action)}
         />
       )),
-    [menuItems, executeMenuItemAction]
+    [menuItems, executeMenuItemAction],
   );
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLElement>) => {

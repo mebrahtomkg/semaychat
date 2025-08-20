@@ -16,8 +16,8 @@ const accountSlice = createSlice({
 
     accountUpdated(state, action: PayloadAction<Account | null>) {
       return { ...state, ...action.payload } as Account;
-    }
-  }
+    },
+  },
 });
 
 export const { accountFetched, accountUpdated } = accountSlice.actions;

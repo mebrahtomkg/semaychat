@@ -10,7 +10,7 @@ interface ZoomSliderProps {
 const ZoomSlider: FC<ZoomSliderProps> = ({
   zoomPercentage,
   onZoomPercentageUpdate,
-  onWheel
+  onWheel,
 }) => {
   const [thumbX, setThumbX] = useState<number>(0);
 
@@ -36,7 +36,7 @@ const ZoomSlider: FC<ZoomSliderProps> = ({
       if (clientX <= trackRect.left) onZoomPercentageUpdate(0);
       if (clientX >= trackRect.right) onZoomPercentageUpdate(100);
     },
-    [onZoomPercentageUpdate]
+    [onZoomPercentageUpdate],
   );
 
   const handleTrackClick = (e: React.MouseEvent) => {
@@ -96,7 +96,7 @@ const ZoomSlider: FC<ZoomSliderProps> = ({
         onMouseDown={startThumbDrag}
         onTouchStart={startThumbDrag}
         style={{
-          transform: `translateX(${thumbX}px)`
+          transform: `translateX(${thumbX}px)`,
         }}
       />
     </ZoomSliderTrack>

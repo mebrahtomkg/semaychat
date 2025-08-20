@@ -2,7 +2,7 @@ import { FC } from 'react';
 import {
   VideoMessageStyled,
   VideoMetaContainer,
-  VideoTagStyled
+  VideoTagStyled,
 } from './styles';
 import { MessageInfo } from '../../types';
 import MessageMeta from '../MessageMeta';

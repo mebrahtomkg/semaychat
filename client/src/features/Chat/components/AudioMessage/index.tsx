@@ -6,7 +6,7 @@ import {
   AudioMetaContainer,
   ControlArea,
   PlaybackTime,
-  PlaybackTimeSliderContainer
+  PlaybackTimeSliderContainer,
 } from './styles';
 import useAudioPlaybackController from './useAudioPlaybackController';
 import PlaybackTimeSlider from './PlaybackTimeSlider';
@@ -20,7 +20,7 @@ interface AudioMessageProps {
 
 const AudioMessage: FC<AudioMessageProps> = ({
   messageInfo,
-  onMoreButtonClick
+  onMoreButtonClick,
 }) => {
   const { isOutgoing, status, fileUrl, time } = messageInfo;
 
@@ -33,7 +33,7 @@ const AudioMessage: FC<AudioMessageProps> = ({
     timePercentage,
     setTimePercentage,
     togglePlayback,
-    playbackTime
+    playbackTime,
   } = useAudioPlaybackController();
 
   return (

@@ -15,7 +15,7 @@ const handleMessageDelete = (payload: MessageDeletePayload) => {
       if (!oldMessages) return undefined;
 
       return oldMessages.filter((oldMessage) => oldMessage.id !== messageId);
-    }
+    },
   );
 
   //TODO: update chat list, incase a chat is displaying the deleted message in the chat list

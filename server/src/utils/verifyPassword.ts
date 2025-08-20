@@ -16,7 +16,7 @@ const verifyPassword = (password: string, hash: string) => {
       } else {
         resolve(res);
       }
-    })
+    }),
   );
 };
 

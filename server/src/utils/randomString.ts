@@ -20,7 +20,7 @@ const getRandomBytes = (size: number): Promise<Buffer> => {
       } else {
         resolve(buf);
       }
-    })
+    }),
   );
 };
 
@@ -34,7 +34,7 @@ const AZaz09 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
  * 4 * [a-zA-Z0-9] + [A-Z] = 256 chars
  */
 const DOMAIN: string[] = (AZaz09 + AZaz09 + AZaz09 + AZaz09 + 'ABCDEFGH').split(
-  ''
+  '',
 );
 
 /**
@@ -57,7 +57,7 @@ const randomString = async (length: number) => {
   for (const b of bytes) {
     str += DOMAIN[b];
   }
-  
+
   return str;
 };
 

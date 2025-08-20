@@ -17,8 +17,8 @@ const initSocket = (httpServer: HttpServer) => {
   const io = new Server(httpServer, {
     cors: {
       origin: ALLOWED_ORIGINS,
-      credentials: true
-    }
+      credentials: true,
+    },
   });
 
   io.use(performSocketAuth);

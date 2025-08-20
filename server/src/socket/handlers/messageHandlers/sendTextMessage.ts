@@ -13,13 +13,13 @@ interface TextMessageSendPayload {
 const sendTextMessage = async (
   socket: AuthenticatedSocket,
   payload: TextMessageSendPayload,
-  acknowledgement: Acknowledgement
+  acknowledgement: Acknowledgement,
 ) => {
   try {
     if (!payload || typeof payload !== 'object') {
       return acknowledgement({
         status: 'error',
-        message: 'Invalid message info.'
+        message: 'Invalid message info.',
       });
     }
 
@@ -28,14 +28,14 @@ const sendTextMessage = async (
     if (!isPositiveInteger(receiverId)) {
       return acknowledgement({
         status: 'error',
-        message: 'Invalid receiver id.'
+        message: 'Invalid receiver id.',
       });
     }
 
     if (socket.userId === receiverId) {
       return acknowledgement({
         status: 'error',
-        message: 'You cannot send message to yourself.'
+        message: 'You cannot send message to yourself.',
       });
     }
 
@@ -45,7 +45,7 @@ const sendTextMessage = async (
     if (!content) {
       return acknowledgement({
         status: 'error',
-        message: 'Invalid message content.'
+        message: 'Invalid message content.',
       });
       //TODO: Check content for xss security, filter it.
     }
@@ -57,7 +57,7 @@ const sendTextMessage = async (
         transaction,
         senderId: socket.userId as number,
         receiverId,
-        content
+        content,
       });
 
       transaction.commit();
@@ -65,7 +65,7 @@ const sendTextMessage = async (
       acknowledgement({
         status: status === 200 ? 'ok' : 'error',
         message,
-        data
+        data,
       });
 
       if (status === 200) {
@@ -80,7 +80,7 @@ const sendTextMessage = async (
       status: 'error',
       message: IS_PRODUCTION
         ? 'INTERNAL SERVER ERROR'
-        : `INTERNAL SERVER ERROR: ${(error as Error).toString()}  ${(error as Error).stack}`
+        : `INTERNAL SERVER ERROR: ${(error as Error).toString()}  ${(error as Error).stack}`,
     });
   }
 };

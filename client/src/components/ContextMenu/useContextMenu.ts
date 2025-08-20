@@ -4,7 +4,7 @@ import React, {
   useLayoutEffect,
   useMemo,
   useRef,
-  useState
+  useState,
 } from 'react';
 import { ContextMenuControlProps } from './types';
 
@@ -77,7 +77,7 @@ const useContextMenu = () => {
     isMoreButtonUsedRef.current = false;
     setPosition((prevPosition) => ({
       x: prevPosition.x - menuRect.width,
-      y: prevPosition.y
+      y: prevPosition.y,
     }));
   }, [isVisible]);
 
@@ -93,20 +93,20 @@ const useContextMenu = () => {
 
   const menuStyles = useMemo(
     () => ({ left: `${position.x}px`, top: `${position.y}px` }),
-    [position.x, position.y]
+    [position.x, position.y],
   );
 
   const contextMenuControlProps: ContextMenuControlProps = {
     menuRef,
     menuStyles,
-    closeMenu
+    closeMenu,
   };
 
   return {
     isContextMenuVisible: isVisible,
     onContextMenu,
     onMoreButtonClick,
-    contextMenuControlProps
+    contextMenuControlProps,
   };
 };
 
