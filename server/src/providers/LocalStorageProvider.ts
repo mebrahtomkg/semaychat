@@ -19,4 +19,9 @@ export default class LocalStorageProvider implements IStorageProvider {
   public async getFile(bucket: string, fileId: number): Promise<string> {
     return path.resolve(this.storageDir, bucket, `${fileId}`);
   }
+
+  public async deleteFile(bucket: string, fileId: number): Promise<void> {
+    const filePath = path.resolve(this.storageDir, bucket, `${fileId}`);
+    await fs.unlink(filePath);
+  }
 }

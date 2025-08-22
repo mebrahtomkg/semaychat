@@ -35,4 +35,12 @@ export default class SupabaseStorageProvider implements IStorageProvider {
 
     return buffer;
   }
+
+  public async deleteFile(bucket: string, fileId: number): Promise<void> {
+    const { error } = await this.supabase.storage
+      .from(bucket)
+      .remove([`${fileId}`]);
+
+    if (error) throw error;
+  }
 }
