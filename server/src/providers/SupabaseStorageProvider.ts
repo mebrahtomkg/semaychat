@@ -14,7 +14,9 @@ export default class SupabaseStorageProvider implements IStorageProvider {
 
     const { data, error } = await this.supabase.storage
       .from(bucket)
-      .upload(`${fileId}`, fileBuffer);
+      .upload(`${fileId}`, fileBuffer, {
+        upsert: true,
+      });
 
     if (error) throw Error(`Supabase Storage Error: ${error.message}`);
   }
