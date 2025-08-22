@@ -4,7 +4,8 @@ import { Chat, Message } from '@/models';
 import { Acknowledgement, AuthenticatedSocket } from '@/types';
 import { isPositiveInteger } from '@/utils';
 import { emitToUser } from '@/socket/emitter';
-import { IS_PRODUCTION } from '@/config/general';
+import { IS_PRODUCTION, MESSAGE_FILES_BUCKET } from '@/config/general';
+import storage from '@/config/storage';
 
 interface MessageDeletePayload {
   messageId: number;
@@ -38,10 +39,13 @@ const deleteMessage = async (
     const transaction = await sequelize.transaction();
 
     try {
-      const message = await Message.findByPk(messageId, {
-        transaction,
-        lock: transaction.LOCK.UPDATE,
-      });
+      const message = await Message.scope('withAttachment').findByPk(
+        messageId,
+        {
+          transaction,
+          lock: transaction.LOCK.UPDATE,
+        },
+      );
 
       if (!message) {
         await transaction.rollback();
@@ -99,8 +103,11 @@ const deleteMessage = async (
         : message.isDeletedBySender;
 
       if (shouldDestroy) {
+        if (message.attachment) {
+          await storage.deleteFile(MESSAGE_FILES_BUCKET, message.attachment.id);
+        }
+
         await message.destroy({ transaction });
-        // TODO: also delete the file if the message is file
       } else {
         await message.update(
           isSentMessage
