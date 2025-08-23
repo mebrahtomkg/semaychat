@@ -12,13 +12,11 @@ export default class SupabaseStorageProvider implements IStorageProvider {
   public async saveFile(bucket: string, filePath: string, fileId: number) {
     const fileBuffer = await fs.readFile(filePath);
 
-    const { data, error } = await this.supabase.storage
+    const { error } = await this.supabase.storage
       .from(bucket)
-      .upload(`${fileId}`, fileBuffer, {
-        upsert: true,
-      });
+      .upload(`${fileId}`, fileBuffer, { upsert: true });
 
-    if (error) throw Error(`Supabase Storage Error: ${error.message}`);
+    if (error) throw error;
   }
 
   public async getFile(bucket: string, fileId: number) {
@@ -26,7 +24,7 @@ export default class SupabaseStorageProvider implements IStorageProvider {
       .from(bucket)
       .download(`${fileId}`);
 
-    if (error) throw Error(`Storage Error: ${error.message}`);
+    if (error) throw error;
 
     if (!data) {
       throw Error('No data received from Supabase download.');
