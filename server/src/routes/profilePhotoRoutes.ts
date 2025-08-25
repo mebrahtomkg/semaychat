@@ -1,20 +1,16 @@
 import express from 'express';
-import { noCacheImplementer } from '../middlewares';
 import {
   listMyPhotos,
   listUserPhotos,
   servePhotoFile,
   uploadPhoto,
   deletePhoto,
-} from '../controllers/profilePhotoController';
-import multer from 'multer';
-import { TEMP_FILES_STORAGE_DIR } from '@/config/storage';
+} from '@/controllers/profilePhotoController';
+import { noCacheImplementer } from '@/middlewares';
 
 const router = express.Router();
 
-const upload = multer({ dest: TEMP_FILES_STORAGE_DIR });
-
-router.post('/me', upload.single('profilePhoto'), uploadPhoto);
+router.post('/me', uploadPhoto);
 
 router.get('/me', listMyPhotos);
 router.delete('/me/:photoId', deletePhoto);

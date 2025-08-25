@@ -51,7 +51,7 @@ const readFile = async (req: Request, res: Response, next: NextFunction) => {
 
     const result = await storage.getFile(
       MESSAGE_FILES_BUCKET,
-      message.attachment.id,
+      message.attachment.name,
     );
 
     if (typeof result === 'string') {
@@ -64,7 +64,7 @@ const readFile = async (req: Request, res: Response, next: NextFunction) => {
 
       res.setHeader(
         'Content-Disposition',
-        `inline; filename="${message.attachment.name}"`,
+        `inline; filename="${message.attachment.originalname}"`,
       );
 
       res.setHeader('Content-Length', result.length);

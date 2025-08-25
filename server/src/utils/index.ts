@@ -9,3 +9,4 @@ export { default as tinyCache } from './tinyCache';
 export { default as verifyPassword } from './verifyPassword';
 export { default as filterMessageData } from './filterMessageData';
 export { default as fileExists } from './fileExists';
+export { default as randomFileName } from './randomFileName';

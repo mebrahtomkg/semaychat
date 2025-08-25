@@ -1,7 +1,9 @@
+import { StorageEngine } from 'multer';
+
 export default interface IStorageProvider {
-  saveFile(bucket: string, filePath: string, fileId: number): Promise<void>;
+  createStorageEngine(bucket: string): StorageEngine;
 
-  getFile(bucket: string, fileId: number): Promise<Buffer | string>;
+  getFile(bucket: string, fileName: string): Promise<Buffer | string>;
 
-  deleteFile(bucket: string, fileId: number): Promise<void>;
+  deleteFile(bucket: string, fileName: string): Promise<void>;
 }

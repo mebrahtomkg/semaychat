@@ -37,7 +37,7 @@ const deletePhoto = async (req: Request, res: Response, next: NextFunction) => {
     // First make the file get deleted, i.e instead of using database transaction.
     // this avoid making database busy. If file delete will not success, error will be thrown.
     // this error prevent the photo record from bing deleted from database.
-    await storage.deleteFile(PROFILE_PHOTOS_BUCKET, photoId);
+    await storage.deleteFile(PROFILE_PHOTOS_BUCKET, photo.name);
 
     await ProfilePhoto.destroy({
       where: { id: photoId },

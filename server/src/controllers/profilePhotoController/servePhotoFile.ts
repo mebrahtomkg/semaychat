@@ -34,7 +34,7 @@ const servePhotoFile = async (
 
     const result = await storage.getFile(
       PROFILE_PHOTOS_BUCKET,
-      profilePhoto.id,
+      profilePhoto.name,
     );
 
     if (typeof result === 'string') {

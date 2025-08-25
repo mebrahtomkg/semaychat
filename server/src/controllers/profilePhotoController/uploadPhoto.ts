@@ -6,67 +6,91 @@ import {
   PROFILE_PHOTOS_BUCKET,
 } from '@/config/general';
 import storage from '@/config/storage';
+import multer from 'multer';
+import path from 'node:path';
+
+const UPLOAD_ERRORS = {
+  fileTypeError: 'Invalid file type! Only image is allowed',
+};
+
+const profilePhotoUploader = multer({
+  storage: storage.createStorageEngine(PROFILE_PHOTOS_BUCKET),
+  limits: {
+    files: 1,
+    fileSize: MAX_PROFILE_PHOTO_FILE_SIZE,
+  },
+  fileFilter: (_req, file, callback) => {
+    if (!file.mimetype.startsWith('image/')) {
+      callback(new Error(UPLOAD_ERRORS.fileTypeError));
+      return;
+    }
+
+    callback(null, true);
+  },
+}).single('profilePhoto');
 
 const uploadPhoto = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    if (!req.userId) {
-      res.status(401).json({ message: 'Not Authenticated!' });
-      return;
-    }
+    profilePhotoUploader(req, res, async (uploadError) => {
+      if (uploadError) {
+        if (uploadError.message === UPLOAD_ERRORS.fileTypeError) {
+          res.status(400).json({ message: UPLOAD_ERRORS.fileTypeError });
+          return;
+        } else {
+          next(uploadError);
+          return;
+        }
+      }
 
-    const file = req.file;
+      if (!req.userId) {
+        res.status(401).json({ message: 'Not Authenticated!' });
+        return;
+      }
 
-    if (!file) {
-      res.status(400).json({
-        message: 'No file provided!',
-      });
-      return;
-    }
+      const file = req.file;
 
-    const { path: filepath, size, originalname: name } = file;
+      if (!file) {
+        res.status(400).json({
+          message: 'No file provided!',
+        });
+        return;
+      }
 
-    if (size > MAX_PROFILE_PHOTO_FILE_SIZE) {
-      const maxSizeInMB = Math.round(
-        MAX_PROFILE_PHOTO_FILE_SIZE / (1024 * 1024),
-      );
+      const { path: filePath, size, originalname } = file;
 
-      res.status(400).json({
-        message: `Image file size too big. Maximum allowed size is ${maxSizeInMB} MB`,
-      });
+      const transaction = await sequelize.transaction();
 
-      // TODO delete the uploaded file
-      return;
-    }
+      try {
+        const profilePhoto = await ProfilePhoto.create(
+          {
+            userId: req.userId,
+            name: path.basename(filePath),
+            originalname,
+            size,
+          },
+          { transaction },
+        );
 
-    const transaction = await sequelize.transaction();
+        await User.update(
+          { profilePhotoId: profilePhoto.id },
+          {
+            where: { id: req.userId },
+            transaction,
+          },
+        );
 
-    try {
-      const profilePhoto = await ProfilePhoto.create(
-        { userId: req.userId, name, size },
-        { transaction },
-      );
+        await transaction.commit();
 
-      await storage.saveFile(PROFILE_PHOTOS_BUCKET, filepath, profilePhoto.id);
-
-      await User.update(
-        { profilePhotoId: profilePhoto.id },
-        {
-          where: { id: req.userId },
-          transaction,
-        },
-      );
-
-      await transaction.commit();
-
-      res.status(200).json({
-        success: true,
-        data: profilePhoto,
-        message: 'Profile photo uploaded successfully',
-      });
-    } catch (err) {
-      await transaction.rollback();
-      throw err;
-    }
+        res.status(200).json({
+          success: true,
+          data: profilePhoto.toJSON(),
+          message: 'Profile photo uploaded successfully',
+        });
+      } catch (err) {
+        await transaction.rollback();
+        next(err);
+      }
+    });
   } catch (error) {
     next(error);
   }

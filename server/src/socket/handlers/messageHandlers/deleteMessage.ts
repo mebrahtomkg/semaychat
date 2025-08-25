@@ -104,7 +104,10 @@ const deleteMessage = async (
 
       if (shouldDestroy) {
         if (message.attachment) {
-          await storage.deleteFile(MESSAGE_FILES_BUCKET, message.attachment.id);
+          await storage.deleteFile(
+            MESSAGE_FILES_BUCKET,
+            message.attachment.name,
+          );
         }
 
         await message.destroy({ transaction });
