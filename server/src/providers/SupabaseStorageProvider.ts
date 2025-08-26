@@ -1,9 +1,11 @@
 import { IStorageProvider } from '@/interfaces';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { StorageEngine } from 'multer';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { getFileExtension, randomFileName } from '@/utils';
-import { PassThrough } from 'node:stream';
+import { PassThrough, Readable } from 'node:stream';
+import mime from 'mime-types';
+import { pipeline } from 'node:stream/promises';
 
 class SupabaseStorageEngine implements StorageEngine {
   private readonly supabase: SupabaseClient;
@@ -98,6 +100,37 @@ export default class SupabaseStorageProvider implements IStorageProvider {
 
   public createStorageEngine(bucket: string) {
     return new SupabaseStorageEngine(this.supabase, bucket);
+  }
+
+  public async serveFile(
+    bucket: string,
+    fileName: string,
+    res: Response,
+  ): Promise<void> {
+    const { data, error } = await this.supabase.storage
+      .from(bucket)
+      .download(fileName);
+
+    if (error) throw error;
+
+    if (!data) {
+      throw Error('No data received from Supabase download.');
+    }
+
+    // Convert Web ReadableStream to Node.js Readable Stream
+    const stream = Readable.fromWeb(data.stream() as any);
+
+    res.setHeader(
+      'Content-Type',
+      mime.lookup(fileName) || 'application/octet-stream',
+    );
+
+    res.setHeader('Content-Disposition', `inline; filename="${fileName}"`);
+
+    res.setHeader('Content-Length', data.size);
+
+    // Pipe the Readable Stream to the HTTP Response
+    await pipeline(stream, res);
   }
 
   public async getFile(bucket: string, fileName: string) {

@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { getFileExtension, isPositiveInteger } from '@/utils';
+import { isPositiveInteger } from '@/utils';
 import { ProfilePhoto } from '@/models';
-import mime from 'mime-types';
 import storage from '@/config/storage';
 import { PROFILE_PHOTOS_BUCKET } from '@/config/general';
 
@@ -32,30 +31,7 @@ const servePhotoFile = async (
       return;
     }
 
-    const result = await storage.getFile(
-      PROFILE_PHOTOS_BUCKET,
-      profilePhoto.name,
-    );
-
-    if (typeof result === 'string') {
-      res.status(200).sendFile(result);
-    } else {
-      res.setHeader(
-        'Content-Type',
-        mime.lookup(profilePhoto.name) || 'application/octet-stream',
-      );
-
-      const ext = getFileExtension(profilePhoto.name);
-
-      res.setHeader(
-        'Content-Disposition',
-        `inline; filename="${profilePhoto.id}.${ext}"`,
-      );
-
-      res.setHeader('Content-Length', result.length);
-
-      res.status(200).send(result);
-    }
+    await storage.serveFile(PROFILE_PHOTOS_BUCKET, profilePhoto.name, res);
   } catch (err) {
     next(err);
   }

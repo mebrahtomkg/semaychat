@@ -1,6 +1,6 @@
 import { IStorageProvider } from '@/interfaces';
 import { getFileExtension, randomFileName } from '@/utils';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { StorageEngine } from 'multer';
 import fsSync from 'node:fs';
 import fs from 'node:fs/promises';
@@ -74,6 +74,24 @@ export default class LocalStorageProvider implements IStorageProvider {
 
   public createStorageEngine(bucket: string) {
     return new LocalStorageEngine(this.storageDir, bucket);
+  }
+
+  public async serveFile(
+    bucket: string,
+    fileName: string,
+    res: Response,
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const filePath = path.resolve(this.storageDir, bucket, fileName);
+
+      res.status(200).sendFile(filePath, {}, (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
   }
 
   public async getFile(
