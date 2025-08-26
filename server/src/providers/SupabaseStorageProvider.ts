@@ -38,6 +38,11 @@ class SupabaseStorageEngine implements StorageEngine {
         fileSize += chunk.length;
       });
 
+      file.stream.on('error', (err) => {
+        passThrough.emit('error', err); // Propagate the error to the PassThrough stream
+        callback(err);
+      });
+
       file.stream.pipe(passThrough);
 
       uploadPromise
