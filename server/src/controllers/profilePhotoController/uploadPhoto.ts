@@ -29,68 +29,86 @@ const profilePhotoUploader = multer({
   },
 }).single('profilePhoto');
 
-const uploadPhoto = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    profilePhotoUploader(req, res, async (uploadError) => {
-      if (uploadError) {
-        if (uploadError.message === UPLOAD_ERRORS.fileTypeError) {
-          res.status(400).json({ message: UPLOAD_ERRORS.fileTypeError });
-          return;
-        } else {
-          next(uploadError);
-          return;
-        }
-      }
-
-      if (!req.userId) {
-        res.status(401).json({ message: 'Not Authenticated!' });
-        return;
-      }
-
-      const file = req.file;
-
-      if (!file) {
-        res.status(400).json({
-          message: 'No file provided!',
-        });
-        return;
-      }
-
-      const { path: filePath, size, originalname } = file;
-
-      const transaction = await sequelize.transaction();
-
-      try {
-        const profilePhoto = await ProfilePhoto.create(
-          {
-            userId: req.userId,
-            name: path.basename(filePath),
-            originalname,
-            size,
-          },
-          { transaction },
-        );
-
-        await User.update(
-          { profilePhotoId: profilePhoto.id },
-          {
-            where: { id: req.userId },
-            transaction,
-          },
-        );
-
-        await transaction.commit();
-
-        res.status(200).json({
-          success: true,
-          data: profilePhoto.toJSON(),
-          message: 'Profile photo uploaded successfully',
-        });
-      } catch (err) {
-        await transaction.rollback();
-        next(err);
+const profilePhotoUploaderAsync = (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    profilePhotoUploader(req, res, (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
       }
     });
+  });
+};
+
+const uploadPhoto = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!req.userId) {
+      res.status(401).json({ message: 'Not Authenticated!' });
+      return;
+    }
+
+    try {
+      await profilePhotoUploaderAsync(req, res);
+    } catch (uploadErr) {
+      const { message: errorMessage } = uploadErr as Error;
+      switch (errorMessage) {
+        case UPLOAD_ERRORS.fileTypeError:
+          res.status(400).json({ message: errorMessage });
+          return;
+
+        default:
+          throw uploadErr;
+      }
+    }
+
+    const file = req.file;
+
+    if (!file) {
+      res.status(400).json({
+        message: 'No file provided!',
+      });
+      return;
+    }
+
+    const { path: filePath, size, originalname } = file;
+
+    const transaction = await sequelize.transaction();
+
+    try {
+      const profilePhoto = await ProfilePhoto.create(
+        {
+          userId: req.userId,
+          name: path.basename(filePath),
+          originalname,
+          size,
+        },
+        { transaction },
+      );
+
+      await User.update(
+        { profilePhotoId: profilePhoto.id },
+        {
+          where: { id: req.userId },
+          transaction,
+        },
+      );
+
+      await transaction.commit();
+
+      res.status(200).json({
+        success: true,
+        data: profilePhoto.toJSON(),
+        message: 'Profile photo uploaded successfully',
+      });
+    } catch (err) {
+      await transaction.rollback();
+      await storage.deleteFile(PROFILE_PHOTOS_BUCKET, filePath);
+      throw err;
+    }
   } catch (error) {
     next(error);
   }
