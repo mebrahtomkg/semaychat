@@ -141,23 +141,6 @@ export default class SupabaseStorageProvider implements IStorageProvider {
     await pipeline(stream, res);
   }
 
-  public async getFile(bucket: string, fileName: string) {
-    const { data, error } = await this.supabase.storage
-      .from(bucket)
-      .download(fileName);
-
-    if (error) throw error;
-
-    if (!data) {
-      throw Error('No data received from Supabase download.');
-    }
-
-    const arrayBuffer = await data.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
-    return buffer;
-  }
-
   public async deleteFile(bucket: string, fileName: string): Promise<void> {
     const { error } = await this.supabase.storage
       .from(bucket)

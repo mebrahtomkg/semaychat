@@ -11,7 +11,5 @@ export default interface IStorageProvider {
     headers?: Record<string, string>,
   ): Promise<void>;
 
-  getFile(bucket: string, fileName: string): Promise<Buffer | string>;
-
   deleteFile(bucket: string, fileName: string): Promise<void>;
 }
