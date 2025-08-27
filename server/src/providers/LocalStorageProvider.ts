@@ -80,11 +80,12 @@ export default class LocalStorageProvider implements IStorageProvider {
     bucket: string,
     fileName: string,
     res: Response,
+    headers?: Record<string, string>,
   ): Promise<void> {
     return new Promise((resolve, reject) => {
       const filePath = path.resolve(this.storageDir, bucket, fileName);
 
-      res.status(200).sendFile(filePath, {}, (err) => {
+      res.status(200).sendFile(filePath, { headers }, (err) => {
         if (err) {
           reject(err);
         } else {

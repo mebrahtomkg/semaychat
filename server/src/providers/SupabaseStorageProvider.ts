@@ -106,6 +106,7 @@ export default class SupabaseStorageProvider implements IStorageProvider {
     bucket: string,
     fileName: string,
     res: Response,
+    headers?: Record<string, string>,
   ): Promise<void> {
     const { data, error } = await this.supabase.storage
       .from(bucket)
@@ -118,6 +119,7 @@ export default class SupabaseStorageProvider implements IStorageProvider {
     }
 
     // Convert Web ReadableStream to Node.js Readable Stream
+    // biome-ignore lint/suspicious/noExplicitAny: support typing
     const stream = Readable.fromWeb(data.stream() as any);
 
     res.setHeader(
@@ -128,6 +130,12 @@ export default class SupabaseStorageProvider implements IStorageProvider {
     res.setHeader('Content-Disposition', `inline; filename="${fileName}"`);
 
     res.setHeader('Content-Length', data.size);
+
+    if (headers) {
+      for (const [key, value] of Object.entries(headers)) {
+        res.setHeader(key, value);
+      }
+    }
 
     // Pipe the Readable Stream to the HTTP Response
     await pipeline(stream, res);

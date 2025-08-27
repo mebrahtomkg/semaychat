@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { isPositiveInteger } from '@/utils';
 import { Message } from '@/models';
-import mime from 'mime-types';
 import { MESSAGE_FILES_BUCKET } from '@/config/general';
 import storage from '@/config/storage';
 
@@ -49,28 +48,14 @@ const readFile = async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
 
-    const result = await storage.getFile(
+    await storage.serveFile(
       MESSAGE_FILES_BUCKET,
       message.attachment.name,
+      res,
+      {
+        'Content-Disposition': `inline; filename="${message.attachment.originalname}"`,
+      },
     );
-
-    if (typeof result === 'string') {
-      res.status(200).sendFile(result);
-    } else {
-      res.setHeader(
-        'Content-Type',
-        mime.lookup(message.attachment.name) || 'application/octet-stream',
-      );
-
-      res.setHeader(
-        'Content-Disposition',
-        `inline; filename="${message.attachment.originalname}"`,
-      );
-
-      res.setHeader('Content-Length', result.length);
-
-      res.status(200).send(result);
-    }
   } catch (err) {
     next(err);
   }
