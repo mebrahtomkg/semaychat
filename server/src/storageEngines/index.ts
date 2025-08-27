@@ -1,2 +1,2 @@
-export { default as LocalStorageEngine } from './LocalStorageEngine';
+export { default as LocalDiskStorageEngine } from './LocalDiskStorageEngine';
 export { default as SupabaseStorageEngine } from './SupabaseStorageEngine';

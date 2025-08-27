@@ -1,10 +1,10 @@
 import { IStorageProvider } from '@/interfaces';
-import { LocalStorageEngine } from '@/storageEngines';
+import { LocalDiskStorageEngine } from '@/storageEngines';
 import { Response } from 'express';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-export default class LocalStorageProvider implements IStorageProvider {
+export default class LocalDiskStorageProvider implements IStorageProvider {
   private readonly storageDir: string;
 
   constructor(storageDir: string) {
@@ -12,7 +12,7 @@ export default class LocalStorageProvider implements IStorageProvider {
   }
 
   public createStorageEngine(bucket: string) {
-    return new LocalStorageEngine(this.storageDir, bucket);
+    return new LocalDiskStorageEngine(this.storageDir, bucket);
   }
 
   public async serveFile(

@@ -7,7 +7,7 @@ import path from 'node:path';
 import { StorageType } from '@/types';
 import fs from 'node:fs';
 import { IStorageProvider } from '@/interfaces';
-import { LocalStorageProvider, SupabaseStorageProvider } from '@/providers';
+import { LocalDiskStorageProvider, SupabaseStorageProvider } from '@/providers';
 import { createClient } from '@supabase/supabase-js';
 
 const storageType: StorageType =
@@ -33,7 +33,7 @@ switch (storageType) {
       fs.mkdirSync(messageFilesDir, { recursive: true });
     }
 
-    storage = new LocalStorageProvider(storageDir);
+    storage = new LocalDiskStorageProvider(storageDir);
 
     break;
   }

@@ -5,7 +5,7 @@ import fsSync from 'node:fs';
 import fs from 'node:fs/promises';
 import { Request } from 'express';
 
-export default class LocalStorageEngine implements StorageEngine {
+export default class LocalDiskStorageEngine implements StorageEngine {
   private readonly storageDir: string;
   private readonly bucket: string;
 
