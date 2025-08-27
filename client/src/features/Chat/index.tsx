@@ -1,6 +1,6 @@
 import BackLink from '@/components/BackLink';
 import { MoreButton } from '@/components/buttons';
-import { useAppContext, useMessagesFetcher, useUserFetcher } from '@/hooks';
+import { useAppContext, useUserFetcher } from '@/hooks';
 import { Message } from '@/types';
 import { type FC, useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router';
@@ -28,8 +28,6 @@ const Chat: FC = () => {
 
   const user = useUserFetcher(chatPartnerId);
 
-  useMessagesFetcher(chatPartnerId);
-
   const messages: Message[] = useChatMessages(chatPartnerId, true);
 
   const messagesInComponent = useMemo(
@@ -49,7 +47,7 @@ const Chat: FC = () => {
 
   const chatRef = useRef<HTMLDivElement | null>(null);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: to scroll if messages length change
   useEffect(() => {
     if (chatRef.current) {
       const messagesContainer: HTMLDivElement = chatRef.current;

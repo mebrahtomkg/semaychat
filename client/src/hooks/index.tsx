@@ -17,7 +17,6 @@ export { default as useFileSelector } from './useFileSelector';
 export { default as useFullScreenPhoto } from './useFullScreenPhoto';
 export { default as useImageFileLoader } from './useImageFileLoader';
 export { default as useImageLoader } from './useImageLoader';
-export { default as useMessagesFetcher } from './useMessagesFetcher';
 export { default as usePhotoNavigation } from './usePhotoNavigation';
 export { default as useProfilePhoto } from './useProfilePhoto';
 export { default as useResponsive } from './useResponsive';
