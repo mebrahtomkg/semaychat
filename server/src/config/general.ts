@@ -22,6 +22,8 @@ console.log('PASSWORD_HASHING_ROUNDS:', PASSWORD_HASHING_ROUNDS);
 
 export const MAX_PROFILE_PHOTO_FILE_SIZE = 2 * 1024 * 1024;
 
+export const MAX_MESSAGE_FILE_SIZE = 25 * 1024 * 1024;
+
 // Get the current file's path using import.meta.url
 const __filename = fileURLToPath(import.meta.url);
 

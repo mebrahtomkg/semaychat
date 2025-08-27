@@ -3,7 +3,7 @@ import commitSendingMessage from './commitSendingMessage';
 import { isPositiveInteger } from '@/utils';
 import { Attachment } from '@/models';
 import sequelize from '@/config/db';
-import { MESSAGE_FILES_BUCKET } from '@/config/general';
+import { MAX_MESSAGE_FILE_SIZE, MESSAGE_FILES_BUCKET } from '@/config/general';
 import storage from '@/config/storage';
 import multer from 'multer';
 import path from 'node:path';
@@ -12,9 +12,24 @@ const attachmentUploader = multer({
   storage: storage.createStorageEngine(MESSAGE_FILES_BUCKET),
   limits: {
     files: 1,
-    fileSize: 2 * 1024 * 1024,
+    fileSize: MAX_MESSAGE_FILE_SIZE,
   },
 }).single('attachment');
+
+const attachmentUploaderAsync = (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    attachmentUploader(req, res, (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
 
 const sendFile = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -23,75 +38,71 @@ const sendFile = async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
 
-    attachmentUploader(req, res, async (uploadError) => {
-      if (uploadError) {
-        next(uploadError);
-        return;
-      }
+    await attachmentUploaderAsync(req, res);
 
-      const receiverId = Number.parseInt(
-        typeof req.body?.receiverId === 'string'
-          ? req.body.receiverId.trim()
-          : '',
-        10,
+    const receiverId = Number.parseInt(
+      typeof req.body?.receiverId === 'string'
+        ? req.body.receiverId.trim()
+        : '',
+      10,
+    );
+
+    if (!isPositiveInteger(receiverId)) {
+      res.status(400).json({
+        message: 'Invalid receiver id.',
+      });
+      return;
+    }
+
+    if (req.userId === receiverId) {
+      res.status(400).json({
+        message: 'You cannot send message to yourself.',
+      });
+      return;
+    }
+
+    const caption =
+      typeof req.body?.caption === 'string' ? req.body.caption.trim() : null;
+
+    const file = req.file;
+
+    if (!file) {
+      res.status(400).json({
+        message: 'No file attached.',
+      });
+      return;
+    }
+
+    const { path: filePath, size, originalname } = file;
+
+    const transaction = await sequelize.transaction();
+
+    try {
+      const attachment = await Attachment.create(
+        {
+          name: path.basename(filePath),
+          originalname,
+          size,
+          caption,
+        },
+        { transaction },
       );
 
-      if (!isPositiveInteger(receiverId)) {
-        res.status(400).json({
-          message: 'Invalid receiver id.',
-        });
-        return;
-      }
+      const { status, message, success, data } = await commitSendingMessage({
+        transaction,
+        senderId: req.userId as number,
+        receiverId,
+        attachmentId: attachment.id,
+      });
 
-      if (req.userId === receiverId) {
-        res.status(400).json({
-          message: 'You cannot send message to yourself.',
-        });
-        return;
-      }
+      await transaction.commit();
 
-      const caption =
-        typeof req.body?.caption === 'string' ? req.body.caption.trim() : null;
-
-      const file = req.file;
-
-      if (!file) {
-        res.status(400).json({
-          message: 'No file attached.',
-        });
-        return;
-      }
-
-      const { path: filepath, size, originalname } = file;
-
-      const transaction = await sequelize.transaction();
-
-      try {
-        const attachment = await Attachment.create(
-          {
-            name: path.basename(filepath),
-            originalname,
-            size,
-            caption,
-          },
-          { transaction },
-        );
-
-        const { status, message, success, data } = await commitSendingMessage({
-          transaction,
-          senderId: req.userId as number,
-          receiverId,
-          attachmentId: attachment.id,
-        });
-
-        await transaction.commit();
-
-        res.status(status).json({ message, success, data });
-      } catch (err) {
-        await transaction.rollback();
-        throw err;
-      }
-    });
+      res.status(status).json({ message, success, data });
+    } catch (err) {
+      await transaction.rollback();
+      await storage.deleteFile(MESSAGE_FILES_BUCKET, filePath);
+      throw err;
+    }
   } catch (error) {
     next(error);
   }
