@@ -30,7 +30,7 @@ const Chat: FC = () => {
 
   useMessagesFetcher(chatPartnerId);
 
-  const messages: Message[] = useChatMessages(chatPartnerId);
+  const messages: Message[] = useChatMessages(chatPartnerId, true);
 
   const messagesInComponent = useMemo(
     () =>

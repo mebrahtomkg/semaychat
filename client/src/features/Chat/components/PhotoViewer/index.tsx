@@ -14,17 +14,17 @@ import {
   PhotoMetaText,
 } from '@/styles';
 import { PhotoViewerModal, ProgressContainer, ProgressText } from './styles';
-import {
-  useImageLoader,
-  usePhotoNavigation,
-  useAccount,
-  useAppSelector,
-} from '@/hooks';
+import { useImageLoader, usePhotoNavigation, useAccount } from '@/hooks';
 import TinySpinner from '@/components/TinySpinner';
 import FlexibleImage from '@/components/FlexibleImage';
 import { isImage } from '../../utils';
 import useUser from '@/hooks/useUserPro';
-import { useMessageActions, useMessageInfo } from '../../hooks';
+import {
+  useChatMessages,
+  useMessageActions,
+  useMessageInfo,
+} from '../../hooks';
+import { getFileExtension } from '@/utils';
 
 interface PhotoViewerProps {
   chatPartnerId: number;
@@ -37,13 +37,14 @@ const PhotoViewer: FC<PhotoViewerProps> = ({
   targetMessageId,
   onClose,
 }) => {
-  const photoMessages = useAppSelector((state) =>
-    state.messages.filter(
-      (message) =>
-        isImage(message.attachment?.extension) &&
-        (message.senderId === chatPartnerId ||
-          message.receiverId === chatPartnerId),
-    ),
+  const chatMessages = useChatMessages(chatPartnerId);
+
+  const photoMessages = useMemo(
+    () =>
+      chatMessages.filter((message) =>
+        isImage(getFileExtension(message.attachment?.name)),
+      ),
+    [chatMessages],
   );
 
   const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =

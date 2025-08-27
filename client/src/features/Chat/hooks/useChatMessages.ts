@@ -1,10 +1,13 @@
-import { Message } from '@/types';
-import { useQuery } from '@tanstack/react-query';
-import { ApiError, get } from '@/api';
 import usePendingMessages from './usePendingMessages';
 import { useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { ApiError, get } from '@/api';
+import { Message } from '@/types';
 
-const useChatMessages = (partnerId: number) => {
+const useChatMessages = (
+  partnerId: number,
+  includePendingMessages?: boolean,
+) => {
   const { isError, data, error } = useQuery({
     queryKey: ['messages', partnerId],
     queryFn: () => get<Message[]>(`/messages/${partnerId}`),
@@ -16,14 +19,19 @@ const useChatMessages = (partnerId: number) => {
     console.error(error);
   }
 
+  const messages = data || [];
+
   const pendingMessages = usePendingMessages(partnerId);
 
-  const messages = useMemo(() => {
-    if (!data) return pendingMessages;
-    return [...data, ...pendingMessages];
-  }, [data, pendingMessages]);
+  const chatMessages = useMemo(() => {
+    if (includePendingMessages) {
+      return [...messages, ...pendingMessages];
+    }
 
-  return messages;
+    return messages;
+  }, [includePendingMessages, messages, pendingMessages]);
+
+  return chatMessages;
 };
 
 export default useChatMessages;

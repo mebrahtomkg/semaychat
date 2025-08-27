@@ -7,7 +7,7 @@
  *          Returns "bashrc" for hidden files like ".bashrc".
  *          Returns null if the input is not a string.
  */
-const getFileExtension = (fileName: string): string => {
+const getFileExtension = (fileName: unknown): string => {
   if (typeof fileName !== 'string') return '';
 
   const lastDotIndex = fileName.lastIndexOf('.');
