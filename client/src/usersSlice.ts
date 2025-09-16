@@ -19,17 +19,9 @@ export const usersSlice = createSlice({
 
       return [...otherExistingUsers, ...newUsers];
     },
-
-    userAdded(state, action: PayloadAction<User>) {
-      const newUser = action.payload;
-
-      const otherExistingUsers = state.filter((user) => user.id !== newUser.id);
-
-      return [...otherExistingUsers, newUser];
-    },
   },
 });
 
 export default usersSlice.reducer;
 
-export const { manyUsersAdded, userAdded } = usersSlice.actions;
+export const { manyUsersAdded } = usersSlice.actions;

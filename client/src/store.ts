@@ -2,7 +2,6 @@ import { configureStore, createSelector } from '@reduxjs/toolkit';
 import accountReducer from '@/features/Settings/slices/accountSlice';
 import usersReducer from '@/usersSlice';
 import messageRequestsReducer from '@/features/Chat/slices/messageRequestsSlice';
-import contactsReducer from '@/contactsSlice';
 import blockedUsersReducer from '@/blockedUsersSlice';
 
 const store = configureStore({
@@ -12,8 +11,6 @@ const store = configureStore({
     messageRequests: messageRequestsReducer,
 
     users: usersReducer,
-
-    contacts: contactsReducer,
 
     blockedUsers: blockedUsersReducer,
   },

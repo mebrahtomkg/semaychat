@@ -1,6 +1,6 @@
-import { Contact } from '../../models';
+import { Contact } from '@/models';
+import { isPositiveInteger } from '@/utils';
 import { Request, Response, NextFunction } from 'express';
-import { isPositiveInteger } from '../../utils';
 
 const removeContact = async (
   req: Request,

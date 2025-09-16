@@ -1,5 +1,5 @@
-import { Contact, User } from '../../models';
-import { applyUserPrivacy } from '../../utils';
+import { Contact, User } from '@/models';
+import { applyUserPrivacy } from '@/utils';
 import { Request, Response, NextFunction } from 'express';
 
 const listAllContacts = async (

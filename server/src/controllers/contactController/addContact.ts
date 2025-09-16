@@ -1,5 +1,5 @@
-import { User, Contact } from '../../models';
-import { isPositiveInteger } from '../../utils';
+import { Contact, User } from '@/models';
+import { isPositiveInteger } from '@/utils';
 import { Request, Response, NextFunction } from 'express';
 
 const addContact = async (req: Request, res: Response, next: NextFunction) => {
@@ -16,7 +16,9 @@ const addContact = async (req: Request, res: Response, next: NextFunction) => {
       });
     }
 
-    if (!(await User.findOne({ where: { id: userId } }))) {
+    const user = await User.findByPk(userId);
+
+    if (!user) {
       return res.status(404).json({
         message: 'User not found.',
       });
@@ -31,18 +33,18 @@ const addContact = async (req: Request, res: Response, next: NextFunction) => {
 
     if (existingContact) {
       return res.status(409).json({
-        message: 'This user was already your contact.',
+        message: 'This user is already your contact.',
       });
     }
 
-    const contact = await Contact.create({
+    await Contact.create({
       adderId: req.userId,
       addedId: userId,
     });
 
     res.status(200).json({
       success: true,
-      data: contact.toJSON(),
+      data: user.toJSON(),
       message: 'Contact added successfully.',
     });
   } catch (error) {

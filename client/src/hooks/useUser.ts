@@ -1,14 +1,18 @@
 import { useCallback, useMemo } from 'react';
-import { calculateFullName, calculateNameInitials } from '../utils';
-import { User } from '../types';
+import { calculateFullName, calculateNameInitials } from '@/utils';
 import useAPI from './useAPI';
-import { useAppDispatch, useAppSelector } from '.';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useContactActions,
+  useContacts,
+} from '.';
 import { blockedUserAdded, blockedUserDeleted } from '../blockedUsersSlice';
-import { contactAdded, contactDeleted } from '../contactsSlice';
+import { User } from '@/types';
 
 const useUser = (user?: User) => {
   const blockedUsers = useAppSelector((state) => state.blockedUsers);
-  const contacts = useAppSelector((state) => state.contacts);
+  const contacts = useContacts();
 
   const fullName = useMemo(
     () => calculateFullName(user?.firstName, user?.lastName),
@@ -34,7 +38,7 @@ const useUser = (user?: User) => {
   );
 
   const isContact = useMemo(
-    () => (user ? contacts.includes(user.id) : false),
+    () => (user ? contacts.some((contact) => contact.id === user.id) : false),
     [contacts, user],
   );
 
@@ -63,27 +67,29 @@ const useUser = (user?: User) => {
     }
   }, [del, dispatch, isBlocked, user]);
 
+  const { addContact, deleteContact } = useContactActions();
+
   const addToContacts = useCallback(async () => {
     if (!user || isContact) return;
     const { success, message } = await post('/contacts', {
       userId: user.id,
     });
     if (success) {
-      dispatch(contactAdded(user.id));
+      addContact(user);
     } else {
       console.error(message);
     }
-  }, [dispatch, isContact, post, user]);
+  }, [addContact, isContact, post, user]);
 
   const removeFromContacts = useCallback(async () => {
     if (!user || !isContact) return;
     const { success, message } = await del(`/contacts/${user.id}`);
     if (success) {
-      dispatch(contactDeleted(user.id));
+      deleteContact(user.id);
     } else {
       console.error(message);
     }
-  }, [del, dispatch, isContact, user]);
+  }, [del, deleteContact, isContact, user]);
 
   return {
     fullName,

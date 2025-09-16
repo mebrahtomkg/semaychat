@@ -2,11 +2,11 @@ import { Chat } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { ApiError, get } from '@/api';
 import { useMemo } from 'react';
-import { useAppSelector, useContacts } from '.';
+import { useAppSelector } from '.';
 
 const useChats = () => {
   const users = useAppSelector((state) => state.users);
-  const contacts = useContacts();
+  const contacts = useAppSelector((state) => state.contacts);
   const blockedUsers = useAppSelector((state) => state.blockedUsers);
 
   const { isError, data, error } = useQuery({
@@ -33,8 +33,9 @@ const useChats = () => {
     // If chat list are not enough, add users from contact list.
     if (chats.length < 10) {
       for (const contact of contacts) {
-        if (!chats.some((chat) => chat.partner.id === contact.id)) {
-          chats.push({ partner: contact });
+        if (!chats.some((chat) => chat.partner.id === contact)) {
+          const partner = users.find((user) => user.id === contact);
+          if (partner) chats.push({ partner });
         }
 
         if (chats.length === 10) break;
