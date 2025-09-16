@@ -7,7 +7,7 @@ import Guest from '@/features/Guest';
 import useApp from './useApp';
 import { GlobalStyle } from '@/styles';
 import { AppContainer, PageContainer } from './styles';
-import { useAuth, useBlockedUsersFetcher } from '@/hooks';
+import { useAuth } from '@/hooks';
 import Spinner from '@/components/spinner';
 import AppContext from './AppContext';
 import { MessageRequestsProcessor } from '@/features/Chat/components';
@@ -20,8 +20,6 @@ const App = () => {
   const { isLoading, isLoggedIn } = useAuth();
 
   useSocket();
-
-  useBlockedUsersFetcher();
 
   if (isLoading) return <Spinner />;
 

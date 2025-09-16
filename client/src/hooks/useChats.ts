@@ -3,11 +3,12 @@ import { useQuery } from '@tanstack/react-query';
 import { ApiError, get } from '@/api';
 import { useMemo } from 'react';
 import { useAppSelector, useContacts } from '.';
+import useBlockedUsers from './useBlockedUsers';
 
 const useChats = () => {
   const users = useAppSelector((state) => state.users);
   const contacts = useContacts();
-  const blockedUsers = useAppSelector((state) => state.blockedUsers);
+  const blockedUsers = useBlockedUsers();
 
   const { isError, data, error } = useQuery({
     queryKey: ['chats'],
@@ -45,7 +46,7 @@ const useChats = () => {
     if (chats.length < 10) {
       for (const user of users) {
         const isBlocked = blockedUsers.some(
-          (blockedUser) => blockedUser === user.id,
+          (blockedUser) => blockedUser.id === user.id,
         );
 
         if (!isBlocked && !chats.some((chat) => chat.partner.id === user.id)) {

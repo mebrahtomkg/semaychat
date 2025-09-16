@@ -1,17 +1,13 @@
 import { useCallback, useMemo } from 'react';
 import { calculateFullName, calculateNameInitials } from '@/utils';
 import useAPI from './useAPI';
-import {
-  useAppDispatch,
-  useAppSelector,
-  useContactActions,
-  useContacts,
-} from '.';
-import { blockedUserAdded, blockedUserDeleted } from '../blockedUsersSlice';
+import { useContactActions, useContacts } from '.';
 import { User } from '@/types';
+import useBlockedUserActions from './useBlockedUserActions';
+import useBlockedUsers from './useBlockedUsers';
 
 const useUser = (user?: User) => {
-  const blockedUsers = useAppSelector((state) => state.blockedUsers);
+  const blockedUsers = useBlockedUsers();
   const contacts = useContacts();
 
   const fullName = useMemo(
@@ -33,7 +29,10 @@ const useUser = (user?: User) => {
   );
 
   const isBlocked = useMemo(
-    () => (user ? blockedUsers.includes(user.id) : false),
+    () =>
+      user
+        ? blockedUsers.some((blockedUser) => blockedUser.id === user.id)
+        : false,
     [blockedUsers, user],
   );
 
@@ -43,7 +42,8 @@ const useUser = (user?: User) => {
   );
 
   const { post, del } = useAPI();
-  const dispatch = useAppDispatch();
+
+  const { addBlockedUser, deleteBlockedUser } = useBlockedUserActions();
 
   const blockUser = useCallback(async () => {
     if (!user || isBlocked) return;
@@ -51,21 +51,21 @@ const useUser = (user?: User) => {
       userId: user.id,
     });
     if (success) {
-      dispatch(blockedUserAdded(user.id));
+      addBlockedUser(user);
     } else {
       console.error(message);
     }
-  }, [dispatch, isBlocked, post, user]);
+  }, [addBlockedUser, isBlocked, post, user]);
 
   const unblockUser = useCallback(async () => {
     if (!user || !isBlocked) return;
     const { success, message } = await del(`/blocked-users/${user.id}`);
     if (success) {
-      dispatch(blockedUserDeleted(user.id));
+      deleteBlockedUser(user.id);
     } else {
       console.error(message);
     }
-  }, [del, dispatch, isBlocked, user]);
+  }, [del, deleteBlockedUser, isBlocked, user]);
 
   const { addContact, deleteContact } = useContactActions();
 

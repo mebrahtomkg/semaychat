@@ -13,7 +13,7 @@ const useContactActions = () => {
 
   const deleteContact = useCallback((userId: number) => {
     queryClient.setQueryData([CONTACTS_QUERY_KEY], (contacts: User[]) => {
-      if (!contacts) return [contacts];
+      if (!contacts) return undefined;
       return contacts.filter((contact) => contact.id !== userId);
     });
   }, []);

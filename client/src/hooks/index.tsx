@@ -8,7 +8,6 @@ export { default as useAccount } from './useAccount';
 export { default as useAPI } from './useAPI';
 export { default as useAppContext } from './useAppContext';
 export { default as useAuth } from './useAuth';
-export { default as useBlockedUsersFetcher } from './useBlockedUsersFetcher';
 export { default as useChatsFetcher } from './useChatsFetcher';
 export { default as useDebounce } from './useDebounce';
 export { default as useDownload } from './useDownload';
