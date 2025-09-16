@@ -4,20 +4,16 @@ import {
   SearchContainer,
   UsersContainer,
 } from './styles';
-import { useAppContext, useChatsFetcher, useSuggestionsFetcher } from '@/hooks';
+import { useAppContext } from '@/hooks';
 import SearchInput from './components/SearchInput';
 import SearchButton from './components/SearchButton';
 import User from './components/User';
-import useChats from '@/hooks/useChats';
+import useEnoughChats from './useEnoughChats';
 
 const Home = () => {
   const { isLargeScreen } = useAppContext();
 
-  useChatsFetcher();
-
-  useSuggestionsFetcher();
-
-  const chats = useChats();
+  const chats = useEnoughChats();
 
   // ToDo add home and contacts link intop
   // after the searchinput is focused show examples of how to search below the search bar

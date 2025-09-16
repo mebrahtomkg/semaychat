@@ -1,6 +1,5 @@
 import { configureStore, createSelector } from '@reduxjs/toolkit';
 import accountReducer from '@/features/Settings/slices/accountSlice';
-import usersReducer from '@/usersSlice';
 import messageRequestsReducer from '@/features/Chat/slices/messageRequestsSlice';
 
 const store = configureStore({
@@ -8,8 +7,6 @@ const store = configureStore({
     account: accountReducer,
 
     messageRequests: messageRequestsReducer,
-
-    users: usersReducer,
   },
 });
 

@@ -2,16 +2,12 @@ import { Chat } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { ApiError, get } from '@/api';
 import { useMemo } from 'react';
-import { useAppSelector, useContacts } from '.';
-import useBlockedUsers from './useBlockedUsers';
 
-const useChats = () => {
-  const users = useAppSelector((state) => state.users);
-  const contacts = useContacts();
-  const blockedUsers = useBlockedUsers();
+export const CHATS_QUERY_KEY = 'chats';
 
+const useChats = (): Chat[] => {
   const { isError, data, error } = useQuery({
-    queryKey: ['chats'],
+    queryKey: [CHATS_QUERY_KEY],
     queryFn: () => get<Chat[]>('/chats'),
     retry: (failureCount: number, error: Error) =>
       error instanceof ApiError && error.status ? false : failureCount < 2,
@@ -21,46 +17,18 @@ const useChats = () => {
     console.error(error);
   }
 
-  const chatsList = useMemo(() => {
-    const chats = data || [];
+  const chats = useMemo(() => {
+    if (!data) return [];
 
     // Sort by recent
-    chats.sort((a, b) =>
+    return data.sort((a, b) =>
       b.lastMessage && a.lastMessage
         ? b.lastMessage.createdAt - a.lastMessage.createdAt
         : 0,
     );
+  }, [data]);
 
-    // If chat list are not enough, add users from contact list.
-    if (chats.length < 10) {
-      for (const contact of contacts) {
-        if (!chats.some((chat) => chat.partner.id === contact.id)) {
-          chats.push({ partner: contact });
-        }
-
-        if (chats.length === 10) break;
-      }
-    }
-
-    // If chat list are still not enough, add users from suggetions list.
-    if (chats.length < 10) {
-      for (const user of users) {
-        const isBlocked = blockedUsers.some(
-          (blockedUser) => blockedUser.id === user.id,
-        );
-
-        if (!isBlocked && !chats.some((chat) => chat.partner.id === user.id)) {
-          chats.push({ partner: user });
-        }
-
-        if (chats.length === 10) break;
-      }
-    }
-
-    return chats;
-  }, [data, contacts, users, blockedUsers]);
-
-  return chatsList;
+  return chats;
 };
 
 export default useChats;
