@@ -11,3 +11,6 @@
 /server/node_modules/
 /server/storage/
 /server/.env
+
+/semaychat.sublime-project
+/semaychat.sublime-workspace
