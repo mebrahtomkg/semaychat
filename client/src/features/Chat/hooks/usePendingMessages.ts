@@ -1,4 +1,4 @@
-import { useAppSelector } from '@/hooks';
+import { useAccount, useAppSelector } from '@/hooks';
 import { Message } from '@/types';
 import { useMemo } from 'react';
 import { createAppSelector } from '@/store';
@@ -20,7 +20,7 @@ const selectPendingMessagesByReceiverId = createAppSelector(
 );
 
 const usePendingMessages = (receiverId: number) => {
-  const selfId = useAppSelector((state) => state.account?.id);
+  const { id: selfId } = useAccount();
 
   const requests = useAppSelector((state) =>
     selectPendingMessagesByReceiverId(state, receiverId),

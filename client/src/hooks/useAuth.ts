@@ -1,31 +1,7 @@
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '.';
-import { Account } from '@/types';
-import { accountFetched } from '@/features/Settings/slices/accountSlice';
-import { useQuery } from '@tanstack/react-query';
-import { ApiError, get } from '@/api';
+import { useAccountQuery } from '.';
 
 const useAuth = () => {
-  const account = useAppSelector((state) => state.account);
-
-  const dispatch = useAppDispatch();
-
-  const { isPending, isError, data, error } = useQuery({
-    queryKey: ['account'],
-    queryFn: () => get<Account>(`/users/me`),
-    retry: (failureCount: number, error: Error) =>
-      error instanceof ApiError && error.status === 401
-        ? false
-        : failureCount < 2,
-  });
-
-  useEffect(() => {
-    if (data) dispatch(accountFetched(data));
-  }, [data, dispatch]);
-
-  if (isError) {
-    console.error(error);
-  }
+  const { isPending, account } = useAccountQuery();
 
   return {
     isLoading: isPending,

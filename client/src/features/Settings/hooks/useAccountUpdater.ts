@@ -1,14 +1,13 @@
+import { useAccountActions, useAPI } from '@/hooks';
+import { Account } from '@/types';
 import { useCallback, useState } from 'react';
-import { Account } from '../../../types';
-import { useAPI, useAppDispatch } from '../../../hooks';
-import { accountUpdated } from '../slices/accountSlice';
 
 const useAccountUpdater = () => {
+  const { setAccount } = useAccountActions();
+
   const [isUpdating, setIsUpdating] = useState(false);
 
   const { put } = useAPI();
-
-  const dispatch = useAppDispatch();
 
   const updateAccount = useCallback(
     async (accountData: Partial<Account>) => {
@@ -19,13 +18,13 @@ const useAccountUpdater = () => {
         accountData,
       );
 
-      if (success) dispatch(accountUpdated(data));
+      if (success) setAccount(data);
 
       setIsUpdating(false);
 
       return { success, message };
     },
-    [dispatch, put],
+    [setAccount, put],
   );
 
   return { updateAccount, isUpdating };

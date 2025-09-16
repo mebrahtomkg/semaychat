@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { useAccount, useAppSelector } from '@/hooks';
+import { useAccount, useAccountInfo } from '@/hooks';
 import { PRIVACY_SETTINGS, VISIBILITY_OPTION_LABELS } from './constants';
 
 type ModalName =
@@ -16,10 +16,9 @@ interface SettingsItem {
 }
 
 const useSettings = () => {
-  const account = useAppSelector((state) => state.account);
-  if (!account) throw new Error('Invalid account!');
+  const account = useAccount();
 
-  const { email, username, bio, fullName } = useAccount();
+  const { email, username, bio, fullName } = useAccountInfo();
 
   const [activeModal, setActiveModal] = useState<ModalName | null>(null);
   const [modalPayload, setModalPayload] = useState<unknown>(null);

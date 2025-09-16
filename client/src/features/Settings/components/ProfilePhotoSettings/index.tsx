@@ -18,12 +18,12 @@ import {
 } from '@/components/buttons';
 import {
   useFileSelector,
-  useAccount,
   useAppContext,
   useFullScreenPhoto,
   useImageLoader,
   usePhotoNavigation,
   useProfilePhotos,
+  useAccountInfo,
 } from '@/hooks';
 import useSelfProfilePhoto from '../../hooks/useSelfProfilePhoto';
 import AddPhotoButton from '../AddPhotoButton';
@@ -35,7 +35,7 @@ import NameInitial from '@/components/NameInitial';
 const ProfilePhotoSettings = () => {
   const { windowWidth } = useAppContext();
 
-  const { fullName, nameInitials } = useAccount();
+  const { fullName, nameInitials } = useAccountInfo();
 
   const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =
     useContextMenu();

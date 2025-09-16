@@ -1,4 +1,4 @@
-import { useAppSelector } from '@/hooks';
+import { useAccount } from '@/hooks';
 import { Message } from '@/types';
 import { useMemo } from 'react';
 import {
@@ -15,7 +15,7 @@ import { getFileExtension } from '@/utils';
 type MessageType = 'text' | 'photo' | 'audio' | 'video' | 'file';
 
 const useMessageInfo = (message: Message) => {
-  const selfId = useAppSelector((state) => state.account?.id);
+  const { id: selfId } = useAccount();
 
   const isOutgoing = message.senderId === selfId;
 

@@ -1,0 +1,47 @@
+import { useCallback, useMemo } from 'react';
+import { calculateFullName, calculateNameInitials } from '../utils';
+import { useAccount, useAPI, useProfilePhotos } from '.';
+
+const useAccountInfo = () => {
+  const account = useAccount();
+
+  const { profilePhotos } = useProfilePhotos();
+
+  const { firstName, lastName } = account;
+
+  const fullName = useMemo(
+    () => calculateFullName(firstName, lastName),
+    [firstName, lastName],
+  );
+
+  const nameInitials = useMemo(
+    () => calculateNameInitials(firstName, lastName),
+    [firstName, lastName],
+  );
+
+  const photoUrl = useMemo(() => {
+    const photoId = profilePhotos[0]?.id;
+    return photoId ? `/profile-photos/${photoId}/file` : null;
+  }, [profilePhotos]);
+
+  const { post } = useAPI();
+
+  const logout = useCallback(async () => {
+    const { success, message } = await post('/auth/logout', {});
+    if (success) {
+      location = `${location.origin}/login` as unknown as Location;
+    } else {
+      console.error(message);
+    }
+  }, [post]);
+
+  return {
+    ...account,
+    fullName,
+    nameInitials,
+    photoUrl,
+    logout,
+  };
+};
+
+export default useAccountInfo;

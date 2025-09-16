@@ -14,7 +14,7 @@ import {
   PhotoMetaText,
 } from '@/styles';
 import { PhotoViewerModal, ProgressContainer, ProgressText } from './styles';
-import { useImageLoader, usePhotoNavigation, useAccount } from '@/hooks';
+import { useImageLoader, usePhotoNavigation, useAccountInfo } from '@/hooks';
 import TinySpinner from '@/components/TinySpinner';
 import FlexibleImage from '@/components/FlexibleImage';
 import { isImage } from '../../utils';
@@ -82,7 +82,7 @@ const PhotoViewer: FC<PhotoViewerProps> = ({
   );
 
   const { fullName: partnerFullName } = useUser(chatPartnerId);
-  const { fullName: selfFullName } = useAccount();
+  const { fullName: selfFullName } = useAccountInfo();
   const senderFullName = isOutgoing ? selfFullName : partnerFullName;
 
   return (

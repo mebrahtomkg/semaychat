@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useAccount, useAppDispatch } from '@/hooks';
 import { Message } from '@/types';
 import {
   messageUpdateRequestAdded,
@@ -12,7 +12,7 @@ type EditorState =
   | { mode: 'new' };
 
 const useChat = (chatPartnerId: number) => {
-  const selfId = useAppSelector((state) => state.account?.id);
+  const { id: selfId } = useAccount();
   const dispatch = useAppDispatch();
 
   const editingTextRef = useRef<string>('');

@@ -4,9 +4,8 @@ import PasswordInput, { checkPassword } from './PasswordInput';
 import { Link } from 'react-router';
 import { InputGroup } from '../TextInput';
 import styled from 'styled-components';
-import { useAPI, useAppDispatch } from '../../../hooks';
-import { accountUpdated } from '../../Settings/slices/accountSlice';
-import { Account } from '../../../types';
+import { useAccountActions, useAPI } from '@/hooks';
+import { Account } from '@/types';
 
 export const FormTitle = styled.h2`
   margin-bottom: 1rem;
@@ -16,6 +15,8 @@ export const FormTitle = styled.h2`
 `;
 
 export default function LogInForm() {
+  const { setAccount } = useAccountActions();
+
   const [state, setState] = useState({
     email: '',
     emailError: '',
@@ -38,8 +39,6 @@ export default function LogInForm() {
 
   const { post } = useAPI();
 
-  const dispatch = useAppDispatch();
-
   const doLogin = async () => {
     const email = state.email.trim();
     const password = state.password.trim();
@@ -59,7 +58,7 @@ export default function LogInForm() {
       });
 
       if (success) {
-        dispatch(accountUpdated(data || null));
+        setAccount(data);
       } else {
         setState((prevState) => ({
           ...prevState,

@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  useAccount,
+  useAccountInfo,
   useAnimation,
   useAppContext,
   useImageLoader,
@@ -52,7 +52,7 @@ const SideBar = () => {
 
   const isVisible = isSidebarVisible;
 
-  const { fullName, nameInitials, photoUrl, logout } = useAccount();
+  const { fullName, nameInitials, photoUrl, logout } = useAccountInfo();
 
   const { handleImageLoad, imageSrc } = useImageLoader(photoUrl);
 

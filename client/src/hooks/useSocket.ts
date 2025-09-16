@@ -1,13 +1,13 @@
 import { initSocket } from '@/services/socket';
-import { useAppSelector } from '.';
+import { useAccountQuery } from '.';
 import { useEffect } from 'react';
 
 const useSocket = () => {
-  const selfId = useAppSelector((state) => state.account?.id);
+  const { account } = useAccountQuery();
 
   useEffect(() => {
-    if (selfId) initSocket();
-  }, [selfId]);
+    if (account?.id) initSocket();
+  }, [account?.id]);
 };
 
 export default useSocket;

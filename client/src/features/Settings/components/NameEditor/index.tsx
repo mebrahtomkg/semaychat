@@ -1,6 +1,6 @@
 import { type CSSProperties, type FC, useState } from 'react';
-import Spinner from '../../../../Spinner';
-import { useAppSelector } from '../../../../hooks';
+import Spinner from '@/Spinner';
+import { useAccount } from '@/hooks';
 import useAccountUpdater from '../../hooks/useAccountUpdater';
 import EditorModal from '../EditorModal';
 import TextInput from '../TextInput';
@@ -12,8 +12,7 @@ interface NameEditorProps {
 }
 
 const NameEditor: FC<NameEditorProps> = ({ onClose, animationStyle }) => {
-  const account = useAppSelector((state) => state.account);
-  if (!account) throw new Error('Invalid user account!');
+  const account = useAccount();
 
   const [state, setState] = useState({
     firstName: account.firstName,

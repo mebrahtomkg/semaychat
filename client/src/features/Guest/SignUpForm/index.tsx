@@ -8,11 +8,12 @@ import ConfirmPasswordInput, {
 import { Link } from 'react-router';
 import { ButtonPrimary, FormTitle } from '../LogInForm';
 import { InputGroup } from '../TextInput';
-import { useAPI, useAppDispatch } from '../../../hooks';
-import { accountFetched } from '../../Settings/slices/accountSlice';
-import { Account } from '../../../types';
+import { useAccountActions, useAPI, useAppDispatch } from '@/hooks';
+import { Account } from '@/types';
 
 export default function SignUpForm() {
+  const { setAccount } = useAccountActions();
+
   const [state, setState] = useState({
     name: '',
     nameError: '',
@@ -69,7 +70,7 @@ export default function SignUpForm() {
         password,
       });
       if (success && data) {
-        dispatch(accountFetched(data));
+        setAccount(data);
       } else {
         setState((prevState) => ({
           ...prevState,

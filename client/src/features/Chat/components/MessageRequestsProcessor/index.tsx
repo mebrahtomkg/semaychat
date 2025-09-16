@@ -1,5 +1,5 @@
 import { messageRequestDeleted } from '@/features/Chat/slices/messageRequestsSlice';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useAccount, useAppDispatch, useAppSelector } from '@/hooks';
 import { Message } from '@/types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
@@ -19,7 +19,7 @@ const selectRequest = createAppSelector(
 const MessageRequestsProcessor = () => {
   const request = useAppSelector((state) => selectRequest(state));
 
-  const selfId = useAppSelector((state) => state.account?.id);
+  const { id: selfId } = useAccount();
 
   const queryClient = useQueryClient();
 

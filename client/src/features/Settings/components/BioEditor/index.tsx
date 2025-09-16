@@ -1,8 +1,8 @@
 import { type CSSProperties, type FC, useState } from 'react';
-import { useAppSelector } from '../../../../hooks';
+import { useAccount } from '@/hooks';
 import EditorModal from '../EditorModal';
 import BioInput from './BioInput';
-import Spinner from '../../../../Spinner';
+import Spinner from '@/Spinner';
 import useAccountUpdater from '../../hooks/useAccountUpdater';
 
 const MAX_BIO_LENGTH = 70;
@@ -13,8 +13,7 @@ interface NameEditorProps {
 }
 
 const BioEditor: FC<NameEditorProps> = ({ onClose, animationStyle }) => {
-  const account = useAppSelector((state) => state.account);
-  if (!account) throw new Error('Invalid user account!');
+  const account = useAccount();
 
   const [state, setState] = useState({
     value: account.bio || '',

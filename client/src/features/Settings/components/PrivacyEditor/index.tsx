@@ -3,7 +3,7 @@ import useAccountUpdater from '../../hooks/useAccountUpdater';
 import EditorModal from '../EditorModal';
 import RadioButton from '../RadioButton';
 import { VisibilityChoicesContainer } from './styles';
-import { useAppSelector } from '@/hooks';
+import { useAccount } from '@/hooks';
 import Spinner from '@/Spinner';
 import { PrivacySetting } from '../../types';
 import { VISIBILITY_OPTION_LABELS } from '../../constants';
@@ -19,8 +19,7 @@ const PrivacyEditor: FC<PrivacyEditorProps> = ({
   animationStyle,
   onClose,
 }) => {
-  const account = useAppSelector((state) => state.account);
-  if (!account) throw new Error('Invalid account!');
+  const account = useAccount();
 
   const { settingkey, title, visibilityOptions } = privacySetting;
 
