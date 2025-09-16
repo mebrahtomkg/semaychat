@@ -1,15 +1,12 @@
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector, useProfilePhotos } from '.';
+import { useAppDispatch, useAppSelector } from '.';
 import { Account } from '@/types';
 import { accountFetched } from '@/features/Settings/slices/accountSlice';
-import { profilePhotoAdded } from '@/features/Settings/slices/profilePhotosSlice';
 import { useQuery } from '@tanstack/react-query';
 import { ApiError, get } from '@/api';
 
 const useAuth = () => {
   const account = useAppSelector((state) => state.account);
-
-  const { addProfilePhoto } = useProfilePhotos();
 
   const dispatch = useAppDispatch();
 
@@ -23,13 +20,8 @@ const useAuth = () => {
   });
 
   useEffect(() => {
-    if (data) {
-      dispatch(accountFetched(data));
-      if (data.profilePhoto) {
-        addProfilePhoto(data.profilePhoto);
-      }
-    }
-  }, [data, dispatch, addProfilePhoto]);
+    if (data) dispatch(accountFetched(data));
+  }, [data, dispatch]);
 
   if (isError) {
     console.error(error);
