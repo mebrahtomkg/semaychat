@@ -1,15 +1,18 @@
 import { useEffect } from 'react';
 import { useAppDispatch } from '.';
-import { Chat, Message, User } from '@/types';
+import { Chat, User } from '@/types';
 import { manyUsersAdded } from '@/usersSlice';
-import { manyMessagesAdded } from '@/features/Chat/slices/messagesSlice';
 import { useQuery } from '@tanstack/react-query';
 import { ApiError, get } from '@/api';
 
 const useChatsFetcher = () => {
   const dispatch = useAppDispatch();
 
-  const { isError, data, error } = useQuery({
+  const {
+    isError,
+    data: chats,
+    error,
+  } = useQuery({
     queryKey: ['chats'],
     queryFn: () => get<Chat[]>('/chats'),
     retry: (failureCount: number, error: Error) =>
@@ -21,19 +24,14 @@ const useChatsFetcher = () => {
   }
 
   useEffect(() => {
-    if (data) {
+    if (chats) {
       const users: User[] = [];
-      const messages: Message[] = [];
-
-      for (const chat of data) {
+      for (const chat of chats) {
         users.push(chat.partner);
-        messages.push(chat.lastMessage as Message);
       }
-
       dispatch(manyUsersAdded(users));
-      dispatch(manyMessagesAdded(messages));
     }
-  }, [data, dispatch]);
+  }, [chats, dispatch]);
 };
 
 export default useChatsFetcher;

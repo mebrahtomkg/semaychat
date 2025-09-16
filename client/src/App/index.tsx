@@ -5,7 +5,6 @@ import Chat from '@/features/Chat';
 import SideBar from '@/features/SideBar';
 import Guest from '@/features/Guest';
 import useApp from './useApp';
-import Profile from '@/features/Profile';
 import { GlobalStyle } from '@/styles';
 import { AppContainer, PageContainer } from './styles';
 import { useAuth, useBlockedUsersFetcher, useContactsFetcher } from '@/hooks';
