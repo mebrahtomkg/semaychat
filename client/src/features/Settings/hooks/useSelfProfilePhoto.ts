@@ -1,25 +1,24 @@
 import { useCallback } from 'react';
-import { profilePhotoDeleted } from '../slices/profilePhotosSlice';
-import { useAPI, useAppDispatch, useProfilePhoto } from '../../../hooks';
-import { ProfilePhoto } from '../../../types';
+import { useAPI, useProfilePhoto, useProfilePhotos } from '@/hooks';
+import { ProfilePhoto } from '@/types';
 
 const useSelfProfilePhoto = (photo: ProfilePhoto) => {
   const { photoUrl, photoDateTime, downloadPhoto } = useProfilePhoto(photo);
 
   const { isLoading, del } = useAPI();
 
-  const dispatch = useAppDispatch();
+  const { deleteProfilePhoto } = useProfilePhotos();
 
   const deletePhoto = useCallback(async () => {
     if (!photo) return;
     const { success, message } = await del(`/profile-photos/me/${photo.id}`);
     if (success) {
-      dispatch(profilePhotoDeleted(photo.id));
+      deleteProfilePhoto(photo.id);
       console.log(message);
     } else {
       console.error(message);
     }
-  }, [photo, del, dispatch]);
+  }, [photo, del, deleteProfilePhoto]);
 
   return {
     photoUrl,

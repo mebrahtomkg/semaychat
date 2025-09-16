@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { profilePhotoAdded } from '../../slices/profilePhotosSlice';
 import { getSizeInAppropriateUnit, isImageFile } from './utils';
-import { useAPI, useAppDispatch } from '@/hooks';
+import { useAPI, useProfilePhotos } from '@/hooks';
 import { ProfilePhoto } from '@/types';
 
 const MIN_IMAGE_FILE_SIZE = 1 * 1024;
@@ -60,9 +59,10 @@ const useProfilePhotoUploader = ({
     };
   }, [file]);
 
-  const dispatch = useAppDispatch();
   const { isLoading, post } = useAPI();
   const isDoingUploadRef = useRef(false);
+
+  const { addProfilePhoto } = useProfilePhotos();
 
   const uploadPhoto = useCallback(async () => {
     if (isDoingUploadRef.current) return;
@@ -92,7 +92,7 @@ const useProfilePhotoUploader = ({
       );
 
       if (success) {
-        dispatch(profilePhotoAdded(data));
+        addProfilePhoto(data);
         onClose();
         console.log(message);
       } else {
@@ -106,7 +106,7 @@ const useProfilePhotoUploader = ({
       setError((err as Error).message || UPLOAD_ERRORS.UNKNOWN_ERROR);
     }
     isDoingUploadRef.current = false;
-  }, [imageCropperFunc, post, dispatch, onClose]);
+  }, [imageCropperFunc, post, addProfilePhoto, onClose]);
 
   return { imageSrc, isUploading: isLoading || isCropping, error, uploadPhoto };
 };

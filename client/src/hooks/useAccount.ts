@@ -1,12 +1,12 @@
 import { useCallback, useMemo } from 'react';
 import { calculateFullName, calculateNameInitials } from '../utils';
-import { useAPI, useAppSelector } from '.';
+import { useAPI, useAppSelector, useProfilePhotos } from '.';
 
 const useAccount = () => {
   const account = useAppSelector((state) => state.account);
   if (!account) throw new Error('Invalid account!');
 
-  const profilePhotos = useAppSelector((state) => state.profilePhotos);
+  const { profilePhotos } = useProfilePhotos();
 
   const { firstName, lastName } = account;
 

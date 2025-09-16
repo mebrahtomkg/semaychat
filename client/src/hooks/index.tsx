@@ -26,3 +26,4 @@ export { default as useUser } from './useUser';
 export { default as useUserFetcher } from './useUserFetcher';
 export { default as useAnimation } from './useAnimation';
 export { default as useSuggestionsFetcher } from './useSuggestionsFetcher';
+export { default as useProfilePhotos } from './useProfilePhotos';

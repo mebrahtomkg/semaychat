@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '.';
+import { useAppDispatch, useAppSelector, useProfilePhotos } from '.';
 import { Account } from '@/types';
 import { accountFetched } from '@/features/Settings/slices/accountSlice';
 import { profilePhotoAdded } from '@/features/Settings/slices/profilePhotosSlice';
@@ -8,6 +8,8 @@ import { ApiError, get } from '@/api';
 
 const useAuth = () => {
   const account = useAppSelector((state) => state.account);
+
+  const { addProfilePhoto } = useProfilePhotos();
 
   const dispatch = useAppDispatch();
 
@@ -24,10 +26,10 @@ const useAuth = () => {
     if (data) {
       dispatch(accountFetched(data));
       if (data.profilePhoto) {
-        dispatch(profilePhotoAdded(data.profilePhoto));
+        addProfilePhoto(data.profilePhoto);
       }
     }
-  }, [data, dispatch]);
+  }, [data, dispatch, addProfilePhoto]);
 
   if (isError) {
     console.error(error);

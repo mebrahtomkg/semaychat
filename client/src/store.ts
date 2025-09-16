@@ -1,5 +1,4 @@
 import { configureStore, createSelector } from '@reduxjs/toolkit';
-import profilePhotosReducer from '@/features/Settings/slices/profilePhotosSlice';
 import accountReducer from '@/features/Settings/slices/accountSlice';
 import usersReducer from '@/usersSlice';
 import messageRequestsReducer from '@/features/Chat/slices/messageRequestsSlice';
@@ -9,8 +8,6 @@ import blockedUsersReducer from '@/blockedUsersSlice';
 const store = configureStore({
   reducer: {
     account: accountReducer,
-
-    profilePhotos: profilePhotosReducer,
 
     messageRequests: messageRequestsReducer,
 

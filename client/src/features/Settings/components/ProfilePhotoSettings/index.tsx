@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Name, ProfilePhotoSettingsStyled } from './styles';
 import {
   PhotoHeaderSection,
@@ -23,21 +23,17 @@ import {
   useFullScreenPhoto,
   useImageLoader,
   usePhotoNavigation,
+  useProfilePhotos,
 } from '@/hooks';
-import { useSelector } from 'react-redux';
 import useSelfProfilePhoto from '../../hooks/useSelfProfilePhoto';
 import AddPhotoButton from '../AddPhotoButton';
 import { MenuItemDescriptor } from '@/components/ContextMenu/types';
-import { RootState } from '@/store';
-import useProfilePhotosFetcher from '../../hooks/useProfilePhotosFetcher';
 import TinySpinner from '@/components/TinySpinner';
 import FlexibleImage from '@/components/FlexibleImage';
 import NameInitial from '@/components/NameInitial';
 
 const ProfilePhotoSettings = () => {
   const { windowWidth } = useAppContext();
-
-  useProfilePhotosFetcher();
 
   const { fullName, nameInitials } = useAccount();
 
@@ -54,7 +50,7 @@ const ProfilePhotoSettings = () => {
   const { fileInputRef, handleFileChange, triggerFileSelection, selectedFile } =
     useFileSelector(openPhotoUploader);
 
-  const profilePhotos = useSelector((state: RootState) => state.profilePhotos);
+  const { profilePhotos } = useProfilePhotos();
   const photosCount = profilePhotos.length;
 
   const { currentIndex, handleNext, handlePrevious, photoIndexIndicator } =
