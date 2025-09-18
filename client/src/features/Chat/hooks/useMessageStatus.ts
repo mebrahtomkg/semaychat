@@ -1,24 +1,22 @@
-import { useAppSelector } from '@/hooks';
-import { createAppSelector } from '@/store';
-import { useMemo } from 'react';
-
-const selectTargetMessageRequest = createAppSelector(
-  [(state) => state.messageRequests, (_state, messageId: number) => messageId],
-
-  (requests, messageId) =>
-    requests.filter(
-      (req) =>
-        messageId > 0 &&
-        (req.requestType === 'MESSAGE_UPDATE' ||
-          req.requestType === 'MESSAGE_DELETE') &&
-        req.payload.messageId === messageId,
-    )[0], // Just pick the frist. It is unlikely more requests exist at a time for one message
-);
+import { useMessageRequestsStore } from '@/store';
+import { MessageRequestsState } from '@/store/useMessageRequestsStore';
+import { useCallback, useMemo } from 'react';
+import { useShallow } from 'zustand/shallow';
 
 const useMessageStatus = (messageId: number, hasAttachment: boolean) => {
-  const request = useAppSelector((state) =>
-    selectTargetMessageRequest(state, messageId),
+  const selector = useCallback(
+    (state: MessageRequestsState) =>
+      state.messageRequests.filter(
+        (req) =>
+          (req.requestType === 'MESSAGE_UPDATE' &&
+            req.payload.messageId === messageId) ||
+          (req.requestType === 'MESSAGE_DELETE' &&
+            req.payload.message.id === messageId),
+      )[0], // Just pick the frist. It is unlikely more requests exist at a time for one message,
+    [messageId],
   );
+
+  const request = useMessageRequestsStore(useShallow(selector));
 
   const status = useMemo(() => {
     // Pending messages status is just known to be 'sending...' or 'uploading...'.

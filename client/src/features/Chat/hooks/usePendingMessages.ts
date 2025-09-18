@@ -1,30 +1,26 @@
-import { useAccount, useAppSelector } from '@/hooks';
+import { useAccount } from '@/hooks';
 import { Message } from '@/types';
-import { useMemo } from 'react';
-import { createAppSelector } from '@/store';
+import { useCallback, useMemo } from 'react';
+import { useMessageRequestsStore } from '@/store';
 import { getMessageRequestFile } from '@/services/messageRequestFilesStore';
-
-const selectPendingMessagesByReceiverId = createAppSelector(
-  [
-    (state) => state.messageRequests,
-    (_state, receiverId: number) => receiverId,
-  ],
-
-  (messageRequests, receiverId) =>
-    messageRequests.filter(
-      (req) =>
-        (req.requestType === 'TEXT_MESSAGE_SEND' ||
-          req.requestType === 'FILE_MESSAGE_SEND') &&
-        req.payload.receiverId === receiverId,
-    ),
-);
+import { MessageRequestsState } from '@/store/useMessageRequestsStore';
+import { useShallow } from 'zustand/shallow';
 
 const usePendingMessages = (receiverId: number) => {
   const { id: selfId } = useAccount();
 
-  const requests = useAppSelector((state) =>
-    selectPendingMessagesByReceiverId(state, receiverId),
+  const targetRequestsSelector = useCallback(
+    (state: MessageRequestsState) =>
+      state.messageRequests.filter(
+        (req) =>
+          (req.requestType === 'TEXT_MESSAGE_SEND' ||
+            req.requestType === 'FILE_MESSAGE_SEND') &&
+          req.payload.receiverId === receiverId,
+      ),
+    [receiverId],
   );
+
+  const requests = useMessageRequestsStore(useShallow(targetRequestsSelector));
 
   const pendingMessages: Message[] = useMemo(() => {
     return requests.map((req) => {

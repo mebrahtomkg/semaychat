@@ -8,7 +8,7 @@ import ConfirmPasswordInput, {
 import { Link } from 'react-router';
 import { ButtonPrimary, FormTitle } from '../LogInForm';
 import { InputGroup } from '../TextInput';
-import { useAccountActions, useAPI, useAppDispatch } from '@/hooks';
+import { useAccountActions, useAPI } from '@/hooks';
 import { Account } from '@/types';
 
 export default function SignUpForm() {
@@ -39,8 +39,6 @@ export default function SignUpForm() {
   };
 
   const { post } = useAPI();
-
-  const dispatch = useAppDispatch();
 
   const onSubmitHandler = async () => {
     const name = state.name.trim();

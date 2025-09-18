@@ -1,13 +1,10 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { isImage, shortenFileName } from '../../utils';
-import { Attachment } from './types';
-import { useAppDispatch } from '@/hooks';
-import {
-  fileMessageSendRequestAdded,
-  getUniqueId,
-} from '../../slices/messageRequestsSlice';
 import { addMessageRequestFile } from '@/services/messageRequestFilesStore';
 import { getFileExtension } from '@/utils';
+import { useMessageRequestsStore } from '@/store';
+import { Attachment } from './types';
+import { getUniqueId } from '@/store/useMessageRequestsStore';
 
 const useFilesSender = (
   files: File[],
@@ -16,7 +13,9 @@ const useFilesSender = (
 ) => {
   const lastIdRef = useRef<number>(1);
 
-  const dispatch = useAppDispatch();
+  const addFileMessageSendRequest = useMessageRequestsStore(
+    (state) => state.addFileMessageSendRequest,
+  );
 
   const createAttachment = useCallback(
     (file: File): Attachment => ({
@@ -64,19 +63,19 @@ const useFilesSender = (
   }, [attachments.length]);
 
   const sendAttachments = useCallback(() => {
-    attachments.map((attachment) => {
+    attachments.forEach((attachment) => {
       const fileId = getUniqueId();
+
       addMessageRequestFile(fileId, attachment.file);
-      dispatch(
-        fileMessageSendRequestAdded({
-          receiverId: chatPartnerId,
-          fileId,
-          caption: attachment.caption,
-        }),
-      );
+
+      addFileMessageSendRequest({
+        receiverId: chatPartnerId,
+        fileId,
+        caption: attachment.caption,
+      });
     });
     onClose();
-  }, [attachments, chatPartnerId, onClose, dispatch]);
+  }, [attachments, chatPartnerId, onClose, addFileMessageSendRequest]);
 
   return {
     attachments,

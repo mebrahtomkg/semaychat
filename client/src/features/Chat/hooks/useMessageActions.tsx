@@ -1,22 +1,22 @@
-import { useAppDispatch, useDownload } from '@/hooks';
+import { useDownload } from '@/hooks';
 import { Message } from '@/types';
 import { useCallback } from 'react';
-import { messageDeleteRequestAdded } from '../slices/messageRequestsSlice';
 import { useChatContext } from '.';
+import { useMessageRequestsStore } from '@/store';
 
 const useMessageActions = (message: Message) => {
-  const dispatch = useAppDispatch();
+  const addMessageDeleteRequest = useMessageRequestsStore(
+    (state) => state.addMessageDeleteRequest,
+  );
 
   const deleteMessage = useCallback(
     (deleteForReceiver = true) => {
-      dispatch(
-        messageDeleteRequestAdded({
-          message: message,
-          deleteForReceiver,
-        }),
-      );
+      addMessageDeleteRequest({
+        message: message,
+        deleteForReceiver,
+      });
     },
-    [dispatch, message],
+    [addMessageDeleteRequest, message],
   );
 
   const download = useDownload();

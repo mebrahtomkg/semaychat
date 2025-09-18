@@ -1,23 +1,29 @@
-import { messageRequestDeleted } from '@/features/Chat/slices/messageRequestsSlice';
-import { useAccount, useAppDispatch, useAppSelector } from '@/hooks';
+import { useAccount } from '@/hooks';
 import { Message } from '@/types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import useFileMessageRequestsProcessor from './useFileMessageRequestsProcessor';
-import { createAppSelector } from '@/store';
+import { useMessageRequestsStore } from '@/store';
 import { emitWithAck } from '@/services/socket';
-
-// Selects the first request from the request Queue of messageRequests
-// File message sending requests are filtering out. they are handled in other custom hook.
-const selectRequest = createAppSelector(
-  [(state) => state.messageRequests],
-
-  (requests) =>
-    requests.filter((req) => req.requestType !== 'FILE_MESSAGE_SEND')[0],
-);
+import { useShallow } from 'zustand/shallow';
+import { MessageRequestsState } from '@/store/useMessageRequestsStore';
 
 const MessageRequestsProcessor = () => {
-  const request = useAppSelector((state) => selectRequest(state));
+  // Selects the first request from the request Queue of messageRequests
+  // File message sending requests are filtering out. they are handled in other custom hook.
+  const selector = useCallback(
+    (state: MessageRequestsState) =>
+      state.messageRequests.filter(
+        (req) => req.requestType !== 'FILE_MESSAGE_SEND',
+      )[0],
+    [],
+  );
+
+  const request = useMessageRequestsStore(useShallow(selector));
+
+  const deleteMessageRequest = useMessageRequestsStore(
+    (state) => state.deleteMessageRequest,
+  );
 
   const { id: selfId } = useAccount();
 
@@ -25,8 +31,6 @@ const MessageRequestsProcessor = () => {
 
   // Process file message requests in parallel with the light message requests.
   useFileMessageRequestsProcessor();
-
-  const dispatch = useAppDispatch();
 
   const queryKey = useMemo(() => {
     switch (request?.requestType) {
@@ -107,10 +111,10 @@ const MessageRequestsProcessor = () => {
         break;
     }
 
-    dispatch(messageRequestDeleted(request.requestId));
+    deleteMessageRequest(request.requestId);
 
     return null; // Just prevents react query warning for not returnig data
-  }, [request, dispatch, queryClient, selfId]);
+  }, [request, deleteMessageRequest, queryClient, selfId]);
 
   const retry = useCallback((_failureCount: number, error: Error) => {
     // return !(error instanceof ApiError && error.status);

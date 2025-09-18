@@ -1,26 +1,29 @@
 import { ApiError, post } from '@/api';
-import { messageRequestDeleted } from '@/features/Chat/slices/messageRequestsSlice';
-import { useAppDispatch, useAppSelector } from '@/hooks';
 import { getMessageRequestFile } from '@/services/messageRequestFilesStore';
-import { createAppSelector } from '@/store';
+import { useMessageRequestsStore } from '@/store';
+import { MessageRequestsState } from '@/store/useMessageRequestsStore';
 import { Message } from '@/types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
-
-// Selects the first file message request from the request Queue of messageRequests
-const selectRequest = createAppSelector(
-  [(state) => state.messageRequests],
-
-  (requests) =>
-    requests.filter((req) => req.requestType === 'FILE_MESSAGE_SEND')[0],
-);
+import { useShallow } from 'zustand/shallow';
 
 const useFileMessageRequestsProcessor = () => {
-  const request = useAppSelector((state) => selectRequest(state));
+  // Selects the first file message request from the request Queue of messageRequests
+  const selector = useCallback(
+    (state: MessageRequestsState) =>
+      state.messageRequests.filter(
+        (req) => req.requestType === 'FILE_MESSAGE_SEND',
+      )[0],
+    [],
+  );
+
+  const request = useMessageRequestsStore(useShallow(selector));
+
+  const deleteMessageRequest = useMessageRequestsStore(
+    (state) => state.deleteMessageRequest,
+  );
 
   const queryClient = useQueryClient();
-
-  const dispatch = useAppDispatch();
 
   const queryKey = useMemo(
     () => (request ? ['/messages/file', request.requestId] : ['']),
@@ -54,10 +57,10 @@ const useFileMessageRequestsProcessor = () => {
       },
     );
 
-    dispatch(messageRequestDeleted(request.requestId));
+    deleteMessageRequest(request.requestId);
 
     return null;
-  }, [request, dispatch, queryClient]);
+  }, [request, deleteMessageRequest, queryClient]);
 
   const retry = useCallback((_failureCount: number, error: Error) => {
     return !(error instanceof ApiError && error.status);

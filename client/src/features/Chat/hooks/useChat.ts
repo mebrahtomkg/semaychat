@@ -1,10 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
-import { useAccount, useAppDispatch } from '@/hooks';
+import { useAccount } from '@/hooks';
 import { Message } from '@/types';
-import {
-  messageUpdateRequestAdded,
-  textMessageSendRequestAdded,
-} from '../slices/messageRequestsSlice';
+import { useMessageRequestsStore } from '@/store';
 
 type EditorState =
   | { mode: 'edit'; message: Message }
@@ -13,7 +10,14 @@ type EditorState =
 
 const useChat = (chatPartnerId: number) => {
   const { id: selfId } = useAccount();
-  const dispatch = useAppDispatch();
+
+  const addTextMessageSendRequest = useMessageRequestsStore(
+    (state) => state.addTextMessageSendRequest,
+  );
+
+  const addMessageUpdateRequest = useMessageRequestsStore(
+    (state) => state.addMessageUpdateRequest,
+  );
 
   const editingTextRef = useRef<string>('');
 
@@ -36,23 +40,24 @@ const useChat = (chatPartnerId: number) => {
   const onSend = useCallback(
     (value: string) => {
       if (editorState.mode === 'edit') {
-        dispatch(
-          messageUpdateRequestAdded({
-            messageId: editorState.message.id,
-            newContent: value.trim(),
-          }),
-        );
+        addMessageUpdateRequest({
+          messageId: editorState.message.id,
+          newContent: value.trim(),
+        });
       } else {
-        dispatch(
-          textMessageSendRequestAdded({
-            receiverId: chatPartnerId,
-            content: value.trim(),
-          }),
-        );
+        addTextMessageSendRequest({
+          receiverId: chatPartnerId,
+          content: value.trim(),
+        });
       }
       setEditorState({ mode: 'new' });
     },
-    [editorState, dispatch, chatPartnerId],
+    [
+      editorState,
+      addMessageUpdateRequest,
+      addTextMessageSendRequest,
+      chatPartnerId,
+    ],
   );
 
   return {

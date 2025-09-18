@@ -1,36 +1,34 @@
-import { useAppSelector } from '@/hooks';
-import { createAppSelector } from '@/store';
-import { useMemo } from 'react';
-
-// Deep filter from redux to avoid unnecessary rerender. only search the target message.
-// Also just pick the frist request. It is unlikely that multiple requests happen at
-// the same time for one message.
-const selectTargetRequest = createAppSelector(
-  [(state) => state.messageRequests, (_state, messageId: number) => messageId],
-
-  (requests, messageId) =>
-    requests.filter(
-      (req) =>
-        messageId > 0 &&
-        req.requestType === 'MESSAGE_UPDATE' &&
-        req.payload.messageId === messageId,
-    )[0],
-);
+import { useMessageRequestsStore } from '@/store';
+import { MessageRequestsState } from '@/store/useMessageRequestsStore';
+import { MessageUpdateRequest } from '@/types';
+import { useCallback, useMemo } from 'react';
+import { useShallow } from 'zustand/shallow';
 
 const useMessageContent = (
   messageId: number,
   messageContent: string | null,
 ) => {
-  const request = useAppSelector((state) =>
-    selectTargetRequest(state, messageId),
+  // Doing deep filter from the store to avoid unnecessary rerender. only search the target message.
+  // Also just pick the frist request. It is unlikely that multiple requests happen at
+  // the same time for one message.
+  const selector = useCallback(
+    (state: MessageRequestsState) =>
+      state.messageRequests.filter(
+        (req) =>
+          req.requestType === 'MESSAGE_UPDATE' &&
+          req.payload.messageId === messageId,
+      )[0],
+    [messageId],
   );
+
+  const request = useMessageRequestsStore(useShallow(selector));
 
   const content = useMemo(
     () =>
-      request?.requestType === 'MESSAGE_UPDATE'
-        ? request.payload.newContent
+      messageId > 0 && request
+        ? (request as MessageUpdateRequest).payload.newContent
         : messageContent,
-    [request, messageContent],
+    [messageId, request, messageContent],
   );
 
   return content;
