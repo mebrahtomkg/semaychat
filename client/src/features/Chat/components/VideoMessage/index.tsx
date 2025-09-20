@@ -17,7 +17,7 @@ const VideoMessage: FC<VideoMessageProps> = ({ messageInfo }) => {
   return (
     <VideoMessageStyled>
       <VideoTagStyled controls width="250">
-        <source src={fileUrl} type="video/mp4" />
+        <source src={fileUrl as string} type="video/mp4" />
         Sorry, your browser doesnot support embedded video
       </VideoTagStyled>
 

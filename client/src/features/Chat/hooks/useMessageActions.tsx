@@ -3,6 +3,7 @@ import { Message } from '@/types';
 import { useCallback } from 'react';
 import { useChatContext } from '.';
 import { useMessageRequestsStore } from '@/store';
+import { getFileExtension } from '@/utils';
 
 const useMessageActions = (message: Message) => {
   const addMessageDeleteRequest = useMessageRequestsStore(
@@ -26,7 +27,7 @@ const useMessageActions = (message: Message) => {
     download(
       `/messages/file-download/${message.id}`,
       `${message.id}`,
-      `${message.attachment.extension}`,
+      `${getFileExtension(message.attachment.name)}`,
     );
   }, [message, download]);
 
