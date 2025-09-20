@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "NODE_ENV=development rspack serve",
     "build": "NODE_ENV=production rspack build",
-    "pro": "npm run build & nodemon --watch server.js --watch dist server.js"
+    "pro": "npm run build & nodemon --watch server.js --watch dist server.js",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.85.3",
@@ -32,6 +33,7 @@
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "nodemon": "^3.1.10",
-    "swc-loader": "^0.2.6"
+    "swc-loader": "^0.2.6",
+    "typescript": "^5.9.2"
   }
 }
