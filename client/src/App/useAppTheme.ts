@@ -3,6 +3,7 @@ import { DarkTheme, LightTheme } from '../themes';
 
 type ThemeType = 'dark' | 'light';
 
+// Should be called only in the App component.
 const useAppTheme = () => {
   const [theme, setTheme] = useState<ThemeType>('dark');
 

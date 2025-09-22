@@ -1,12 +1,17 @@
 import styled from 'styled-components';
 import { NextIcon } from '../icons';
 import { PhotoNavButton } from '../../styles';
+import { FC, MouseEventHandler } from 'react';
 
 const NextButtonStyled = styled(PhotoNavButton)`
   right: 0;
 `;
 
-const NextButton = ({ onClick, ...otherProps }) => {
+interface NextButtonProps {
+  onClick: MouseEventHandler;
+}
+
+const NextButton: FC<NextButtonProps> = ({ onClick, ...otherProps }) => {
   return (
     <NextButtonStyled
       aria-label="Next photo"

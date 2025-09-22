@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { BackIcon } from '../icons';
+import { FC, MouseEventHandler } from 'react';
 
 const BackButtonStyled = styled.button`
   width: 2rem;
@@ -9,7 +10,11 @@ const BackButtonStyled = styled.button`
   color: ${(props) => props.theme.iconColor};
 `;
 
-const BackButton = ({ onClick, ...rest }) => {
+interface BackButtonProps {
+  onClick: MouseEventHandler;
+}
+
+const BackButton: FC<BackButtonProps> = ({ onClick, ...rest }) => {
   return (
     <BackButtonStyled aria-label="Back" onClick={onClick} {...rest}>
       <BackIcon />

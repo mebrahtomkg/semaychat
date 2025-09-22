@@ -2,10 +2,10 @@ import { API_BASE_URL } from '@/constants';
 import { FetchOptions } from './types';
 import ApiError from './ApiError';
 
-const apiFetch = async <D>(
+const apiFetch = async <Result>(
   endpoint: string,
   options?: FetchOptions,
-): Promise<D> => {
+): Promise<Result> => {
   const {
     method = 'GET',
     responseType = 'json',
@@ -52,10 +52,10 @@ const apiFetch = async <D>(
 
     switch (responseType) {
       case 'blob':
-        return (await response.blob()) as D;
+        return (await response.blob()) as Result;
 
       case 'text':
-        return (await response.text()) as D;
+        return (await response.text()) as Result;
 
       default: {
         const { data } = await response.json();
@@ -66,7 +66,7 @@ const apiFetch = async <D>(
     if (error instanceof ApiError) throw error;
 
     throw new ApiError(
-      error.message || 'Something went wrong while fetching data.',
+      (error as Error).message || 'Something went wrong while fetching data.',
     );
   }
 };

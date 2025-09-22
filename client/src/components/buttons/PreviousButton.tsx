@@ -1,12 +1,20 @@
 import styled from 'styled-components';
 import { PreviousIcon } from '../icons';
 import { PhotoNavButton } from '../../styles';
+import { FC, MouseEventHandler } from 'react';
 
 const PreviousButtonStyled = styled(PhotoNavButton)`
   left: 0;
 `;
 
-const PreviousButton = ({ onClick, ...otherProps }) => {
+interface PreviousButtonProps {
+  onClick: MouseEventHandler;
+}
+
+const PreviousButton: FC<PreviousButtonProps> = ({
+  onClick,
+  ...otherProps
+}) => {
   return (
     <PreviousButtonStyled
       aria-label="Previous photo"

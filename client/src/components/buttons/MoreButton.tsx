@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { MoreIcon } from '../icons';
+import { FC, MouseEventHandler } from 'react';
 
 const MoreButtonStyled = styled.button`
   width: 2rem;
@@ -7,7 +8,12 @@ const MoreButtonStyled = styled.button`
   color: ${(props) => props.theme.iconColor};
 `;
 
-const MoreButton = ({ onClick, ...restProps }) => {
+interface MoreButtonProps {
+  onClick: MouseEventHandler;
+  ariaLabel?: string;
+}
+
+const MoreButton: FC<MoreButtonProps> = ({ onClick, ...restProps }) => {
   return (
     <MoreButtonStyled aria-label="More" onClick={onClick} {...restProps}>
       <MoreIcon />

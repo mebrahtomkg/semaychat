@@ -1,6 +1,7 @@
 import { CloseIcon } from '../icons';
 import styled from 'styled-components';
 import type { StyleProps } from '../../types';
+import { FC, MouseEventHandler } from 'react';
 
 const CloseButtonStyled = styled.button`
   width: 2.7rem;
@@ -16,7 +17,15 @@ const CloseButtonStyled = styled.button`
   }
 `;
 
-const CloseButton = ({ onClick, ariaLabel = 'Close' }) => {
+interface CloseButtonProps {
+  onClick: MouseEventHandler;
+  ariaLabel?: string;
+}
+
+const CloseButton: FC<CloseButtonProps> = ({
+  onClick,
+  ariaLabel = 'Close',
+}) => {
   return (
     <CloseButtonStyled type="button" onClick={onClick} aria-label={ariaLabel}>
       <CloseIcon />
