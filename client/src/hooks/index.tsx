@@ -25,3 +25,4 @@ export { default as useBlockedUsers } from './useBlockedUsers';
 export { default as useAccountInfo } from './useAccountInfo';
 export { default as useAccountQuery } from './useAccountQuery';
 export { default as useAccountActions } from './useAccountActions';
+export { default as useLogout } from './useLogout';

@@ -5,6 +5,7 @@ import {
   useAnimation,
   useAppContext,
   useImageLoader,
+  useLogout,
 } from '@/hooks';
 import {
   IconContainer,
@@ -52,7 +53,9 @@ const SideBar = () => {
 
   const isVisible = isSidebarVisible;
 
-  const { fullName, nameInitials, photoUrl, logout } = useAccountInfo();
+  const { fullName, nameInitials, photoUrl } = useAccountInfo();
+
+  const logout = useLogout();
 
   const { handleImageLoad, imageSrc } = useImageLoader(photoUrl);
 
