@@ -4,9 +4,9 @@ import EditorModal from '../EditorModal';
 import RadioButton from '../RadioButton';
 import { VisibilityChoicesContainer } from './styles';
 import { useAccount } from '@/hooks';
-import Spinner from '@/Spinner';
 import { PrivacySetting } from '../../types';
 import { VISIBILITY_OPTION_LABELS } from '../../constants';
+import { Spinner } from '@/components';
 
 interface PrivacyEditorProps {
   privacySetting: PrivacySetting;

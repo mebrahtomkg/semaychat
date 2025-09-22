@@ -1,5 +1,5 @@
 import { type CSSProperties, type FC, useState } from 'react';
-import Spinner from '@/Spinner';
+import { Spinner } from '@/components';
 import { checkUsername } from './utils';
 import EditorModal from '../EditorModal';
 import { useAccount } from '@/hooks';

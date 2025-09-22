@@ -7,7 +7,7 @@ import {
   PhotoMetaText,
 } from '@/styles';
 import { AddPhotoIcon, DeleteIcon, DownloadIcon } from '@/components/icons';
-import Spinner from '@/Spinner';
+import { Spinner } from '@/components';
 import ProfilePhotoUploader from '../ProfilePhotoUploader';
 import ContextMenu, { useContextMenu } from '@/components/ContextMenu';
 import {

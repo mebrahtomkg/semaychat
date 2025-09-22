@@ -1,10 +1,10 @@
 import { type CSSProperties, type FC, useState } from 'react';
-import Spinner from '@/Spinner';
 import { useAccount } from '@/hooks';
 import useAccountUpdater from '../../hooks/useAccountUpdater';
 import EditorModal from '../EditorModal';
 import TextInput from '../TextInput';
 import { checkFirstName, checkLastName } from './utils';
+import { Spinner } from '@/components';
 
 interface NameEditorProps {
   animationStyle: CSSProperties;

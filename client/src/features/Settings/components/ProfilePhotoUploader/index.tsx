@@ -9,7 +9,7 @@ import {
   LoadingTextContainer,
   PositionableImage,
 } from './styles';
-import Spinner from '../../../../Spinner';
+import { Spinner } from '@/components';
 import useImageCropper from './useImageCropper';
 import ZoomSlider from './ZoomSlider';
 import useProfilePhotoUploader from './useProfilePhotoUploader';

@@ -7,11 +7,11 @@ import Guest from '@/features/Guest';
 import { GlobalStyle } from '@/styles';
 import { AppContainer, PageContainer } from './styles';
 import { useAuth, useResponsive } from '@/hooks';
-import Spinner from '@/components/spinner';
 import { MessageRequestsProcessor } from '@/features/Chat/components';
 import useSocket from '@/hooks/useSocket';
 import useResponsiveController from './useResponsiveController';
 import useAppTheme from './useAppTheme';
+import { Spinner } from '@/components';
 
 const App = () => {
   useResponsiveController();

@@ -2,8 +2,8 @@ import { type CSSProperties, type FC, useState } from 'react';
 import { useAccount } from '@/hooks';
 import EditorModal from '../EditorModal';
 import BioInput from './BioInput';
-import Spinner from '@/Spinner';
 import useAccountUpdater from '../../hooks/useAccountUpdater';
+import { Spinner } from '@/components';
 
 const MAX_BIO_LENGTH = 70;
 

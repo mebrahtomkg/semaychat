@@ -1,8 +1,8 @@
 import type { CSSProperties, FC } from 'react';
 import EditorModal from '../EditorModal';
-import Spinner from '../../../../Spinner';
 import TextInput from '../TextInput';
 import usePasswordUpdate, { PASSWORD_UPDATE_STEPS } from './usePasswordUpdate';
+import { Spinner } from '@/components';
 
 interface PasswordEditorProps {
   animationStyle: CSSProperties;
