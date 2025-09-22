@@ -1,6 +1,3 @@
-export * from './smartFetch';
-export { default as smartFetch } from './smartFetch';
-
 export { default as getFileExtension } from './getFileExtension';
 
 export function ready(handler) {

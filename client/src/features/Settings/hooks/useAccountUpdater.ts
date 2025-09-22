@@ -1,4 +1,5 @@
-import { useAccountActions, useAPI } from '@/hooks';
+import { put } from '@/api';
+import { useAccountActions } from '@/hooks';
 import { Account } from '@/types';
 import { useCallback, useState } from 'react';
 
@@ -7,24 +8,27 @@ const useAccountUpdater = () => {
 
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const { put } = useAPI();
-
   const updateAccount = useCallback(
     async (accountData: Partial<Account>) => {
       setIsUpdating(true);
-
-      const { success, data, message } = await put<Account>(
-        '/users/me',
-        accountData,
-      );
-
-      if (success) setAccount(data);
-
-      setIsUpdating(false);
-
-      return { success, message };
+      try {
+        const data = await put<Account>('/users/me', accountData);
+        setIsUpdating(false);
+        if (data) setAccount(data);
+        return {
+          success: true,
+          message: 'Account update successfull!',
+        };
+      } catch (err) {
+        return {
+          success: false,
+          message: (err as Error).message,
+        };
+      } finally {
+        setIsUpdating(false);
+      }
     },
-    [setAccount, put],
+    [setAccount],
   );
 
   return { updateAccount, isUpdating };

@@ -1,5 +1,4 @@
 export { default as useAccount } from './useAccount';
-export { default as useAPI } from './useAPI';
 export { default as useAuth } from './useAuth';
 export { default as useDebounce } from './useDebounce';
 export { default as useDownload } from './useDownload';

@@ -1,24 +1,27 @@
-import { useCallback } from 'react';
-import { useAPI, useProfilePhoto, useProfilePhotos } from '@/hooks';
+import { useCallback, useState } from 'react';
+import { useProfilePhoto, useProfilePhotos } from '@/hooks';
 import { ProfilePhoto } from '@/types';
+import { del } from '@/api';
 
 const useSelfProfilePhoto = (photo: ProfilePhoto) => {
   const { photoUrl, photoDateTime, downloadPhoto } = useProfilePhoto(photo);
 
-  const { isLoading, del } = useAPI();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { deleteProfilePhoto } = useProfilePhotos();
 
   const deletePhoto = useCallback(async () => {
     if (!photo) return;
-    const { success, message } = await del(`/profile-photos/me/${photo.id}`);
-    if (success) {
+    setIsLoading(true);
+    try {
+      await del(`/profile-photos/me/${photo.id}`);
       deleteProfilePhoto(photo.id);
-      console.log(message);
-    } else {
-      console.error(message);
+    } catch (err) {
+      console.error((err as Error).message);
+    } finally {
+      setIsLoading(false);
     }
-  }, [photo, del, deleteProfilePhoto]);
+  }, [photo, deleteProfilePhoto]);
 
   return {
     photoUrl,

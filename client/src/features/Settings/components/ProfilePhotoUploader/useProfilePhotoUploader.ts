@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getSizeInAppropriateUnit, isImageFile } from './utils';
-import { useAPI, useProfilePhotos } from '@/hooks';
+import { useProfilePhotos } from '@/hooks';
 import { ProfilePhoto } from '@/types';
+import { post } from '@/api';
 
 const MIN_IMAGE_FILE_SIZE = 1 * 1024;
 const MAX_IMAGE_FILE_SIZE = 5 * 1024 * 1024;
@@ -41,6 +42,7 @@ const useProfilePhotoUploader = ({
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isCropping, setIsCropping] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const objUrlRef = useRef<string | null>(null);
 
@@ -59,7 +61,6 @@ const useProfilePhotoUploader = ({
     };
   }, [file]);
 
-  const { isLoading, post } = useAPI();
   const isDoingUploadRef = useRef(false);
 
   const { addProfilePhoto } = useProfilePhotos();
@@ -86,17 +87,15 @@ const useProfilePhotoUploader = ({
       const formData = new FormData();
       formData.append('profilePhoto', blob);
 
-      const { success, data, message } = await post<ProfilePhoto>(
-        '/profile-photos/me',
-        formData,
-      );
-
-      if (success) {
+      try {
+        setIsLoading(true);
+        const data = await post<ProfilePhoto>('/profile-photos/me', formData);
         addProfilePhoto(data);
         onClose();
-        console.log(message);
-      } else {
-        setError(message || UPLOAD_ERRORS.UNKNOWN_ERROR);
+      } catch (err) {
+        setError((err as Error).message || UPLOAD_ERRORS.UNKNOWN_ERROR);
+      } finally {
+        setIsLoading(false);
       }
     } catch (err) {
       console.error(
@@ -106,7 +105,7 @@ const useProfilePhotoUploader = ({
       setError((err as Error).message || UPLOAD_ERRORS.UNKNOWN_ERROR);
     }
     isDoingUploadRef.current = false;
-  }, [imageCropperFunc, post, addProfilePhoto, onClose]);
+  }, [imageCropperFunc, addProfilePhoto, onClose]);
 
   return { imageSrc, isUploading: isLoading || isCropping, error, uploadPhoto };
 };
