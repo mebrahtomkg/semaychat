@@ -1,14 +1,19 @@
 const MIN_PASSWORD_LENGTH = 4;
 
-export default function checkPassword(password) {
+const checkPassword = (password: string) => {
   if (typeof password !== 'string') {
     return 'Invalid password';
   }
+
   if (password.length === 0) {
     return 'Password is required.';
   }
+
   if (password.length < MIN_PASSWORD_LENGTH) {
     return 'Invalid password';
   }
+
   return '';
-}
+};
+
+export default checkPassword;

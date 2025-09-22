@@ -2,14 +2,15 @@ import { MouseEventHandler, useState } from 'react';
 import { Link } from 'react-router';
 import { useAccountActions, useAPI } from '@/hooks';
 import { Account } from '@/types';
-import { SubmitButton, TextInput } from '../components';
-import { FormTitle } from '../styles';
 import {
   checkConfirmPassword,
   checkEmail,
   checkName,
   checkPassword,
-} from '../utils';
+} from '../../utils';
+import { FormTitle } from '../../styles';
+import TextInput from '../TextInput';
+import SubmitButton from '../SubmitButton';
 
 type SignUpField = 'name' | 'email' | 'password' | 'confirmPassword';
 
@@ -104,6 +105,7 @@ const SignUpForm = () => {
 
       <TextInput
         label="Name"
+        type="text"
         name="name"
         value={name}
         shouldFocus={activeField === 'name'}

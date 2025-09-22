@@ -2,9 +2,10 @@ import { MouseEventHandler, useState } from 'react';
 import { Link } from 'react-router';
 import { useAccountActions, useAPI } from '@/hooks';
 import { Account } from '@/types';
-import { SubmitButton, TextInput } from '../components';
-import { FormTitle } from '../styles';
-import { checkEmail, checkPassword } from '../utils';
+import { checkEmail, checkPassword } from '../../utils';
+import { FormTitle } from '../../styles';
+import TextInput from '../TextInput';
+import SubmitButton from '../SubmitButton';
 
 type LogInField = 'email' | 'password';
 
