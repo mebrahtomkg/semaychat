@@ -38,7 +38,7 @@ export default function Header() {
   return (
     <HeaderSection>
       <Logo>
-        <LogoPartOne>Spark</LogoPartOne>
+        <LogoPartOne>Semay</LogoPartOne>
         <LogoPartTwo>chat</LogoPartTwo>
       </Logo>
       <Description>Fast And Secure Real Time Messaging Platform</Description>

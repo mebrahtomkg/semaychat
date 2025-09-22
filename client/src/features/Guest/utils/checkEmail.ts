@@ -1,31 +1,4 @@
-import TextInput from '../TextInput';
-
-export default function EmailInput({
-  value,
-  shouldFocus,
-  onChangeListener,
-  onEnter,
-  error,
-  shakeError,
-}) {
-  return (
-    <TextInput
-      {...{
-        label: 'Email',
-        type: 'email',
-        name: 'email',
-        value,
-        shouldFocus,
-        onChangeListener,
-        onEnter,
-        error,
-        shakeError,
-      }}
-    />
-  );
-}
-
-export function checkEmail(email) {
+export default function checkEmail(email) {
   if (typeof email !== 'string') {
     return 'Invalid email.';
   }

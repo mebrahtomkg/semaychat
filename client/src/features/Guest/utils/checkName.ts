@@ -1,32 +1,6 @@
-import TextInput from '../TextInput';
-
 const MAX_NAME_LENGTH = 25;
 
-export default function NameInput({
-  value,
-  shouldFocus,
-  onChangeListener,
-  onEnter,
-  error,
-  shakeError,
-}) {
-  return (
-    <TextInput
-      {...{
-        label: 'Name',
-        name: 'name',
-        value,
-        shouldFocus,
-        onChangeListener,
-        onEnter,
-        error,
-        shakeError,
-      }}
-    />
-  );
-}
-
-export function checkName(name) {
+export default function checkName(name) {
   if (typeof name !== 'string') {
     return 'Invalid name.';
   }

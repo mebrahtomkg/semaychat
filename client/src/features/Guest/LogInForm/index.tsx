@@ -1,135 +1,104 @@
-import { useState } from 'react';
-import EmailInput, { checkEmail } from './EmailInput';
-import PasswordInput, { checkPassword } from './PasswordInput';
+import { MouseEventHandler, useState } from 'react';
 import { Link } from 'react-router';
-import { InputGroup } from '../TextInput';
-import styled from 'styled-components';
 import { useAccountActions, useAPI } from '@/hooks';
 import { Account } from '@/types';
+import { SubmitButton, TextInput } from '../components';
+import { FormTitle } from '../styles';
+import { checkEmail, checkPassword } from '../utils';
 
-export const FormTitle = styled.h2`
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: #26a7c4;
-`;
+type LogInField = 'email' | 'password';
 
-export default function LogInForm() {
+const LogInForm = () => {
   const { setAccount } = useAccountActions();
 
-  const [state, setState] = useState({
-    email: '',
-    emailError: '',
-    password: '',
-    passwordError: '',
-    shakeErrors: false,
-    activeField: 'email',
-  });
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
 
-  const onChangeListener = (event) => {
-    const { name, value } = event.target;
-    setState((prevState) => ({
-      ...prevState,
-      [name]: value,
-      [`${name}Error`]: null,
-      activeField: name,
-      shakeErrors: false,
-    }));
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const [shakeErrors, setShakeErrors] = useState(false);
+  const [activeField, setActiveField] = useState<LogInField>('email');
+
+  const handleEmailChange: MouseEventHandler<HTMLInputElement> = (event) => {
+    setEmail((event.target as HTMLInputElement).value);
+    setEmailError('');
+    setActiveField('email');
+    setShakeErrors(false);
+  };
+
+  const handlePasswordChange: MouseEventHandler<HTMLInputElement> = (event) => {
+    setPassword((event.target as HTMLInputElement).value);
+    setPasswordError('');
+    setActiveField('password');
+    setShakeErrors(false);
   };
 
   const { post } = useAPI();
 
   const doLogin = async () => {
-    const email = state.email.trim();
-    const password = state.password.trim();
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
     const emailError = checkEmail(email);
     const passwordError = checkPassword(password);
+
     if (emailError || passwordError) {
-      setState((prevState) => ({
-        ...prevState,
-        emailError,
-        passwordError,
-        shakeErrors: true,
-      }));
+      setEmailError(emailError);
+      setPasswordError(passwordError);
+      setShakeErrors(true);
     } else {
       const { success, data, message } = await post<Account>('/auth/login', {
-        email,
-        password,
+        email: trimmedEmail,
+        password: trimmedPassword,
       });
 
       if (success) {
         setAccount(data);
       } else {
-        setState((prevState) => ({
-          ...prevState,
-          passwordError: message || '',
-          shakeErrors: true,
-        }));
+        setPasswordError(message || '');
+        setShakeErrors(true);
         console.error(success);
       }
     }
   };
 
-  const onEnter = () => doLogin();
-
-  const shakeError = state.shakeErrors;
-
   return (
     <form action="login" method="POST">
       <FormTitle>LogIn</FormTitle>
-      <EmailInput
-        {...{
-          value: state.email,
-          shouldFocus: state.activeField === 'email',
-          onChangeListener,
-          onEnter,
-          error: state.emailError,
-          shakeError,
-        }}
+
+      <TextInput
+        label="Email"
+        type="email"
+        name="email"
+        value={email}
+        shouldFocus={activeField === 'email'}
+        onChangeListener={handleEmailChange}
+        onEnter={doLogin}
+        error={emailError}
+        shakeError={shakeErrors}
       />
-      <PasswordInput
-        {...{
-          value: state.password,
-          shouldFocus: state.activeField === 'password',
-          onChangeListener,
-          onEnter,
-          error: state.passwordError,
-          shakeError,
-        }}
+
+      <TextInput
+        label="Password"
+        type="password"
+        name="password"
+        value={password}
+        shouldFocus={activeField === 'password'}
+        onChangeListener={handlePasswordChange}
+        onEnter={doLogin}
+        error={passwordError}
+        shakeError={shakeErrors}
       />
-      <LogInButton onClickHandler={doLogin} />
+
+      <SubmitButton value="LogIn" onClick={doLogin} />
+
       <div>
         {`Don't have an account? `}
         <Link to="../signup">Sign up</Link>
       </div>
     </form>
   );
-}
+};
 
-export const ButtonPrimary = styled.input`
-  padding: 0.5rem 1.7rem;
-  cursor: pointer;
-  box-shadow: none;
-  outline-style: none;
-  border: 1px solid #2f8396;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #b1b1b1;
-  background: transparent;
-  &:hover {
-    border-color: #06e2ff;
-  }
-`;
-
-function LogInButton({ onClickHandler: onClickHandlerImpl }) {
-  const onClickHandler = (event) => {
-    event.preventDefault();
-    onClickHandlerImpl();
-  };
-  return (
-    <InputGroup>
-      <ButtonPrimary type="submit" value="LogIn" onClick={onClickHandler} />
-    </InputGroup>
-  );
-}
+export default LogInForm;
