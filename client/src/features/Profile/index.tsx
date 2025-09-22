@@ -21,11 +21,11 @@ import {
   UnblockUserIcon,
 } from '@/components/icons';
 import {
-  useAppContext,
   useFullScreenPhoto,
   useImageLoader,
   usePhotoNavigation,
   useProfilePhoto,
+  useResponsive,
   useUser,
 } from '@/hooks';
 import {
@@ -50,7 +50,7 @@ interface ProfileProps {
 }
 
 const Profile: FC<ProfileProps> = ({ user, onClose }) => {
-  const { isLargeScreen, windowWidth } = useAppContext();
+  const { isLargeScreen, windowWidth } = useResponsive();
 
   const {
     fullName,

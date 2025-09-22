@@ -1,27 +1,14 @@
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
-import useDebounce from './useDebounce';
+import { useWindowWidthStore } from '@/store';
 
 const useResponsive = () => {
-  const [windowWidth, setWindowWidth] = useState<number>(0);
+  const windowWidth = useWindowWidthStore();
 
-  useLayoutEffect(() => {
-    setWindowWidth(window.innerWidth);
-  }, []);
+  const isLargeScreen = windowWidth >= 768; // >= tablet
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { debounce } = useDebounce();
-
-  const updateWindowWidth = useCallback(() => {
-    setWindowWidth(window.innerWidth);
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('resize', updateWindowWidth);
-
-    return () => window.removeEventListener('resize', updateWindowWidth);
-  }, [updateWindowWidth]);
-
-  return { windowWidth };
+  return {
+    windowWidth,
+    isLargeScreen,
+  };
 };
 
 export default useResponsive;

@@ -8,7 +8,7 @@ import {
   UserContainer,
 } from './styles';
 import { CenteredImage } from '@/styles';
-import { useUser, useImageLoader, useAppContext } from '@/hooks';
+import { useUser, useImageLoader, useResponsive } from '@/hooks';
 import NameInitial from '@/components/NameInitial';
 import { User } from '@/types';
 import Profile from '@/features/Profile';
@@ -20,7 +20,7 @@ interface ChatPartnerProps {
 const ChatPartner: FC<ChatPartnerProps> = ({ user }) => {
   const { fullName, nameInitials, photoUrl } = useUser(user);
   const { imageSrc, handleImageLoad } = useImageLoader(photoUrl);
-  const { isLargeScreen } = useAppContext();
+  const { isLargeScreen } = useResponsive();
 
   const [isProfileVisible, setIsProfileVisible] = useState(false);
   const openProfile = () => setIsProfileVisible(true);

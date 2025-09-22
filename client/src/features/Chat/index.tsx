@@ -1,6 +1,6 @@
 import BackLink from '@/components/BackLink';
 import { MoreButton } from '@/components/buttons';
-import { useAppContext, useUserFetcher } from '@/hooks';
+import { useResponsive, useUserFetcher } from '@/hooks';
 import { Message } from '@/types';
 import { type FC, useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router';
@@ -24,7 +24,7 @@ const Chat: FC = () => {
     ? Number.parseInt(params.chatPartnerId, 10)
     : 0;
 
-  const { isLargeScreen } = useAppContext();
+  const { isLargeScreen } = useResponsive();
 
   const user = useUserFetcher(chatPartnerId);
 

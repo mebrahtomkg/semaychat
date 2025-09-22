@@ -1,6 +1,6 @@
 import { BackButton, CloseButton } from '@/components/buttons';
 import { NextIcon } from '@/components/icons';
-import { useAnimation, useAppContext } from '@/hooks';
+import { useAnimation, useResponsive } from '@/hooks';
 import { useMemo, useState, type CSSProperties, type FC } from 'react';
 import BioEditor from './components/BioEditor';
 import NameEditor from './components/NameEditor';
@@ -34,7 +34,7 @@ interface SettingsProps {
 }
 
 const Settings: FC<SettingsProps> = ({ animationStyle, onClose }) => {
-  const { windowWidth } = useAppContext();
+  const { windowWidth } = useResponsive();
 
   const {
     accountSettingsItems,

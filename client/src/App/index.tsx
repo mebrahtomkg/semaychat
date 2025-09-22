@@ -7,19 +7,24 @@ import Guest from '@/features/Guest';
 import useApp from './useApp';
 import { GlobalStyle } from '@/styles';
 import { AppContainer, PageContainer } from './styles';
-import { useAuth } from '@/hooks';
+import { useAuth, useResponsive } from '@/hooks';
 import Spinner from '@/components/spinner';
 import AppContext from './AppContext';
 import { MessageRequestsProcessor } from '@/features/Chat/components';
 import useSocket from '@/hooks/useSocket';
+import useResponsiveController from './useResponsiveController';
 
 const App = () => {
+  useResponsiveController();
+  useSocket();
+
   const app = useApp();
-  const { theme, isLargeScreen } = app;
+
+  const { theme } = app;
+
+  const { isLargeScreen } = useResponsive();
 
   const { isLoading, isLoggedIn } = useAuth();
-
-  useSocket();
 
   if (isLoading) return <Spinner />;
 

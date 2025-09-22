@@ -9,8 +9,8 @@ import {
   MainSection,
   Title,
 } from './styles';
-import { CloseButton } from '../../../../components/buttons';
-import { useAnimation, useAppContext } from '@/hooks';
+import { useResponsive } from '@/hooks';
+import { CloseButton } from '@/components/buttons';
 
 interface EditorModalProps {
   title: string;
@@ -37,7 +37,7 @@ const EditorModal: FC<EditorModalProps> = ({
   leftButtonConfig = { label: 'Cancel', action: undefined },
   rightButtonConfig = { label: 'Done', action: undefined },
 }) => {
-  const { windowWidth } = useAppContext();
+  const { windowWidth } = useResponsive();
 
   const handleOverlayClick = (event) => {
     // Stop any onclick event from this component bubling up to parent node.

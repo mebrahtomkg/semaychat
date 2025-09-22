@@ -4,14 +4,14 @@ import {
   SearchContainer,
   UsersContainer,
 } from './styles';
-import { useAppContext } from '@/hooks';
+import { useResponsive } from '@/hooks';
 import SearchInput from './components/SearchInput';
 import SearchButton from './components/SearchButton';
 import User from './components/User';
 import useEnoughChats from './useEnoughChats';
 
 const Home = () => {
-  const { isLargeScreen } = useAppContext();
+  const { isLargeScreen } = useResponsive();
 
   const chats = useEnoughChats();
 

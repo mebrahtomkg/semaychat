@@ -18,12 +18,12 @@ import {
 } from '@/components/buttons';
 import {
   useFileSelector,
-  useAppContext,
   useFullScreenPhoto,
   useImageLoader,
   usePhotoNavigation,
   useProfilePhotos,
   useAccountInfo,
+  useResponsive,
 } from '@/hooks';
 import useSelfProfilePhoto from '../../hooks/useSelfProfilePhoto';
 import AddPhotoButton from '../AddPhotoButton';
@@ -33,7 +33,7 @@ import FlexibleImage from '@/components/FlexibleImage';
 import NameInitial from '@/components/NameInitial';
 
 const ProfilePhotoSettings = () => {
-  const { windowWidth } = useAppContext();
+  const { windowWidth } = useResponsive();
 
   const { fullName, nameInitials } = useAccountInfo();
 

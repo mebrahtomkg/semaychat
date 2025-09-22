@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router';
 import {
   useAccountInfo,
   useAnimation,
-  useAppContext,
   useImageLoader,
   useLogout,
+  useResponsive,
 } from '@/hooks';
 import {
   IconContainer,
@@ -36,7 +36,7 @@ import { useLocation } from 'react-router';
 const SideBar = () => {
   const navigate = useNavigate();
 
-  const { isLargeScreen } = useAppContext();
+  const { isLargeScreen } = useResponsive();
 
   // Letting Sidebar component control its visibilty make it faster opening and closing
   // sidebar. using app context to control its visibility make it slow.
