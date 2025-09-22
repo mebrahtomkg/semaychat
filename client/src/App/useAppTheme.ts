@@ -1,10 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
-import { useRouteTracker } from '../hooks';
 import { DarkTheme, LightTheme } from '../themes';
 
 type ThemeType = 'dark' | 'light';
 
-const useApp = () => {
+const useAppTheme = () => {
   const [theme, setTheme] = useState<ThemeType>('dark');
 
   const toggleTheme = useCallback(() => {
@@ -16,14 +15,10 @@ const useApp = () => {
     [theme],
   );
 
-  const { currentPath, previousPath } = useRouteTracker();
-
   return {
     theme: themeObject,
     toggleTheme,
-    currentRoutePath: currentPath,
-    previousRoutePath: previousPath,
   };
 };
 
-export default useApp;
+export default useAppTheme;

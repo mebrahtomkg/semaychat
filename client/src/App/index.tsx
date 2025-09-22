@@ -4,23 +4,20 @@ import Home from '@/features/Home';
 import Chat from '@/features/Chat';
 import SideBar from '@/features/SideBar';
 import Guest from '@/features/Guest';
-import useApp from './useApp';
 import { GlobalStyle } from '@/styles';
 import { AppContainer, PageContainer } from './styles';
 import { useAuth, useResponsive } from '@/hooks';
 import Spinner from '@/components/spinner';
-import AppContext from './AppContext';
 import { MessageRequestsProcessor } from '@/features/Chat/components';
 import useSocket from '@/hooks/useSocket';
 import useResponsiveController from './useResponsiveController';
+import useAppTheme from './useAppTheme';
 
 const App = () => {
   useResponsiveController();
   useSocket();
 
-  const app = useApp();
-
-  const { theme } = app;
+  const { theme } = useAppTheme();
 
   const { isLargeScreen } = useResponsive();
 
@@ -33,7 +30,7 @@ const App = () => {
       <GlobalStyle />
 
       {isLoggedIn ? (
-        <AppContext.Provider value={app}>
+        <>
           <MessageRequestsProcessor />
 
           <AppContainer $isLargeScreen={isLargeScreen}>
@@ -48,7 +45,7 @@ const App = () => {
               </Routes>
             </PageContainer>
           </AppContainer>
-        </AppContext.Provider>
+        </>
       ) : (
         <Guest />
       )}
