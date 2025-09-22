@@ -35,7 +35,6 @@ import {
   PhotoMetaText,
 } from '@/styles';
 import { User } from '@/types';
-import useProfilePhotosFetcher from './useProfilePhotosFetcher';
 import {
   Name,
   ProfileModal,
@@ -43,6 +42,7 @@ import {
   ProfilePhotoStyled,
 } from './styles';
 import UserInfo from './UserInfo';
+import useUserProfilePhotos from './useUserProfilePhotos';
 
 interface ProfileProps {
   user: User;
@@ -69,7 +69,7 @@ const Profile: FC<ProfileProps> = ({ user, onClose }) => {
   const { isFullScreenMode, toggleFullScreenMode, exitFullScreenMode } =
     useFullScreenPhoto();
 
-  const profilePhotos = useProfilePhotosFetcher(user?.id);
+  const profilePhotos = useUserProfilePhotos(user.id);
   const photosCount = profilePhotos?.length || 0;
 
   const { currentIndex, handleNext, handlePrevious, photoIndexIndicator } =

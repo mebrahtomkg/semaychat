@@ -15,7 +15,9 @@ const useAccountQuery = () => {
   });
 
   if (isError) {
-    console.error(error);
+    console.error(
+      error.message || 'Unkown error happend while fetching account!',
+    );
   }
 
   return { isPending, account: data };

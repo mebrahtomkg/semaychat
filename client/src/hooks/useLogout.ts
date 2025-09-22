@@ -1,18 +1,15 @@
+import { post } from '@/api';
 import { useCallback } from 'react';
-import useAPI from './useAPI';
 
 const useLogout = () => {
-  const { post } = useAPI();
-
   const logout = useCallback(async () => {
-    const { success, message } = await post('/auth/logout', {});
-
-    if (success) {
+    try {
+      await post('/auth/logout', {});
       location.reload();
-    } else {
-      console.error(message);
+    } catch (err) {
+      console.error(err);
     }
-  }, [post]);
+  }, []);
 
   return logout;
 };

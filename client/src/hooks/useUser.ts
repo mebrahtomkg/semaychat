@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from 'react';
 import { calculateFullName, calculateNameInitials } from '@/utils';
-import useAPI from './useAPI';
 import { useContactActions, useContacts } from '.';
 import { User } from '@/types';
 import useBlockedUserActions from './useBlockedUserActions';
 import useBlockedUsers from './useBlockedUsers';
+import { del, post } from '@/api';
 
 const useUser = (user?: User) => {
   const blockedUsers = useBlockedUsers();
@@ -41,55 +41,55 @@ const useUser = (user?: User) => {
     [contacts, user],
   );
 
-  const { post, del } = useAPI();
-
   const { addBlockedUser, deleteBlockedUser } = useBlockedUserActions();
 
   const blockUser = useCallback(async () => {
     if (!user || isBlocked) return;
-    const { success, message } = await post(`/blocked-users`, {
-      userId: user.id,
-    });
-    if (success) {
+    try {
+      await post(`/blocked-users`, {
+        userId: user.id,
+      });
       addBlockedUser(user);
-    } else {
-      console.error(message);
+    } catch (err) {
+      console.error((err as Error).message);
     }
-  }, [addBlockedUser, isBlocked, post, user]);
+  }, [addBlockedUser, isBlocked, user]);
 
   const unblockUser = useCallback(async () => {
     if (!user || !isBlocked) return;
-    const { success, message } = await del(`/blocked-users/${user.id}`);
-    if (success) {
+    try {
+      await del(`/blocked-users/${user.id}`);
       deleteBlockedUser(user.id);
-    } else {
-      console.error(message);
+    } catch (err) {
+      console.error((err as Error).message);
     }
-  }, [del, deleteBlockedUser, isBlocked, user]);
+  }, [deleteBlockedUser, isBlocked, user]);
 
   const { addContact, deleteContact } = useContactActions();
 
   const addToContacts = useCallback(async () => {
     if (!user || isContact) return;
-    const { success, message } = await post('/contacts', {
-      userId: user.id,
-    });
-    if (success) {
+
+    try {
+      await post('/contacts', {
+        userId: user.id,
+      });
+
       addContact(user);
-    } else {
-      console.error(message);
+    } catch (err) {
+      console.error((err as Error).message);
     }
-  }, [addContact, isContact, post, user]);
+  }, [addContact, isContact, user]);
 
   const removeFromContacts = useCallback(async () => {
     if (!user || !isContact) return;
-    const { success, message } = await del(`/contacts/${user.id}`);
-    if (success) {
+    try {
+      await del(`/contacts/${user.id}`);
       deleteContact(user.id);
-    } else {
-      console.error(message);
+    } catch (err) {
+      console.error((err as Error).message);
     }
-  }, [del, deleteContact, isContact, user]);
+  }, [deleteContact, isContact, user]);
 
   return {
     fullName,

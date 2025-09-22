@@ -1,11 +1,12 @@
 import { MouseEventHandler, useState } from 'react';
 import { Link } from 'react-router';
-import { useAccountActions, useAPI } from '@/hooks';
+import { useAccountActions } from '@/hooks';
 import { Account } from '@/types';
 import { checkEmail, checkPassword } from '../../utils';
 import { FormTitle } from '../../styles';
 import TextInput from '../TextInput';
 import SubmitButton from '../SubmitButton';
+import { post } from '@/api';
 
 type LogInField = 'email' | 'password';
 
@@ -35,8 +36,6 @@ const LogInForm = () => {
     setShakeErrors(false);
   };
 
-  const { post } = useAPI();
-
   const doLogin = async () => {
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
@@ -49,17 +48,17 @@ const LogInForm = () => {
       setPasswordError(passwordError);
       setShakeErrors(true);
     } else {
-      const { success, data, message } = await post<Account>('/auth/login', {
-        email: trimmedEmail,
-        password: trimmedPassword,
-      });
-
-      if (success) {
+      try {
+        const data = await post<Account>('/auth/login', {
+          email: trimmedEmail,
+          password: trimmedPassword,
+        });
         setAccount(data);
-      } else {
-        setPasswordError(message || '');
+      } catch (err) {
+        setPasswordError(
+          (err as Error).message || 'Unkown error happened while login!',
+        );
         setShakeErrors(true);
-        console.error(success);
       }
     }
   };

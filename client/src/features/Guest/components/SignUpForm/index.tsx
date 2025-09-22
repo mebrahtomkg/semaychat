@@ -1,6 +1,6 @@
 import { MouseEventHandler, useState } from 'react';
 import { Link } from 'react-router';
-import { useAccountActions, useAPI } from '@/hooks';
+import { useAccountActions } from '@/hooks';
 import { Account } from '@/types';
 import {
   checkConfirmPassword,
@@ -11,6 +11,7 @@ import {
 import { FormTitle } from '../../styles';
 import TextInput from '../TextInput';
 import SubmitButton from '../SubmitButton';
+import { post } from '@/api';
 
 type SignUpField = 'name' | 'email' | 'password' | 'confirmPassword';
 
@@ -60,8 +61,6 @@ const SignUpForm = () => {
     setShakeErrors(false);
   };
 
-  const { post } = useAPI();
-
   const onSubmitHandler = async () => {
     const _name = name.trim();
     const _email = email.trim();
@@ -84,17 +83,18 @@ const SignUpForm = () => {
       setCfmPasswordError(_cfmPasswordError);
       setShakeErrors(true);
     } else {
-      const { success, data, message } = await post<Account>('/auth/signup', {
-        firstName: _name,
-        email: _email,
-        password: _password,
-      });
-      if (success && data) {
+      try {
+        const data = await post<Account>('/auth/signup', {
+          firstName: _name,
+          email: _email,
+          password: _password,
+        });
         setAccount(data);
-      } else {
-        setCfmPasswordError(message || '');
+      } catch (err) {
+        setCfmPasswordError(
+          (err as Error).message || 'Unkown error happened while signup!',
+        );
         setShakeErrors(true);
-        console.error(message);
       }
     }
   };
