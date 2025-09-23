@@ -12,7 +12,7 @@ const AddButtonStyled = styled.button<{ $isDisabled?: boolean }>`
   ${(props) =>
     props.$isDisabled
       ? css`
-          color: ${(props) => props.theme.disabledIconButton.color};
+          color: #eee;
           cursor: not-allowed;
         `
       : css`

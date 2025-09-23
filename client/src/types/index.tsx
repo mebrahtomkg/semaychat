@@ -1,5 +1,3 @@
-import { DarkTheme } from '../themes';
-
 declare global {
   interface Window {
     API_URL: string;
@@ -62,12 +60,6 @@ export interface Message {
 export interface Chat {
   partner: User;
   lastMessage?: Message;
-}
-
-export type Theme = typeof DarkTheme;
-
-export interface StyleProps {
-  theme: Partial<Theme>;
 }
 
 interface BaseMessageRequest {

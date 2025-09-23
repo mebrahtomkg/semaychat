@@ -7,7 +7,7 @@ const BackButtonStyled = styled.button`
   height: 2rem;
   min-width: 2rem;
   padding: 0.3rem;
-  color: ${(props) => props.theme.iconColor};
+  color: #fff;
 `;
 
 interface BackButtonProps {

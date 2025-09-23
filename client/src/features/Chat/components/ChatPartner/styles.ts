@@ -35,12 +35,12 @@ export const NameContainer = styled.div``;
 export const Name = styled.h3`
   font-size: 1rem;
   font-weight: 500;
-  color: ${(props) => props.theme.text.title.color};
+  color: var(--fg-title);
 `;
 
 export const Status = styled.span`
   display: block;
   font-size: 0.8rem;
   font-weight: 500;
-  color: ${(props) => props.theme.text.description.color};
+  color: var(--fg-description);
 `;

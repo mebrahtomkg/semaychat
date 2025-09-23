@@ -34,8 +34,8 @@ export const CropOverlayMask = styled.div`
   border-radius: 50%;
   outline-style: solid;
   outline-width: 10000px;
-  outline-color: ${(props) => props.theme.cropOverlayMask.outlineColor};
-  border-color: ${(props) => props.theme.cropOverlayMask.outlineColor};
+  outline-color: #00000070;
+  border-color: #00000070;
   background-color: transparent;
   user-select: none;
   cursor: move;

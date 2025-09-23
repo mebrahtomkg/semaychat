@@ -6,9 +6,8 @@ const BackLinkStyled = styled(Link)`
   width: 2rem;
   padding: 0.4rem;
   background-color: transparent;
-  color: ${(props) => props.theme.iconColor};
+  color: #fff;
   &:hover {
-    color: ${(props) => props.theme.iconColor};
     background-color: transparent;
   }
 `;

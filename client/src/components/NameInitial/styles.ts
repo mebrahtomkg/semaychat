@@ -7,7 +7,7 @@ export const NameInitialsContainer = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: inherit;
-  background-color: ${(props) => props.theme.nameInitials.backgroundColor};
+  background-color: var(--bg-name-initials);
 `;
 
 export const NameInitials = styled.span`
@@ -22,7 +22,7 @@ export const SmallNameInitialsContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => props.theme.nameInitials.backgroundColor};
+  background-color: var(--bg-name-initials);
 `;
 
 export const SmallNameInitials = styled.span`

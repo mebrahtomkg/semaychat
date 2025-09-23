@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { StyleProps } from '@/types';
 import { RadioButtonBallIcon, RadioButtonIcon } from '@/components/icons';
 
 export const RadioButtonContainer = styled.div`
@@ -12,7 +11,7 @@ export const RadioButtonIconContainer = styled.div`
   position: relative;
   width: 1.5rem;
   height: 1.5rem;
-  color: ${(props: StyleProps) => props.theme.colors.radioButton};
+  color: var(--fg-radio-button);
 `;
 
 export const RadioButtonIconStyled = styled(RadioButtonIcon)`
@@ -48,5 +47,5 @@ export const RadioButtonLabel = styled.label`
   cursor: pointer;
   font-size: 1rem;
   font-weight: 400;
-  color: ${(props: StyleProps) => props.theme.textColors?.normal};
+  color: var(--fg-normal);
 `;

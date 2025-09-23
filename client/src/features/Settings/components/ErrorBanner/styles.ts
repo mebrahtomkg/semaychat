@@ -13,6 +13,5 @@ export const ErrorText = styled.p`
   word-break: break-word;
   font-size: 1.04rem;
   font-weight: 500;
-
-  color: ${(props) => props.theme.errorBanner.color};
+  color: var(--fg-error);
 `;

@@ -1,6 +1,5 @@
 import { CloseIcon } from '../icons';
 import styled from 'styled-components';
-import type { StyleProps } from '../../types';
 import { FC, MouseEventHandler } from 'react';
 
 const CloseButtonStyled = styled.button`
@@ -12,8 +11,7 @@ const CloseButtonStyled = styled.button`
   color: #ffffff;
   transition: background-color 0.2s ease-in-out;
   &:hover {
-    background-color: ${(props: StyleProps) =>
-      props.theme.backgroundColors?.bright};
+    background-color: var(--bg-bright);
   }
 `;
 

@@ -1,5 +1,4 @@
 import { CheckBoxIcon, CheckBoxTickIcon } from '@/components/icons';
-import { StyleProps } from '@/types';
 import styled, { css } from 'styled-components';
 
 export const CheckBoxStyled = styled.div`
@@ -63,5 +62,5 @@ export const CheckBoxLabel = styled.label`
   font-size: 1rem;
   line-height: 1;
   cursor: pointer;
-  color: ${(props: StyleProps) => props.theme.textColors?.normal};
+  color: var(--fg-normal);
 `;

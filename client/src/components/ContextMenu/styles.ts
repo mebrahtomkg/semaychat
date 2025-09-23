@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { StyleProps } from '../../types';
 
 export const ContextMenuOverlay = styled.div`
   position: fixed;
@@ -17,6 +16,5 @@ export const ContextMenuStyled = styled.ul`
   min-width: 200px;
   padding: 0;
   border-radius: 7px;
-  background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors?.main};
+  background-color: var(--bg-main);
 `;

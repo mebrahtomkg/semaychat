@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { StyleProps } from '../../../../../types';
 
 export const ZoomSliderTrack = styled.div`
   position: relative;
@@ -17,9 +16,7 @@ export const SliderProgress = styled.div`
   height: 3px;
   user-select: none;
   border-radius: 80px;
-
-  background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors?.button};
+  background-color: var(--bg-button);
 `;
 
 export const SliderThumb = styled.div`
@@ -29,6 +26,5 @@ export const SliderThumb = styled.div`
   border-radius: 50%;
   user-select: none;
   cursor: pointer;
-  background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors?.buttonHover};
+  background-color: var(--bg-button-hover);
 `;

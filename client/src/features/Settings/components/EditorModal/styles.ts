@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { StyleProps } from '../../../../types';
 
 export const EditorModalOverlay = styled.div`
   position: fixed;
@@ -11,8 +10,7 @@ export const EditorModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors?.overlay};
+  background-color: var(--bg-overlay);
 `;
 
 export const EditorModalStyled = styled.div<{ $windowWidth: number }>`
@@ -33,10 +31,8 @@ export const EditorModalStyled = styled.div<{ $windowWidth: number }>`
           border-color: #405d76;
         `}
 
-  background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors?.main};
-
-  border-color: ${(props: StyleProps) => props.theme.colors.border};
+  background-color: var(--bg-main);
+  border-color: var(--fg-border);
 `;
 
 export const HeaderSection = styled.div`
@@ -46,14 +42,14 @@ export const HeaderSection = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid;
-  border-color: ${(props: StyleProps) => props.theme.colors.border};
+  border-color: var(--fg-border);
 `;
 
 export const Title = styled.h2`
   margin-right: 1.3rem;
   font-size: 1.2rem;
   font-weight: 500;
-  color: ${(props: StyleProps) => props.theme.textColors?.title};
+  color: var(--fg-title);
 `;
 
 export const MainSection = styled.div`
@@ -64,7 +60,7 @@ export const FooterSection = styled.div`
   display: flex;
   justify-content: right;
   border-top: 1px solid;
-  border-color: ${(props: StyleProps) => props.theme.colors.border};
+  border-color: var(--fg-border);
   padding-top: 1rem;
 `;
 
@@ -82,10 +78,9 @@ export const CancelButton = styled(ActionButton)`
   margin-right: 0.5rem;
   padding-left: 1rem;
   padding-right: 1rem;
-  color: ${(props: StyleProps) => props.theme.colors?.transparentButton};
+  color: transparent;
   &:hover {
-    background-color: ${(props: StyleProps) =>
-      props.theme.backgroundColors?.bright};
+    background-color: var(--bg-bright);
   }
 `;
 
@@ -94,12 +89,9 @@ export const DoneButton = styled(ActionButton)`
   padding-right: 1.7rem;
   border-radius: 5px;
   color: #ffffff;
-
-  background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors?.button};
+  background-color: var(--bg-button);
 
   &:hover {
-    background-color: ${(props: StyleProps) =>
-      props.theme.backgroundColors?.buttonHover};
+    background-color: var(--bg-button-hover);
   }
 `;

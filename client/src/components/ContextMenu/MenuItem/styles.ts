@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { StyleProps } from '../../../types';
 
 export const MenuItemStyled = styled.li`
   display: flex;
@@ -9,12 +8,10 @@ export const MenuItemStyled = styled.li`
   border-radius: 7px;
   background-color: inherit;
   transition: background-color 0.15s ease;
-
-  color: ${(props: StyleProps) => props.theme.textColors?.normal};
+  color: var(--fg-normal);
 
   &:hover {
-    background-color: ${(props: StyleProps) =>
-      props.theme.backgroundColors?.hover};
+    background-color: var(--bg-hover);
   }
 `;
 

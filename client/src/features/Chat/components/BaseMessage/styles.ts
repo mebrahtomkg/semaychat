@@ -1,4 +1,3 @@
-import { StyleProps } from '@/types';
 import styled, { css } from 'styled-components';
 
 export const MessageStyled = styled.div<{
@@ -40,13 +39,10 @@ export const MessageContainer = styled.div<{
     `}
   border-radius: 15px;
   cursor: pointer;
+  color: #fff;
 
-  color: ${(props: StyleProps) =>
-    props.theme.message[`${props.$isOutgoing ? 'sent' : 'received'}`].color};
-
-  background-color: ${(props: StyleProps) =>
+  background-color: ${(props) =>
     props.$isTransparentBackground
       ? 'transparent'
-      : props.theme.message[`${props.$isOutgoing ? 'sent' : 'received'}`]
-          .backgroundColor};
+      : `var(--bg-msg-${props.$isOutgoing ? 'sent' : 'received'})`};
 `;

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { StyleProps } from '@/types';
 
 export const TextInputContainer = styled.div`
   margin-bottom: 1rem;
@@ -14,7 +13,7 @@ export const LabelWrapper = styled.div`
 export const LabelStyled = styled.label`
   font-size: 1rem;
   font-weight: 500;
-  color: ${(props: StyleProps) => props.theme.textColors?.normal};
+  color: var(--fg-normal);
   display: block;
 `;
 
@@ -45,7 +44,7 @@ export const InputStyled = styled.input`
 
 export const HelperText = styled.span`
   display: block;
-  color: ${(props: StyleProps) => props.theme.textColors?.description};
+  color: var(--fg-description);
   font-size: 0.8rem;
   font-weight: 500;
 `;

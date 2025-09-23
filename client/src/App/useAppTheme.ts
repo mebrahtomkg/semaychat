@@ -1,5 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
-import { DarkTheme, LightTheme } from '../themes';
+import { useCallback, useState } from 'react';
 
 type ThemeType = 'dark' | 'light';
 
@@ -11,13 +10,8 @@ const useAppTheme = () => {
     setTheme((prevValue) => (prevValue === 'light' ? 'dark' : 'light'));
   }, []);
 
-  const themeObject = useMemo(
-    () => (theme === 'dark' ? DarkTheme : LightTheme),
-    [theme],
-  );
-
   return {
-    theme: themeObject,
+    theme,
     toggleTheme,
   };
 };

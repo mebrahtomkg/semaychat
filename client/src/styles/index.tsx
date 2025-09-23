@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { StyleProps } from '../types';
 
 /**
  * This export is not used. It is here to allow react-fast-refresh
@@ -29,10 +28,8 @@ export const CenteredModal = styled.div`
   padding: 1rem;
   border-radius: 15px;
   border: 1px solid;
-  ${(props: StyleProps) => css`
-    background-color: ${props.theme.backgroundColors?.main};
-    border-color: ${props.theme.backgroundColors?.bright};
-  `}
+  background-color: var(--bg-main);
+  border-color: var(--fg-bright);
 `;
 
 export const NormalButton = styled.button``;
@@ -48,20 +45,17 @@ export const BasicButton = styled.button`
 `;
 
 export const PrimaryButton = styled(BasicButton)`
-  ${({ theme }: StyleProps) => css`
-    color: #fff;
-    background-color: ${theme.backgroundColors?.button};
-    &:hover {
-      background-color: ${theme.backgroundColors?.buttonHover};
-    }
-  `}
+  color: #fff;
+  background-color: var(--bg-button);
+
+  &:hover {
+    background-color: var(--bg-button-hover);
+  }
 `;
 
 export const DisabledPrimaryButton = styled(BasicButton)`
-  ${({ theme }) => css`
-    color: ${theme.disabledPrimaryButton.color};
-    background-color: ${theme.disabledPrimaryButton.backgroundColor};
-  `}
+  background-color: var(--bg-button-disabled);
+  color: var(--fg-button-disabled);
   cursor: not-allowed;
 `;
 
@@ -69,9 +63,7 @@ export const IconButton = styled.button`
   width: 2rem;
   height: 2rem;
   padding: 0.5rem;
-  ${({ theme }) => css`
-    color: ${theme.iconColor};
-  `}
+  color: #fff;
 `;
 
 export const ModalTitle = styled.h1`

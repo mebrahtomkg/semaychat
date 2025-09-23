@@ -1,4 +1,3 @@
-import { StyleProps } from '@/types';
 import styled from 'styled-components';
 
 export const MessageInputStyled = styled.div`
@@ -11,9 +10,8 @@ export const MessageInputStyled = styled.div`
   border-radius: 15px;
   cursor: text;
   border: 1px solid;
-
-  border-color: ${(props: StyleProps) => props.theme.colors.border};
-  background-color: ${(props: StyleProps) => props.theme.backgroundColors.main};
+  border-color: var(--fg-border);
+  background-color: var(--bg-main);
 `;
 
 export const GrowingTextArea = styled.textarea`
@@ -25,7 +23,7 @@ export const GrowingTextArea = styled.textarea`
   color: #fff;
   background: transparent;
   &::placeholder {
-    color: ${(props: StyleProps) => props.theme.colors.placeholder};
+    color: var(--fg-placeholder);
   }
   &::-webkit-scrollbar {
     display: none;

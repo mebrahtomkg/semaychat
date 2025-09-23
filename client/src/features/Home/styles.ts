@@ -1,12 +1,10 @@
-import { StyleProps } from '@/types';
 import styled, { css } from 'styled-components';
 
 export const HomePage = styled.div<{ $isLargeScreen: boolean }>`
   position: relative;
   height: 100vh;
   overflow: hidden;
-
-  background-color: ${(props: StyleProps) => props.theme.backgroundColors.main};
+  background-color: var(--bg-main);
 
   ${(props) =>
     props.$isLargeScreen
@@ -26,7 +24,7 @@ export const HeaderContainer = styled.div`
   align-items: center;
   background-color: inherit;
   border-bottom: 1px solid;
-  border-color: ${(props: StyleProps) => props.theme.colors.border};
+  border-color: var(--fg-border);
 `;
 
 export const SearchContainer = styled.div<{ $isLargeScreen: boolean }>`
@@ -36,9 +34,7 @@ export const SearchContainer = styled.div<{ $isLargeScreen: boolean }>`
   justify-content: space-between;
   align-items: center;
   border-radius: 25px;
-
-  background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors.textInput};
+  background-color: var(--bg-text-input);
 
   ${(props) =>
     !props.$isLargeScreen &&
@@ -57,11 +53,9 @@ export const UsersContainer = styled.div`
 
   &::-webkit-scrollbar {
     width: 4px;
-    background-color: ${(props: StyleProps) =>
-      props.theme.backgroundColors.main};
+    background-color: var(--bg-main);
   }
   &::-webkit-scrollbar-thumb {
-    background-color: ${(props: StyleProps) =>
-      props.theme.backgroundColors.bright};
+    background-color: var(--bg-bright);
   }
 `;

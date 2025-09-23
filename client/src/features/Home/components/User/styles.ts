@@ -1,4 +1,3 @@
-import { StyleProps } from '@/types';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 
@@ -10,8 +9,7 @@ export const UserStyled = styled(Link)`
   border-radius: 10px;
   cursor: pointer;
   &:hover {
-    background-color: ${(props: StyleProps) =>
-      props.theme.backgroundColors.hover};
+    background-color: var(--bg-hover);
   }
 `;
 

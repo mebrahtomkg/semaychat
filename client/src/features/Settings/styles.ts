@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { StyleProps } from '../../types';
 
 export const SettingsPageOverlay = styled.div`
   position: fixed;
@@ -8,8 +7,7 @@ export const SettingsPageOverlay = styled.div`
   right: 0;
   bottom: 0;
   z-index: 300;
-  background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors?.overlay};
+  background-color: var(--bg-overlay);
   display: flex;
   justify-content: center;
 `;
@@ -27,9 +25,7 @@ export const SettingsPage = styled.div<{ $windowWidth: number }>`
           margin-top: 5vh;
           height: 90vh;
         `}
-
-  background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors?.main};
+  background-color: var(--bg-main);
 `;
 
 export const SettingsPageHeader = styled.div`
@@ -43,7 +39,7 @@ export const MainTitle = styled.h1`
   font-size: 1.5rem;
   line-height: 1;
   font-weight: 500;
-  color: ${(props: StyleProps) => props.theme.textColors?.title};
+  color: var(--fg-title);
 `;
 
 export const NavMenuContainer = styled.div`
@@ -74,8 +70,7 @@ export const NavMenu = styled.div<{ $windowWidth: number }>`
           background-color: #3c576e;
         `}
 
-  background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors?.veryBright};
+  background-color: var(--bg-very-bright);
 `;
 
 export const MenuItemButton = styled.button<{ $isActive: boolean }>`
@@ -88,16 +83,14 @@ export const MenuItemButton = styled.button<{ $isActive: boolean }>`
   ${(props) =>
     props.$isActive &&
     css`
-      background-color: ${(props: StyleProps) =>
-        props.theme.backgroundColors?.activeTab};
+      background-color: var(--bg-active-tab);
     `}
 `;
 
 export const MenuDivider = styled.div`
   width: 1px;
   height: 1rem;
-  background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors?.tabDivider};
+  background-color: var(--bg-tab-divider);
 `;
 
 export const SettingsCategoryContainer = styled.div``;
@@ -109,7 +102,7 @@ export const SettingsItemContainer = styled.div`
   justify-content: space-between;
   border-radius: 15px;
   &:hover {
-    background: ${(props: StyleProps) => props.theme.backgroundColors?.hover};
+    background-color: var(--bg-hover);
   }
 `;
 
@@ -117,18 +110,18 @@ export const Title = styled.p`
   padding: 0;
   margin: 0;
   font-size: 1rem;
-  color: ${(props: StyleProps) => props.theme.textColors?.normal};
+  color: var(--fg-normal);
   transition: color 0.4s ease-in-out;
 `;
 
 export const Description = styled.span`
   display: block;
-  color: ${(props: StyleProps) => props.theme.textColors?.description};
+  color: var(--fg-description);
   font-size: 0.9rem;
 `;
 
 export const ArrowIconContainer = styled.div`
   width: 1rem;
   height: 1rem;
-  color: ${(props: StyleProps) => props.theme.textColors?.normal};
+  color: var(--fg-normal);
 `;

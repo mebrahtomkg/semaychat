@@ -12,10 +12,10 @@ const RemoveButtonStyled = styled.button`
   border-radius: 50%;
   transition: background-color 0.3s ease-in-out;
 
-  background: ${(props) => props.theme.iconButton.backgroundColor};
-  color: ${(props) => props.theme.iconButton.color};
+  background-color: transparent;
+  color: #fff;
   &:hover {
-    background: ${(props) => props.theme.iconButton.hover.backgroundColor};
+    background-color: transparent;
   }
 `;
 

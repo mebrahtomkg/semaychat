@@ -1,25 +1,24 @@
 import { FC } from 'react';
 import styled, { css } from 'styled-components';
 import { SendIcon } from '@/components/icons';
-import { StyleProps } from '@/types';
 
 const SendButtonStyled = styled.button<{ $isDisabled?: boolean }>`
   width: 2.6rem;
   height: 2.6rem;
   padding: 0.75rem;
   border-radius: 50%;
-  ${(props: StyleProps) =>
+  ${(props) =>
     props.$isDisabled
       ? css`
-          background: ${props.theme.backgroundColors.veryBright};
-          color: ${props.theme.disabledIconButton.color};
+          background-color: var(--bg-very-bright);
+          color: var(--fg-button-disabled);
           cursor: not-allowed;
         `
       : css`
-          background-color: ${props.theme.backgroundColors.button};
-          color: ${props.theme.iconButton.color};
+          background-color: var(--bg-button);
+          color: #fff;
           &:hover {
-            background: ${props.theme.backgroundColors.buttonHover};
+            background-color: var(--bg-button-hover);
           }
         `}
 `;

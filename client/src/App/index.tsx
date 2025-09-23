@@ -1,4 +1,3 @@
-import { ThemeProvider } from 'styled-components';
 import { Route, Routes } from 'react-router';
 import Home from '@/features/Home';
 import Chat from '@/features/Chat';
@@ -17,7 +16,8 @@ const App = () => {
   useResponsiveController();
   useSocket();
 
-  const { theme } = useAppTheme();
+  // biome-ignore lint/correctness/noUnusedVariables: <will be used>
+  const { theme, toggleTheme } = useAppTheme();
 
   const { isLargeScreen } = useResponsive();
 
@@ -26,7 +26,7 @@ const App = () => {
   if (isLoading) return <Spinner />;
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <GlobalStyle />
 
       {isLoggedIn ? (
@@ -49,7 +49,7 @@ const App = () => {
       ) : (
         <Guest />
       )}
-    </ThemeProvider>
+    </>
   );
 };
 

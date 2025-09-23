@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { InputStyled } from '../../TextInput/styles';
 
 export const Counter = styled.p`
   display: block;

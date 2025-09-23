@@ -1,4 +1,3 @@
-import { StyleProps } from '@/types';
 import styled from 'styled-components';
 
 export const ChatStyled = styled.div`
@@ -8,8 +7,7 @@ export const ChatStyled = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
-
-  background-color: ${(props) => props.theme.page.backgroundColor};
+  background-color: var(--bg-page);
 `;
 
 export const ChatHeader = styled.div`
@@ -20,8 +18,8 @@ export const ChatHeader = styled.div`
   justify-content: space-between;
   background-color: #314352;
   border-bottom: 1px solid;
-  border-color: ${(props: StyleProps) => props.theme.colors.border};
-  background-color: ${(props: StyleProps) => props.theme.backgroundColors.main};
+  border-color: var(--fg-border);
+  background-color: var(--bg-main);
 `;
 
 export const ChatMessagesListContainer = styled.div`

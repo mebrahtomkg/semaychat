@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { StyleProps } from '@/types';
 
 export const SideBarOverlay = styled.div<{
   $isVisible: boolean;
@@ -30,10 +29,8 @@ export const SideBarStyled = styled.div<{
   border-right: 1px solid;
   transition: transform 0.2s ease-in-out;
 
-  background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors?.main};
-
-  border-color: ${(props: StyleProps) => props.theme.colors.border};
+  background-color: var(--bg-main);
+  border-color: var(--fg-border);
 
   ${(props) =>
     props.$isVisible
@@ -59,8 +56,8 @@ export const SideBarStyled = styled.div<{
 export const ProfileStyled = styled.div<{ $isVisible: boolean }>`
   padding: 1.5rem 0 0.5rem 1rem;
   overflow: hidden;
-  background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors?.bright};
+  background-color: var(--bg-bright);
+
   ${(props) =>
     props.$isVisible
       ? css`
@@ -98,7 +95,7 @@ export const MenuItemsContainer = styled.div<{
 }>`
   padding: 0.5rem 0 0.5rem 0rem;
   border-bottom: 1px solid #272d3f;
-  border-color: ${(props: StyleProps) => props.theme.backgroundColors?.bright};
+  border-color: var(--bg-bright);
 
   ${(props) =>
     !props.$isVisible &&
@@ -115,9 +112,7 @@ export const SingleMenuItemContainer = styled(MenuItemsContainer)`
   display: flex;
   justify-content: flex-end;
   padding: 0;
-
-  background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors?.bright};
+  background-color: var(--bg-bright);
 `;
 
 export const MenuItemButton = styled.button`
@@ -128,8 +123,7 @@ export const MenuItemButton = styled.button`
   border-radius: 6px;
 
   &:hover {
-    background-color: ${(props: StyleProps) =>
-      props.theme.backgroundColors?.hover};
+    background-color: var(--bg-hover);
   }
 `;
 

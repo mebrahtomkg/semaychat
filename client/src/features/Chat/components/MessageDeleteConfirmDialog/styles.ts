@@ -1,4 +1,3 @@
-import { StyleProps } from '@/types';
 import styled from 'styled-components';
 
 export const ConfirmDialogOverlay = styled.div`
@@ -17,21 +16,20 @@ export const ConfirmDialogOverlay = styled.div`
 export const ConfirmDialogStyled = styled.div`
   padding: 1rem;
   border-radius: 10px;
-  background-color: ${(props: StyleProps) =>
-    props.theme.backgroundColors?.main};
+  background-color: var(--bg-main);
 `;
 
 export const DialogTitle = styled.h3`
   margin-bottom: 1.5rem;
   font-size: 1.3rem;
-  color: ${(props: StyleProps) => props.theme.textColors?.title};
+  color: var(--fg-title);
 `;
 
 export const DialogMessage = styled.p`
   margin-bottom: 1.5rem;
   font-size: 1rem;
   font-weight: 400;
-  color: ${(props: StyleProps) => props.theme.textColors?.normal};
+  color: var(--fg-normal);
 `;
 
 export const DialogButtonsContainer = styled.div`
@@ -47,10 +45,9 @@ const ActionButton = styled.button`
   line-height: 1;
   font-weight: 500;
   transition: background-color 0.2s ease-in-out;
-  color: ${(props: StyleProps) => props.theme.backgroundColors?.buttonHover};
+  color: var(--bg-button-hover);
   &:hover {
-    background-color: ${(props: StyleProps) =>
-      props.theme.backgroundColors?.bright};
+    background-color: var(--bg-bright);
   }
 `;
 
