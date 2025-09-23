@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { calculateFullName, calculateNameInitials } from '../../../../utils';
-import { User } from '../../../../types';
+import { calculateFullName, calculateNameInitials } from '@/utils';
+import { User } from '@/types';
 
 const useUser = (user: User) => {
   const { firstName, lastName, profilePhoto } = user;

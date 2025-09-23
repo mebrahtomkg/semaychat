@@ -24,7 +24,7 @@ const UPLOAD_ERRORS = {
 
 const validateImageFile = (file: File) => {
   if (!(file instanceof File)) return IMAGE_ERRORS.INVALID_FILE;
-  if (!isImageFile(file)) return IMAGE_ERRORS.INVALID_FILE_TYPE;
+  if (!isImageFile(file.name)) return IMAGE_ERRORS.INVALID_FILE_TYPE;
   if (file.size < MIN_IMAGE_FILE_SIZE) return IMAGE_ERRORS.SIZE_TOO_SMALL;
   if (file.size > MAX_IMAGE_FILE_SIZE) return IMAGE_ERRORS.SIZE_TOO_BIG;
   return null;

@@ -28,7 +28,5 @@ export { default as UnblockUserIcon } from '@/assets/icons/unblockUser.svg';
 export { default as NextIcon } from './NextIcon';
 export { default as PauseIcon } from './PauseIcon';
 export { default as PlayIcon } from './PlayIcon';
-export { default as ReceivedMsgTailIcon } from './ReceivedMsgTailIcon';
 export { default as SelectedIcon } from './SelectedIcon';
-export { default as SentMsgTailIcon } from './SentMsgTailIcon';
 export { default as TickIcon } from './TickIcon';

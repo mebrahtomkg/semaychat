@@ -1,4 +1,4 @@
-import { type CSSProperties, type FC, useState } from 'react';
+import { type CSSProperties, type FC, useState, FormEventHandler } from 'react';
 import { Spinner } from '@/components';
 import { checkUsername } from './utils';
 import EditorModal from '../EditorModal';
@@ -42,8 +42,8 @@ const UsernameEditor: FC<UsernameEditorProps> = ({
     }
   };
 
-  const updateInputValue = (event) => {
-    setValue(event.target.value);
+  const updateInputValue: FormEventHandler<HTMLInputElement> = (event) => {
+    setValue(event.currentTarget.value);
     setErrorMessage(undefined);
   };
 

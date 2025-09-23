@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { StyleProps } from '../../../../types';
+import { StyleProps } from '@/types';
 
 export const TextInputContainer = styled.div`
   margin-bottom: 1rem;

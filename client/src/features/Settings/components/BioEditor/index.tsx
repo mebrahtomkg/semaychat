@@ -1,4 +1,4 @@
-import { type CSSProperties, type FC, useState } from 'react';
+import { type CSSProperties, type FC, useState, FormEventHandler } from 'react';
 import { useAccount } from '@/hooks';
 import EditorModal from '../EditorModal';
 import BioInput from './BioInput';
@@ -38,8 +38,8 @@ const BioEditor: FC<NameEditorProps> = ({ onClose, animationStyle }) => {
     }
   };
 
-  const onChangeListener = (event) => {
-    const { value } = event.target;
+  const onChangeListener: FormEventHandler<HTMLTextAreaElement> = (event) => {
+    const value = event.currentTarget.value;
     if (value.length <= MAX_BIO_LENGTH) {
       setState({
         value,

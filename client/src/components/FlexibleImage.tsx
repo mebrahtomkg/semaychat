@@ -1,5 +1,10 @@
-/* eslint-disable styled-components-a11y/alt-text */
-import { useEffect, useRef } from 'react';
+import {
+  FC,
+  HtmlHTMLAttributes,
+  MouseEventHandler,
+  useEffect,
+  useRef,
+} from 'react';
 import styled from 'styled-components';
 
 export const FlexibleImageStyled = styled.img<{ $isBlur?: boolean }>`
@@ -16,14 +21,23 @@ export const FlexibleImageStyled = styled.img<{ $isBlur?: boolean }>`
   }
 `;
 
-const FlexibleImage = ({
+interface FlexibleImageProps {
+  isPhotoNavTarget?: boolean;
+  isBlur?: boolean;
+  onClick?: MouseEventHandler;
+  src?: string;
+}
+
+const FlexibleImage: FC<FlexibleImageProps> = ({
   isPhotoNavTarget = false,
   isBlur = false,
+  onClick = undefined,
+  src = '',
   ...otherProps
 }) => {
-  const props = {};
+  const props: HtmlHTMLAttributes<HTMLImageElement> = {};
 
-  if (otherProps.onClick || isPhotoNavTarget) {
+  if (onClick || isPhotoNavTarget) {
     props.role = 'button';
     props.tabIndex = 0;
   }
@@ -32,7 +46,7 @@ const FlexibleImage = ({
     props['data-is-photo-nav-target'] = 'true';
   }
 
-  const imgRef = useRef(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
     if (isPhotoNavTarget && imgRef.current) imgRef.current.focus();
@@ -42,6 +56,8 @@ const FlexibleImage = ({
     <FlexibleImageStyled
       ref={imgRef}
       $isBlur={isBlur}
+      onClick={onClick}
+      src={src}
       {...props}
       {...otherProps}
     />

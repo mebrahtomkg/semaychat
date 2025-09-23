@@ -1,3 +1,5 @@
+import { getFileExtension } from '@/utils';
+
 const IMAGE_EXTENSIONS = [
   'jpg',
   'jpeg',
@@ -18,15 +20,8 @@ const IMAGE_EXTENSIONS = [
   'hdr',
 ];
 
-export const getFileExtension = (file) => {
-  const { name } = file;
-  if (typeof name !== 'string') return null;
-  const nameParts = name.split('.');
-  return nameParts[nameParts.length - 1];
-};
-
-export const isImageFile = (file) => {
-  const extension = getFileExtension(file);
+export const isImageFile = (fileName: string) => {
+  const extension = getFileExtension(fileName);
   if (typeof extension !== 'string') return false;
   return IMAGE_EXTENSIONS.includes(extension.toLowerCase());
 };
@@ -38,7 +33,7 @@ export const isImageFile = (file) => {
  * @param size The size.
  * @return size in appropriate unit.
  */
-export const getSizeInAppropriateUnit = (size) => {
+export const getSizeInAppropriateUnit = (size: number) => {
   const KB = 1024;
   const MB = KB * 1024;
   const GB = MB * 1024;

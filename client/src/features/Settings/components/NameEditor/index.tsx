@@ -1,4 +1,9 @@
-import { type CSSProperties, type FC, useState } from 'react';
+import {
+  type CSSProperties,
+  type FC,
+  useState,
+  InputEventHandler,
+} from 'react';
 import { useAccount } from '@/hooks';
 import useAccountUpdater from '../../hooks/useAccountUpdater';
 import EditorModal from '../EditorModal';
@@ -22,8 +27,8 @@ const NameEditor: FC<NameEditorProps> = ({ onClose, animationStyle }) => {
     activeField: 'firstName',
   });
 
-  const updateInputValue = (event) => {
-    const { value, name } = event.target;
+  const updateInputValue: InputEventHandler<HTMLInputElement> = (event) => {
+    const { value, name } = event.currentTarget;
     setState((prevState) => ({
       ...prevState,
       [name]: value,
@@ -70,8 +75,8 @@ const NameEditor: FC<NameEditorProps> = ({ onClose, animationStyle }) => {
     }
   };
 
-  const handleEnterPress = (event) => {
-    if (event.target.name === 'firstName') {
+  const handleEnterPress: InputEventHandler<HTMLInputElement> = (event) => {
+    if (event.currentTarget.name === 'firstName') {
       const firstNameError = checkFirstName(state.firstName.trim());
       if (firstNameError) {
         setState((prevState) => ({ ...prevState, firstNameError }));

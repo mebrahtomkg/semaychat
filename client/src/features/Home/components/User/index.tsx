@@ -11,8 +11,8 @@ import {
   TextPhoto,
   UserStyled,
 } from './styles';
-import { useImageLoader } from '../../../../hooks';
-import { User as IUser, Message } from '../../../../types';
+import { useImageLoader } from '@/hooks';
+import { User as IUser, Message } from '@/types';
 import useChatItem from './useChatItem';
 
 interface UserProps {

@@ -1,7 +1,7 @@
 const MIN_USERNAME_LENGTH = 5;
 const MAX_USERNAME_LENGTH = 15;
 
-export function checkUsername(username) {
+export function checkUsername(username: string) {
   username = username.trim();
   if (!username) return null;
 

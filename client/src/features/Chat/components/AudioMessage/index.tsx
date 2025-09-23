@@ -38,14 +38,14 @@ const AudioMessage: FC<AudioMessageProps> = ({
 
   return (
     <AudioMessageStyled>
-      {/* biome-ignore lint/a11y/useMediaCaption: <explanation> */}
+      {/** biome-ignore lint/a11y/useMediaCaption: <temp fix> */}
       <audio
         ref={audioElementRef}
         onTimeUpdate={handleTimeUpdate}
         onEnded={handlePlaybackEnded}
         onLoadedMetadata={handleLoadedMetadata}
       >
-        <source src={fileUrl} type="audio/mp3" />
+        <source src={fileUrl || undefined} type="audio/mp3" />
       </audio>
 
       <ControlArea>

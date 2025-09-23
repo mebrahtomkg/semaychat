@@ -4,7 +4,7 @@ const useZoomController = () => {
   const [zoomPercentage, setZoomPercentage] = useState(0);
 
   const adjustZoomOnWheelEvent = useCallback(
-    (e) => {
+    (e: WheelEvent) => {
       const direction = e.deltaY < 0 ? 1 : -1;
       const step = 5 * direction;
       const newZoomPercentage = Math.max(

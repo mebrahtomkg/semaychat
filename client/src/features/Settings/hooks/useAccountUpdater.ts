@@ -9,7 +9,12 @@ const useAccountUpdater = () => {
   const [isUpdating, setIsUpdating] = useState(false);
 
   const updateAccount = useCallback(
-    async (accountData: Partial<Account>) => {
+    async (
+      accountData: Partial<Account> & {
+        password?: string;
+        newPassword?: string;
+      },
+    ) => {
       setIsUpdating(true);
       try {
         const data = await put<Account>('/users/me', accountData);

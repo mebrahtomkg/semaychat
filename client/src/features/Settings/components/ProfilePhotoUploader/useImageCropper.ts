@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import useZoomController from './useZoomController';
 
 const useImageCropper = () => {
@@ -25,7 +32,7 @@ const useImageCropper = () => {
   });
 
   const startImageDrag = useCallback(
-    (clientX, clientY) => {
+    (clientX: number, clientY: number) => {
       dragStartPositionsRef.current = {
         imagePosition: { x: imagePosition.x, y: imagePosition.y },
         pointerPosition: { x: clientX, y: clientY },
@@ -35,17 +42,20 @@ const useImageCropper = () => {
     [imagePosition],
   );
 
-  const updateImagePosition = useCallback((clientX, clientY) => {
-    if (!isDragging.current) return;
-    const { imagePosition: imgPosition, pointerPosition } =
-      dragStartPositionsRef.current;
-    const xDistance = clientX - pointerPosition.x;
-    const yDistance = clientY - pointerPosition.y;
-    setImagePosition({
-      x: imgPosition.x + xDistance,
-      y: imgPosition.y + yDistance,
-    });
-  }, []);
+  const updateImagePosition = useCallback(
+    (clientX: number, clientY: number) => {
+      if (!isDragging.current) return;
+      const { imagePosition: imgPosition, pointerPosition } =
+        dragStartPositionsRef.current;
+      const xDistance = clientX - pointerPosition.x;
+      const yDistance = clientY - pointerPosition.y;
+      setImagePosition({
+        x: imgPosition.x + xDistance,
+        y: imgPosition.y + yDistance,
+      });
+    },
+    [],
+  );
 
   const recenterImage = useCallback(() => {
     if (!croppingViewportRef.current || !imageRef.current) return;
@@ -57,9 +67,9 @@ const useImageCropper = () => {
   }, []);
 
   const handleImageLoad = useCallback(
-    (e) => {
+    (e: SyntheticEvent<HTMLImageElement>) => {
       setIsImageLoaded(true);
-      URL.revokeObjectURL(e.target.src);
+      URL.revokeObjectURL(e.currentTarget.src);
       recenterImage();
     },
     [recenterImage],
@@ -131,8 +141,10 @@ const useImageCropper = () => {
   }, [snapImageToCenterIfOutOfBounds]);
 
   useEffect(() => {
-    const handleMouseMove = (e) => updateImagePosition(e.clientX, e.clientY);
-    const handleTouchMove = (e) =>
+    const handleMouseMove = (e: MouseEvent) =>
+      updateImagePosition(e.clientX, e.clientY);
+
+    const handleTouchMove = (e: TouchEvent) =>
       updateImagePosition(e.touches[0].clientX, e.touches[0].clientY);
 
     document.addEventListener('mousemove', handleMouseMove);
@@ -149,12 +161,13 @@ const useImageCropper = () => {
   }, [updateImagePosition, handlePointerUp]);
 
   const handleMouseDown = useCallback(
-    (e) => startImageDrag(e.clientX, e.clientY),
+    (e: MouseEvent) => startImageDrag(e.clientX, e.clientY),
     [startImageDrag],
   );
 
   const handleTouchStart = useCallback(
-    (e) => startImageDrag(e.touches[0].clientX, e.touches[0].clientY),
+    (e: TouchEvent) =>
+      startImageDrag(e.touches[0].clientX, e.touches[0].clientY),
     [startImageDrag],
   );
 

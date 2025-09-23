@@ -11,7 +11,7 @@ interface RadioButtonProps {
   isChecked: boolean;
   label: string;
   value: string;
-  onCheck: MouseEventHandler<SVGElement>;
+  onCheck: MouseEventHandler<SVGElement | HTMLLabelElement>;
 }
 
 const RadioButton: FC<RadioButtonProps> = ({
@@ -23,6 +23,7 @@ const RadioButton: FC<RadioButtonProps> = ({
   return (
     <RadioButtonContainer>
       <RadioButtonIconContainer>
+        {/** biome-ignore lint/a11y/useSemanticElements: <temp fix> */}
         <RadioButtonIconStyled
           role="radio"
           data-value={value}

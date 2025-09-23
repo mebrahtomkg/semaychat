@@ -1,4 +1,11 @@
-import { FC, useCallback, useEffect, useMemo, useRef } from 'react';
+import {
+  FC,
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import {
   PlaybackTimeSliderStyled,
   SliderProgress,
@@ -38,7 +45,7 @@ const PlaybackTimeSlider: FC<PlaybackTimeSliderProps> = ({
     [onTimePercentageUpdate],
   );
 
-  const handleSliderClick = useCallback(
+  const handleSliderClick: MouseEventHandler = useCallback(
     (e) => {
       if (isDragging.current) return;
       if (!trackRef.current) return;
@@ -54,8 +61,10 @@ const PlaybackTimeSlider: FC<PlaybackTimeSliderProps> = ({
   }, []);
 
   useEffect(() => {
-    const handleMouseMove = (e) => updateTimePercentage(e.clientX);
-    const handleTouchMove = (e) => updateTimePercentage(e.touches[0].clientX);
+    const handleMouseMove = (e: MouseEvent) => updateTimePercentage(e.clientX);
+
+    const handleTouchMove = (e: TouchEvent) =>
+      updateTimePercentage(e.touches[0].clientX);
 
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('touchmove', handleTouchMove);

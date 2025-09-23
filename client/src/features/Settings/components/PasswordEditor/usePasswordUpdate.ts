@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { InputEventHandler, useState } from 'react';
 import {
   checkConfirmPassword,
   checkCurrentPassword,
@@ -12,7 +12,7 @@ export const PASSWORD_UPDATE_STEPS = {
   CURRENT_PASSWORD: 'current_password',
 };
 
-const usePasswordUpdate = (onClose) => {
+const usePasswordUpdate = (onClose: () => void) => {
   const [currentStep, setCurrentStep] = useState(
     PASSWORD_UPDATE_STEPS.NEW_PASSWORD,
   );
@@ -109,18 +109,22 @@ const usePasswordUpdate = (onClose) => {
     }
   };
 
-  const handleNewPasswordChange = (event) => {
-    setNewPassword(event.target.value);
+  const handleNewPasswordChange: InputEventHandler<HTMLInputElement> = (e) => {
+    setNewPassword(e.currentTarget.value);
     setNewPasswordError('');
   };
 
-  const handleConfirmPasswordChange = (event) => {
-    setConfirmPassword(event.target.value);
+  const handleConfirmPasswordChange: InputEventHandler<HTMLInputElement> = (
+    e,
+  ) => {
+    setConfirmPassword(e.currentTarget.value);
     setConfirmPasswordError('');
   };
 
-  const handleCurrentPasswordChange = (event) => {
-    setCurrentPassword(event.target.value);
+  const handleCurrentPasswordChange: InputEventHandler<HTMLInputElement> = (
+    e,
+  ) => {
+    setCurrentPassword(e.currentTarget.value);
     setCurrentPasswordError('');
   };
 

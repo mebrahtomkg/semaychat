@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react';
+import { FC, InputEventHandler, useCallback } from 'react';
 import {
   CaptionInput,
   ImageFileStyled,
@@ -6,12 +6,12 @@ import {
   ProgressText,
   ProgressTextContainer,
 } from './styles';
-import { Attachment } from '../types';
 import RemoveButton from '../RemoveButton';
 import { useImageFileLoader } from '@/hooks';
+import { LocalAttachment } from '../types';
 
 interface ImageFileProps {
-  attachment: Attachment;
+  attachment: LocalAttachment;
   onRemove: (attachmentId: number) => void;
   onCaptionChange: (attachmentId: number, newCaption: string) => void;
 }
@@ -30,7 +30,7 @@ const ImageFile: FC<ImageFileProps> = ({
     [attachment.id, onRemove],
   );
 
-  const handleCaptionInput = useCallback(
+  const handleCaptionInput: InputEventHandler<HTMLInputElement> = useCallback(
     (e) => onCaptionChange(attachment.id, e.currentTarget.value),
     [attachment.id, onCaptionChange],
   );
@@ -43,13 +43,7 @@ const ImageFile: FC<ImageFileProps> = ({
       <RemoveButton onClick={remove} />
 
       {imageSrc && (
-        <>
-          <ImageStyled
-            src={imageSrc}
-            onLoad={handleImageLoad}
-            alt="Image file"
-          />
-        </>
+        <ImageStyled src={imageSrc} onLoad={handleImageLoad} alt="Image file" />
       )}
 
       {isImageLoading && (

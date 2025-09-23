@@ -52,8 +52,10 @@ const ZoomSlider: FC<ZoomSliderProps> = ({
   }, []);
 
   useEffect(() => {
-    const handleMouseMove = (e) => updateZoomPercentage(e.clientX);
-    const handleTouchMove = (e) => updateZoomPercentage(e.touches[0].clientX);
+    const handleMouseMove = (e: MouseEvent) => updateZoomPercentage(e.clientX);
+
+    const handleTouchMove = (e: TouchEvent) =>
+      updateZoomPercentage(e.touches[0].clientX);
 
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('touchmove', handleTouchMove);

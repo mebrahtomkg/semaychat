@@ -30,6 +30,7 @@ const ChatPartner: FC<ChatPartnerProps> = ({ user }) => {
   };
 
   return (
+    // biome-ignore lint/a11y/useSemanticElements: <temp fix>
     <ProfileLink
       role="button"
       $isLargeScreen={isLargeScreen}

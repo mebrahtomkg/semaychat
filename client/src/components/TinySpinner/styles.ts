@@ -11,7 +11,7 @@ const rotate = keyframes`${css`
 `}
 `;
 
-const StyledSpinner = styled.div`
+export const StyledSpinner = styled.div`
   position: absolute;
   top: calc(50% - 25px);
   left: calc(50% - 25px);
@@ -31,7 +31,7 @@ const StyledSpinner = styled.div`
   animation-timing-function: linear;
 `;
 
-const Ball = styled.span`
+export const Ball = styled.span`
   display: block;
   width: 5px;
   height: 8px;
@@ -39,13 +39,3 @@ const Ball = styled.span`
   border-radius: 5px;
   opacity: 1;
 `;
-
-const TinySpinner = () => {
-  return (
-    <StyledSpinner>
-      <Ball />
-    </StyledSpinner>
-  );
-};
-
-export default TinySpinner;

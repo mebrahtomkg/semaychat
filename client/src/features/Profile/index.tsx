@@ -3,9 +3,6 @@ import ContextMenu, {
   MenuItemDescriptor,
   useContextMenu,
 } from '@/components/ContextMenu';
-import FlexibleImage from '@/components/FlexibleImage';
-import NameInitial from '@/components/NameInitial';
-import TinySpinner from '@/components/TinySpinner';
 import {
   BackButton,
   CloseButton,
@@ -43,6 +40,7 @@ import {
 } from './styles';
 import UserInfo from './UserInfo';
 import useUserProfilePhotos from './useUserProfilePhotos';
+import { FlexibleImage, NameInitial, TinySpinner } from '@/components';
 
 interface ProfileProps {
   user: User;

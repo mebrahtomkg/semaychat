@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CenteredModal } from '../../../../styles';
+import { CenteredModal } from '@/styles';
 
 export const PhotoUploaderModal = styled(CenteredModal)``;
 

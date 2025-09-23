@@ -1,11 +1,11 @@
 import { FC, useCallback } from 'react';
 import { FileName, IconWrapper, OrdinaryFileStyled } from './styles';
 import { FileIcon } from '@/components/icons';
-import { Attachment } from '../types';
 import RemoveButton from '../RemoveButton';
+import { LocalAttachment } from '../types';
 
 interface OrdinaryFileProps {
-  attachment: Attachment;
+  attachment: LocalAttachment;
   onRemove: (attachmentId: number) => void;
 }
 

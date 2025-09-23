@@ -1,9 +1,9 @@
 import { useCallback, useRef, useState } from 'react';
 
-const useFileSelector = (onFileSelect) => {
-  const [selectedFile, setSelectedFile] = useState(null);
+const useFileSelector = (onFileSelect: () => void) => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const triggerFileSelection = useCallback(() => {
     if (fileInputRef.current) fileInputRef.current.click();
@@ -11,7 +11,7 @@ const useFileSelector = (onFileSelect) => {
 
   const handleFileChange = useCallback(() => {
     if (!fileInputRef.current) return;
-    const file = fileInputRef.current.files[0];
+    const file = fileInputRef.current.files?.[0];
     if (!file) return;
     setSelectedFile(file);
     onFileSelect();

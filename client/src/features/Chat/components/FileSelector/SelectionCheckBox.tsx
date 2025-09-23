@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { SelectedIcon } from '@/components/icons';
+import { FC, MouseEventHandler } from 'react';
 
 const SelectionCheckBoxStyled = styled.button<{ $isChecked: boolean }>`
   position: absolute;
@@ -37,7 +38,15 @@ const SelectedIconContainer = styled.div<{ $isChecked: boolean }>`
     `}
 `;
 
-const SelectionCheckBox = ({ isChecked, onClick }) => {
+interface SelectionCheckBoxProps {
+  isChecked: boolean;
+  onClick: MouseEventHandler;
+}
+
+const SelectionCheckBox: FC<SelectionCheckBoxProps> = ({
+  isChecked,
+  onClick,
+}) => {
   return (
     <SelectionCheckBoxStyled $isChecked={isChecked} onClick={onClick}>
       <SelectedIconContainer $isChecked={isChecked}>

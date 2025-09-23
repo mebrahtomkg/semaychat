@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 const useDownload = () => {
-  const download = useCallback((url, name = '', extension = '') => {
+  const download = useCallback((url: string, name = '', extension = '') => {
     const link = document.createElement('a');
     link.href = url;
     link.setAttribute('download', `${name || url}.${extension}`);

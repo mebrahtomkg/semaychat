@@ -15,8 +15,6 @@ import {
 } from '@/styles';
 import { PhotoViewerModal, ProgressContainer, ProgressText } from './styles';
 import { useImageLoader, usePhotoNavigation, useAccountInfo } from '@/hooks';
-import TinySpinner from '@/components/TinySpinner';
-import FlexibleImage from '@/components/FlexibleImage';
 import { isImage } from '../../utils';
 import useUser from '@/hooks/useUserPro';
 import {
@@ -25,6 +23,7 @@ import {
   useMessageInfo,
 } from '../../hooks';
 import { getFileExtension } from '@/utils';
+import { FlexibleImage, TinySpinner } from '@/components';
 
 interface PhotoViewerProps {
   chatPartnerId: number;

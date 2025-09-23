@@ -7,7 +7,7 @@ import {
   PhotoMetaText,
 } from '@/styles';
 import { AddPhotoIcon, DeleteIcon, DownloadIcon } from '@/components/icons';
-import { Spinner } from '@/components';
+import { FlexibleImage, NameInitial, Spinner, TinySpinner } from '@/components';
 import ProfilePhotoUploader from '../ProfilePhotoUploader';
 import ContextMenu, { useContextMenu } from '@/components/ContextMenu';
 import {
@@ -28,9 +28,6 @@ import {
 import useSelfProfilePhoto from '../../hooks/useSelfProfilePhoto';
 import AddPhotoButton from '../AddPhotoButton';
 import { MenuItemDescriptor } from '@/components/ContextMenu/types';
-import TinySpinner from '@/components/TinySpinner';
-import FlexibleImage from '@/components/FlexibleImage';
-import NameInitial from '@/components/NameInitial';
 
 const ProfilePhotoSettings = () => {
   const { windowWidth } = useResponsive();

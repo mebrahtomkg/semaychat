@@ -1,37 +1,48 @@
-import { useEffect, useRef } from 'react';
 import {
-  HelperText,
-  LabelWrapper,
-  TextInputContainer,
-} from '../../TextInput/styles';
+  FC,
+  FormEventHandler,
+  KeyboardEventHandler,
+  RefCallback,
+  useEffect,
+  useRef,
+} from 'react';
+import { HelperText, TextInputContainer } from '../../TextInput/styles';
 import { Counter, MultiLineInput, MultiLineInputContainer } from './styles';
 
-const BioInput = ({
+interface BioInputProps {
+  value: string;
+  count: number;
+  shouldCounterShake: boolean;
+  onChange: FormEventHandler<HTMLTextAreaElement>;
+  onEnterPress: () => void;
+}
+
+const BioInput: FC<BioInputProps> = ({
   value,
   count,
   shouldCounterShake,
   onChange,
   onEnterPress,
 }) => {
-  const handleInputRef = (element) => {
-    if (element) {
-      element.focus();
-      const scrollHeight = element.scrollHeight;
-      const clientHeight = element.clientHeight;
-      if (scrollHeight - clientHeight > 1) {
-        element.style.height = `${scrollHeight}px`;
-      }
+  const handleInputRef: RefCallback<HTMLTextAreaElement> = (element) => {
+    if (!element) return;
+
+    element.focus();
+    const scrollHeight = element.scrollHeight;
+    const clientHeight = element.clientHeight;
+    if (scrollHeight - clientHeight > 1) {
+      element.style.height = `${scrollHeight}px`;
     }
   };
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown: KeyboardEventHandler = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
       onEnterPress();
     }
   };
 
-  const counterRef = useRef(null);
+  const counterRef = useRef<HTMLParagraphElement | null>(null);
 
   useEffect(() => {
     if (shouldCounterShake && counterRef.current) {
@@ -52,9 +63,8 @@ const BioInput = ({
     <TextInputContainer>
       <MultiLineInputContainer>
         <MultiLineInput
-          as="textarea"
-          rows="1"
-          cols="20"
+          rows={1}
+          cols={20}
           value={value}
           placeholder={'Bio'}
           ref={handleInputRef}

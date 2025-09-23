@@ -21,7 +21,7 @@ const usePhotoNavigation = (
   const { debounce } = useDebounce();
 
   const handleKeyNavigation = useCallback(
-    (e) =>
+    (e: KeyboardEvent) =>
       debounce(() => {
         const focusedElem = document.activeElement;
         if (!(focusedElem instanceof HTMLElement)) return;
@@ -34,6 +34,7 @@ const usePhotoNavigation = (
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyNavigation);
+
     return () => {
       document.removeEventListener('keydown', handleKeyNavigation);
     };

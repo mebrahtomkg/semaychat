@@ -1,4 +1,10 @@
-import { FC, useEffect, useRef } from 'react';
+import {
+  FC,
+  FormEventHandler,
+  KeyboardEventHandler,
+  useEffect,
+  useRef,
+} from 'react';
 import {
   HelperText,
   InputStyled,
@@ -14,8 +20,8 @@ interface TextInputProps {
   placeholder?: string;
   value: string;
   shouldFocus?: boolean;
-  onChange: (event) => void;
-  onEnterPress?: (event) => void;
+  onChange: FormEventHandler;
+  onEnterPress?: KeyboardEventHandler<HTMLInputElement>;
   helperText?: string;
   errorMessage?: string;
 }
@@ -54,7 +60,7 @@ const TextInput: FC<TextInputProps> = ({
     }
   }, [errorMessage]);
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (event) => {
     if (onEnterPress && event.key === 'Enter') {
       event.preventDefault();
       onEnterPress(event);

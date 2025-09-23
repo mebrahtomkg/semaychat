@@ -25,8 +25,8 @@ const PrivacyEditor: FC<PrivacyEditorProps> = ({
 
   const [value, setValue] = useState(account[settingkey]);
 
-  const handleValueChange: MouseEventHandler = (e) =>
-    setValue(e.target.dataset.value);
+  const handleValueChange: MouseEventHandler<SVGElement> = (e) =>
+    setValue(e.currentTarget.dataset.value as typeof value);
 
   const { updateAccount, isUpdating } = useAccountUpdater();
 

@@ -1,4 +1,4 @@
-import type { CSSProperties, FC, ReactNode } from 'react';
+import type { CSSProperties, FC, MouseEventHandler, ReactNode } from 'react';
 import {
   CancelButton,
   DoneButton,
@@ -39,7 +39,7 @@ const EditorModal: FC<EditorModalProps> = ({
 }) => {
   const { windowWidth } = useResponsive();
 
-  const handleOverlayClick = (event) => {
+  const handleOverlayClick: MouseEventHandler<HTMLDivElement> = (event) => {
     // Stop any onclick event from this component bubling up to parent node.
     event.stopPropagation();
 

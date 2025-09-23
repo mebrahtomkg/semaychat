@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 const useImageFileLoader = (file?: File) => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -20,8 +26,8 @@ const useImageFileLoader = (file?: File) => {
     };
   }, [file]);
 
-  const handleImageLoad = useCallback((e) => {
-    URL.revokeObjectURL(e.target.src);
+  const handleImageLoad = useCallback((e: SyntheticEvent<HTMLImageElement>) => {
+    URL.revokeObjectURL(e.currentTarget.src);
     setIsLoading(false);
   }, []);
 

@@ -3,8 +3,8 @@ import { isImage, shortenFileName } from '../../utils';
 import { addMessageRequestFile } from '@/services/messageRequestFilesStore';
 import { getFileExtension } from '@/utils';
 import { useMessageRequestsStore } from '@/store';
-import { Attachment } from './types';
 import { getUniqueId } from '@/store/useMessageRequestsStore';
+import { LocalAttachment } from './types';
 
 const useFilesSender = (
   files: File[],
@@ -18,7 +18,7 @@ const useFilesSender = (
   );
 
   const createAttachment = useCallback(
-    (file: File): Attachment => ({
+    (file: File): LocalAttachment => ({
       id: lastIdRef.current++,
       file,
       isImage: isImage(getFileExtension(file.name)),
@@ -27,7 +27,7 @@ const useFilesSender = (
     [],
   );
 
-  const [attachments, setAttachments] = useState<Attachment[]>(() =>
+  const [attachments, setAttachments] = useState<LocalAttachment[]>(() =>
     files.map(createAttachment),
   );
 

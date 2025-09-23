@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { Message, User } from '../../../../types';
-import { formatDateTime } from '../../../../utils';
+import { Message, User } from '@/types';
+import { formatDateTime } from '@/utils';
 import useUser from './useUser';
 
 const useChatItem = (user: User, lastMessage?: Message) => {

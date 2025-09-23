@@ -1,4 +1,4 @@
-export interface Attachment {
+export interface LocalAttachment {
   id: number;
   file: File;
   isImage: boolean;

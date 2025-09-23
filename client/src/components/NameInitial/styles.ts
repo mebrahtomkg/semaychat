@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const NameInitialsContainer = styled.div`
+export const NameInitialsContainer = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -10,13 +10,13 @@ const NameInitialsContainer = styled.div`
   background-color: ${(props) => props.theme.nameInitials.backgroundColor};
 `;
 
-const NameInitials = styled.span`
+export const NameInitials = styled.span`
   line-height: 1.5;
   font-size: 15rem;
   font-weight: 600;
 `;
 
-const SmallNameInitialsContainer = styled.div`
+export const SmallNameInitialsContainer = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -25,22 +25,8 @@ const SmallNameInitialsContainer = styled.div`
   background-color: ${(props) => props.theme.nameInitials.backgroundColor};
 `;
 
-const SmallNameInitials = styled.span`
+export const SmallNameInitials = styled.span`
   font-size: 1.8rem;
   font-weight: 500;
   line-height: 2;
 `;
-
-const NameInitial = ({ nameInitials, isSmall = false }) => {
-  return isSmall ? (
-    <SmallNameInitialsContainer>
-      <SmallNameInitials>{nameInitials}</SmallNameInitials>
-    </SmallNameInitialsContainer>
-  ) : (
-    <NameInitialsContainer>
-      <NameInitials>{nameInitials}</NameInitials>
-    </NameInitialsContainer>
-  );
-};
-
-export default NameInitial;
