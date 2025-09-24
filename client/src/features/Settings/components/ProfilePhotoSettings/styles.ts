@@ -15,7 +15,7 @@ export const ProfilePhotoSettingsStyled = styled.div<{
       z-index: 350;
       display: flex;
       overflow: hidden;
-      background: rgb(0 0 0 / 86%);
+      background-color: rgb(0 0 0 / 90%);
     `}
 
   ${(props) =>
@@ -26,12 +26,14 @@ export const ProfilePhotoSettingsStyled = styled.div<{
             width: 100vw;
             height: 100vw;
             border-radius: 10px;
+            background-color: var(--bg-secondary);
           `
         : css`
             position: relative;
             width: 27rem;
             height: 27rem;
             border-radius: 10px;
+            background-color: var(--bg-secondary);
           `
       : ''}
 `;

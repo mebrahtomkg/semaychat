@@ -20,8 +20,9 @@ export const GrowingTextArea = styled.textarea`
   max-height: 50vh;
   font-size: 1rem;
   font-weight: 400;
-  color: #fff;
-  background: transparent;
+  color: var(--fg-main);
+  background-color: transparent;
+
   &::placeholder {
     color: var(--fg-placeholder);
   }

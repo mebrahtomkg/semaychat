@@ -4,20 +4,20 @@ import Chat from '@/features/Chat';
 import SideBar from '@/features/SideBar';
 import Guest from '@/features/Guest';
 import { GlobalStyle } from '@/styles';
-import { AppContainer, PageContainer } from './styles';
+import { AppStyled, PageContainer } from './styles';
 import { useAuth, useResponsive } from '@/hooks';
 import { MessageRequestsProcessor } from '@/features/Chat/components';
 import useSocket from '@/hooks/useSocket';
 import useResponsiveController from './useResponsiveController';
-import useAppTheme from './useAppTheme';
 import { Spinner } from '@/components';
+import { useThemeStore } from '@/store';
+import AppThemeProvider from './AppThemeProvider';
 
 const App = () => {
   useResponsiveController();
   useSocket();
 
-  // biome-ignore lint/correctness/noUnusedVariables: <will be used>
-  const { theme, toggleTheme } = useAppTheme();
+  const theme = useThemeStore();
 
   const { isLargeScreen } = useResponsive();
 
@@ -29,11 +29,11 @@ const App = () => {
     <>
       <GlobalStyle />
 
-      {isLoggedIn ? (
-        <>
-          <MessageRequestsProcessor />
+      <AppThemeProvider $theme={theme}>
+        {isLoggedIn ? (
+          <AppStyled $isLargeScreen={isLargeScreen}>
+            <MessageRequestsProcessor />
 
-          <AppContainer $isLargeScreen={isLargeScreen}>
             <SideBar />
 
             {isLargeScreen && <Home />}
@@ -44,11 +44,11 @@ const App = () => {
                 <Route path="/chat/:chatPartnerId" element={<Chat />} />
               </Routes>
             </PageContainer>
-          </AppContainer>
-        </>
-      ) : (
-        <Guest />
-      )}
+          </AppStyled>
+        ) : (
+          <Guest />
+        )}
+      </AppThemeProvider>
     </>
   );
 };

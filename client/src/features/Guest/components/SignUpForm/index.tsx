@@ -1,5 +1,4 @@
 import { MouseEventHandler, useState } from 'react';
-import { Link } from 'react-router';
 import { useAccountActions } from '@/hooks';
 import { Account } from '@/types';
 import {
@@ -8,7 +7,7 @@ import {
   checkName,
   checkPassword,
 } from '../../utils';
-import { FormTitle } from '../../styles';
+import { FormLink, FormOptionLinker, FormTitle } from '../../styles';
 import TextInput from '../TextInput';
 import SubmitButton from '../SubmitButton';
 import { post } from '@/api';
@@ -153,10 +152,10 @@ const SignUpForm = () => {
 
       <SubmitButton value="Sign Up" onClick={onSubmitHandler} />
 
-      <div>
+      <FormOptionLinker>
         {`Already have an account? `}
-        <Link to="../login">Log in</Link>
-      </div>
+        <FormLink to="../login">Log In</FormLink>
+      </FormOptionLinker>
     </form>
   );
 };

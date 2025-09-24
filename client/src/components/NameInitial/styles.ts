@@ -14,6 +14,7 @@ export const NameInitials = styled.span`
   line-height: 1.5;
   font-size: 15rem;
   font-weight: 600;
+  color: #e9e9e9;
 `;
 
 export const SmallNameInitialsContainer = styled.div`
@@ -29,4 +30,5 @@ export const SmallNameInitials = styled.span`
   font-size: 1.8rem;
   font-weight: 500;
   line-height: 2;
+  color: #e9e9e9;
 `;

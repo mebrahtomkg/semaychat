@@ -22,7 +22,7 @@ export const HeaderContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: inherit;
+  background-color: var(--bg-secondary);
   border-bottom: 1px solid;
   border-color: var(--fg-border);
 `;

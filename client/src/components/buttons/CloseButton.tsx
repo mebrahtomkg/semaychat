@@ -8,10 +8,11 @@ const CloseButtonStyled = styled.button`
   height: 2.7rem;
   padding: 0.85rem;
   border-radius: 50%;
-  color: #ffffff;
+  color: var(--fg-icon);
   transition: background-color 0.2s ease-in-out;
+
   &:hover {
-    background-color: var(--bg-bright);
+    background-color: var(--bg-hover);
   }
 `;
 

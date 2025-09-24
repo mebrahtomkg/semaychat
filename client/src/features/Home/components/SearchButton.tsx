@@ -5,7 +5,7 @@ const SearchButtonStyled = styled.button`
   width: 2.7rem;
   height: 2.7rem;
   padding: 0.8rem;
-  color: white;
+  color: var(--fg-icon);
 `;
 
 const SearchButton = () => {

@@ -5,7 +5,7 @@ const SearchInputStyled = styled.input`
   width: calc(100% - 2.7rem);
   font-size: 1rem;
   background-color: inherit;
-  color: white;
+  color: var(--fg-main);
 
   &:focus {
     border: none;
@@ -13,7 +13,7 @@ const SearchInputStyled = styled.input`
   }
 
   &::placeholder {
-    color: #929292;
+    color: var(--fg-placeholder);
   }
 `;
 

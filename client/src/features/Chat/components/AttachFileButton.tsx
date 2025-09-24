@@ -9,9 +9,10 @@ const AttachFileButtonStyled = styled.button`
   padding: 0.55rem;
   border-radius: 50%;
   transition: background-color 0.3s ease-in-out;
-  color: #84929f;
+  color: var(--fg-icon);
+
   &:hover {
-    background: #2e354f;
+    background-color: var(--bg-hover);
   }
 `;
 

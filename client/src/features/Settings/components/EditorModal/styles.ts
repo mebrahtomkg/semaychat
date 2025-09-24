@@ -78,9 +78,10 @@ export const CancelButton = styled(ActionButton)`
   margin-right: 0.5rem;
   padding-left: 1rem;
   padding-right: 1rem;
-  color: transparent;
+  color: var(--fg-button);
+
   &:hover {
-    background-color: var(--bg-bright);
+    background-color: var(--bg-hover);
   }
 `;
 

@@ -1,9 +1,8 @@
 import { MouseEventHandler, useState } from 'react';
-import { Link } from 'react-router';
 import { useAccountActions } from '@/hooks';
 import { Account } from '@/types';
 import { checkEmail, checkPassword } from '../../utils';
-import { FormTitle } from '../../styles';
+import { FormLink, FormOptionLinker, FormTitle } from '../../styles';
 import TextInput from '../TextInput';
 import SubmitButton from '../SubmitButton';
 import { post } from '@/api';
@@ -93,10 +92,10 @@ const LogInForm = () => {
 
       <SubmitButton value="LogIn" onClick={doLogin} />
 
-      <div>
+      <FormOptionLinker>
         {`Don't have an account? `}
-        <Link to="../signup">Sign up</Link>
-      </div>
+        <FormLink to="../signup">Sign Up</FormLink>
+      </FormOptionLinker>
     </form>
   );
 };

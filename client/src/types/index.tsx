@@ -4,6 +4,8 @@ declare global {
   }
 }
 
+export type Theme = 'dark' | 'light';
+
 export type VisibilityOption = 'everybody' | 'contacts' | 'nobody';
 
 export interface ProfilePhoto {

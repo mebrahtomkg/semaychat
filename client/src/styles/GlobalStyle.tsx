@@ -5,34 +5,6 @@ const styles = css`
     box-sizing: border-box;
   }
 
-  :root {
-    --bg-main: #232328;
-    --bg-hover: #2b2b31;
-    --bg-bright: #2c2c35;
-    --bg-very-bright: #3c3c41;
-    --bg-active-tab: #1e6f82;
-    --bg-tab-divider: #1e6f82;
-    --bg-overlay: #0000008f;
-    --bg-button: #1e6f82;
-    --bg-button-hover: #1e8097;
-    --bg-button-disabled: #353f5d;
-    --bg-text-input: #29343e;
-    --bg-page: #0b0d14;
-    --bg-name-initials: #005d27;
-    --bg-msg-sent: #43136d;
-    --bg-msg-received: #314352;
-
-    --fg-text: #c8c8c8;
-    --fg-normal: #f1f1f1;
-    --fg-title: #ffffff;
-    --fg-description: #9c9c9c;
-    --fg-border: #464651;
-    --fg-placeholder: #8f8f8f;
-    --fg-button-disabled: #bababa;
-    --fg-error: #db1d7c;
-    --fg-radio-button: #11afd4;
-  }
-
   html {
     width: 100vw;
     height: 100vh;
@@ -53,8 +25,6 @@ const styles = css`
     font-weight: 400;
     line-height: 1.2;
     text-align: left;
-    background-color: var(--bg-page);
-    color: var(--fg-text);
   }
 
   body,

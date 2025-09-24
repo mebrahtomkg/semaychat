@@ -2,13 +2,13 @@ import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import useFilesSelector from '../../hooks/useFilesSelector';
 import FileSelector from '../FileSelector';
 import SendButton from '../SendButton';
-import AttachFileButton from './AttachFileButton';
 import {
   ActionButtonsContainer,
   GrowingTextArea,
   MessageInputStyled,
 } from './styles';
 import { useChatContext } from '../../hooks';
+import AttachFileButton from '../AttachFileButton';
 
 const MessageInput: FC = () => {
   // Uplifting state variable of this component to useChat made the message input

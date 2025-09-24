@@ -7,7 +7,7 @@ export const FileSelectorModal = styled.div`
   bottom: 0;
   padding: 0 1rem;
   border-radius: 10px;
-  background-color: #232328;
+  background-color: var(--bg-main);
   border: 1px solid;
   border-color: #464651;
   cursor: default;
@@ -22,7 +22,8 @@ export const FilesContainer = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-  background-color: #0b0d14;
+  background-color: var(--bg-page);
+
   &::-webkit-scrollbar {
     background: inherit;
     width: 5px;
@@ -42,7 +43,6 @@ export const ModalHeader = styled.div`
 
 export const ModalTitle = styled.h1`
   font-size: 1.5rem;
-  color: white;
 `;
 
 export const ModalFooter = styled.div`
@@ -60,5 +60,4 @@ export const ActionButtonsContainer = styled.div`
 
 export const FilesCount = styled.h3`
   font-size: 1.1rem;
-  color: #ffffff;
 `;

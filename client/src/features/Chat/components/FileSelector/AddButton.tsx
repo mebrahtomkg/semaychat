@@ -9,6 +9,7 @@ const AddButtonStyled = styled.button<{ $isDisabled?: boolean }>`
   padding: 0.7rem;
   border-radius: 50%;
   transition: background-color 0.3s ease-in-out;
+
   ${(props) =>
     props.$isDisabled
       ? css`
@@ -16,9 +17,9 @@ const AddButtonStyled = styled.button<{ $isDisabled?: boolean }>`
           cursor: not-allowed;
         `
       : css`
-          color: #ffffff;
+          color: var(--fg-icon);
           &:hover {
-            background: #28314c;
+            background-color: var(--bg-hover);
           }
         `}
 `;

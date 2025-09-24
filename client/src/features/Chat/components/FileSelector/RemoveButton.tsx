@@ -10,12 +10,13 @@ const RemoveButtonStyled = styled.button`
   height: 2rem;
   padding: 0.5rem;
   border-radius: 50%;
-  transition: background-color 0.3s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
 
   background-color: transparent;
   color: #fff;
+
   &:hover {
-    background-color: transparent;
+    background-color: rgba(0, 0, 0, 0.3);
   }
 `;
 

@@ -28,16 +28,6 @@ export const Photo = styled.img`
   width: 100%;
 `;
 
-export const DefaultProfilePhotoContainer = styled(ProfilePhotoContainer)`
-  background: #005d27;
-`;
-
-export const TextPhoto = styled.span`
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: #fff;
-`;
-
 export const ChatDetailsContainer = styled.div`
   flex-grow: 1;
 `;
@@ -54,17 +44,16 @@ export const Name = styled.h3`
   flex-grow: 1;
   font-size: 1rem;
   font-weight: 500;
-  color: #fff;
 `;
 
 export const MessageDateTime = styled.p`
   font-size: 0.9rem;
   font-weight: 500;
-  color: #ababab;
+  color: var(--fg-description);
 `;
 
 export const MessagePreview = styled.p`
   font-size: 1rem;
   font-weight: 500;
-  color: #bebebe;
+  color: var(--fg-description);
 `;

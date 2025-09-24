@@ -27,11 +27,14 @@ import {
   ContactsIcon,
   LogoutIcon,
   MenuIcon,
+  MoonIcon,
   SettingsIcon,
+  SunIcon,
 } from '@/components/icons';
 import NameInitial from '@/components/NameInitial';
 import Settings from '../Settings';
 import { useLocation } from 'react-router';
+import { toggleTheme, useThemeStore } from '@/store';
 
 const SideBar = () => {
   const navigate = useNavigate();
@@ -76,6 +79,8 @@ const SideBar = () => {
     navigate('/chat/2');
   };
 
+  const theme = useThemeStore();
+
   const menuItems = [
     {
       onClick: navigateToContacts,
@@ -91,6 +96,11 @@ const SideBar = () => {
       onClick: logout,
       icon: <LogoutIcon />,
       label: 'Log out',
+    },
+    {
+      onClick: toggleTheme,
+      icon: theme === 'light' ? <MoonIcon /> : <SunIcon />,
+      label: 'Theme',
     },
   ];
 

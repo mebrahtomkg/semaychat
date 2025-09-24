@@ -13,3 +13,4 @@ export { default as SmallMoreButton } from './SmallMoreButton';
 export { default as TextMessage } from './TextMessage';
 export { default as ChatPartner } from './ChatPartner';
 export { default as VideoMessage } from './VideoMessage';
+export { default as AttachFileButton } from './AttachFileButton';

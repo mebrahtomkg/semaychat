@@ -56,7 +56,7 @@ export const SideBarStyled = styled.div<{
 export const ProfileStyled = styled.div<{ $isVisible: boolean }>`
   padding: 1.5rem 0 0.5rem 1rem;
   overflow: hidden;
-  background-color: var(--bg-bright);
+  background-color: var(--bg-secondary);
 
   ${(props) =>
     props.$isVisible
@@ -86,7 +86,7 @@ export const NameStyled = styled.h2`
   width: 100%;
   margin-left: 0.9rem;
   margin-top: 0.7rem;
-  color: #fff;
+  color: var(--fg-secondary);
 `;
 
 export const MenuItemsContainer = styled.div<{
@@ -95,7 +95,7 @@ export const MenuItemsContainer = styled.div<{
 }>`
   padding: 0.5rem 0 0.5rem 0rem;
   border-bottom: 1px solid #272d3f;
-  border-color: var(--bg-bright);
+  border-color: var(--fg-border);
 
   ${(props) =>
     !props.$isVisible &&
@@ -112,7 +112,8 @@ export const SingleMenuItemContainer = styled(MenuItemsContainer)`
   display: flex;
   justify-content: flex-end;
   padding: 0;
-  background-color: var(--bg-bright);
+  background-color: var(--bg-secondary);
+  border-bottom: none;
 `;
 
 export const MenuItemButton = styled.button`
@@ -121,6 +122,7 @@ export const MenuItemButton = styled.button`
   display: flex;
   align-items: center;
   border-radius: 6px;
+  color: var(--fg-icon);
 
   &:hover {
     background-color: var(--bg-hover);
@@ -129,6 +131,7 @@ export const MenuItemButton = styled.button`
 
 export const SingleMenuItemButton = styled(MenuItemButton)`
   width: unset;
+  color: var(--fg-secondary);
   &:hover {
     background-color: transparent;
   }
@@ -137,7 +140,6 @@ export const SingleMenuItemButton = styled(MenuItemButton)`
 export const IconContainer = styled.div`
   width: 1.2rem;
   height: 1.2rem;
-  color: #fff;
 `;
 
 export const MenuItemLabel = styled.p`
@@ -146,8 +148,8 @@ export const MenuItemLabel = styled.p`
   min-width: 5rem;
   overflow: hidden;
   text-align: left;
-  color: #fff;
   font-size: 1rem;
+  color: var(--fg-main);
 `;
 
 export const MenuButton = styled.button`

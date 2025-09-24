@@ -16,10 +16,10 @@ export const ChatHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #314352;
   border-bottom: 1px solid;
   border-color: var(--fg-border);
-  background-color: var(--bg-main);
+  background-color: var(--bg-secondary);
+  color: var(--fg-secondary);
 `;
 
 export const ChatMessagesListContainer = styled.div`

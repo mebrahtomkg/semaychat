@@ -24,19 +24,21 @@ export const InputStyled = styled.input`
   box-shadow: none;
   outline-style: none;
   border: none;
-  border-bottom: 1px solid #43829f;
+  border-bottom: 1px solid var(--fg-border);
   border-radius: 0;
   font-size: 1rem;
   font-weight: 500;
-  color: #cfd3d4;
-  background: transparent;
+  color: var(--fg-main);
+  background-color: transparent;
+
   &::placeholder {
-    color: #6e6f74;
+    color: var(--fg-placeholder);
     font-family: system-ui, sans-serif;
     font-size: 1rem;
     font-weight: 500;
     font-weight: 500;
   }
+
   &:focus {
     border-color: #04c1ff;
   }
@@ -44,7 +46,7 @@ export const InputStyled = styled.input`
 
 export const HelperText = styled.span`
   display: block;
-  color: var(--fg-description);
+  color: var(--fg-main);
   font-size: 0.8rem;
   font-weight: 500;
 `;

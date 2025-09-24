@@ -1,19 +1,18 @@
 import { FC } from 'react';
 import {
   ChatDetailsContainer,
-  DefaultProfilePhotoContainer,
   MessageDateTime,
   MessagePreview,
   Name,
   NameContainer,
   Photo,
   ProfilePhotoContainer,
-  TextPhoto,
   UserStyled,
 } from './styles';
 import { useImageLoader } from '@/hooks';
 import { User as IUser, Message } from '@/types';
 import useChatItem from './useChatItem';
+import { NameInitial } from '@/components';
 
 interface UserProps {
   user: IUser;
@@ -33,9 +32,9 @@ const User: FC<UserProps> = ({ user, lastMessage }) => {
           <Photo src={imageSrc} onLoad={handleImageLoad} />
         </ProfilePhotoContainer>
       ) : (
-        <DefaultProfilePhotoContainer>
-          <TextPhoto>{nameInitials}</TextPhoto>
-        </DefaultProfilePhotoContainer>
+        <ProfilePhotoContainer>
+          <NameInitial isSmall={true} nameInitials={nameInitials} />
+        </ProfilePhotoContainer>
       )}
 
       <ChatDetailsContainer>
