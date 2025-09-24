@@ -5,8 +5,9 @@ export const AppStyled = styled.div<{ $isLargeScreen: boolean }>`
   background-color: var(--bg-page);
 
   transition:
-    background-color 1s ease-in-out,
-    color 1s ease-in-out;
+    background-color 0.5s ease-in-out,
+    color 0.5s ease-in-out;
+
   display: flex;
 
   ${(props) =>
