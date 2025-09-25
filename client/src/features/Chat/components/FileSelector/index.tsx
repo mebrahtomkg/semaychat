@@ -12,9 +12,9 @@ import {
 import { CloseButton } from '@/components/buttons';
 import ImageFile from './ImageFile';
 import OrdinaryFile from './OrdinaryFile';
-import useFilesSender from './useFilesSender';
 import AddButton from './AddButton';
 import { useFilesSelector } from '../../hooks';
+import useFilesProcessor from './useFilesProcessor';
 
 interface FileSelectorProps {
   files: File[];
@@ -34,7 +34,8 @@ const FileSelector: FC<FileSelectorProps> = ({
     updateAttachmentCaption,
     addFiles,
     sendAttachments,
-  } = useFilesSender(files, chatPartnerId, onClose);
+    handleImageLoad,
+  } = useFilesProcessor(files, chatPartnerId, onClose);
 
   const attachmentComponents = useMemo(
     () =>
@@ -45,6 +46,7 @@ const FileSelector: FC<FileSelectorProps> = ({
             attachment={attachment}
             onRemove={removeAttachment}
             onCaptionChange={updateAttachmentCaption}
+            onImageLoad={handleImageLoad}
           />
         ) : (
           <OrdinaryFile
@@ -54,7 +56,7 @@ const FileSelector: FC<FileSelectorProps> = ({
           />
         ),
       ),
-    [attachments, removeAttachment, updateAttachmentCaption],
+    [attachments, handleImageLoad, removeAttachment, updateAttachmentCaption],
   );
 
   const { fileInputRef, handleFileChange, triggerFileSelection } =

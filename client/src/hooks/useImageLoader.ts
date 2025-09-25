@@ -9,7 +9,9 @@ import { ApiError, get } from '@/api';
 import { useQuery } from '@tanstack/react-query';
 
 const useImageLoader = (imageUrl: string | null | undefined) => {
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  // image src has to be `string | undefined` because the html img tag's src attr
+  // type is `string | undefined`.
+  const [imageSrc, setImageSrc] = useState<string | undefined>(undefined);
 
   const [isImageLoading, setIsImageLoading] = useState(false);
 

@@ -1,4 +1,4 @@
-import { FC, InputEventHandler, useCallback } from 'react';
+import { FC, InputEventHandler, SyntheticEvent, useCallback } from 'react';
 import {
   CaptionInput,
   ImageFileStyled,
@@ -8,18 +8,23 @@ import {
 } from './styles';
 import RemoveButton from '../RemoveButton';
 import { useImageFileLoader } from '@/hooks';
-import { LocalAttachment } from '../types';
+import { PendingAttachment } from '../types';
 
 interface ImageFileProps {
-  attachment: LocalAttachment;
+  attachment: PendingAttachment;
   onRemove: (attachmentId: number) => void;
   onCaptionChange: (attachmentId: number, newCaption: string) => void;
+  onImageLoad: (
+    attachmentId: number,
+    e: SyntheticEvent<HTMLImageElement>,
+  ) => void;
 }
 
 const ImageFile: FC<ImageFileProps> = ({
   attachment,
   onRemove,
   onCaptionChange,
+  onImageLoad,
 }) => {
   const { imageSrc, isImageLoading, handleImageLoad } = useImageFileLoader(
     attachment.file,
@@ -35,6 +40,11 @@ const ImageFile: FC<ImageFileProps> = ({
     [attachment.id, onCaptionChange],
   );
 
+  const handleImageLoadCombined = (e: SyntheticEvent<HTMLImageElement>) => {
+    handleImageLoad(e);
+    onImageLoad(attachment.id, e);
+  };
+
   const caption =
     typeof attachment.caption === 'string' ? attachment.caption : '';
 
@@ -44,10 +54,8 @@ const ImageFile: FC<ImageFileProps> = ({
 
       {imageSrc && (
         <ImageStyled
-          width={attachment.width}
-          height={attachment.height}
           src={imageSrc}
-          onLoad={handleImageLoad}
+          onLoad={handleImageLoadCombined}
           alt="Image file"
         />
       )}

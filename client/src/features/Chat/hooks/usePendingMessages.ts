@@ -37,12 +37,14 @@ const usePendingMessages = (receiverId: number) => {
       };
 
       if (req.requestType === 'FILE_MESSAGE_SEND') {
-        const { fileId, caption } = req.payload;
+        const { fileId, width, height, caption } = req.payload;
         const file = getMessageRequestFile(fileId);
         if (file) {
           message.attachment = {
             id: 0, // Not usefull at frontend
             name: file.name,
+            width,
+            height,
             caption,
             size: file.size,
             file,

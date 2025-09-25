@@ -1,4 +1,4 @@
-export interface LocalAttachment {
+export interface PendingAttachment {
   id: number;
   file: File;
   displayName: string;

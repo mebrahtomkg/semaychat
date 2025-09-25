@@ -1,71 +1,43 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { SyntheticEvent, useCallback, useMemo, useRef, useState } from 'react';
 import { isImage, shortenFileName } from '../../utils';
 import { addMessageRequestFile } from '@/services/messageRequestFilesStore';
-import { getFileExtension, getImageDimensions } from '@/utils';
+import { getFileExtension } from '@/utils';
 import { useMessageRequestsStore } from '@/store';
 import { getUniqueId } from '@/store/useMessageRequestsStore';
-import { LocalAttachment } from './types';
+import { PendingAttachment } from './types';
 
-const useFilesSender = (
+const useFilesProcessor = (
   files: File[],
   chatPartnerId: number,
   onClose: () => void,
 ) => {
-  const lastIdRef = useRef<number>(1);
+  const lastIdRef = useRef<number>(0);
 
   const addFileMessageSendRequest = useMessageRequestsStore(
     (state) => state.addFileMessageSendRequest,
   );
 
   const createAttachment = useCallback(
-    async (file: File): Promise<LocalAttachment> => {
-      const isImageFile = isImage(getFileExtension(file.name));
-
-      let width: number | undefined;
-      let height: number | undefined;
-
-      if (isImageFile) {
-        try {
-          ({ width, height } = await getImageDimensions(file));
-        } catch (err) {
-          console.log(err);
-        }
-      }
-
-      return {
-        id: lastIdRef.current++,
-        file,
-        isImage: isImageFile,
-        displayName: shortenFileName(file.name, 40),
-        width,
-        height,
-      };
-    },
+    (file: File): PendingAttachment => ({
+      id: ++lastIdRef.current,
+      file,
+      isImage: isImage(getFileExtension(file.name)),
+      displayName: shortenFileName(file.name, 40),
+    }),
     [],
   );
 
-  const [attachments, setAttachments] = useState<LocalAttachment[]>([]);
-
-  useEffect(() => {
-    const init = async () => {
-      const _attachments = [];
-      for (const file of files) {
-        _attachments.push(await createAttachment(file));
-      }
-      setAttachments(_attachments);
-    };
-    init();
-  }, [files, createAttachment]);
+  const [attachments, setAttachments] = useState<PendingAttachment[]>(() =>
+    files.map(createAttachment),
+  );
 
   const addFiles = useCallback(
-    async (files: File[]) => {
-      const _attachments = [];
-      for (const file of files) {
-        _attachments.push(await createAttachment(file));
-      }
-      setAttachments([...attachments, ..._attachments]);
-    },
-    [attachments, createAttachment],
+    (files: File[]) =>
+      setAttachments((prevAttachments) => [
+        ...prevAttachments,
+        ...files.map(createAttachment),
+      ]),
+    [createAttachment],
   );
 
   const removeAttachment = useCallback((attachmentId: number) => {
@@ -80,6 +52,24 @@ const useFilesSender = (
         prevAttachments.map((attachment) =>
           attachment.id === attachmentId
             ? { ...attachment, caption: newCaption }
+            : attachment,
+        ),
+      );
+    },
+    [],
+  );
+
+  const handleImageLoad = useCallback(
+    (attachmentId: number, e: SyntheticEvent<HTMLImageElement>) => {
+      const img = e.currentTarget;
+
+      const width = img.naturalWidth;
+      const height = img.naturalHeight;
+
+      setAttachments((prevAttachments) =>
+        prevAttachments.map((attachment) =>
+          attachment.id === attachmentId
+            ? { ...attachment, width, height }
             : attachment,
         ),
       );
@@ -116,7 +106,8 @@ const useFilesSender = (
     updateAttachmentCaption,
     addFiles,
     sendAttachments,
+    handleImageLoad,
   };
 };
 
-export default useFilesSender;
+export default useFilesProcessor;

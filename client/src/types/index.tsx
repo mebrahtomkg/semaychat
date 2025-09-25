@@ -44,8 +44,8 @@ export interface Attachment {
   id: number;
   name: string;
   size: number;
-  width: string | null;
-  height: string | null;
+  width: number | null | undefined;
+  height: number | null | undefined;
   caption: string | null | undefined;
   file?: File; // Only exists on frontend
 }

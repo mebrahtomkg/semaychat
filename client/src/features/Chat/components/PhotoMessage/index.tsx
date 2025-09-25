@@ -45,7 +45,7 @@ const PhotoMessage: FC<PhotoMessageProps> = ({ message, messageInfo }) => {
       <ImageStyled
         width={message.attachment?.width || undefined}
         height={message.attachment?.height || undefined}
-        src={imageSrc || undefined}
+        src={imageSrc}
         alt="Photo"
         onLoad={handleImageLoad}
         onClick={openPhotoViewer}
