@@ -15,6 +15,8 @@ class Attachment extends Model<
   declare name: string;
   declare originalname: string;
   declare size: number;
+  declare width: number | null;
+  declare height: number | null;
   declare caption: string | null;
 }
 
@@ -40,6 +42,16 @@ Attachment.init(
     size: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+
+    width: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+
+    height: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
 
     caption: {

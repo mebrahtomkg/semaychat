@@ -61,6 +61,12 @@ const sendFile = async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
 
+    const width =
+      typeof req.body?.width === 'string' ? req.body.width.trim() : null;
+
+    const height =
+      typeof req.body?.height === 'string' ? req.body.height.trim() : null;
+
     const caption =
       typeof req.body?.caption === 'string' ? req.body.caption.trim() : null;
 
@@ -83,6 +89,8 @@ const sendFile = async (req: Request, res: Response, next: NextFunction) => {
           name: path.basename(filePath),
           originalname,
           size,
+          width,
+          height,
           caption,
         },
         { transaction },

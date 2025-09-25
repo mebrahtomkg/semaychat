@@ -1,7 +1,9 @@
 export interface LocalAttachment {
   id: number;
   file: File;
-  isImage: boolean;
   displayName: string;
+  isImage: boolean;
+  width?: number;
+  height?: number;
   caption?: string;
 }

@@ -44,6 +44,8 @@ export interface Attachment {
   id: number;
   name: string;
   size: number;
+  width: string | null;
+  height: string | null;
   caption: string | null | undefined;
   file?: File; // Only exists on frontend
 }
@@ -88,6 +90,8 @@ export interface FileMessageSendRequest extends BaseMessageRequest {
     receiverId: number;
     fileId: number;
     caption?: string;
+    width?: number;
+    height?: number;
   };
 }
 

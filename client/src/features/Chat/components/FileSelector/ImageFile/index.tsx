@@ -43,7 +43,13 @@ const ImageFile: FC<ImageFileProps> = ({
       <RemoveButton onClick={remove} />
 
       {imageSrc && (
-        <ImageStyled src={imageSrc} onLoad={handleImageLoad} alt="Image file" />
+        <ImageStyled
+          width={attachment.width}
+          height={attachment.height}
+          src={imageSrc}
+          onLoad={handleImageLoad}
+          alt="Image file"
+        />
       )}
 
       {isImageLoading && (

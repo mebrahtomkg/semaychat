@@ -33,7 +33,7 @@ const useFileMessageRequestsProcessor = () => {
   const queryFn = useCallback(async () => {
     if (!request) return null;
 
-    const { receiverId, fileId, caption } = request.payload;
+    const { receiverId, fileId, caption, width, height } = request.payload;
 
     const file = getMessageRequestFile(fileId);
 
@@ -45,6 +45,8 @@ const useFileMessageRequestsProcessor = () => {
     const body = new FormData();
     body.append('receiverId', `${receiverId}`);
     body.append('attachment', file);
+    if (width) body.append('width', width.toString());
+    if (height) body.append('height', height.toString());
     if (caption) body.append('caption', caption);
 
     const message = await post<Message>('/messages/file', body);
@@ -70,7 +72,6 @@ const useFileMessageRequestsProcessor = () => {
 
   if (isError) {
     console.log('File Message request error:', error);
-    // dispatch(messageRequestDeleted(request.requestId));
   }
 };
 

@@ -1,7 +1,7 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { isImage, shortenFileName } from '../../utils';
 import { addMessageRequestFile } from '@/services/messageRequestFilesStore';
-import { getFileExtension } from '@/utils';
+import { getFileExtension, getImageDimensions } from '@/utils';
 import { useMessageRequestsStore } from '@/store';
 import { getUniqueId } from '@/store/useMessageRequestsStore';
 import { LocalAttachment } from './types';
@@ -18,22 +18,52 @@ const useFilesSender = (
   );
 
   const createAttachment = useCallback(
-    (file: File): LocalAttachment => ({
-      id: lastIdRef.current++,
-      file,
-      isImage: isImage(getFileExtension(file.name)),
-      displayName: shortenFileName(file.name, 40),
-    }),
+    async (file: File): Promise<LocalAttachment> => {
+      const isImageFile = isImage(getFileExtension(file.name));
+
+      let width: number | undefined;
+      let height: number | undefined;
+
+      if (isImageFile) {
+        try {
+          ({ width, height } = await getImageDimensions(file));
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      return {
+        id: lastIdRef.current++,
+        file,
+        isImage: isImageFile,
+        displayName: shortenFileName(file.name, 40),
+        width,
+        height,
+      };
+    },
     [],
   );
 
-  const [attachments, setAttachments] = useState<LocalAttachment[]>(() =>
-    files.map(createAttachment),
-  );
+  const [attachments, setAttachments] = useState<LocalAttachment[]>([]);
+
+  useEffect(() => {
+    const init = async () => {
+      const _attachments = [];
+      for (const file of files) {
+        _attachments.push(await createAttachment(file));
+      }
+      setAttachments(_attachments);
+    };
+    init();
+  }, [files, createAttachment]);
 
   const addFiles = useCallback(
-    (files: File[]) => {
-      setAttachments([...attachments, ...files.map(createAttachment)]);
+    async (files: File[]) => {
+      const _attachments = [];
+      for (const file of files) {
+        _attachments.push(await createAttachment(file));
+      }
+      setAttachments([...attachments, ..._attachments]);
     },
     [attachments, createAttachment],
   );
@@ -72,6 +102,8 @@ const useFilesSender = (
         receiverId: chatPartnerId,
         fileId,
         caption: attachment.caption,
+        width: attachment.width,
+        height: attachment.height,
       });
     });
     onClose();

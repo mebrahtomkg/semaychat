@@ -1,4 +1,5 @@
 export { default as getFileExtension } from './getFileExtension';
+export { default as getImageDimensions } from './getImageDimensions';
 
 export function ready(handler: () => void) {
   if (document.readyState === 'loading') {

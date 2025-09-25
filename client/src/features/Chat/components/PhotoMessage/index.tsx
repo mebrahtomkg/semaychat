@@ -1,5 +1,11 @@
 import { FC, useState } from 'react';
-import { PhotoMessageStyled, PhotoImg, PhotoMetaContainer } from './styles';
+import {
+  PhotoMessageStyled,
+  ImagePlaceholder,
+  ImageStyled,
+  ImageMetaContainer,
+  LoadingProgress,
+} from './styles';
 import PhotoViewer from '../PhotoViewer';
 import { useImageFileLoader, useImageLoader } from '@/hooks';
 import MessageMeta from '../MessageMeta';
@@ -36,17 +42,24 @@ const PhotoMessage: FC<PhotoMessageProps> = ({ message, messageInfo }) => {
 
   return (
     <PhotoMessageStyled>
-      {imageSrc && (
-        <PhotoImg
-          src={imageSrc}
-          alt="Photo"
-          onLoad={handleImageLoad}
-          onClick={openPhotoViewer}
-        />
+      <ImageStyled
+        width={message.attachment?.width || undefined}
+        height={message.attachment?.height || undefined}
+        src={imageSrc || undefined}
+        alt="Photo"
+        onLoad={handleImageLoad}
+        onClick={openPhotoViewer}
+      />
+
+      {!imageSrc && (
+        <ImagePlaceholder>
+          <LoadingProgress>Loading...</LoadingProgress>
+        </ImagePlaceholder>
       )}
-      <PhotoMetaContainer>
+
+      <ImageMetaContainer>
         <MessageMeta isOutgoing={isOutgoing} status={status} time={time} />
-      </PhotoMetaContainer>
+      </ImageMetaContainer>
 
       {isPhotoViewerVisible && (
         <PhotoViewer
