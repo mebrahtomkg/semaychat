@@ -117,13 +117,13 @@ const PhotoViewer: FC<PhotoViewerProps> = ({
       />
 
       {isImageLoading && (
-        <ProgressContainer>
+        <ProgressContainer onClick={onClose} data-is-photo-nav-target="true">
           <ImageLoadingSpinner />
         </ProgressContainer>
       )}
 
       {isImageLoadError && (
-        <ProgressContainer>
+        <ProgressContainer onClick={onClose} data-is-photo-nav-target="true">
           <LoadingError>Failed to load image!</LoadingError>
         </ProgressContainer>
       )}
