@@ -105,6 +105,7 @@ export const PhotoMetaText = styled.p`
 export const PhotoNavButton = styled.button`
   position: absolute;
   top: calc(50% - 1.5rem);
+  z-index: 5;
   width: 3rem;
   height: 3rem;
   padding: 0.4rem;

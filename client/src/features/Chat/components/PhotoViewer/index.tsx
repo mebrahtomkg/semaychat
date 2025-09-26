@@ -13,8 +13,12 @@ import {
   PhotoMetaContainer,
   PhotoMetaText,
 } from '@/styles';
-import { PhotoViewerModal, ProgressContainer, ProgressText } from './styles';
-import { useImageLoader, usePhotoNavigation, useAccountInfo } from '@/hooks';
+import { LoadingError, PhotoViewerModal, ProgressContainer } from './styles';
+import {
+  usePhotoNavigation,
+  useAccountInfo,
+  useImageLoadProgress,
+} from '@/hooks';
 import { isImage } from '../../utils';
 import useUser from '@/hooks/useUserPro';
 import {
@@ -23,7 +27,7 @@ import {
   useMessageInfo,
 } from '../../hooks';
 import { getFileExtension } from '@/utils';
-import { FlexibleImage, TinySpinner } from '@/components';
+import { FlexibleImage, ImageLoadingSpinner } from '@/components';
 
 interface PhotoViewerProps {
   chatPartnerId: number;
@@ -68,8 +72,12 @@ const PhotoViewer: FC<PhotoViewerProps> = ({
     photoMessages[currentIndex],
   );
 
-  const { isImageFetching, isImageLoading, imageSrc, handleImageLoad } =
-    useImageLoader(fileUrl);
+  const {
+    isImageLoading,
+    isImageLoadError,
+    handleImageLoad,
+    handleImageLoadError,
+  } = useImageLoadProgress(fileUrl);
 
   const options = useMemo(
     () => [
@@ -98,20 +106,25 @@ const PhotoViewer: FC<PhotoViewerProps> = ({
         )}
       </PhotoHeaderSection>
 
-      {isImageFetching && <TinySpinner />}
+      <FlexibleImage
+        src={fileUrl}
+        onLoad={handleImageLoad}
+        onError={handleImageLoadError}
+        alt="Message attachment"
+        isBlur={isImageLoading}
+        isPhotoNavTarget={true}
+        onClick={onClose}
+      />
 
-      {imageSrc ? (
-        <FlexibleImage
-          src={imageSrc}
-          onLoad={handleImageLoad}
-          alt="Photo"
-          isBlur={isImageFetching || isImageLoading}
-          isPhotoNavTarget={true}
-          onClick={onClose}
-        />
-      ) : (
+      {isImageLoading && (
         <ProgressContainer>
-          <ProgressText>Loading photo...</ProgressText>
+          <ImageLoadingSpinner />
+        </ProgressContainer>
+      )}
+
+      {isImageLoadError && (
+        <ProgressContainer>
+          <LoadingError>Failed to load image!</LoadingError>
         </ProgressContainer>
       )}
 

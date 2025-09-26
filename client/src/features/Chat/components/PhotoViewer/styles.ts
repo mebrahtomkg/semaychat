@@ -25,7 +25,7 @@ export const ProgressContainer = styled.div`
   background-color: #0000007a;
 `;
 
-export const ProgressText = styled.p`
-  color: #ffffff;
-  font-size: 1.2rem;
+export const LoadingError = styled.p`
+  text-align: center;
+  color: red;
 `;

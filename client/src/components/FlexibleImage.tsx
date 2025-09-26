@@ -2,6 +2,7 @@ import {
   FC,
   HtmlHTMLAttributes,
   MouseEventHandler,
+  SyntheticEvent,
   useEffect,
   useRef,
 } from 'react';
@@ -22,20 +23,27 @@ export const FlexibleImageStyled = styled.img<{ $isBlur?: boolean }>`
 `;
 
 interface FlexibleImageProps {
+  src?: string;
+  alt?: string;
+  onLoad?: (e: SyntheticEvent<HTMLImageElement>) => void;
+  onError?: (e: SyntheticEvent<HTMLImageElement>) => void;
+  onClick?: MouseEventHandler;
   isPhotoNavTarget?: boolean;
   isBlur?: boolean;
-  onClick?: MouseEventHandler;
-  src?: string;
 }
 
 const FlexibleImage: FC<FlexibleImageProps> = ({
+  src,
+  alt = 'Image',
+  onLoad,
+  onError,
+  onClick,
   isPhotoNavTarget = false,
   isBlur = false,
-  onClick = undefined,
-  src = '',
-  ...otherProps
 }) => {
-  const props: HtmlHTMLAttributes<HTMLImageElement> = {};
+  const props: HtmlHTMLAttributes<HTMLImageElement> & {
+    'data-is-photo-nav-target'?: 'true';
+  } = {};
 
   if (onClick || isPhotoNavTarget) {
     props.role = 'button';
@@ -55,11 +63,13 @@ const FlexibleImage: FC<FlexibleImageProps> = ({
   return (
     <FlexibleImageStyled
       ref={imgRef}
-      $isBlur={isBlur}
-      onClick={onClick}
       src={src}
+      alt={alt}
+      onClick={onClick}
+      onLoad={onLoad}
+      onError={onError}
+      $isBlur={isBlur}
       {...props}
-      {...otherProps}
     />
   );
 };

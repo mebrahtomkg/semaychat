@@ -4,16 +4,15 @@ import {
   ImagePlaceholder,
   ImageStyled,
   ImageMetaContainer,
-  ImageFetchingSpinner,
   LoadingProgress,
   LoadingError,
 } from './styles';
 import PhotoViewer from '../PhotoViewer';
-import { useImageFileLoader } from '@/hooks';
+import { useImageFileLoader, useImageLoadProgress } from '@/hooks';
 import MessageMeta from '../MessageMeta';
 import { MessageInfo } from '../../types';
 import { Message } from '@/types';
-import useImageLoadProgress from './useImageLoadProgress';
+import { ImageLoadingSpinner } from '@/components';
 
 interface PhotoMessageProps {
   message: Message;
@@ -64,7 +63,7 @@ const PhotoMessage: FC<PhotoMessageProps> = ({ message, messageInfo }) => {
           {isImageLoadingFromFile ? (
             <LoadingProgress>Loading...</LoadingProgress>
           ) : isImageLoading ? (
-            <ImageFetchingSpinner />
+            <ImageLoadingSpinner />
           ) : isImageLoadError ? (
             <LoadingError>Failed to load image!</LoadingError>
           ) : null}
