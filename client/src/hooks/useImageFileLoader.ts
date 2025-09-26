@@ -8,15 +8,14 @@ import {
 
 const useImageFileLoader = (file?: File) => {
   const [imageSrc, setImageSrc] = useState<string | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const objectUrlRef = useRef<string>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(!!file);
+  const objectUrlRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (file) {
+      setIsLoading(true);
       const url = URL.createObjectURL(file);
       objectUrlRef.current = url;
-      setIsLoading(true);
       setImageSrc(url);
     }
 

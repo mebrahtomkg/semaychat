@@ -38,7 +38,9 @@ const useMessageInfo = (message: Message) => {
 
   const fileUrl = useMemo(
     () =>
-      message.id > 0 ? `${API_BASE_URL}/messages/file/${message.id}` : null,
+      message.id > 0
+        ? `${API_BASE_URL}/messages/file/${message.id}`
+        : undefined,
     [message.id],
   );
 

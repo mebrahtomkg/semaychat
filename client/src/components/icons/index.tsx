@@ -28,6 +28,7 @@ export { default as UnblockUserIcon } from '@/assets/icons/unblockUser.svg';
 export { default as SunIcon } from '@/assets/icons/sun.svg';
 export { default as MoonIcon } from '@/assets/icons/moon.svg';
 export { default as SendProIcon } from '@/assets/icons/sendPro.svg';
+export { default as ImageSpinnerIcon } from '@/assets/icons/imageSpinner.svg';
 export { default as NextIcon } from './NextIcon';
 export { default as PauseIcon } from './PauseIcon';
 export { default as PlayIcon } from './PlayIcon';

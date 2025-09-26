@@ -1,16 +1,19 @@
-import { FC, useState } from 'react';
+import { FC, SyntheticEvent, useState } from 'react';
 import {
   PhotoMessageStyled,
   ImagePlaceholder,
   ImageStyled,
   ImageMetaContainer,
+  ImageFetchingSpinner,
   LoadingProgress,
+  LoadingError,
 } from './styles';
 import PhotoViewer from '../PhotoViewer';
-import { useImageFileLoader, useImageLoader } from '@/hooks';
+import { useImageFileLoader } from '@/hooks';
 import MessageMeta from '../MessageMeta';
 import { MessageInfo } from '../../types';
 import { Message } from '@/types';
+import useImageLoadProgress from './useImageLoadProgress';
 
 interface PhotoMessageProps {
   message: Message;
@@ -24,21 +27,25 @@ const PhotoMessage: FC<PhotoMessageProps> = ({ message, messageInfo }) => {
   const openPhotoViewer = () => setIsPhotoViewerVisible(true);
   const closePhotoViewer = () => setIsPhotoViewerVisible(false);
 
-  const { imageSrc: imageSrcFromUrl, handleImageLoad: handleImageLoadFromUrl } =
-    useImageLoader(fileUrl);
-
   const {
     imageSrc: imageSrcFromFile,
+    isImageLoading: isImageLoadingFromFile,
     handleImageLoad: handleImageLoadFromFile,
   } = useImageFileLoader(message.attachment?.file);
 
-  const imageSrc = message.attachment?.file
-    ? imageSrcFromFile
-    : imageSrcFromUrl;
+  const imageSrc = message.attachment?.file ? imageSrcFromFile : fileUrl;
 
-  const handleImageLoad = message.attachment?.file
-    ? handleImageLoadFromFile
-    : handleImageLoadFromUrl;
+  const {
+    isImageLoading,
+    isImageLoadError,
+    handleImageLoad,
+    handleImageLoadError,
+  } = useImageLoadProgress(imageSrc);
+
+  const invokeImageLoadHandlers = (e: SyntheticEvent<HTMLImageElement>) => {
+    handleImageLoadFromFile(e);
+    handleImageLoad(e);
+  };
 
   return (
     <PhotoMessageStyled>
@@ -47,13 +54,20 @@ const PhotoMessage: FC<PhotoMessageProps> = ({ message, messageInfo }) => {
         height={message.attachment?.height || undefined}
         src={imageSrc}
         alt="Photo"
-        onLoad={handleImageLoad}
+        onLoad={invokeImageLoadHandlers}
+        onError={handleImageLoadError}
         onClick={openPhotoViewer}
       />
 
-      {!imageSrc && (
+      {(isImageLoadingFromFile || isImageLoading || isImageLoadError) && (
         <ImagePlaceholder>
-          <LoadingProgress>Loading...</LoadingProgress>
+          {isImageLoadingFromFile ? (
+            <LoadingProgress>Loading...</LoadingProgress>
+          ) : isImageLoading ? (
+            <ImageFetchingSpinner />
+          ) : isImageLoadError ? (
+            <LoadingError>Failed to load image!</LoadingError>
+          ) : null}
         </ImagePlaceholder>
       )}
 
