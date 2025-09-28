@@ -1,29 +1,30 @@
-/////////////////////////////////////////////////////////////////////
-const CACHE_NAME = 'v14';
+const SW_VERSION = 'v18';
 
-/////////////////////////////////////////////////////////////////////
-const addResourcesToCache = async (/** @type {RequestInfo[]} */ resources) => {
-  const cache = await caches.open(CACHE_NAME);
-  await cache.addAll(resources);
+self.addEventListener('install', (/** @type ExtendableEvent */ _event) => {
+  console.log('[SW][event] Install');
+  self.skipWaiting();
+});
+
+const deleteOldCaches = async () => {
+  const cacheKeys = await caches.keys();
+  for (const key of cacheKeys) {
+    if (key !== SW_VERSION) {
+      console.log('[SW] Deleting old cache:', key);
+      await caches.delete(key);
+    }
+  }
 };
 
-self.addEventListener('install', (event) => {
-  console.log('[sw] Install event fired');
-  // event.waitUntil(addResourcesToCache(['/', '/vendor.43c7f24393b77f12.js']));
+self.addEventListener('activate', (/** @type ExtendableEvent */ event) => {
+  console.log('[SW][event] Activate');
+  event.waitUntil(Promise.all([deleteOldCaches(), clients.claim()]));
 });
 
-/////////////////////////////////////////////////////////////////////
-self.addEventListener('activate', (event) => {
-  console.log('[sw] Activate event fired');
-  event.waitUntil(clients.claim());
-});
-
-/////////////////////////////////////////////////////////////////////
 const putInCache = async (
   /** @type Request **/ request,
   /** @type Response */ response,
 ) => {
-  const cache = await caches.open(CACHE_NAME);
+  const cache = await caches.open(SW_VERSION);
   await cache.put(request, response);
 };
 
@@ -39,10 +40,9 @@ const cacheFirst = async (/** @type Request **/ request) => {
   return responseFromNetwork;
 };
 
-self.addEventListener('fetch', (event) => {
-  /** @type Request **/
+self.addEventListener('fetch', (/** @type FetchEvent */ event) => {
   const request = event.request;
-  console.log('[sw] Fetch event fired', CACHE_NAME, request.url);
+  console.log('[SW][event] Fetch');
 
   if (
     request.method !== 'GET' ||
@@ -50,6 +50,8 @@ self.addEventListener('fetch', (event) => {
   ) {
     return;
   }
+
+  console.log('[SW] Handling fetch', request.url);
 
   event.respondWith(cacheFirst(request));
 });

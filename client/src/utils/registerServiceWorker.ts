@@ -7,6 +7,7 @@ const registerServiceWorker = async () => {
   try {
     const registration = await navigator.serviceWorker.register(
       `/service-worker.js?v=${Date.now()}`,
+      { scope: '/' },
     );
 
     if (registration.installing) {
