@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { isPositiveInteger } from '@/utils';
-import { Message } from '@/models';
+import { Attachment, Message } from '@/models';
 import { IS_PRODUCTION, MESSAGE_FILES_BUCKET } from '@/config/general';
 import storage from '@/config/storage';
 
@@ -13,25 +12,36 @@ const readFile = async (req: Request, res: Response, next: NextFunction) => {
       });
     }
 
-    const messageId = Number.parseInt(
-      typeof req.params.messageId === 'string'
-        ? req.params.messageId.trim()
-        : '',
-      10,
-    );
+    const fileName =
+      typeof req.params.fileName === 'string'
+        ? req.params.fileName.trim()
+        : null;
 
-    if (!isPositiveInteger(messageId)) {
+    if (!fileName) {
       res.status(400).json({
-        message: 'Invalid message id.',
+        message: 'Invalid file name.',
       });
       return;
     }
 
-    const message = await Message.scope('withAttachment').findByPk(messageId);
+    const attachment = await Attachment.findOne({
+      where: { name: fileName },
+    });
+
+    if (!attachment) {
+      res.status(404).json({
+        message: 'Attachment not found.',
+      });
+      return;
+    }
+
+    const message = await Message.findOne({
+      where: { attachmentId: attachment.id },
+    });
 
     if (!message) {
       res.status(404).json({
-        message: 'Message not found.',
+        message: 'Message that correspond to this attachment not found.',
       });
       return;
     }
@@ -48,21 +58,9 @@ const readFile = async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
 
-    if (!message.attachment) {
-      res.status(409).json({
-        message: 'This is not a file message.',
-      });
-      return;
-    }
-
-    await storage.serveFile(
-      MESSAGE_FILES_BUCKET,
-      message.attachment.name,
-      res,
-      {
-        'Content-Disposition': `inline; filename="${message.attachment.originalname}"`,
-      },
-    );
+    await storage.serveFile(MESSAGE_FILES_BUCKET, attachment.name, res, {
+      'Content-Disposition': `inline; filename="${attachment.originalname}"`,
+    });
   } catch (err) {
     next(err);
   }
