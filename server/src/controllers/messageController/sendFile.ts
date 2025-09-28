@@ -3,7 +3,11 @@ import commitSendingMessage from './commitSendingMessage';
 import { isPositiveInteger } from '@/utils';
 import { Attachment } from '@/models';
 import sequelize from '@/config/db';
-import { MAX_MESSAGE_FILE_SIZE, MESSAGE_FILES_BUCKET } from '@/config/general';
+import {
+  IS_PRODUCTION,
+  MAX_MESSAGE_FILE_SIZE,
+  MESSAGE_FILES_BUCKET,
+} from '@/config/general';
 import storage from '@/config/storage';
 import multer from 'multer';
 import path from 'node:path';
@@ -33,6 +37,13 @@ const attachmentUploaderAsync = (
 
 const sendFile = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    if (!IS_PRODUCTION) {
+      // delay for local dev testing
+      await new Promise((resolve) => {
+        setTimeout(() => resolve(null), 3_000);
+      });
+    }
+
     if (!req.userId) {
       res.status(401).json({ message: 'Not Authenticated!' });
       return;

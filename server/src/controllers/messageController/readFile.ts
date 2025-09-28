@@ -1,11 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
 import { isPositiveInteger } from '@/utils';
 import { Message } from '@/models';
-import { MESSAGE_FILES_BUCKET } from '@/config/general';
+import { IS_PRODUCTION, MESSAGE_FILES_BUCKET } from '@/config/general';
 import storage from '@/config/storage';
 
 const readFile = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    if (!IS_PRODUCTION) {
+      // delay for local dev testing
+      await new Promise((resolve) => {
+        setTimeout(() => resolve(null), 3_000);
+      });
+    }
+
     const messageId = Number.parseInt(
       typeof req.params.messageId === 'string'
         ? req.params.messageId.trim()
