@@ -1,5 +1,6 @@
 export { default as getFileExtension } from './getFileExtension';
 export { default as getImageDimensions } from './getImageDimensions';
+export { default as registerServiceWorker } from './registerServiceWorker';
 
 export function ready(handler: () => void) {
   if (document.readyState === 'loading') {

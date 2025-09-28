@@ -2,7 +2,7 @@ require('dotenv').config();
 const path = require('node:path');
 const ReactRefreshPlugin = require('@rspack/plugin-react-refresh');
 const { rspack } = require('@rspack/core');
-const { IS_PRODUCTION, PUBLIC_PATH, API_URL } = require('./constants');
+const { IS_PRODUCTION, PUBLIC_PATH } = require('./constants');
 
 module.exports = {
   mode: IS_PRODUCTION ? 'production' : 'development',
@@ -19,6 +19,7 @@ module.exports = {
       'Cache-Control': 'public, max-age=31536000',
     },
     open: false,
+    static: false,
   },
   watchOptions: {
     aggregateTimeout: 30,
@@ -96,8 +97,16 @@ module.exports = {
     new ReactRefreshPlugin(),
     new rspack.HtmlRspackPlugin({
       publicPath: PUBLIC_PATH,
-      template: path.resolve(__dirname, 'public/index.html'),
-      templateParameters: { API_URL },
+      inject: false,
+      template: 'index.template.js',
+    }),
+    new rspack.CopyRspackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'sw/service-worker.js'),
+          to: 'service-worker.js',
+        },
+      ],
     }),
   ],
 };

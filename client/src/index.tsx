@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import { StrictMode } from 'react';
-import { ready } from './utils';
+import { ready, registerServiceWorker } from './utils';
 import App from './App';
 import { HashRouter } from 'react-router';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -20,4 +20,7 @@ const doRender = () => {
   );
 };
 
-ready(doRender);
+ready(() => {
+  doRender();
+  registerServiceWorker();
+});

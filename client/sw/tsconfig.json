@@ -2,22 +2,17 @@
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
-    "outDir": "dist",
     "target": "ESNext",
     "module": "ESNext",
-    "jsx": "react-jsx",
+    "lib": ["ESNext"],
     "strict": true,
-    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "rootDir": ".",
+    "outDir": "../dist"
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "sw"],
+  "include": ["service-worker.js"],
   "typeAcquisition": {
     "enable": false
   }
