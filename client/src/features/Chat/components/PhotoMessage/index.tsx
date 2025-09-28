@@ -8,7 +8,7 @@ import {
   LoadingError,
 } from './styles';
 import PhotoViewer from '../PhotoViewer';
-import { useImageFileLoader, useImageLoadProgress } from '@/hooks';
+import { useImageFileLoader, useImageLoader } from '@/hooks';
 import MessageMeta from '../MessageMeta';
 import { MessageInfo } from '../../types';
 import { Message } from '@/types';
@@ -27,23 +27,24 @@ const PhotoMessage: FC<PhotoMessageProps> = ({ message, messageInfo }) => {
   const closePhotoViewer = () => setIsPhotoViewerVisible(false);
 
   const {
-    imageSrc: imageSrcFromFile,
-    isImageLoading: isImageLoadingFromFile,
-    handleImageLoad: handleImageLoadFromFile,
+    imageSrc: file_imageSrc,
+    isImageLoading: file_isImageLoading,
+    handleImageLoad: file_handleImageLoad,
   } = useImageFileLoader(message.attachment?.file);
 
-  const imageSrc = message.attachment?.file ? imageSrcFromFile : fileUrl;
-
   const {
-    isImageLoading,
-    isImageLoadError,
-    handleImageLoad,
-    handleImageLoadError,
-  } = useImageLoadProgress(imageSrc);
+    imageSrc: server_imageSrc,
+    isImageLoading: server_isImageLoading,
+    isImageLoadError: server_isImageLoadError,
+    handleImageLoad: server_handleImageLoad,
+    handleImageLoadError: server_handleImageLoadError,
+  } = useImageLoader(fileUrl);
+
+  const imageSrc = message.attachment?.file ? file_imageSrc : server_imageSrc;
 
   const invokeImageLoadHandlers = (e: SyntheticEvent<HTMLImageElement>) => {
-    handleImageLoadFromFile(e);
-    handleImageLoad(e);
+    file_handleImageLoad(e);
+    server_handleImageLoad(e);
   };
 
   return (
@@ -54,17 +55,19 @@ const PhotoMessage: FC<PhotoMessageProps> = ({ message, messageInfo }) => {
         src={imageSrc}
         alt="Photo"
         onLoad={invokeImageLoadHandlers}
-        onError={handleImageLoadError}
+        onError={server_handleImageLoadError}
         onClick={openPhotoViewer}
       />
 
-      {(isImageLoadingFromFile || isImageLoading || isImageLoadError) && (
+      {(file_isImageLoading ||
+        server_isImageLoading ||
+        server_isImageLoadError) && (
         <ImagePlaceholder>
-          {isImageLoadingFromFile ? (
+          {file_isImageLoading ? (
             <LoadingProgress>Loading...</LoadingProgress>
-          ) : isImageLoading ? (
+          ) : server_isImageLoading ? (
             <ImageLoadingSpinner />
-          ) : isImageLoadError ? (
+          ) : server_isImageLoadError ? (
             <LoadingError>Failed to load image!</LoadingError>
           ) : null}
         </ImagePlaceholder>

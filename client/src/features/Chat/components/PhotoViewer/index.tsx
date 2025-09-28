@@ -14,11 +14,7 @@ import {
   PhotoMetaText,
 } from '@/styles';
 import { LoadingError, PhotoViewerModal, ProgressContainer } from './styles';
-import {
-  usePhotoNavigation,
-  useAccountInfo,
-  useImageLoadProgress,
-} from '@/hooks';
+import { usePhotoNavigation, useAccountInfo, useImageLoader } from '@/hooks';
 import { isImage } from '../../utils';
 import useUser from '@/hooks/useUserPro';
 import {
@@ -77,7 +73,7 @@ const PhotoViewer: FC<PhotoViewerProps> = ({
     isImageLoadError,
     handleImageLoad,
     handleImageLoadError,
-  } = useImageLoadProgress(fileUrl);
+  } = useImageLoader(fileUrl);
 
   const options = useMemo(
     () => [

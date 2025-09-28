@@ -5,57 +5,63 @@ import {
   useRef,
   useState,
 } from 'react';
-import { ApiError, get } from '@/api';
-import { useQuery } from '@tanstack/react-query';
+import { get } from '@/api';
 
-const useImageLoader = (imageUrl: string | null | undefined) => {
-  // image src has to be `string | undefined` because the html img tag's src attr
-  // type is `string | undefined`.
+const useImageLoader = (imageUrl?: string) => {
+  // The html img tag's src attr type is `string | undefined`.
   const [imageSrc, setImageSrc] = useState<string | undefined>(undefined);
-
-  const [isImageLoading, setIsImageLoading] = useState(false);
-
+  const [isImageLoading, setIsImageLoading] = useState<boolean>(false);
   const objectUrlRef = useRef<string | null>(null);
+  const [isImageLoadError, setIsImageLoadError] = useState<boolean>(false);
 
-  const { isLoading, isError, data, error } = useQuery({
-    queryKey: ['image', imageUrl],
-    queryFn: async () => {
-      if (!imageUrl) return null;
-      const blob = await get<Blob>(imageUrl, { responseType: 'blob' });
-      return URL.createObjectURL(blob);
-    },
-    staleTime: 0,
-    retry: (failureCount: number, error: Error) =>
-      error instanceof ApiError && error.status ? false : failureCount < 2,
-  });
+  const fetchAndLoadImage = useCallback(async (url: string) => {
+    let blob: Blob | null = null;
 
-  useEffect(() => {
-    if (data) {
-      objectUrlRef.current = data;
-      setIsImageLoading(true);
-      setImageSrc(data);
+    setIsImageLoadError(false);
+    setIsImageLoading(true);
+    try {
+      blob = await get<Blob>(url, { responseType: 'blob' });
+    } catch (err) {
+      console.error('useImageLoader:', err);
     }
 
-    const cleanup = () => {
-      if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
-      objectUrlRef.current = null;
-    };
+    if (!blob) return setIsImageLoading(false);
 
+    const src = URL.createObjectURL(blob);
+    objectUrlRef.current = src;
+    setImageSrc(src);
+  }, []);
+
+  const cleanup = useCallback(() => {
+    if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
+    objectUrlRef.current = null;
+  }, []);
+
+  useEffect(() => {
+    if (imageUrl) fetchAndLoadImage(imageUrl);
     return cleanup;
-  }, [data]);
-
-  if (isError) console.error(error);
+  }, [imageUrl, fetchAndLoadImage, cleanup]);
 
   const handleImageLoad = useCallback((e: SyntheticEvent<HTMLImageElement>) => {
     URL.revokeObjectURL(e.currentTarget.src);
     setIsImageLoading(false);
   }, []);
 
+  const handleImageLoadError = useCallback(
+    (e: SyntheticEvent<HTMLImageElement>) => {
+      URL.revokeObjectURL(e.currentTarget.src);
+      setIsImageLoadError(true);
+      setIsImageLoading(false);
+    },
+    [],
+  );
+
   return {
-    isImageFetching: isLoading,
-    isImageLoading,
     imageSrc,
+    isImageLoading,
+    isImageLoadError,
     handleImageLoad,
+    handleImageLoadError,
   };
 };
 

@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////////////////////
-const CACHE_NAME = 'v12';
+const CACHE_NAME = 'v14';
 
 /////////////////////////////////////////////////////////////////////
 const addResourcesToCache = async (/** @type {RequestInfo[]} */ resources) => {
@@ -42,7 +42,7 @@ const cacheFirst = async (/** @type Request **/ request) => {
 self.addEventListener('fetch', (event) => {
   /** @type Request **/
   const request = event.request;
-  console.log('[sw] Fetch event fired', request.url);
+  console.log('[sw] Fetch event fired', CACHE_NAME, request.url);
 
   if (
     request.method !== 'GET' ||

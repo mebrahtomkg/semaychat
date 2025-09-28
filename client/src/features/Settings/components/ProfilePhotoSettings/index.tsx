@@ -61,7 +61,7 @@ const ProfilePhotoSettings = () => {
     deletePhoto,
   } = useSelfProfilePhoto(profilePhotos[currentIndex]);
 
-  const { isImageFetching, isImageLoading, imageSrc, handleImageLoad } =
+  const { isImageLoading, imageSrc, handleImageLoad } =
     useImageLoader(photoUrl);
 
   const options = useMemo(() => {
@@ -121,14 +121,14 @@ const ProfilePhotoSettings = () => {
         )}
       </PhotoHeaderSection>
 
-      {isImageFetching && <TinySpinner />}
+      {isImageLoading && <TinySpinner />}
 
       {imageSrc ? (
         <FlexibleImage
           src={imageSrc}
           onLoad={handleImageLoad}
           alt="Profile Photo"
-          isBlur={isImageFetching || isImageLoading}
+          isBlur={isImageLoading}
           onClick={toggleFullScreenMode}
           isPhotoNavTarget={true}
         />

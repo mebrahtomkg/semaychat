@@ -77,8 +77,8 @@ const Profile: FC<ProfileProps> = ({ user, onClose }) => {
     profilePhotos[currentIndex],
   );
 
-  const { isImageFetching, isImageLoading, imageSrc, handleImageLoad } =
-    useImageLoader(photoUrl || null);
+  const { isImageLoading, imageSrc, handleImageLoad } =
+    useImageLoader(photoUrl);
 
   const options = useMemo(() => {
     const items: MenuItemDescriptor[] = [];
@@ -163,14 +163,14 @@ const Profile: FC<ProfileProps> = ({ user, onClose }) => {
             <MoreButton onClick={onMoreButtonClick} />
           </PhotoHeaderSection>
 
-          {isImageFetching && <TinySpinner />}
+          {isImageLoading && <TinySpinner />}
 
           {imageSrc ? (
             <FlexibleImage
               src={imageSrc}
               onLoad={handleImageLoad}
               alt="Profile Photo"
-              isBlur={isImageFetching || isImageLoading}
+              isBlur={isImageLoading}
               onClick={toggleFullScreenMode}
               isPhotoNavTarget={true}
             />
