@@ -4,7 +4,7 @@
     "checkJs": true,
     "target": "ESNext",
     "module": "ESNext",
-    "lib": ["ESNext"],
+    "lib": ["ESNext", "WebWorker"],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -12,7 +12,7 @@
     "rootDir": ".",
     "outDir": "../dist"
   },
-  "include": ["service-worker.ts"],
+  "include": ["service-worker.ts", "types.ts"],
   "typeAcquisition": {
     "enable": false
   }

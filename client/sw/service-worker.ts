@@ -1,4 +1,4 @@
-const SW_VERSION = 'v25';
+const SW_VERSION = 'v27';
 
 self.addEventListener('install', (_event: ExtendableEvent) => {
   console.log('[SW][event] Install');
@@ -6,10 +6,11 @@ self.addEventListener('install', (_event: ExtendableEvent) => {
 });
 
 const deleteOldCaches = async () => {
+  console.log('[SW] Deleting old caches');
   const cacheKeys = await caches.keys();
   for (const key of cacheKeys) {
     if (key !== SW_VERSION) {
-      console.log('[SW] Deleting old cache:', key);
+      console.log('[SW] Deleting cache:', key);
       await caches.delete(key);
     }
   }
@@ -43,7 +44,7 @@ self.addEventListener('fetch', (event: FetchEvent) => {
 
   if (
     request.method !== 'GET' ||
-    !request.url.startsWith('http://localhost:3000/api/messages/file/')
+    !request.url.startsWith(`${self.API_URL}/messages/file/`)
   ) {
     return;
   }
