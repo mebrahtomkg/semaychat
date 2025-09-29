@@ -12,7 +12,7 @@
     "rootDir": ".",
     "outDir": "../dist"
   },
-  "include": ["service-worker.js"],
+  "include": ["service-worker.ts"],
   "typeAcquisition": {
     "enable": false
   }

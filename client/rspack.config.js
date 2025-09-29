@@ -1,8 +1,8 @@
 require('dotenv').config();
 const path = require('node:path');
 const ReactRefreshPlugin = require('@rspack/plugin-react-refresh');
-const { rspack } = require('@rspack/core');
 const { IS_PRODUCTION, PUBLIC_PATH } = require('./constants');
+const AppRspackPlugin = require('./AppRspackPlugin');
 
 module.exports = {
   mode: IS_PRODUCTION ? 'production' : 'development',
@@ -93,20 +93,5 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new ReactRefreshPlugin(),
-    new rspack.HtmlRspackPlugin({
-      publicPath: PUBLIC_PATH,
-      inject: false,
-      template: 'index.template.js',
-    }),
-    new rspack.CopyRspackPlugin({
-      patterns: [
-        {
-          from: path.resolve(__dirname, 'sw/service-worker.js'),
-          to: 'service-worker.js',
-        },
-      ],
-    }),
-  ],
+  plugins: [new ReactRefreshPlugin(), new AppRspackPlugin()],
 };

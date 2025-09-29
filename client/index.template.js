@@ -1,18 +1,12 @@
 const { PUBLIC_PATH, API_URL } = require('./constants');
 
-module.exports = ({ htmlRspackPlugin }) => {
-  const jsFiles = htmlRspackPlugin.files.js;
-  const scripts = [];
-
-  for (const jsFile of jsFiles) {
-    if (
-      !jsFile.startsWith(`${PUBLIC_PATH}service-worker`) &&
-      !scripts.includes(jsFile)
-    ) {
-      scripts.push(jsFile);
-    }
-  }
-
+module.exports = (
+  /**@type {{
+   *  jsFiles: string[],
+   *  serviceWorkerFile: string
+   * }} */
+  { jsFiles, serviceWorkerFile },
+) => {
   return `
 <!doctype html>
 <html>
@@ -28,9 +22,10 @@ module.exports = ({ htmlRspackPlugin }) => {
       
        <script>
           window.API_URL = '${API_URL}';
+          window.SERVICE_WORKER_URL = '${PUBLIC_PATH}${serviceWorkerFile}';
        </script>
 
-       ${scripts.map((script) => `<script src="${script}"></script>`).join('\n')}
+       ${jsFiles.map((jsFile) => `<script src="${PUBLIC_PATH}${jsFile}"></script>`).join('\n')}
    </head>
    <body>
       <div id="root"></div>

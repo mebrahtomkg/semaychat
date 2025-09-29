@@ -1,6 +1,7 @@
 declare global {
   interface Window {
     API_URL: string;
+    SERVICE_WORKER_URL: string;
   }
 }
 

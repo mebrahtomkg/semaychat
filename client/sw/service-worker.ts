@@ -1,6 +1,6 @@
-const SW_VERSION = 'v18';
+const SW_VERSION = 'v25';
 
-self.addEventListener('install', (/** @type ExtendableEvent */ _event) => {
+self.addEventListener('install', (_event: ExtendableEvent) => {
   console.log('[SW][event] Install');
   self.skipWaiting();
 });
@@ -15,20 +15,17 @@ const deleteOldCaches = async () => {
   }
 };
 
-self.addEventListener('activate', (/** @type ExtendableEvent */ event) => {
+self.addEventListener('activate', (event: ExtendableEvent) => {
   console.log('[SW][event] Activate');
   event.waitUntil(Promise.all([deleteOldCaches(), clients.claim()]));
 });
 
-const putInCache = async (
-  /** @type Request **/ request,
-  /** @type Response */ response,
-) => {
+const putInCache = async (request: Request, response: Response) => {
   const cache = await caches.open(SW_VERSION);
   await cache.put(request, response);
 };
 
-const cacheFirst = async (/** @type Request **/ request) => {
+const cacheFirst = async (request: Request) => {
   const responseFromCache = await caches.match(request);
   if (responseFromCache) {
     console.log('[sw] Responding from cache', request.url);
@@ -40,7 +37,7 @@ const cacheFirst = async (/** @type Request **/ request) => {
   return responseFromNetwork;
 };
 
-self.addEventListener('fetch', (/** @type FetchEvent */ event) => {
+self.addEventListener('fetch', (event: FetchEvent) => {
   const request = event.request;
   console.log('[SW][event] Fetch');
 
