@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { isPositiveInteger } from '@/utils';
 import { ProfilePhoto } from '@/models';
 import storage from '@/config/storage';
-import { PROFILE_PHOTOS_BUCKET } from '@/config/general';
+import { IS_PRODUCTION, PROFILE_PHOTOS_BUCKET } from '@/config/general';
 
 const servePhotoFile = async (
   req: Request,
@@ -10,6 +10,13 @@ const servePhotoFile = async (
   next: NextFunction,
 ) => {
   try {
+    if (!IS_PRODUCTION) {
+      // delay for local dev testing
+      await new Promise((resolve) => {
+        setTimeout(() => resolve(null), 6_000);
+      });
+    }
+
     const photoId = Number.parseInt(
       typeof req.params.photoId === 'string' ? req.params.photoId : '',
       10,

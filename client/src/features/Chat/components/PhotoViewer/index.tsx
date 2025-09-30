@@ -23,7 +23,7 @@ import {
   useMessageInfo,
 } from '../../hooks';
 import { getFileExtension } from '@/utils';
-import { FlexibleImage, ImageLoadingSpinner } from '@/components';
+import { FlexibleImage } from '@/components';
 
 interface PhotoViewerProps {
   chatPartnerId: number;
@@ -68,12 +68,8 @@ const PhotoViewer: FC<PhotoViewerProps> = ({
     photoMessages[currentIndex],
   );
 
-  const {
-    isImageLoading,
-    isImageLoadError,
-    handleImageLoad,
-    handleImageLoadError,
-  } = useImageLoader(fileUrl);
+  const { isImageLoadError, handleImageLoad, handleImageLoadError } =
+    useImageLoader(fileUrl);
 
   const options = useMemo(
     () => [
@@ -107,16 +103,9 @@ const PhotoViewer: FC<PhotoViewerProps> = ({
         onLoad={handleImageLoad}
         onError={handleImageLoadError}
         alt="Message attachment"
-        isBlur={isImageLoading}
         isPhotoNavTarget={true}
         onClick={onClose}
       />
-
-      {isImageLoading && (
-        <ProgressContainer onClick={onClose} data-is-photo-nav-target="true">
-          <ImageLoadingSpinner />
-        </ProgressContainer>
-      )}
 
       {isImageLoadError && (
         <ProgressContainer onClick={onClose} data-is-photo-nav-target="true">

@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Name, ProfilePhotoSettingsStyled } from './styles';
+import {
+  FetchingProgress,
+  Name,
+  ProfilePhotoSettingsStyled,
+  ProgressSpinner,
+} from './styles';
 import {
   PhotoHeaderSection,
   PhotoIndexIndicator,
@@ -7,7 +12,7 @@ import {
   PhotoMetaText,
 } from '@/styles';
 import { AddPhotoIcon, DeleteIcon, DownloadIcon } from '@/components/icons';
-import { FlexibleImage, NameInitial, Spinner, TinySpinner } from '@/components';
+import { FlexibleImage, NameInitial, Spinner } from '@/components';
 import ProfilePhotoUploader from '../ProfilePhotoUploader';
 import ContextMenu, { useContextMenu } from '@/components/ContextMenu';
 import {
@@ -61,7 +66,7 @@ const ProfilePhotoSettings = () => {
     deletePhoto,
   } = useSelfProfilePhoto(profilePhotos[currentIndex]);
 
-  const { isImageLoading, imageSrc, handleImageLoad } =
+  const { isImageLoading, imageSrc, handleImageLoad, handleImageLoadError } =
     useImageLoader(photoUrl);
 
   const options = useMemo(() => {
@@ -121,12 +126,17 @@ const ProfilePhotoSettings = () => {
         )}
       </PhotoHeaderSection>
 
-      {isImageLoading && <TinySpinner />}
+      {isImageLoading && (
+        <FetchingProgress>
+          <ProgressSpinner />
+        </FetchingProgress>
+      )}
 
       {imageSrc ? (
         <FlexibleImage
           src={imageSrc}
           onLoad={handleImageLoad}
+          onError={handleImageLoadError}
           alt="Profile Photo"
           isBlur={isImageLoading}
           onClick={toggleFullScreenMode}
