@@ -33,11 +33,34 @@ const SWC_OPTIONS = {
 const PLUGIN_NAME = 'AppRspackPlugin';
 
 class AppRspackPlugin {
+  /** @type boolean */
+  isServiceWorkerModified;
+
+  /**@type {{
+   *   name: string,
+   *   sourceCode: string
+   * } | null}*/
+  serviceWorkerAsset;
+
+  constructor() {
+    this.isServiceWorkerModified = true;
+    this.serviceWorkerAsset = null;
+  }
+
   apply(/** @type Compiler */ compiler) {
     const { rspack } = compiler;
     const { RawSource } = rspack.sources;
     const { swc } = rspack.experiments;
     const { Compilation } = rspack;
+
+    compiler.hooks.watchRun.tap(PLUGIN_NAME, (compiler) => {
+      if (
+        compiler.modifiedFiles?.has(SERVICE_WORKER_FILE_PATH) ||
+        compiler.removedFiles?.has(SERVICE_WORKER_FILE_PATH)
+      ) {
+        this.isServiceWorkerModified = true;
+      }
+    });
 
     compiler.hooks.thisCompilation.tap(PLUGIN_NAME, (compilation) => {
       // Add service worker file to watch list.
@@ -49,22 +72,60 @@ class AppRspackPlugin {
           stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
         },
         async (_assets) => {
-          const sourceCode = await fs.readFile(SERVICE_WORKER_FILE_PATH, {
-            encoding: 'utf-8',
-          });
+          if (!this.isServiceWorkerModified) return;
+          try {
+            const compileStartTime = Date.now();
 
-          const transformOutput = await swc.transform(sourceCode, SWC_OPTIONS);
+            const originalCode = await fs.readFile(SERVICE_WORKER_FILE_PATH, {
+              encoding: 'utf-8',
+            });
 
-          const finalCode = `self.API_URL = '${API_URL}';
-self.IS_PRODUCTION = ${IS_PRODUCTION};
-${transformOutput.code}`;
+            const transformOutput = await swc.transform(
+              originalCode,
+              SWC_OPTIONS,
+            );
 
-          const hash = this.generateContentHash(finalCode, 16);
+            const finalCode = `self.API_URL = '${API_URL}';
+                               self.IS_PRODUCTION = ${IS_PRODUCTION};
+                               ${transformOutput.code}
+                              `;
 
-          compilation.emitAsset(
-            `${SERVICE_WORKER_FILE_NAME_WITHOUT_EXT}.${hash}.js`,
-            new RawSource(finalCode),
-          );
+            const hash = this.generateContentHash(finalCode, 16);
+
+            this.serviceWorkerAsset = {
+              name: `${SERVICE_WORKER_FILE_NAME_WITHOUT_EXT}.${hash}.js`,
+              sourceCode: finalCode,
+            };
+
+            console.log(
+              `[${PLUGIN_NAME}] Service worker file compiled in ${Date.now() - compileStartTime} ms`,
+            );
+
+            this.isServiceWorkerModified = false;
+          } catch (err) {
+            compilation.errors.push(
+              new Error(
+                `[${PLUGIN_NAME}] Failed to process service worker: ${err.message}`,
+              ),
+            );
+
+            this.isServiceWorkerModified = false;
+          }
+        },
+      );
+
+      compilation.hooks.processAssets.tap(
+        {
+          name: PLUGIN_NAME,
+          stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONS,
+        },
+        (_assets) => {
+          if (this.serviceWorkerAsset) {
+            compilation.emitAsset(
+              this.serviceWorkerAsset.name,
+              new RawSource(this.serviceWorkerAsset.sourceCode),
+            );
+          }
         },
       );
 
