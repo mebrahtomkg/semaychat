@@ -17,19 +17,21 @@ const servePhotoFile = async (
       });
     }
 
-    const photoId = Number.parseInt(
-      typeof req.params.photoId === 'string' ? req.params.photoId : '',
-      10,
-    );
+    const photoName =
+      typeof req.params.photoName === 'string'
+        ? req.params.photoName.trim()
+        : null;
 
-    if (!isPositiveInteger(photoId)) {
+    if (!photoName) {
       res.status(400).json({
-        message: 'Invalid profile photo id.',
+        message: 'Invalid profile photo name.',
       });
       return;
     }
 
-    const profilePhoto = await ProfilePhoto.findByPk(photoId);
+    const profilePhoto = await ProfilePhoto.findOne({
+      where: { name: photoName },
+    });
 
     if (!profilePhoto) {
       res.status(404).json({
@@ -38,7 +40,7 @@ const servePhotoFile = async (
       return;
     }
 
-    await storage.serveFile(PROFILE_PHOTOS_BUCKET, profilePhoto.name, res);
+    await storage.serveFile(PROFILE_PHOTOS_BUCKET, photoName, res);
   } catch (err) {
     next(err);
   }

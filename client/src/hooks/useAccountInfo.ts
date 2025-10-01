@@ -20,8 +20,8 @@ const useAccountInfo = () => {
   );
 
   const photoUrl = useMemo(() => {
-    const photoId = profilePhotos[0]?.id;
-    return photoId ? `/profile-photos/${photoId}/file` : null;
+    const photoName = profilePhotos[0]?.name;
+    return photoName ? `/profile-photos/file/${photoName}` : undefined;
   }, [profilePhotos]);
 
   return {

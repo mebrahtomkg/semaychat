@@ -5,7 +5,7 @@ import { ProfilePhoto } from '@/types';
 
 const useProfilePhoto = (photo: ProfilePhoto) => {
   const photoUrl = useMemo(
-    () => (photo ? `/profile-photos/${photo.id}/file` : undefined),
+    () => (photo ? `/profile-photos/file/${photo.name}` : undefined),
     [photo],
   );
 

@@ -12,6 +12,8 @@ export type VisibilityOption = 'everybody' | 'contacts' | 'nobody';
 export interface ProfilePhoto {
   id: number;
   userId: number;
+  name: string;
+  size: number;
   createdAt: number;
 }
 
