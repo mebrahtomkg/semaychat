@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   useAccountInfo,
-  useAnimation,
   useImageLoader,
   useLogout,
   useResponsive,
@@ -30,7 +29,6 @@ import {
   SunIcon,
 } from '@/components/icons';
 import NameInitial from '@/components/NameInitial';
-import Settings from '../Settings';
 import { toggleTheme, useAppStateStore, useThemeStore } from '@/store';
 
 const SideBar = () => {
@@ -38,6 +36,10 @@ const SideBar = () => {
 
   const openContactsModal = useAppStateStore(
     (state) => state.openContactsModal,
+  );
+
+  const openSettingsModal = useAppStateStore(
+    (state) => state.openSettingsModal,
   );
 
   const isSidebarVisible = useAppStateStore((state) => state.isSidebarVisible);
@@ -52,22 +54,12 @@ const SideBar = () => {
 
   const { handleImageLoad, imageSrc } = useImageLoader(photoUrl);
 
-  const isSettingsModalVisible = useAppStateStore(
-    (state) => state.isSettingsModalVisible,
-  );
-
-  const openSettingsModal = useAppStateStore(
-    (state) => state.openSettingsModal,
-  );
-
-  const settingsAnimation = useAnimation(isSettingsModalVisible);
-
-  const openSettingsPage = () => {
+  const openSettings = () => {
     if (isSidebarVisible) hideSidebar();
     openSettingsModal();
   };
 
-  const navigateToContacts = () => {
+  const openContacts = () => {
     hideSidebar();
     openContactsModal();
   };
@@ -76,12 +68,12 @@ const SideBar = () => {
 
   const menuItems = [
     {
-      onClick: navigateToContacts,
+      onClick: openContacts,
       icon: <ContactsIcon />,
       label: 'Contacts',
     },
     {
-      onClick: openSettingsPage,
+      onClick: openSettings,
       icon: <SettingsIcon />,
       label: 'Settings',
     },
@@ -103,10 +95,6 @@ const SideBar = () => {
 
   return (
     <SideBarOverlay $isVisible={isVisible} onClick={handleOverlayClick}>
-      {settingsAnimation.isMounted && (
-        <Settings animationStyle={settingsAnimation.animationStyle} />
-      )}
-
       <SideBarStyled $isLargeScreen={isLargeScreen} $isVisible={isVisible}>
         <SingleMenuItemContainer
           $isVisible={isVisible}
@@ -119,7 +107,7 @@ const SideBar = () => {
           </SingleMenuItemButton>
         </SingleMenuItemContainer>
 
-        <ProfileStyled $isVisible={isVisible} onClick={openSettingsPage}>
+        <ProfileStyled $isVisible={isVisible} onClick={openSettings}>
           <ProfilePhotoContainer>
             {imageSrc ? (
               <ProfilePhotoStyled

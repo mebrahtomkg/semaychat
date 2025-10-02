@@ -10,8 +10,8 @@ import { Spinner } from '@/components';
 
 interface PrivacyEditorProps {
   privacySetting: PrivacySetting;
-  animationStyle: CSSProperties;
   onClose: () => void;
+  animationStyle?: CSSProperties;
 }
 
 const PrivacyEditor: FC<PrivacyEditorProps> = ({

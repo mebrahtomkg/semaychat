@@ -7,8 +7,8 @@ import TextInput from '../TextInput';
 import useAccountUpdater from '../../hooks/useAccountUpdater';
 
 interface UsernameEditorProps {
-  animationStyle: CSSProperties;
   onClose: () => void;
+  animationStyle?: CSSProperties;
 }
 
 const UsernameEditor: FC<UsernameEditorProps> = ({

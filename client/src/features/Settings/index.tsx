@@ -30,7 +30,7 @@ import { useAppStateStore } from '@/store';
 type SettingsCategory = 'account' | 'profilePhoto' | 'security' | 'privacy';
 
 interface SettingsProps {
-  animationStyle: CSSProperties;
+  animationStyle?: CSSProperties;
 }
 
 const Settings: FC<SettingsProps> = ({ animationStyle }) => {

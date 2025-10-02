@@ -12,6 +12,7 @@ import useResponsiveController from './useResponsiveController';
 import { Spinner } from '@/components';
 import { useThemeStore } from '@/store';
 import AppThemeProvider from './AppThemeProvider';
+import SettingsAnimated from '@/features/Settings/SettingsAnimated';
 
 const App = () => {
   useResponsiveController();
@@ -44,6 +45,8 @@ const App = () => {
                 <Route path="/chat/:chatPartnerId" element={<Chat />} />
               </Routes>
             </PageContainer>
+
+            <SettingsAnimated />
           </AppStyled>
         ) : (
           <Guest />

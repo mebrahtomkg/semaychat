@@ -12,8 +12,8 @@ import { checkFirstName, checkLastName } from './utils';
 import { Spinner } from '@/components';
 
 interface NameEditorProps {
-  animationStyle: CSSProperties;
   onClose: () => void;
+  animationStyle?: CSSProperties;
 }
 
 const NameEditor: FC<NameEditorProps> = ({ onClose, animationStyle }) => {

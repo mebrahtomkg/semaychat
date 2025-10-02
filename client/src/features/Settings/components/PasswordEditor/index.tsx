@@ -5,8 +5,8 @@ import usePasswordUpdate, { PASSWORD_UPDATE_STEPS } from './usePasswordUpdate';
 import { Spinner } from '@/components';
 
 interface PasswordEditorProps {
-  animationStyle: CSSProperties;
   onClose: () => void;
+  animationStyle?: CSSProperties;
 }
 
 const PasswordEditor: FC<PasswordEditorProps> = ({

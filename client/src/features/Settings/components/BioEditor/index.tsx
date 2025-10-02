@@ -8,8 +8,8 @@ import { Spinner } from '@/components';
 const MAX_BIO_LENGTH = 70;
 
 interface NameEditorProps {
-  animationStyle: CSSProperties;
   onClose: () => void;
+  animationStyle?: CSSProperties;
 }
 
 const BioEditor: FC<NameEditorProps> = ({ onClose, animationStyle }) => {

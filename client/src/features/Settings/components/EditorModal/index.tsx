@@ -14,7 +14,7 @@ import { CloseButton } from '@/components/buttons';
 
 interface EditorModalProps {
   title: string;
-  animationStyle: CSSProperties;
+  animationStyle?: CSSProperties;
   children: ReactNode;
   onDone: () => void;
   onClose: () => void;
