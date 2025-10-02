@@ -59,3 +59,12 @@ export const UsersContainer = styled.div`
     background-color: var(--bg-bright);
   }
 `;
+
+export const MenuButton = styled.button`
+  position: fixed;
+  top: 0.6rem;
+  left: 1rem;
+  height: 2.2rem;
+  width: 2.2rem;
+  padding: 0.4rem;
+`;

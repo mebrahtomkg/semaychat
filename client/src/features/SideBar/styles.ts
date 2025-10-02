@@ -151,12 +151,3 @@ export const MenuItemLabel = styled.p`
   font-size: 1rem;
   color: var(--fg-main);
 `;
-
-export const MenuButton = styled.button`
-  position: fixed;
-  top: 0.6rem;
-  left: 1rem;
-  height: 2.2rem;
-  width: 2.2rem;
-  padding: 0.4rem;
-`;

@@ -1,12 +1,9 @@
 import { create } from 'zustand';
 import { combine } from 'zustand/middleware';
 
-export interface AppState {
-  isContactsModalVisible: boolean;
-}
-
-const initialState: AppState = {
+const initialState = {
   isContactsModalVisible: false,
+  isSidebarVisible: false,
 };
 
 const useAppStateStore = create(
@@ -17,6 +14,18 @@ const useAppStateStore = create(
 
     closeContactsModal: () => {
       set(() => ({ isContactsModalVisible: false }));
+    },
+
+    showSidebar: () => {
+      set(() => ({ isSidebarVisible: true }));
+    },
+
+    hideSidebar: () => {
+      set(() => ({ isSidebarVisible: false }));
+    },
+
+    toggleSidebar: () => {
+      set((state) => ({ isSidebarVisible: !state.isSidebarVisible }));
     },
   })),
 );

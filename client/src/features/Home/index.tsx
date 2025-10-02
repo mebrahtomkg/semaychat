@@ -1,6 +1,7 @@
 import {
   HeaderContainer,
   HomePage,
+  MenuButton,
   SearchContainer,
   UsersContainer,
 } from './styles';
@@ -11,9 +12,12 @@ import User from './components/User';
 import useEnoughChats from './useEnoughChats';
 import { useAppStateStore } from '@/store';
 import Contacts from '../Contacts';
+import { MenuIcon } from '@/components/icons';
 
 const Home = () => {
   const { isLargeScreen } = useResponsive();
+
+  const showSidebar = useAppStateStore((state) => state.showSidebar);
 
   const isContactsModalVisible = useAppStateStore(
     (state) => state.isContactsModalVisible,
@@ -28,6 +32,12 @@ const Home = () => {
       {isContactsModalVisible && <Contacts />}
       <HomePage $isLargeScreen={isLargeScreen}>
         <HeaderContainer>
+          {!isLargeScreen && (
+            <MenuButton onClick={showSidebar}>
+              <MenuIcon />
+            </MenuButton>
+          )}
+
           <SearchContainer $isLargeScreen={isLargeScreen}>
             <SearchInput />
             <SearchButton />

@@ -8,7 +8,6 @@ import {
 } from '@/hooks';
 import {
   IconContainer,
-  MenuButton,
   MenuItemButton,
   MenuItemLabel,
   MenuItemsContainer,
@@ -32,7 +31,6 @@ import {
 } from '@/components/icons';
 import NameInitial from '@/components/NameInitial';
 import Settings from '../Settings';
-import { useLocation } from 'react-router';
 import { toggleTheme, useAppStateStore, useThemeStore } from '@/store';
 
 const SideBar = () => {
@@ -42,18 +40,9 @@ const SideBar = () => {
     (state) => state.openContactsModal,
   );
 
-  // Letting Sidebar component control its visibilty make it faster opening and closing
-  // sidebar. using app context to control its visibility make it slow.
-  // The menu button that opens it in small screen device is rendered here to access the
-  // showSidebar callback. it is styled in fixed position so that it will be visible at
-  // the exact place it needed. it is also only visible on '/' route.
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
-  const showSidebar = useCallback(() => setIsSidebarVisible(true), []);
-  const hideSidebar = useCallback(() => setIsSidebarVisible(false), []);
-  const toggleSidebar = useCallback(
-    () => setIsSidebarVisible((prevValue) => !prevValue),
-    [],
-  );
+  const isSidebarVisible = useAppStateStore((state) => state.isSidebarVisible);
+  const hideSidebar = useAppStateStore((state) => state.hideSidebar);
+  const toggleSidebar = useAppStateStore((state) => state.toggleSidebar);
 
   const isVisible = isSidebarVisible;
 
@@ -105,20 +94,12 @@ const SideBar = () => {
     },
   ];
 
-  const location = useLocation();
-
   const handleOverlayClick = (e: React.MouseEvent<HTMLElement>) => {
     if (e.target === e.currentTarget) hideSidebar();
   };
 
   return (
     <SideBarOverlay $isVisible={isVisible} onClick={handleOverlayClick}>
-      {!isLargeScreen && location.pathname === '/' && (
-        <MenuButton onClick={showSidebar}>
-          <MenuIcon />
-        </MenuButton>
-      )}
-
       {settingsAnimation.isMounted && (
         <Settings
           onClose={closeSettings}
