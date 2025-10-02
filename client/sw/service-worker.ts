@@ -1,7 +1,20 @@
-const SW_VERSION = 'v27';
+const SW_VERSION = 'v28';
+
+const CACHEABLE_REQUEST_URLS = [
+  `${self.API_URL}/messages/file/`,
+  `${self.API_URL}/profile-photos/file/`,
+];
+
+const isCacheableRequest = (req: Request) => {
+  if (req.method.toUpperCase() !== 'GET') return false;
+
+  return CACHEABLE_REQUEST_URLS.some((cacheableUrl) =>
+    req.url.startsWith(cacheableUrl),
+  );
+};
 
 self.addEventListener('install', (_event: ExtendableEvent) => {
-  console.log('[SW][event] Install');
+  console.log('[SW][Event] Install');
   self.skipWaiting();
 });
 
@@ -17,39 +30,34 @@ const deleteOldCaches = async () => {
 };
 
 self.addEventListener('activate', (event: ExtendableEvent) => {
-  console.log('[SW][event] Activate');
+  console.log('[SW][Event] Activate');
   event.waitUntil(Promise.all([deleteOldCaches(), clients.claim()]));
 });
 
-const putInCache = async (request: Request, response: Response) => {
+const putInCache = async (req: Request, res: Response) => {
   const cache = await caches.open(SW_VERSION);
-  await cache.put(request, response);
+  await cache.put(req, res);
 };
 
-const cacheFirst = async (request: Request) => {
-  const responseFromCache = await caches.match(request);
-  if (responseFromCache) {
-    console.log('[sw] Responding from cache', request.url);
-    return responseFromCache;
+const cacheFirst = async (req: Request) => {
+  const cachedResponse = await caches.match(req);
+  if (cachedResponse) {
+    console.log('[sw] Responding from cache for:', req.url);
+    return cachedResponse;
   }
 
-  const responseFromNetwork = await fetch(request);
-  putInCache(request, responseFromNetwork.clone());
-  return responseFromNetwork;
+  const response = await fetch(req);
+  putInCache(req, response.clone());
+  return response;
 };
 
 self.addEventListener('fetch', (event: FetchEvent) => {
-  const request = event.request;
-  console.log('[SW][event] Fetch');
+  console.log('[SW][Event] Fetch');
 
-  if (
-    request.method !== 'GET' ||
-    !request.url.startsWith(`${self.API_URL}/messages/file/`)
-  ) {
-    return;
-  }
+  const req = event.request;
 
-  console.log('[SW] Handling fetch', request.url);
+  if (!isCacheableRequest(req)) return;
 
-  event.respondWith(cacheFirst(request));
+  console.log('[SW] Handling fetch for:', req.url);
+  event.respondWith(cacheFirst(req));
 });
