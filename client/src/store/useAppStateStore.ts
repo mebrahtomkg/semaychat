@@ -4,6 +4,7 @@ import { combine } from 'zustand/middleware';
 const initialState = {
   isContactsModalVisible: false,
   isSidebarVisible: false,
+  isSettingsModalVisible: false,
 };
 
 const useAppStateStore = create(
@@ -26,6 +27,14 @@ const useAppStateStore = create(
 
     toggleSidebar: () => {
       set((state) => ({ isSidebarVisible: !state.isSidebarVisible }));
+    },
+
+    openSettingsModal: () => {
+      set(() => ({ isSettingsModalVisible: true }));
+    },
+
+    closeSettingsModal: () => {
+      set(() => ({ isSettingsModalVisible: false }));
     },
   })),
 );

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import {
   useAccountInfo,
   useAnimation,
@@ -52,16 +52,19 @@ const SideBar = () => {
 
   const { handleImageLoad, imageSrc } = useImageLoader(photoUrl);
 
-  // Rendering Settings page here in Sidebar component make the opening and closing of
-  // Settings page faster and responsive, because the whole app's components do not rerender.
-  const [isSettingsVisible, setIsSettingsVisible] = useState(false);
-  const openSettings = useCallback(() => setIsSettingsVisible(true), []);
-  const closeSettings = useCallback(() => setIsSettingsVisible(false), []);
-  const settingsAnimation = useAnimation(isSettingsVisible);
+  const isSettingsModalVisible = useAppStateStore(
+    (state) => state.isSettingsModalVisible,
+  );
+
+  const openSettingsModal = useAppStateStore(
+    (state) => state.openSettingsModal,
+  );
+
+  const settingsAnimation = useAnimation(isSettingsModalVisible);
 
   const openSettingsPage = () => {
     if (isSidebarVisible) hideSidebar();
-    openSettings();
+    openSettingsModal();
   };
 
   const navigateToContacts = () => {
@@ -101,10 +104,7 @@ const SideBar = () => {
   return (
     <SideBarOverlay $isVisible={isVisible} onClick={handleOverlayClick}>
       {settingsAnimation.isMounted && (
-        <Settings
-          onClose={closeSettings}
-          animationStyle={settingsAnimation.animationStyle}
-        />
+        <Settings animationStyle={settingsAnimation.animationStyle} />
       )}
 
       <SideBarStyled $isLargeScreen={isLargeScreen} $isVisible={isVisible}>

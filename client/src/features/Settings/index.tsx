@@ -25,16 +25,20 @@ import {
 } from './styles';
 import useSettings from './useSettings';
 import { PrivacySetting } from './types';
+import { useAppStateStore } from '@/store';
 
 type SettingsCategory = 'account' | 'profilePhoto' | 'security' | 'privacy';
 
 interface SettingsProps {
   animationStyle: CSSProperties;
-  onClose: () => void;
 }
 
-const Settings: FC<SettingsProps> = ({ animationStyle, onClose }) => {
+const Settings: FC<SettingsProps> = ({ animationStyle }) => {
   const { windowWidth } = useResponsive();
+
+  const closeSettingsModal = useAppStateStore(
+    (state) => state.closeSettingsModal,
+  );
 
   const {
     accountSettingsItems,
@@ -128,12 +132,12 @@ const Settings: FC<SettingsProps> = ({ animationStyle, onClose }) => {
         {windowWidth > 500 && (
           <SettingsPageHeader>
             <MainTitle>Settings</MainTitle>
-            <CloseButton onClick={onClose} />
+            <CloseButton onClick={closeSettingsModal} />
           </SettingsPageHeader>
         )}
 
         <NavMenuContainer>
-          {windowWidth <= 500 && <BackButton onClick={onClose} />}
+          {windowWidth <= 500 && <BackButton onClick={closeSettingsModal} />}
           <NavMenu $windowWidth={windowWidth}>
             <MenuItemButton
               $isActive={category === 'account'}
