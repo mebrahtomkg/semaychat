@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router';
 import {
   useAccountInfo,
   useAnimation,
@@ -34,12 +33,14 @@ import {
 import NameInitial from '@/components/NameInitial';
 import Settings from '../Settings';
 import { useLocation } from 'react-router';
-import { toggleTheme, useThemeStore } from '@/store';
+import { toggleTheme, useAppStateStore, useThemeStore } from '@/store';
 
 const SideBar = () => {
-  const navigate = useNavigate();
-
   const { isLargeScreen } = useResponsive();
+
+  const openContactsModal = useAppStateStore(
+    (state) => state.openContactsModal,
+  );
 
   // Letting Sidebar component control its visibilty make it faster opening and closing
   // sidebar. using app context to control its visibility make it slow.
@@ -76,7 +77,7 @@ const SideBar = () => {
 
   const navigateToContacts = () => {
     hideSidebar();
-    navigate('/chat/2');
+    openContactsModal();
   };
 
   const theme = useThemeStore();

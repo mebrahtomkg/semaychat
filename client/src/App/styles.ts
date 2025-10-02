@@ -1,13 +1,12 @@
 import styled, { css } from 'styled-components';
 
 export const AppStyled = styled.div<{ $isLargeScreen: boolean }>`
+  position: relative;
   color: var(--fg-main);
   background-color: var(--bg-page);
-
   transition:
     background-color 0.5s ease-in-out,
     color 0.5s ease-in-out;
-
   display: flex;
 
   ${(props) =>

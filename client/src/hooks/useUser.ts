@@ -24,7 +24,7 @@ const useUser = (user?: User) => {
     () =>
       user?.profilePhoto?.id
         ? `/profile-photos/${user.profilePhoto.id}/file`
-        : null,
+        : undefined,
     [user?.profilePhoto?.id],
   );
 
