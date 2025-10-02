@@ -12,7 +12,7 @@ import useResponsiveController from './useResponsiveController';
 import { Spinner } from '@/components';
 import { useThemeStore } from '@/store';
 import AppThemeProvider from './AppThemeProvider';
-import SettingsAnimated from '@/features/Settings/SettingsAnimated';
+import SettingsModal from '@/features/Settings';
 
 const App = () => {
   useResponsiveController();
@@ -41,12 +41,12 @@ const App = () => {
 
             <PageContainer>
               <Routes>
-                {!isLargeScreen && <Route index element={<Home />} />}
+                {<Route index element={!isLargeScreen ? <Home /> : null} />}
                 <Route path="/chat/:chatPartnerId" element={<Chat />} />
               </Routes>
             </PageContainer>
 
-            <SettingsAnimated />
+            <SettingsModal />
           </AppStyled>
         ) : (
           <Guest />
