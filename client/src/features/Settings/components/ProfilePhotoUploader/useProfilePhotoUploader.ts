@@ -85,7 +85,7 @@ const useProfilePhotoUploader = ({
       }
 
       const formData = new FormData();
-      formData.append('profilePhoto', blob);
+      formData.append('profilePhoto', blob, file.name);
 
       try {
         setIsLoading(true);
@@ -105,7 +105,7 @@ const useProfilePhotoUploader = ({
       setError((err as Error).message || UPLOAD_ERRORS.UNKNOWN_ERROR);
     }
     isDoingUploadRef.current = false;
-  }, [imageCropperFunc, addProfilePhoto, onClose]);
+  }, [imageCropperFunc, addProfilePhoto, onClose, file.name]);
 
   return { imageSrc, isUploading: isLoading || isCropping, error, uploadPhoto };
 };
