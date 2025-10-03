@@ -4,20 +4,21 @@ import {
   SearchInputContainer,
   SearchInputStyled,
 } from './styles';
-import { FC } from 'react';
+import { FC, InputEventHandler } from 'react';
 
 interface SearchInputProps {
   placeholder: string;
+  onChange: InputEventHandler<HTMLInputElement>;
 }
 
-const SearchInput: FC<SearchInputProps> = ({ placeholder }) => {
+const SearchInput: FC<SearchInputProps> = ({ placeholder, onChange }) => {
   return (
     <SearchInputContainer>
       <SearchIconContainer>
         <SearchIcon />
       </SearchIconContainer>
 
-      <SearchInputStyled placeholder={placeholder} />
+      <SearchInputStyled placeholder={placeholder} onInput={onChange} />
     </SearchInputContainer>
   );
 };

@@ -11,6 +11,7 @@ import { useAppStateStore } from '@/store';
 import Contacts from '../Contacts';
 import { MenuIcon } from '@/components/icons';
 import { SearchInput } from '@/components';
+import useSearch from './useSearch';
 
 const Home = () => {
   const { isLargeScreen } = useResponsive();
@@ -23,7 +24,10 @@ const Home = () => {
 
   const chats = useEnoughChats();
 
-  // ToDo add home and contacts link intop
+  const { handleSearchInputChange, isSearchMode, searchResults } = useSearch();
+
+  const chatsToShow = isSearchMode ? searchResults : chats;
+
   // after the searchinput is focused show examples of how to search below the search bar
   return (
     <>
@@ -36,11 +40,14 @@ const Home = () => {
             </MenuButton>
           )}
 
-          <SearchInput placeholder="Search people" />
+          <SearchInput
+            placeholder="Search people"
+            onChange={handleSearchInputChange}
+          />
         </HeaderContainer>
 
         <UsersContainer>
-          {chats.map((chat) => (
+          {chatsToShow.map((chat) => (
             <User
               key={`${chat.partner?.id}`}
               user={chat.partner}
