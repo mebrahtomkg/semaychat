@@ -1,11 +1,15 @@
 import BackLink from '@/components/BackLink';
-import { MoreButton } from '@/components/buttons';
 import { useResponsive, useUserFetcher } from '@/hooks';
 import { Message } from '@/types';
 import { type FC, useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router';
 import ChatContext from './ChatContext';
-import { BaseMessage, MessageInput, ChatPartner } from './components';
+import {
+  BaseMessage,
+  MessageInput,
+  ChatPartner,
+  ChatContextMenu,
+} from './components';
 import {
   ChatFooter,
   ChatHeader,
@@ -26,7 +30,7 @@ const Chat: FC = () => {
 
   const { isLargeScreen } = useResponsive();
 
-  const user = useUserFetcher(chatPartnerId);
+  const chatPartner = useUserFetcher(chatPartnerId);
 
   const messages: Message[] = useChatMessages(chatPartnerId, true);
 
@@ -63,8 +67,10 @@ const Chat: FC = () => {
       <ChatStyled>
         <ChatHeader>
           {!isLargeScreen && <BackLink />}
-          <ChatPartner user={user} />
-          <MoreButton onClick={() => undefined} />
+
+          <ChatPartner user={chatPartner} />
+
+          {chatPartner && <ChatContextMenu chatPartner={chatPartner} />}
         </ChatHeader>
 
         <ChatMessagesListContainer ref={chatRef}>

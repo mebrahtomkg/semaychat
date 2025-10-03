@@ -1,8 +1,14 @@
 import { useMemo } from 'react';
 import { calculateFullName, calculateNameInitials } from '@/utils';
 import { User } from '@/types';
+import useBlockedUsers from './useBlockedUsers';
+import useContacts from './useContacts';
 
 const useUserInfo = (user: User) => {
+  const blockedUsers = useBlockedUsers();
+
+  const contacts = useContacts();
+
   const { firstName, lastName, profilePhoto } = user;
 
   const fullName = useMemo(
@@ -23,10 +29,22 @@ const useUserInfo = (user: User) => {
     [profilePhoto?.name],
   );
 
+  const isBlocked = useMemo(
+    () => blockedUsers.some((blockedUser) => blockedUser.id === user.id),
+    [blockedUsers, user.id],
+  );
+
+  const isContact = useMemo(
+    () => contacts.some((contact) => contact.id === user.id),
+    [contacts, user.id],
+  );
+
   return {
     fullName,
     nameInitials,
     photoUrl,
+    isBlocked,
+    isContact,
   };
 };
 
