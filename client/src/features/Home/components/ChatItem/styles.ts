@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 import styled from 'styled-components';
 
-export const UserStyled = styled(Link)`
+export const ChatItemStyled = styled(Link)`
   margin: 0 0.2rem;
   padding: 0.6rem 1rem;
   display: flex;
@@ -46,7 +46,7 @@ export const Name = styled.h3`
   font-weight: 500;
 `;
 
-export const MessageDateTime = styled.p`
+export const ChatDateTime = styled.p`
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--fg-description);

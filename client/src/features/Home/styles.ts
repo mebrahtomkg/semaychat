@@ -27,7 +27,7 @@ export const HeaderContainer = styled.div`
   border-color: var(--fg-border);
 `;
 
-export const UsersContainer = styled.div`
+export const ChatListContainer = styled.div`
   height: 100vh;
   padding-top: 1rem;
   padding-bottom: 6rem;

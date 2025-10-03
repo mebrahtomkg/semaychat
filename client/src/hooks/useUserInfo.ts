@@ -2,13 +2,8 @@ import { useMemo } from 'react';
 import { calculateFullName, calculateNameInitials } from '@/utils';
 import { User } from '@/types';
 
-const useUser = (user: User) => {
+const useUserInfo = (user: User) => {
   const { firstName, lastName, profilePhoto } = user;
-
-  const photoUrl = useMemo(() => {
-    const photoId = profilePhoto?.id;
-    return photoId ? `/profile-photos/${photoId}/file` : null;
-  }, [profilePhoto]);
 
   const fullName = useMemo(
     () => calculateFullName(firstName, lastName),
@@ -20,7 +15,19 @@ const useUser = (user: User) => {
     [firstName, lastName],
   );
 
-  return { photoUrl, nameInitials, fullName, id: user.id };
+  const photoUrl = useMemo(
+    () =>
+      profilePhoto?.name
+        ? `/profile-photos/file/${profilePhoto.name}`
+        : undefined,
+    [profilePhoto?.name],
+  );
+
+  return {
+    fullName,
+    nameInitials,
+    photoUrl,
+  };
 };
 
-export default useUser;
+export default useUserInfo;

@@ -1,17 +1,17 @@
 import {
+  ChatListContainer,
   HeaderContainer,
   HomePage,
   MenuButton,
-  UsersContainer,
 } from './styles';
 import { useResponsive } from '@/hooks';
-import User from './components/User';
 import useEnoughChats from './useEnoughChats';
 import { useAppStateStore } from '@/store';
 import Contacts from '../Contacts';
 import { MenuIcon } from '@/components/icons';
 import { SearchInput } from '@/components';
 import useSearch from './useSearch';
+import { ChatItem } from './components';
 
 const Home = () => {
   const { isLargeScreen } = useResponsive();
@@ -28,7 +28,7 @@ const Home = () => {
 
   const chatsToShow = isSearchMode ? searchResults : chats;
 
-  // after the searchinput is focused show examples of how to search below the search bar
+  // TODO: after the searchinput is focused show examples of how to search below the search bar
   return (
     <>
       {isContactsModalVisible && <Contacts />}
@@ -46,15 +46,11 @@ const Home = () => {
           />
         </HeaderContainer>
 
-        <UsersContainer>
+        <ChatListContainer>
           {chatsToShow.map((chat) => (
-            <User
-              key={`${chat.partner?.id}`}
-              user={chat.partner}
-              lastMessage={chat.lastMessage}
-            />
+            <ChatItem key={`${chat.partner.id}`} chat={chat} />
           ))}
-        </UsersContainer>
+        </ChatListContainer>
       </HomePage>
     </>
   );
