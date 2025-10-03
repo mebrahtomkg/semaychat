@@ -2,7 +2,6 @@ import { FC } from 'react';
 import {
   ChatItemDateTime,
   ChatItemInfoContainer,
-  ChatItemStatusContainer,
   ChatItemStyled,
   MessagePreview,
   Name,
@@ -47,12 +46,10 @@ const ChatItem: FC<ChatItemProps> = ({ chat }) => {
         <NameContainer>
           <Name>{fullName}</Name>
 
-          {messagePreview && <MessagePreview>{messagePreview}</MessagePreview>}
+          {dateTime && <ChatItemDateTime>{dateTime}</ChatItemDateTime>}
         </NameContainer>
 
-        <ChatItemStatusContainer>
-          {dateTime && <ChatItemDateTime>{dateTime}</ChatItemDateTime>}
-        </ChatItemStatusContainer>
+        {messagePreview && <MessagePreview>{messagePreview}</MessagePreview>}
       </ChatItemInfoContainer>
     </ChatItemStyled>
   );
