@@ -27,23 +27,6 @@ export const HeaderContainer = styled.div`
   border-color: var(--fg-border);
 `;
 
-export const SearchContainer = styled.div<{ $isLargeScreen: boolean }>`
-  height: 2.5rem;
-  padding-left: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 25px;
-  background-color: var(--bg-text-input);
-
-  ${(props) =>
-    !props.$isLargeScreen &&
-    css`
-      /*space for the sidebar menu button*/
-      margin-left: 4rem;
-    `}
-`;
-
 export const UsersContainer = styled.div`
   height: 100vh;
   padding-top: 1rem;
@@ -61,10 +44,8 @@ export const UsersContainer = styled.div`
 `;
 
 export const MenuButton = styled.button`
-  position: fixed;
-  top: 0.6rem;
-  left: 1rem;
-  height: 2.2rem;
+  margin-right: 0.5rem;
   width: 2.2rem;
+  height: 2.2rem;
   padding: 0.4rem;
 `;

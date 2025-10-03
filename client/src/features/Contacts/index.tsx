@@ -1,15 +1,9 @@
-import {
-  ContactsContainer,
-  ContactsModal,
-  HeaderContainer,
-  SearchContainer,
-  SearchIconContainer,
-} from './styles';
+import { ContactsContainer, ContactsModal, HeaderContainer } from './styles';
 import { useContacts, useResponsive } from '@/hooks';
-import { Contact, SearchInput } from './components';
+import { Contact } from './components';
 import { BackButton } from '@/components/buttons';
 import { useAppStateStore } from '@/store';
-import { SearchIcon } from '@/components/icons';
+import { SearchInput } from '@/components';
 
 const Contacts = () => {
   const contacts = useContacts();
@@ -26,13 +20,7 @@ const Contacts = () => {
       <HeaderContainer>
         <BackButton onClick={closeContactsModal} />
 
-        <SearchContainer $isLargeScreen={isLargeScreen}>
-          <SearchIconContainer>
-            <SearchIcon />
-          </SearchIconContainer>
-
-          <SearchInput />
-        </SearchContainer>
+        <SearchInput placeholder="Search contacts" />
       </HeaderContainer>
 
       <ContactsContainer>

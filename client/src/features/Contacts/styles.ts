@@ -31,20 +31,6 @@ export const HeaderContainer = styled.div`
   border-color: var(--fg-border);
 `;
 
-export const SearchContainer = styled.div<{ $isLargeScreen: boolean }>`
-  display: flex;
-  align-items: center;
-  border-radius: 25px;
-  background-color: var(--bg-text-input);
-
-  ${(props) =>
-    !props.$isLargeScreen &&
-    css`
-      /*space for the sidebar menu button*/
-      margin-left: 4rem;
-    `}
-`;
-
 export const ContactsContainer = styled.div`
   height: 100vh;
   padding-top: 1rem;
@@ -59,11 +45,4 @@ export const ContactsContainer = styled.div`
   &::-webkit-scrollbar-thumb {
     background-color: var(--bg-bright);
   }
-`;
-
-export const SearchIconContainer = styled.div`
-  width: 2.5rem;
-  height: 2.5rem;
-  padding: 0.8rem;
-  color: var(--fg-icon);
 `;

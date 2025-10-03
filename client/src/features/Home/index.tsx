@@ -2,17 +2,15 @@ import {
   HeaderContainer,
   HomePage,
   MenuButton,
-  SearchContainer,
   UsersContainer,
 } from './styles';
 import { useResponsive } from '@/hooks';
-import SearchInput from './components/SearchInput';
-import SearchButton from './components/SearchButton';
 import User from './components/User';
 import useEnoughChats from './useEnoughChats';
 import { useAppStateStore } from '@/store';
 import Contacts from '../Contacts';
 import { MenuIcon } from '@/components/icons';
+import { SearchInput } from '@/components';
 
 const Home = () => {
   const { isLargeScreen } = useResponsive();
@@ -38,10 +36,7 @@ const Home = () => {
             </MenuButton>
           )}
 
-          <SearchContainer $isLargeScreen={isLargeScreen}>
-            <SearchInput />
-            <SearchButton />
-          </SearchContainer>
+          <SearchInput placeholder="Search people" />
         </HeaderContainer>
 
         <UsersContainer>
