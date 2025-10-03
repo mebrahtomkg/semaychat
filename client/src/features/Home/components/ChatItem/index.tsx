@@ -1,12 +1,13 @@
 import { FC } from 'react';
 import {
-  ChatDateTime,
-  ChatDetailsContainer,
+  ChatItemDateTime,
+  ChatItemInfoContainer,
+  ChatItemStatusContainer,
   ChatItemStyled,
   MessagePreview,
   Name,
   NameContainer,
-  Photo,
+  PhotoImg,
   ProfilePhotoContainer,
 } from './styles';
 import { useImageLoader, useUserInfo } from '@/hooks';
@@ -30,7 +31,7 @@ const ChatItem: FC<ChatItemProps> = ({ chat }) => {
     <ChatItemStyled to={`/chat/${chat.partner.id}`}>
       {imageSrc ? (
         <ProfilePhotoContainer>
-          <Photo
+          <PhotoImg
             src={imageSrc}
             onLoad={handleImageLoad}
             onError={handleImageLoadError}
@@ -42,14 +43,17 @@ const ChatItem: FC<ChatItemProps> = ({ chat }) => {
         </ProfilePhotoContainer>
       )}
 
-      <ChatDetailsContainer>
+      <ChatItemInfoContainer>
         <NameContainer>
           <Name>{fullName}</Name>
-          {dateTime && <ChatDateTime>{dateTime}</ChatDateTime>}
+
+          {messagePreview && <MessagePreview>{messagePreview}</MessagePreview>}
         </NameContainer>
 
-        {messagePreview && <MessagePreview>{messagePreview}</MessagePreview>}
-      </ChatDetailsContainer>
+        <ChatItemStatusContainer>
+          {dateTime && <ChatItemDateTime>{dateTime}</ChatItemDateTime>}
+        </ChatItemStatusContainer>
+      </ChatItemInfoContainer>
     </ChatItemStyled>
   );
 };

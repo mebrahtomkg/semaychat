@@ -8,6 +8,7 @@ export const ChatItemStyled = styled(Link)`
   align-items: center;
   border-radius: 10px;
   cursor: pointer;
+
   &:hover {
     background-color: var(--bg-hover);
   }
@@ -24,36 +25,50 @@ export const ProfilePhotoContainer = styled.div`
   align-items: center;
 `;
 
-export const Photo = styled.img`
+export const PhotoImg = styled.img`
   width: 100%;
 `;
 
-export const ChatDetailsContainer = styled.div`
+export const ChatItemInfoContainer = styled.div`
   flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
 `;
 
 export const NameContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.3rem;
+  max-width: 8rem;
 `;
 
 export const Name = styled.h3`
   margin-right: 1rem;
-  flex-grow: 1;
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 1rem;
   font-weight: 500;
 `;
 
-export const ChatDateTime = styled.p`
-  font-size: 0.9rem;
+export const MessagePreview = styled.p`
+  margin-right: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--fg-description);
 `;
 
-export const MessagePreview = styled.p`
-  font-size: 1rem;
+export const ChatItemStatusContainer = styled.div``;
+
+export const ChatItemDateTime = styled.p`
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--fg-description);
+`;
+
+export const ChatItemStatus = styled.p`
+  font-size: 0.8rem;
   font-weight: 500;
   color: var(--fg-description);
 `;
