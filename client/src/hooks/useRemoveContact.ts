@@ -1,8 +1,9 @@
 import { User } from '@/types';
-import { ApiError, del } from '@/api';
+import { del } from '@/api';
 import { useMutation } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import useContactActions from './useContactActions';
+import useAbortController from './useAbortController';
 
 interface RemoveContactOptions {
   onStart: () => void;
@@ -15,17 +16,13 @@ const useRemoveContact = (
   { onStart, onSuccess, onError }: RemoveContactOptions,
 ) => {
   const { deleteContact } = useContactActions();
+  const { recreateAbortController, abort } = useAbortController();
 
   const { mutate } = useMutation<unknown, Error, number>({
     mutationFn: (userId) => {
-      return del(`/contacts/${userId}`);
+      const ac = recreateAbortController();
+      return del(`/contacts/${userId}`, { signal: ac.signal });
     },
-    retry: (failureCount: number, error: Error) => {
-      return error instanceof ApiError && error.status
-        ? false
-        : failureCount < 2;
-    },
-    networkMode: 'always',
     onSuccess: () => {
       deleteContact(user.id);
     },
@@ -36,7 +33,10 @@ const useRemoveContact = (
     mutate(user.id, { onSuccess, onError });
   }, [onStart, mutate, user.id, onSuccess, onError]);
 
-  return removeContact;
+  return {
+    removeContact,
+    abortRemoveContact: abort,
+  };
 };
 
 export default useRemoveContact;
