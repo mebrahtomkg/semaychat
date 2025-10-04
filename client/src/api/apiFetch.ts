@@ -14,11 +14,13 @@ const apiFetch = async <Result>(
     signal,
   } = options || {};
 
-  if (!['GET', 'POST', 'PUT', 'DELETE'].includes(method.toUpperCase()))
+  if (!['GET', 'POST', 'PUT', 'DELETE'].includes(method.toUpperCase())) {
     throw new Error(`Invalid or unsupported method: ${method}`);
+  }
 
-  if (!['json', 'blob', 'text'].includes(responseType))
+  if (!['json', 'blob', 'text'].includes(responseType)) {
     throw new Error(`Invalid response type: ${responseType}`);
+  }
 
   const init: RequestInit = {
     method: method.toUpperCase(),
@@ -37,39 +39,31 @@ const apiFetch = async <Result>(
     init.signal = signal;
   }
 
-  try {
-    const url =
-      endpoint.startsWith('http://') || endpoint.startsWith('https://')
-        ? endpoint
-        : `${API_BASE_URL}${endpoint}`;
+  const url =
+    endpoint.startsWith('http://') || endpoint.startsWith('https://')
+      ? endpoint
+      : `${API_BASE_URL}${endpoint}`;
 
-    const response = await fetch(url, init);
+  const response = await fetch(url, init);
 
-    if (!response.ok) {
-      const errorResponse = await response.json();
-      throw new ApiError(errorResponse?.message, response.status);
+  if (!response.ok) {
+    const errorResponse = await response.json();
+    throw new ApiError(errorResponse?.message, response.status);
+  }
+
+  switch (responseType) {
+    case 'blob':
+      return (await response.blob()) as Result;
+
+    case 'text':
+      return (await response.text()) as Result;
+
+    default: {
+      const jsonResponse = await response.json();
+
+      // Server is expected to send the actual data in `data` property of the json response.
+      return jsonResponse.data;
     }
-
-    switch (responseType) {
-      case 'blob':
-        return (await response.blob()) as Result;
-
-      case 'text':
-        return (await response.text()) as Result;
-
-      default: {
-        const { data } = await response.json();
-        return data;
-      }
-    }
-  } catch (error) {
-    // If no error message say something
-    if (!(error as Error).message) {
-      console.log('Something went wrong while fetching data.');
-    }
-
-    // re-throw as is. this way we can check the error type eg. AbortError, ApiError, etc
-    throw error;
   }
 };
 
