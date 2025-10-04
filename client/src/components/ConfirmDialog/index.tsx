@@ -9,6 +9,8 @@ import {
   DialogTitle,
 } from './styles';
 
+export { default as useConfirmDialog } from './useConfirmDialog';
+
 interface ConfirmDialogProps {
   title: string;
   message: string;

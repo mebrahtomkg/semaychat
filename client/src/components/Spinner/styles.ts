@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
-export const SpinnerPage = styled.div`
+export const SpinnerModal = styled.div`
   position: fixed;
   z-index: 400;
   top: 0;
@@ -13,7 +13,7 @@ export const SpinnerPage = styled.div`
   background: rgba(0, 0, 0, 0.35);
 `;
 
-export const SpinnerContainer = styled.div`
+export const SpinnerStyled = styled.div`
   width: 160px;
   height: 160px;
   display: flex;

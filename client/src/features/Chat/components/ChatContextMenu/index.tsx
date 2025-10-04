@@ -11,6 +11,7 @@ import {
   RemoveContactIcon,
   UnblockUserIcon,
 } from '@/components/icons';
+import { useSpinner } from '@/components/Spinner';
 import {
   useAddToContacts,
   useBlockUser,
@@ -29,9 +30,7 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
   const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =
     useContextMenu();
 
-  const [isSpinnerVisible, setIsSpinnerVisible] = useState(false);
-  const showSpinner = useCallback(() => setIsSpinnerVisible(true), []);
-  const hideSpinner = useCallback(() => setIsSpinnerVisible(false), []);
+  const { isSpinnerVisible, showSpinner, hideSpinner } = useSpinner();
 
   const { isContact, isBlocked } = useUserInfo(chatPartner);
 
@@ -83,6 +82,10 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
     () => setActiveConfirmDialog('block-user-confirm-dialog'),
     [],
   );
+
+  const handleOperationAbort = useCallback(() => {
+    console.log('operation aborted');
+  }, []);
 
   const activeConfirmDialogComponent = useMemo(() => {
     switch (activeConfirmDialog) {
@@ -167,7 +170,7 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
         />
       )}
       {activeConfirmDialogComponent}
-      {isSpinnerVisible && <Spinner />}
+      {isSpinnerVisible && <Spinner onCancelOperation={handleOperationAbort} />}
     </>
   );
 };
