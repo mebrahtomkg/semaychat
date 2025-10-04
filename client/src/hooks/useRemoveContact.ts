@@ -16,12 +16,11 @@ const useRemoveContact = (
   { onStart, onSuccess, onError }: RemoveContactOptions,
 ) => {
   const { deleteContact } = useContactActions();
-  const { recreateAbortController, abort } = useAbortController();
+  const { prepareAbortController, getSignal, abort } = useAbortController();
 
   const { mutate } = useMutation<unknown, Error, number>({
     mutationFn: (userId) => {
-      const ac = recreateAbortController();
-      return del(`/contacts/${userId}`, { signal: ac.signal });
+      return del(`/contacts/${userId}`, { signal: getSignal() });
     },
     onSuccess: () => {
       deleteContact(user.id);
@@ -30,8 +29,9 @@ const useRemoveContact = (
 
   const removeContact = useCallback(() => {
     onStart();
+    prepareAbortController();
     mutate(user.id, { onSuccess, onError });
-  }, [onStart, mutate, user.id, onSuccess, onError]);
+  }, [onStart, prepareAbortController, mutate, user.id, onSuccess, onError]);
 
   return {
     removeContact,

@@ -46,13 +46,13 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
     onError: () => hideSpinner(),
   });
 
-  const blockUser = useBlockUser(chatPartner, {
+  const { blockUser, abortBlockUser } = useBlockUser(chatPartner, {
     onStart: () => showSpinner(),
     onSuccess: () => hideSpinner(),
     onError: () => hideSpinner(),
   });
 
-  const unblockUser = useUnblockUser(chatPartner, {
+  const { unblockUser, abortUnblockUser } = useUnblockUser(chatPartner, {
     onStart: () => showSpinner(),
     onSuccess: () => hideSpinner(),
     onError: () => hideSpinner(),
@@ -86,8 +86,14 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
   const handleOperationAbort = useCallback(() => {
     abortAddToContacts();
     abortRemoveContact();
-    console.log('operation aborted');
-  }, [abortAddToContacts, abortRemoveContact]);
+    abortBlockUser();
+    abortUnblockUser();
+  }, [
+    abortAddToContacts,
+    abortRemoveContact,
+    abortBlockUser,
+    abortUnblockUser,
+  ]);
 
   const activeConfirmDialogComponent = useMemo(() => {
     switch (activeConfirmDialog) {

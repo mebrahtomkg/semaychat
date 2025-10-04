@@ -3,6 +3,7 @@ import useBlockedUserActions from './useBlockedUserActions';
 import { ApiError, post } from '@/api';
 import { useMutation } from '@tanstack/react-query';
 import { useCallback } from 'react';
+import useAbortController from './useAbortController';
 
 interface BlockUserOptions {
   onStart: () => void;
@@ -15,28 +16,27 @@ const useBlockUser = (
   { onStart, onSuccess, onError }: BlockUserOptions,
 ) => {
   const { addBlockedUser } = useBlockedUserActions();
+  const { prepareAbortController, getSignal, abort } = useAbortController();
 
   const { mutate } = useMutation<unknown, Error, number>({
     mutationFn: (userId) => {
-      return post('/blocked-users', { userId });
+      return post('/blocked-users', { userId }, { signal: getSignal() });
     },
-    retry: (failureCount: number, error: Error) => {
-      return error instanceof ApiError && error.status
-        ? false
-        : failureCount < 2;
-    },
-    networkMode: 'always',
     onSuccess: () => {
       addBlockedUser(user);
     },
   });
 
   const blockUser = useCallback(() => {
+    prepareAbortController();
     onStart();
     mutate(user.id, { onSuccess, onError });
-  }, [onStart, mutate, user.id, onSuccess, onError]);
+  }, [prepareAbortController, onStart, mutate, user.id, onSuccess, onError]);
 
-  return blockUser;
+  return {
+    blockUser,
+    abortBlockUser: abort,
+  };
 };
 
 export default useBlockUser;

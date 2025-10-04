@@ -16,12 +16,11 @@ const useAddToContacts = (
   { onStart, onSuccess, onError }: AddToContactsOptions,
 ) => {
   const { addContact } = useContactActions();
-  const { recreateAbortController, abort } = useAbortController();
+  const { prepareAbortController, getSignal, abort } = useAbortController();
 
   const { mutate } = useMutation<unknown, Error, number>({
     mutationFn: (userId) => {
-      const ac = recreateAbortController();
-      return post('/contacts', { userId }, { signal: ac.signal });
+      return post('/contacts', { userId }, { signal: getSignal() });
     },
     onSuccess: () => {
       addContact(user);
@@ -30,8 +29,9 @@ const useAddToContacts = (
 
   const addToContacts = useCallback(() => {
     onStart();
+    prepareAbortController();
     mutate(user.id, { onSuccess, onError });
-  }, [onStart, mutate, user.id, onSuccess, onError]);
+  }, [onStart, prepareAbortController, mutate, user.id, onSuccess, onError]);
 
   return {
     addToContacts,
