@@ -1,7 +1,7 @@
 import { User } from '@/types';
-import { ApiError, post } from '@/api';
+import { post } from '@/api';
 import { useMutation } from '@tanstack/react-query';
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import useContactActions from './useContactActions';
 
 interface AddToContactsOptions {
@@ -16,16 +16,14 @@ const useAddToContacts = (
 ) => {
   const { addContact } = useContactActions();
 
+  const abortControllerRef = useRef<AbortController | null>(null);
+
   const { mutate } = useMutation<unknown, Error, number>({
     mutationFn: (userId) => {
-      return post('/contacts', { userId });
+      const ac = new AbortController();
+      abortControllerRef.current = ac;
+      return post('/contacts', { userId }, { signal: ac.signal });
     },
-    retry: (failureCount: number, error: Error) => {
-      return error instanceof ApiError && error.status
-        ? false
-        : failureCount < 2;
-    },
-    networkMode: 'always',
     onSuccess: () => {
       addContact(user);
     },
@@ -36,7 +34,12 @@ const useAddToContacts = (
     mutate(user.id, { onSuccess, onError });
   }, [onStart, mutate, user.id, onSuccess, onError]);
 
-  return addToContacts;
+  const abortAddToContacts = useCallback(
+    () => abortControllerRef.current?.abort(),
+    [],
+  );
+
+  return { addToContacts, abortAddToContacts };
 };
 
 export default useAddToContacts;

@@ -1,7 +1,7 @@
 import { useTimer } from '@/hooks';
 import { useCallback, useRef, useState } from 'react';
 
-const MIN_SPINNER_VISIBLE_TIME = 3000;
+const MIN_SPINNER_VISIBLE_TIME = 1000;
 
 const useSpinner = () => {
   const [isSpinnerVisible, setIsSpinnerVisible] = useState(false);
@@ -26,6 +26,8 @@ const useSpinner = () => {
     if (elapsedTime < MIN_SPINNER_VISIBLE_TIME) {
       const timeLeft = MIN_SPINNER_VISIBLE_TIME - elapsedTime;
       setTimer(() => setIsSpinnerVisible(false), timeLeft);
+    } else {
+      setIsSpinnerVisible(false);
     }
   }, [clearTimer, setTimer]);
 

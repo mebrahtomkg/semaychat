@@ -34,7 +34,7 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
 
   const { isContact, isBlocked } = useUserInfo(chatPartner);
 
-  const addToContacts = useAddToContacts(chatPartner, {
+  const { addToContacts, abortAddToContacts } = useAddToContacts(chatPartner, {
     onStart: () => showSpinner(),
     onSuccess: () => hideSpinner(),
     onError: () => hideSpinner(),
@@ -84,8 +84,9 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
   );
 
   const handleOperationAbort = useCallback(() => {
+    abortAddToContacts();
     console.log('operation aborted');
-  }, []);
+  }, [abortAddToContacts]);
 
   const activeConfirmDialogComponent = useMemo(() => {
     switch (activeConfirmDialog) {

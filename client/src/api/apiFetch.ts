@@ -63,11 +63,13 @@ const apiFetch = async <Result>(
       }
     }
   } catch (error) {
-    if (error instanceof ApiError) throw error;
+    // If no error message say something
+    if (!(error as Error).message) {
+      console.log('Something went wrong while fetching data.');
+    }
 
-    throw new ApiError(
-      (error as Error).message || 'Something went wrong while fetching data.',
-    );
+    // re-throw as is. this way we can check the error type eg. AbortError, ApiError, etc
+    throw error;
   }
 };
 
