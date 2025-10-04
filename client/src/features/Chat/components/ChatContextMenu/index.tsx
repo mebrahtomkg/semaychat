@@ -1,4 +1,4 @@
-import { ConfirmDialog } from '@/components';
+import { ConfirmDialog, Spinner } from '@/components';
 import { MoreButton } from '@/components/buttons';
 import ContextMenu, {
   MenuItemDescriptor,
@@ -11,7 +11,7 @@ import {
   RemoveContactIcon,
   UnblockUserIcon,
 } from '@/components/icons';
-import { useUserActions, useUserInfo } from '@/hooks';
+import { useBlockUser, useUserActions, useUserInfo } from '@/hooks';
 import { User } from '@/types';
 import { FC, useCallback, useMemo, useState } from 'react';
 
@@ -23,10 +23,20 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
   const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =
     useContextMenu();
 
+  const [isSpinnerVisible, setIsSpinnerVisible] = useState(false);
+  const showSpinner = useCallback(() => setIsSpinnerVisible(true), []);
+  const hideSpinner = useCallback(() => setIsSpinnerVisible(false), []);
+
   const { isContact, isBlocked } = useUserInfo(chatPartner);
 
-  const { addToContacts, blockUser, removeFromContacts, unblockUser } =
+  const { addToContacts, removeFromContacts, unblockUser } =
     useUserActions(chatPartner);
+
+  const blockUser = useBlockUser(chatPartner, {
+    onStart: () => showSpinner(),
+    onSuccess: () => hideSpinner(),
+    onError: () => hideSpinner(),
+  });
 
   const deleteChat = useCallback(() => {}, []);
 
@@ -136,6 +146,7 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
         />
       )}
       {activeConfirmDialogComponent}
+      {isSpinnerVisible && <Spinner />}
     </>
   );
 };
