@@ -11,7 +11,13 @@ import {
   RemoveContactIcon,
   UnblockUserIcon,
 } from '@/components/icons';
-import { useBlockUser, useUserActions, useUserInfo } from '@/hooks';
+import {
+  useAddToContacts,
+  useBlockUser,
+  useRemoveContact,
+  useUnblockUser,
+  useUserInfo,
+} from '@/hooks';
 import { User } from '@/types';
 import { FC, useCallback, useMemo, useState } from 'react';
 
@@ -29,10 +35,25 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
 
   const { isContact, isBlocked } = useUserInfo(chatPartner);
 
-  const { addToContacts, removeFromContacts, unblockUser } =
-    useUserActions(chatPartner);
+  const addToContacts = useAddToContacts(chatPartner, {
+    onStart: () => showSpinner(),
+    onSuccess: () => hideSpinner(),
+    onError: () => hideSpinner(),
+  });
+
+  const removeContact = useRemoveContact(chatPartner, {
+    onStart: () => showSpinner(),
+    onSuccess: () => hideSpinner(),
+    onError: () => hideSpinner(),
+  });
 
   const blockUser = useBlockUser(chatPartner, {
+    onStart: () => showSpinner(),
+    onSuccess: () => hideSpinner(),
+    onError: () => hideSpinner(),
+  });
+
+  const unblockUser = useUnblockUser(chatPartner, {
     onStart: () => showSpinner(),
     onSuccess: () => hideSpinner(),
     onError: () => hideSpinner(),
@@ -101,7 +122,7 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
       menuItems.push({
         icon: <RemoveContactIcon />,
         label: 'Remove From contacts',
-        action: removeFromContacts,
+        action: removeContact,
       });
     } else {
       menuItems.push({
@@ -132,7 +153,7 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
     isBlocked,
     addToContacts,
     startBlockUserFlow,
-    removeFromContacts,
+    removeContact,
     unblockUser,
   ]);
 
