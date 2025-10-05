@@ -8,17 +8,17 @@ import {
   UserContainer,
 } from './styles';
 import { CenteredImage } from '@/styles';
-import { useUser, useImageLoader, useResponsive } from '@/hooks';
+import { useImageLoader, useResponsive, useUserInfo } from '@/hooks';
 import NameInitial from '@/components/NameInitial';
 import { User } from '@/types';
 import Profile from '@/features/Profile';
 
 interface ChatPartnerProps {
-  user?: User;
+  user: User;
 }
 
 const ChatPartner: FC<ChatPartnerProps> = ({ user }) => {
-  const { fullName, nameInitials, photoUrl } = useUser(user);
+  const { fullName, nameInitials, photoUrl } = useUserInfo(user);
   const { imageSrc, handleImageLoad } = useImageLoader(photoUrl);
   const { isLargeScreen } = useResponsive();
 

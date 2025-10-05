@@ -68,7 +68,7 @@ const Chat: FC = () => {
         <ChatHeader>
           {!isLargeScreen && <BackLink />}
 
-          <ChatPartner user={chatPartner} />
+          {chatPartner && <ChatPartner user={chatPartner} />}
 
           {chatPartner && <ChatContextMenu chatPartner={chatPartner} />}
         </ChatHeader>

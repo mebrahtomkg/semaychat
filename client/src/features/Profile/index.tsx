@@ -18,12 +18,16 @@ import {
   UnblockUserIcon,
 } from '@/components/icons';
 import {
+  useAddContact,
+  useBlockUser,
   useFullScreenPhoto,
   useImageLoader,
   usePhotoNavigation,
   useProfilePhoto,
+  useRemoveContact,
   useResponsive,
-  useUser,
+  useUnblockUser,
+  useUserInfo,
 } from '@/hooks';
 import {
   PhotoHeaderSection,
@@ -50,16 +54,12 @@ interface ProfileProps {
 const Profile: FC<ProfileProps> = ({ user, onClose }) => {
   const { isLargeScreen, windowWidth } = useResponsive();
 
-  const {
-    fullName,
-    nameInitials,
-    isBlocked,
-    isContact,
-    blockUser,
-    unblockUser,
-    addToContacts,
-    removeFromContacts,
-  } = useUser(user);
+  const { fullName, nameInitials, isBlocked, isContact } = useUserInfo(user);
+
+  const { blockUser } = useBlockUser(user);
+  const { unblockUser } = useUnblockUser(user);
+  const { addContact } = useAddContact(user);
+  const { removeContact } = useRemoveContact(user);
 
   const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =
     useContextMenu();
@@ -102,13 +102,13 @@ const Profile: FC<ProfileProps> = ({ user, onClose }) => {
         items.push({
           icon: <RemoveContactIcon />,
           label: 'Remove contact',
-          action: removeFromContacts,
+          action: removeContact,
         });
       } else {
         items.push({
           icon: <AddContactIcon />,
           label: 'Add contact',
-          action: addToContacts,
+          action: addContact,
         });
       }
     }
@@ -129,8 +129,8 @@ const Profile: FC<ProfileProps> = ({ user, onClose }) => {
     isContact,
     unblockUser,
     blockUser,
-    removeFromContacts,
-    addToContacts,
+    removeContact,
+    addContact,
     downloadPhoto,
   ]);
 
