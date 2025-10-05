@@ -2,9 +2,10 @@ import { Op } from 'sequelize';
 import sequelize from '@/config/db';
 import { Chat, Message } from '@/models';
 import { Acknowledgement, AuthenticatedSocket } from '@/types';
-import { isPositiveInteger } from '@/utils';
+import { isPositiveInteger, sortChatUsersId } from '@/utils';
 import { emitToUser } from '@/socket/emitter';
 import { IS_PRODUCTION } from '@/config/general';
+import doMessagesCleanup from './doMessagesCleanup';
 
 interface ChatDeletePayload {
   chatPartnerId: number;
@@ -24,6 +25,7 @@ const deleteChat = async (
       });
     }
 
+    const userId = socket.userId as number;
     const { chatPartnerId, deleteForReceiver } = payload;
 
     if (!isPositiveInteger(chatPartnerId)) {
@@ -33,70 +35,33 @@ const deleteChat = async (
       });
     }
 
-    const userId = socket.userId;
-
-    // delete all messages that are with this partner
-    // soft delete received messages files not touched
-    // hard delete sent messages if delete for receiver is checked,files must deleted
-    // dont delete chat if messages exist in that chat
-
-    /**
-     * If `deleteForReciver` !== false : do soft delete on all messages within this chat for only
-     * this user. attachments shoulnot touched. also update last message for this user on this
-     * chat. partner will not see any effect. but if they were soft deleted by receiver should be
-     * deleted permanently.
-     *
-     *
-     * If `deleteForReciver` !== true : messages sent by partner become soft deleted by this user.
-     * the partner keep seeing them. messages sent by this user will be deleted from database with
-     * their attachments permanently. chat is updated to reflect this deletion for both users.
-     *
-     *
-     * Received messages = soft del always -- update query
-     * Sent messages = hard del if deleteForReciver = true otherwise soft del -- update|del query
-     * Cleanup: hard del any message on this chat that is soft deleted by both users -- del query
-     * Attachments should also deleted on msg hard del
-     *
-     * hard del for soft deleted by receiver and this
-     *
-     * deleteForReciver=true
-     *   Received messages:
-     *       if soft deleted by sender: hard del --destroy query
-     *       otherwise soft del -- update query
-     *   Sent messages:
-     *       always hard del -- destroy query
-     *
-     *
-     * deleteForReciver=false
-     *   Received messages:
-     *       if soft deleted by sender: hard del --destroy query
-     *       otherwise soft del -- update query
-     *   Sent messages:
-     *       if soft deleted by receiver: hard del --destroy query
-     *       otherwise soft del -- update query
-     *
-     * if (deleteForrecever)
-     *
-     *
-     * finally update chat by looking up messages table. separate query sure!!
-     */
-
+    const unusedFiles: string[] = [];
     const transaction = await sequelize.transaction();
 
     try {
-      // Process sent messages.
-      // The deleteForReceiver option has effect only on sent messages
+      // #Process sent messages.
+      // Effect of deleteForReceiver option is only on sent messages!
       if (deleteForReceiver) {
-        // Do hard delete for all messages sent to the partner.
-        await Message.destroy({
-          where: {
-            senderId: userId,
-            receiverId: chatPartnerId,
-          },
+        // Condition to do hard delete
+        const where = {
+          senderId: userId,
+          receiverId: chatPartnerId,
+        };
+
+        // Fetch messages to be deleted before destroy so that we can save the files
+        const messages = await Message.scope('withAttachment').findAll({
+          where,
           transaction,
         });
+
+        // Save files(names) for later cleanup
+        messages.forEach(({ attachment }) => {
+          if (attachment) unusedFiles.push(attachment.name);
+        });
+
+        await Message.destroy({ where, transaction });
       } else {
-        // Do soft delete for all messages sent to the partner.
+        // Do soft delete
         await Message.update(
           { isDeletedBySender: true },
           {
@@ -109,94 +74,61 @@ const deleteChat = async (
         );
       }
 
-      // Now process received messages.
+      // #Process received messages.
       // Soft delete all received messages.
       // Receiver has no right to delete messages that he/she received
       await Message.update(
-        { isDeletedBySender: true },
+        { isDeletedByReceiver: true },
         {
           where: {
-            senderId: chatPartnerId,
             receiverId: userId,
+            senderId: chatPartnerId,
           },
           transaction,
         },
       );
 
-      // Cleanup: Now hard delete all messages that are soft deleted by both users
-      await Message.destroy({
-        where: {
-          [Op.or]: [
-            {
-              senderId: userId,
-              receiverId: chatPartnerId,
-            },
-            {
-              senderId: chatPartnerId,
-              receiverId: userId,
-            },
-          ],
-          isDeletedBySender: true,
-          isDeletedByReceiver: true,
-        },
-        transaction,
-      });
+      const [user1Id, user2Id] = sortChatUsersId(userId, chatPartnerId);
 
-      const [lastMessageForPartner] = await Message.findAll({
-        where: {
-          [Op.or]: [
-            {
-              senderId: userId,
-              receiverId: chatPartnerId,
-              isDeletedByReceiver: false,
-            },
-            {
-              senderId: chatPartnerId,
-              receiverId: userId,
-              isDeletedBySender: false,
-            },
-          ],
-        },
-        order: [['createdAt', 'DESC']],
-        limit: 1,
-        transaction,
-      });
+      const [chat, [lastMessageForPartner]] = await Promise.all([
+        Chat.findOne({
+          where: { user1Id, user2Id },
+          transaction,
+        }),
 
-      const chat = await Chat.findOne({
-        where: {
-          [Op.or]: [
-            {
-              user1Id: userId,
-              user2Id: chatPartnerId,
-            },
-            {
-              user1Id: chatPartnerId,
-              user2Id: userId,
-            },
-          ],
-        },
-        transaction,
-      });
+        Message.findAll({
+          where: {
+            [Op.or]: [
+              {
+                senderId: userId,
+                receiverId: chatPartnerId,
+                isDeletedByReceiver: false,
+              },
+              {
+                senderId: chatPartnerId,
+                receiverId: userId,
+                isDeletedBySender: false,
+              },
+            ],
+          },
+          order: [['createdAt', 'DESC']],
+          limit: 1,
+          transaction,
+        }),
+      ]);
 
       if (chat) {
         if (lastMessageForPartner) {
-          if (chat.user1Id === chatPartnerId) {
-            await chat.update(
-              {
-                lastMessageIdForUser1: lastMessageForPartner.id,
-                lastMessageIdForUser2: null,
-              },
-              { transaction },
-            );
-          } else {
-            await chat.update(
-              {
-                lastMessageIdForUser1: null,
-                lastMessageIdForUser2: lastMessageForPartner.id,
-              },
-              { transaction },
-            );
-          }
+          const lastMessageIdForUser1 =
+            chat.user1Id === chatPartnerId ? lastMessageForPartner.id : null;
+
+          const lastMessageIdForUser2 =
+            chat.user2Id === chatPartnerId ? lastMessageForPartner.id : null;
+
+          await chat.update(
+            { lastMessageIdForUser1, lastMessageIdForUser2 },
+            { transaction },
+          );
         } else {
           await chat.destroy({ transaction });
         }
@@ -218,6 +150,10 @@ const deleteChat = async (
       await transaction.rollback();
       throw error;
     }
+
+    // Cleanup: Now hard delete all messages that are soft deleted by both users
+    // including their files. there is no need to await the operation.
+    doMessagesCleanup(userId, chatPartnerId);
   } catch (err) {
     acknowledgement({
       status: 'error',

@@ -1,6 +1,6 @@
 import { VISIBILITY_OPTIONS } from '@/constants';
 import { Chat, Message, User } from '@/models';
-import { filterMessageData } from '@/utils';
+import { filterMessageData, sortChatUsersId } from '@/utils';
 import { Transaction } from 'sequelize';
 
 interface MessageSendResponse {
@@ -82,13 +82,11 @@ const commitSendingMessage = async ({
     };
   }
 
+  const [user1Id, user2Id] = sortChatUsersId(senderId, receiverId);
+
   const [[chat], message] = await Promise.all([
     Chat.findOrCreate({
-      where: {
-        // Ensure consistent order to prevent duplicate chat rows
-        user1Id: Math.min(senderId, receiverId),
-        user2Id: Math.max(senderId, receiverId),
-      },
+      where: { user1Id, user2Id },
       transaction,
       lock: transaction.LOCK.UPDATE,
     }),
