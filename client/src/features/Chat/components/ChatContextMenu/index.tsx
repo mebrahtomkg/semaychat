@@ -25,6 +25,8 @@ interface ChatContextMenuProps {
   chatPartner: User;
 }
 
+type Confirmation = 'delete-chat' | 'block-user' | null;
+
 const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
   const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =
     useContextMenu();
@@ -37,32 +39,23 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
 
   const deleteChat = useCallback(() => {}, []);
 
-  type ActiveConfirmDialog =
-    | 'delete-chat-confirm-dialog'
-    | 'block-user-confirm-dialog'
-    | null;
+  const [confirmation, setConfirmation] = useState<Confirmation>(null);
 
-  const [activeConfirmDialog, setActiveConfirmDialog] =
-    useState<ActiveConfirmDialog>(null);
-
-  const closeConfirmDialog = useCallback(
-    () => setActiveConfirmDialog(null),
-    [],
-  );
+  const closeConfirmDialog = useCallback(() => setConfirmation(null), []);
 
   const startDeleteChatFlow = useCallback(
-    () => setActiveConfirmDialog('delete-chat-confirm-dialog'),
+    () => setConfirmation('delete-chat'),
     [],
   );
 
   const startBlockUserFlow = useCallback(
-    () => setActiveConfirmDialog('block-user-confirm-dialog'),
+    () => setConfirmation('block-user'),
     [],
   );
 
   const activeConfirmDialogComponent = useMemo(() => {
-    switch (activeConfirmDialog) {
-      case 'delete-chat-confirm-dialog':
+    switch (confirmation) {
+      case 'delete-chat':
         return (
           <ConfirmDialog
             title="Delete Chat"
@@ -72,7 +65,7 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
           />
         );
 
-      case 'block-user-confirm-dialog':
+      case 'block-user':
         return (
           <ConfirmDialog
             title="Block User"
@@ -83,7 +76,7 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
         );
     }
     return null;
-  }, [activeConfirmDialog, deleteChat, closeConfirmDialog, blockUser]);
+  }, [confirmation, deleteChat, closeConfirmDialog, blockUser]);
 
   const menuItemsList = useMemo(() => {
     const menuItems: MenuItemDescriptor[] = [
@@ -97,13 +90,13 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
     if (isContact) {
       menuItems.push({
         icon: <RemoveContactIcon />,
-        label: 'Remove From contacts',
+        label: 'Remove contact',
         action: removeContact,
       });
     } else {
       menuItems.push({
         icon: <AddContactIcon />,
-        label: 'Add To contacts',
+        label: 'Add contacts',
         action: addContact,
       });
     }
@@ -111,13 +104,13 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
     if (isBlocked) {
       menuItems.push({
         icon: <UnblockUserIcon />,
-        label: 'Unblock',
+        label: 'Unblock user',
         action: unblockUser,
       });
     } else {
       menuItems.push({
         icon: <BlockUserIcon />,
-        label: 'Block',
+        label: 'Block user',
         action: startBlockUserFlow,
       });
     }
