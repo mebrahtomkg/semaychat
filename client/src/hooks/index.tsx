@@ -28,6 +28,6 @@ export { default as useUserInfo } from './useUserInfo';
 export { default as useCurrentDateTime } from './useCurrentDateTime';
 export { default as useBlockUser } from './useBlockUser';
 export { default as useUnblockUser } from './useUnblockUser';
-export { default as useAddToContacts } from './useAddToContacts';
 export { default as useRemoveContact } from './useRemoveContact';
 export { default as useAbortController } from './useAbortController';
+export { default as useAddContact } from './useAddContact';

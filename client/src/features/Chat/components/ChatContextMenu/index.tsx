@@ -1,4 +1,4 @@
-import { ConfirmDialog, Spinner } from '@/components';
+import { ConfirmDialog } from '@/components';
 import { MoreButton } from '@/components/buttons';
 import ContextMenu, {
   MenuItemDescriptor,
@@ -11,9 +11,8 @@ import {
   RemoveContactIcon,
   UnblockUserIcon,
 } from '@/components/icons';
-import { useSpinner } from '@/components/Spinner';
 import {
-  useAddToContacts,
+  useAddContact,
   useBlockUser,
   useRemoveContact,
   useUnblockUser,
@@ -30,33 +29,11 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
   const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =
     useContextMenu();
 
-  const { isSpinnerVisible, showSpinner, hideSpinner } = useSpinner();
-
   const { isContact, isBlocked } = useUserInfo(chatPartner);
-
-  const { addToContacts, abortAddToContacts } = useAddToContacts(chatPartner, {
-    onStart: () => showSpinner(),
-    onSuccess: () => hideSpinner(),
-    onError: () => hideSpinner(),
-  });
-
-  const { removeContact, abortRemoveContact } = useRemoveContact(chatPartner, {
-    onStart: () => showSpinner(),
-    onSuccess: () => hideSpinner(),
-    onError: () => hideSpinner(),
-  });
-
-  const { blockUser, abortBlockUser } = useBlockUser(chatPartner, {
-    onStart: () => showSpinner(),
-    onSuccess: () => hideSpinner(),
-    onError: () => hideSpinner(),
-  });
-
-  const { unblockUser, abortUnblockUser } = useUnblockUser(chatPartner, {
-    onStart: () => showSpinner(),
-    onSuccess: () => hideSpinner(),
-    onError: () => hideSpinner(),
-  });
+  const { blockUser } = useBlockUser(chatPartner);
+  const { unblockUser } = useUnblockUser(chatPartner);
+  const { addContact } = useAddContact(chatPartner);
+  const { removeContact } = useRemoveContact(chatPartner);
 
   const deleteChat = useCallback(() => {}, []);
 
@@ -82,18 +59,6 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
     () => setActiveConfirmDialog('block-user-confirm-dialog'),
     [],
   );
-
-  const handleOperationAbort = useCallback(() => {
-    abortAddToContacts();
-    abortRemoveContact();
-    abortBlockUser();
-    abortUnblockUser();
-  }, [
-    abortAddToContacts,
-    abortRemoveContact,
-    abortBlockUser,
-    abortUnblockUser,
-  ]);
 
   const activeConfirmDialogComponent = useMemo(() => {
     switch (activeConfirmDialog) {
@@ -139,7 +104,7 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
       menuItems.push({
         icon: <AddContactIcon />,
         label: 'Add To contacts',
-        action: addToContacts,
+        action: addContact,
       });
     }
 
@@ -162,7 +127,7 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
     startDeleteChatFlow,
     isContact,
     isBlocked,
-    addToContacts,
+    addContact,
     startBlockUserFlow,
     removeContact,
     unblockUser,
@@ -178,7 +143,6 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
         />
       )}
       {activeConfirmDialogComponent}
-      {isSpinnerVisible && <Spinner onCancelOperation={handleOperationAbort} />}
     </>
   );
 };

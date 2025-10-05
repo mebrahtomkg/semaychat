@@ -1,41 +1,47 @@
 import { User } from '@/types';
-import useBlockedUserActions from './useBlockedUserActions';
-import { ApiError, post } from '@/api';
+import { post } from '@/api';
 import { useMutation } from '@tanstack/react-query';
-import { useCallback } from 'react';
+import queryClient from '@/queryClient';
+import { QUERY_KEY_BLOCKED_USERS } from '@/constants';
 import useAbortController from './useAbortController';
 
-interface BlockUserOptions {
-  onStart: () => void;
-  onSuccess: () => void;
-  onError: (err: Error) => void;
-}
-
-const useBlockUser = (
-  user: User,
-  { onStart, onSuccess, onError }: BlockUserOptions,
-) => {
-  const { addBlockedUser } = useBlockedUserActions();
+const useBlockUser = (user: User) => {
   const { prepareAbortController, getSignal, abort } = useAbortController();
 
-  const { mutate } = useMutation<unknown, Error, number>({
-    mutationFn: (userId) => {
-      return post('/blocked-users', { userId }, { signal: getSignal() });
+  const { mutate, ...rest } = useMutation({
+    mutationFn: () => {
+      prepareAbortController();
+      return post(
+        '/blocked-users',
+        { userId: user.id },
+        { signal: getSignal() },
+      );
     },
-    onSuccess: () => {
-      addBlockedUser(user);
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: [QUERY_KEY_BLOCKED_USERS] });
+      const prevBlockedUsers = queryClient.getQueryData([
+        QUERY_KEY_BLOCKED_USERS,
+      ]);
+      queryClient.setQueryData([QUERY_KEY_BLOCKED_USERS], (oldBlockedUsers) =>
+        Array.isArray(oldBlockedUsers) ? [...oldBlockedUsers, user] : [user],
+      );
+      return { prevBlockedUsers };
+    },
+    onError: (_err, _vars, context) => {
+      queryClient.setQueryData(
+        [QUERY_KEY_BLOCKED_USERS],
+        context?.prevBlockedUsers,
+      );
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY_BLOCKED_USERS] });
     },
   });
 
-  const blockUser = useCallback(() => {
-    prepareAbortController();
-    onStart();
-    mutate(user.id, { onSuccess, onError });
-  }, [prepareAbortController, onStart, mutate, user.id, onSuccess, onError]);
-
   return {
-    blockUser,
-    abortBlockUser: abort,
+    blockUser: mutate,
+    abort,
+    ...rest,
   };
 };
 

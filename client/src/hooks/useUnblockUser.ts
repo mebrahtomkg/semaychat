@@ -1,41 +1,45 @@
 import { User } from '@/types';
-import useBlockedUserActions from './useBlockedUserActions';
 import { del } from '@/api';
 import { useMutation } from '@tanstack/react-query';
-import { useCallback } from 'react';
+import queryClient from '@/queryClient';
+import { QUERY_KEY_BLOCKED_USERS } from '@/constants';
 import useAbortController from './useAbortController';
 
-interface UnblockUserOptions {
-  onStart: () => void;
-  onSuccess: () => void;
-  onError: (err: Error) => void;
-}
-
-const useUnblockUser = (
-  user: User,
-  { onStart, onSuccess, onError }: UnblockUserOptions,
-) => {
-  const { deleteBlockedUser } = useBlockedUserActions();
+const useUnblockUser = (user: User) => {
   const { prepareAbortController, getSignal, abort } = useAbortController();
 
-  const { mutate } = useMutation<unknown, Error, number>({
-    mutationFn: (userId) => {
-      return del(`/blocked-users/${userId}`, { signal: getSignal() });
+  const { mutate, ...rest } = useMutation({
+    mutationFn: () => {
+      prepareAbortController();
+      return del(`/blocked-users/${user.id}`, { signal: getSignal() });
     },
-    onSuccess: () => {
-      deleteBlockedUser(user.id);
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: [QUERY_KEY_BLOCKED_USERS] });
+      const prevBlockedUsers = queryClient.getQueryData([
+        QUERY_KEY_BLOCKED_USERS,
+      ]);
+      queryClient.setQueryData([QUERY_KEY_BLOCKED_USERS], (oldBlockedUsers) =>
+        Array.isArray(oldBlockedUsers)
+          ? oldBlockedUsers.filter((blockedUser) => blockedUser.id !== user.id)
+          : [],
+      );
+      return { prevBlockedUsers };
+    },
+    onError: (_err, _vars, context) => {
+      queryClient.setQueryData(
+        [QUERY_KEY_BLOCKED_USERS],
+        context?.prevBlockedUsers,
+      );
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY_BLOCKED_USERS] });
     },
   });
 
-  const unblockUser = useCallback(() => {
-    prepareAbortController();
-    onStart();
-    mutate(user.id, { onSuccess, onError });
-  }, [prepareAbortController, onStart, mutate, user.id, onSuccess, onError]);
-
   return {
-    unblockUser,
-    abortUnblockUser: abort,
+    unblockUser: mutate,
+    abort,
+    ...rest,
   };
 };
 
