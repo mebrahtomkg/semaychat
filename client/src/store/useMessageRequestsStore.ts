@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import {
+  ChatDeleteRequest,
   FileMessageSendRequest,
   MessageDeleteRequest,
   MessageRequest,
@@ -60,6 +61,17 @@ const useMessageRequestsStore = create(
     addMessageDeleteRequest: (payload: MessageDeleteRequest['payload']) => {
       const request: MessageDeleteRequest = {
         requestType: 'MESSAGE_DELETE',
+        requestId: getUniqueId(),
+        payload,
+      };
+      set((state) => ({
+        messageRequests: [...state.messageRequests, request],
+      }));
+    },
+
+    addChatDeleteRequest: (payload: ChatDeleteRequest['payload']) => {
+      const request: ChatDeleteRequest = {
+        requestType: 'CHAT_DELETE',
         requestId: getUniqueId(),
         payload,
       };

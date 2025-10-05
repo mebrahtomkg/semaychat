@@ -75,7 +75,8 @@ interface BaseMessageRequest {
     | 'TEXT_MESSAGE_SEND'
     | 'FILE_MESSAGE_SEND'
     | 'MESSAGE_UPDATE'
-    | 'MESSAGE_DELETE';
+    | 'MESSAGE_DELETE'
+    | 'CHAT_DELETE';
   payload: object;
 }
 
@@ -114,8 +115,17 @@ export interface MessageDeleteRequest extends BaseMessageRequest {
   };
 }
 
+export interface ChatDeleteRequest extends BaseMessageRequest {
+  requestType: 'CHAT_DELETE';
+  payload: {
+    chatPartnerId: number;
+    deleteForReceiver?: boolean;
+  };
+}
+
 export type MessageRequest =
   | TextMessageSendRequest
   | FileMessageSendRequest
   | MessageUpdateRequest
-  | MessageDeleteRequest;
+  | MessageDeleteRequest
+  | ChatDeleteRequest;

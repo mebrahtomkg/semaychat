@@ -41,6 +41,9 @@ const MessageRequestsProcessor = () => {
       case 'MESSAGE_DELETE':
         return ['/messages', request.requestId];
 
+      case 'CHAT_DELETE':
+        return ['/chats-del', request.requestId];
+
       default:
         return [''];
     }
@@ -107,6 +110,20 @@ const MessageRequestsProcessor = () => {
                   )
                 : [],
           );
+        }
+        break;
+
+      case 'CHAT_DELETE':
+        {
+          const { chatPartnerId, deleteForReceiver } = request.payload;
+          await emitWithAck('delete_chat', {
+            chatPartnerId,
+            deleteForReceiver,
+          });
+          queryClient.setQueryData(['messages', chatPartnerId], () => []);
+          queryClient.invalidateQueries({
+            queryKey: ['messages', chatPartnerId],
+          });
         }
         break;
     }

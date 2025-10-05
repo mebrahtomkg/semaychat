@@ -18,6 +18,7 @@ import {
   useUnblockUser,
   useUserInfo,
 } from '@/hooks';
+import { useMessageRequestsStore } from '@/store';
 import { User } from '@/types';
 import { FC, useCallback, useMemo, useState } from 'react';
 
@@ -28,6 +29,10 @@ interface ChatContextMenuProps {
 type Confirmation = 'delete-chat' | 'block-user' | null;
 
 const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
+  const addChatDeleteRequest = useMessageRequestsStore(
+    (state) => state.addChatDeleteRequest,
+  );
+
   const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =
     useContextMenu();
 
@@ -37,7 +42,12 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
   const { addContact } = useAddContact(chatPartner);
   const { removeContact } = useRemoveContact(chatPartner);
 
-  const deleteChat = useCallback(() => {}, []);
+  const deleteChat = useCallback(() => {
+    addChatDeleteRequest({
+      chatPartnerId: chatPartner.id,
+      deleteForReceiver: false,
+    });
+  }, [addChatDeleteRequest, chatPartner.id]);
 
   const [confirmation, setConfirmation] = useState<Confirmation>(null);
 
