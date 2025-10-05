@@ -16,9 +16,15 @@ const useAddContact = (user: User) => {
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: [QUERY_KEY_CONTACTS] });
       const prevContacts = queryClient.getQueryData([QUERY_KEY_CONTACTS]);
-      queryClient.setQueryData([QUERY_KEY_CONTACTS], (oldContacts) =>
-        Array.isArray(oldContacts) ? [...oldContacts, user] : [user],
-      );
+
+      queryClient.setQueryData([QUERY_KEY_CONTACTS], (oldContacts) => {
+        if (!Array.isArray(oldContacts)) return [user];
+        const alreadyExists = oldContacts.some(
+          (oldContact) => oldContact.id === user.id,
+        );
+        return alreadyExists ? oldContacts : [...oldContacts, user];
+      });
+
       return { prevContacts };
     },
     onError: (_err, _vars, context) => {

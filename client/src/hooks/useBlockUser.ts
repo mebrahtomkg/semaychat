@@ -19,12 +19,19 @@ const useBlockUser = (user: User) => {
     },
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: [QUERY_KEY_BLOCKED_USERS] });
+
       const prevBlockedUsers = queryClient.getQueryData([
         QUERY_KEY_BLOCKED_USERS,
       ]);
-      queryClient.setQueryData([QUERY_KEY_BLOCKED_USERS], (oldBlockedUsers) =>
-        Array.isArray(oldBlockedUsers) ? [...oldBlockedUsers, user] : [user],
-      );
+
+      queryClient.setQueryData([QUERY_KEY_BLOCKED_USERS], (oldBlockedUsers) => {
+        if (!Array.isArray(oldBlockedUsers)) return [user];
+        const alreadyExists = oldBlockedUsers.some(
+          (blockedUser) => blockedUser.id === user.id,
+        );
+        return alreadyExists ? oldBlockedUsers : [...oldBlockedUsers, user];
+      });
+
       return { prevBlockedUsers };
     },
     onError: (_err, _vars, context) => {
