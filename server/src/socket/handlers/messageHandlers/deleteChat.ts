@@ -5,7 +5,8 @@ import { Acknowledgement, AuthenticatedSocket } from '@/types';
 import { isPositiveInteger, sortChatUsersId } from '@/utils';
 import { emitToUser } from '@/socket/emitter';
 import { IS_PRODUCTION } from '@/config/general';
-import doMessagesCleanup from './doMessagesCleanup';
+import deleteMessageFiles from './deleteMessageFiles';
+import cleanupChatMessages from './cleanupChatMessages';
 
 interface ChatDeletePayload {
   chatPartnerId: number;
@@ -35,14 +36,13 @@ const deleteChat = async (
       });
     }
 
-    const unusedFiles: string[] = [];
+    let staleFiles: string[] = [];
     const transaction = await sequelize.transaction();
 
     try {
-      // #Process sent messages.
+      // #1 Process sent messages.
       // Effect of deleteForReceiver option is only on sent messages!
       if (deleteForReceiver) {
-        // Condition to do hard delete
         const where = {
           senderId: userId,
           receiverId: chatPartnerId,
@@ -54,9 +54,8 @@ const deleteChat = async (
           transaction,
         });
 
-        // Save files(names) for later cleanup
         messages.forEach(({ attachment }) => {
-          if (attachment) unusedFiles.push(attachment.name);
+          if (attachment) staleFiles.push(attachment.name);
         });
 
         await Message.destroy({ where, transaction });
@@ -74,7 +73,7 @@ const deleteChat = async (
         );
       }
 
-      // #Process received messages.
+      // #2 Process received messages.
       // Soft delete all received messages.
       // Receiver has no right to delete messages that he/she received
       await Message.update(
@@ -147,18 +146,22 @@ const deleteChat = async (
         });
       }
     } catch (error) {
+      staleFiles = [];
       await transaction.rollback();
       throw error;
     }
 
-    // Cleanup: Now hard delete all messages that are soft deleted by both users
+    // delete stale files. no need to await
+    deleteMessageFiles(staleFiles);
+
+    // Hard delete all messages that are soft deleted by both users
     // including their files. there is no need to await the operation.
-    doMessagesCleanup(userId, chatPartnerId);
+    cleanupChatMessages(userId, chatPartnerId);
   } catch (err) {
     acknowledgement({
       status: 'error',
       message: IS_PRODUCTION
-        ? 'INTERNAL SERVER ERROR'
+        ? '500 Internal Server Error'
         : `INTERNAL SERVER ERROR: ${(err as Error).toString()}  ${(err as Error).stack}`,
     });
   }

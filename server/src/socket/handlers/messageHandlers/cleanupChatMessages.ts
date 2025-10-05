@@ -1,24 +1,26 @@
 import sequelize from '@/config/db';
-import { MESSAGE_FILES_BUCKET } from '@/config/general';
-import storage from '@/config/storage';
 import { Message } from '@/models';
 import { Op } from 'sequelize';
+import deleteMessageFiles from './deleteMessageFiles';
 
-const doMessagesCleanup = async (user1Id: number, user2Id: number) => {
+const cleanupChatMessages = async (
+  chatUser1Id: number,
+  chatUser2Id: number,
+) => {
   try {
-    let unusedFiles: string[] = [];
+    let staleFiles: string[] = [];
     const transaction = await sequelize.transaction();
 
     try {
       const where = {
         [Op.or]: [
           {
-            senderId: user1Id,
-            receiverId: user2Id,
+            senderId: chatUser1Id,
+            receiverId: chatUser2Id,
           },
           {
-            senderId: user2Id,
-            receiverId: user1Id,
+            senderId: chatUser2Id,
+            receiverId: chatUser1Id,
           },
         ],
         isDeletedBySender: true,
@@ -33,27 +35,22 @@ const doMessagesCleanup = async (user1Id: number, user2Id: number) => {
 
       // Save files(names) for later cleanup
       messages.forEach(({ attachment }) => {
-        if (attachment) unusedFiles.push(attachment.name);
+        if (attachment) staleFiles.push(attachment.name);
       });
 
       await Message.destroy({ where, transaction });
       await transaction.commit();
     } catch (err) {
       console.log(err);
-      unusedFiles = [];
+      staleFiles = []; // Reset files list if the database operation failed
       await transaction.rollback();
     }
 
-    try {
-      for (const file of unusedFiles) {
-        await storage.deleteFile(MESSAGE_FILES_BUCKET, file);
-      }
-    } catch (err) {
-      console.log(err);
-    }
+    // Delete the files after the database operation complated. this prevent blocking the db.
+    await deleteMessageFiles(staleFiles);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
-export default doMessagesCleanup;
+export default cleanupChatMessages;
