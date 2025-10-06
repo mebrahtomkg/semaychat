@@ -13,7 +13,6 @@ export const BlockedUsersOverlay = styled.div`
 `;
 
 export const BlockedUsersModal = styled.div`
-  min-width: 50vw;
   padding: 1rem 0.5rem;
   border-radius: 10px;
   background-color: var(--bg-main);
@@ -26,9 +25,18 @@ export const HeaderContainer = styled.div`
 `;
 
 export const BlockedUsersContainer = styled.div`
+  width: calc(100vw - 2rem);
   height: 78vh;
   padding-top: 1rem;
   padding-bottom: 6rem;
   overflow-y: auto;
   overflow-x: hidden;
+
+  @media (min-width: 375px) {
+    width: 20rem;
+  }
+
+  @media (min-width: 768px) {
+    width: 22rem;
+  }
 `;
