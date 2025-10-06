@@ -143,6 +143,7 @@ const deleteChat = async (
       if (deleteForReceiver) {
         emitToUser(chatPartnerId, 'chat_deleted', {
           partnerId: userId,
+          partnerMessagesDeleted: deleteForReceiver,
         });
       }
     } catch (error) {
