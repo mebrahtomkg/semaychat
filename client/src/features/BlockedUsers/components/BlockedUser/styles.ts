@@ -1,7 +1,6 @@
-import { Link } from 'react-router';
 import styled from 'styled-components';
 
-export const BlockedUserStyled = styled(Link)`
+export const BlockedUserStyled = styled.div`
   width: 22rem;
   margin: 0 0.2rem;
   padding: 0.6rem 1rem;

@@ -4,22 +4,26 @@ import {
   BlockedUsersOverlay,
   HeaderContainer,
 } from './styles';
-import { useBlockedUsers } from '@/hooks';
+import { useAnimation, useBlockedUsers } from '@/hooks';
 import { BlockedUser } from './components';
 import { CloseButton } from '@/components/buttons';
-import { FC } from 'react';
+import { CSSProperties, FC } from 'react';
 import { ModalTitle } from '@/styles';
 
-interface BlockedUsersProps {
+interface BlockedUsersBaseProps {
   onClose: () => void;
+  animationStyle?: CSSProperties;
 }
 
-const BlockedUsers: FC<BlockedUsersProps> = ({ onClose }) => {
+const BlockedUsersBase: FC<BlockedUsersBaseProps> = ({
+  onClose,
+  animationStyle,
+}) => {
   const blockedUsers = useBlockedUsers();
 
   return (
-    <BlockedUsersOverlay>
-      <BlockedUsersModal>
+    <BlockedUsersOverlay style={{ ...animationStyle, transform: undefined }}>
+      <BlockedUsersModal style={animationStyle}>
         <HeaderContainer>
           <ModalTitle>Blocked Users</ModalTitle>
           <CloseButton onClick={onClose} />
@@ -32,6 +36,21 @@ const BlockedUsers: FC<BlockedUsersProps> = ({ onClose }) => {
         </BlockedUsersContainer>
       </BlockedUsersModal>
     </BlockedUsersOverlay>
+  );
+};
+
+interface BlockedUsersProps
+  extends Omit<BlockedUsersBaseProps, 'animationStyle'> {
+  isVisible: boolean;
+}
+
+const BlockedUsers: FC<BlockedUsersProps> = ({ isVisible, ...restProps }) => {
+  const { isMounted, animationStyle } = useAnimation(isVisible);
+
+  return (
+    isMounted && (
+      <BlockedUsersBase {...restProps} animationStyle={animationStyle} />
+    )
   );
 };
 

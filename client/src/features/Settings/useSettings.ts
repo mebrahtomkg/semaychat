@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { useAccount, useAccountInfo } from '@/hooks';
+import { useAccount, useAccountInfo, useBlockedUsers } from '@/hooks';
 import { PRIVACY_SETTINGS, VISIBILITY_OPTION_LABELS } from './constants';
 
 type ModalName =
@@ -18,6 +18,8 @@ interface SettingsItem {
 
 const useSettings = () => {
   const account = useAccount();
+
+  const blockedUsers = useBlockedUsers();
 
   const { email, username, bio, fullName } = useAccountInfo();
 
@@ -64,11 +66,11 @@ const useSettings = () => {
       },
       {
         title: 'Blocked Users',
-        description: 'You blocked 0 users',
+        description: `You blocked ${blockedUsers.length} users`,
         onClick: () => openModal('BlockedUsers'),
       },
     ],
-    [openModal],
+    [openModal, blockedUsers.length],
   );
 
   const privacySettingsItems: SettingsItem[] = useMemo(

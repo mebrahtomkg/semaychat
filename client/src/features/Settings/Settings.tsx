@@ -136,7 +136,6 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
             <CloseButton onClick={closeSettingsModal} />
           </SettingsPageHeader>
         )}
-
         <NavMenuContainer>
           {windowWidth <= 500 && <BackButton onClick={closeSettingsModal} />}
           <NavMenu $windowWidth={windowWidth}>
@@ -172,48 +171,40 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
             </MenuItemButton>
           </NavMenu>
         </NavMenuContainer>
-
         {category === 'profilePhoto' && <ProfilePhotoSettings />}
-
         {category === 'account' && (
           <SettingsCategoryContainer>
             {accountSettingsElements}
           </SettingsCategoryContainer>
         )}
-
         {category === 'security' && (
           <SettingsCategoryContainer>
             {securitySettingsElements}
           </SettingsCategoryContainer>
         )}
-
         {category === 'privacy' && (
           <SettingsCategoryContainer>
             {privacySettingsElements}
           </SettingsCategoryContainer>
         )}
-
         {usernameEditorAnimation.isMounted && (
           <UsernameEditor
             onClose={closeModal}
             animationStyle={usernameEditorAnimation.animationStyle}
           />
         )}
-
         {nameEditorAnimation.isMounted && (
           <NameEditor
             onClose={closeModal}
             animationStyle={nameEditorAnimation.animationStyle}
           />
         )}
-
         {bioEditorAnimation.isMounted && (
           <BioEditor
             onClose={closeModal}
             animationStyle={bioEditorAnimation.animationStyle}
           />
         )}
-
         {passwordEditorAnimation.isMounted && (
           <PasswordEditor
             onClose={closeModal}
@@ -221,9 +212,10 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
           />
         )}
 
-        {activeModal === 'BlockedUsers' && (
-          <BlockedUsers onClose={closeModal} />
-        )}
+        <BlockedUsers
+          isVisible={activeModal === 'BlockedUsers'}
+          onClose={closeModal}
+        />
 
         {privacyEditorAnimation.isMounted && (
           <PrivacyEditor

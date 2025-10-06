@@ -63,7 +63,7 @@ const BlockedUser: FC<BlockedUserProps> = ({ user }) => {
   );
 
   return (
-    <BlockedUserStyled to={userChatLink}>
+    <BlockedUserStyled onClick={openInChat}>
       {imageSrc ? (
         <ProfilePhotoContainer>
           <Photo
