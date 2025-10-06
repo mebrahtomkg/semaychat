@@ -1,4 +1,4 @@
-import { ConfirmDialog } from '@/components';
+import { Checkbox, ConfirmDialog } from '@/components';
 import { MoreButton } from '@/components/buttons';
 import ContextMenu, {
   MenuItemDescriptor,
@@ -36,57 +36,86 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
   const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =
     useContextMenu();
 
+  const [confirmation, setConfirmation] = useState<Confirmation>(null);
+  const closeConfirmDialog = useCallback(() => setConfirmation(null), []);
+
+  const [deleteForReceiver, setDeleteForReceiver] = useState(false);
+  const toggleDeleteForReceiver = useCallback(
+    () => setDeleteForReceiver((prevValue) => !prevValue),
+    [],
+  );
+
   const { isContact, isBlocked } = useUserInfo(chatPartner);
+
   const { blockUser } = useBlockUser(chatPartner);
   const { unblockUser } = useUnblockUser(chatPartner);
   const { addContact } = useAddContact(chatPartner);
   const { removeContact } = useRemoveContact(chatPartner);
 
-  const deleteChat = useCallback(() => {
-    addChatDeleteRequest({
-      chatPartnerId: chatPartner.id,
-      deleteForReceiver: false,
-    });
-  }, [addChatDeleteRequest, chatPartner.id]);
-
-  const [confirmation, setConfirmation] = useState<Confirmation>(null);
-
-  const closeConfirmDialog = useCallback(() => setConfirmation(null), []);
-
-  const startDeleteChatFlow = useCallback(
-    () => setConfirmation('delete-chat'),
-    [],
+  const deleteChat = useCallback(
+    () =>
+      addChatDeleteRequest({
+        chatPartnerId: chatPartner.id,
+        deleteForReceiver,
+      }),
+    [addChatDeleteRequest, chatPartner.id, deleteForReceiver],
   );
+
+  const startDeleteChatFlow = useCallback(() => {
+    setDeleteForReceiver(false);
+    setConfirmation('delete-chat');
+  }, []);
 
   const startBlockUserFlow = useCallback(
     () => setConfirmation('block-user'),
     [],
   );
 
+  const deleteChatConfirmDialog = useMemo(
+    () => (
+      <ConfirmDialog
+        title="Delete Chat"
+        message="Are you sure to delete all messages in this chat?"
+        onConfirm={deleteChat}
+        onClose={closeConfirmDialog}
+      >
+        <Checkbox
+          isChecked={deleteForReceiver}
+          onToggle={toggleDeleteForReceiver}
+          label="Also delete for receiver"
+        />
+      </ConfirmDialog>
+    ),
+    [
+      deleteChat,
+      closeConfirmDialog,
+      deleteForReceiver,
+      toggleDeleteForReceiver,
+    ],
+  );
+
+  const blockUserConfirmDialog = useMemo(
+    () => (
+      <ConfirmDialog
+        title="Block User"
+        message="Are you sure to block the user?"
+        onConfirm={blockUser}
+        onClose={closeConfirmDialog}
+      />
+    ),
+    [blockUser, closeConfirmDialog],
+  );
+
   const activeConfirmDialogComponent = useMemo(() => {
     switch (confirmation) {
       case 'delete-chat':
-        return (
-          <ConfirmDialog
-            title="Delete Chat"
-            message="Are you sure to delete all messages in this chat?"
-            onConfirm={deleteChat}
-            onClose={closeConfirmDialog}
-          />
-        );
+        return deleteChatConfirmDialog;
 
       case 'block-user':
-        return (
-          <ConfirmDialog
-            title="Block User"
-            message="Are you sure to block the user?"
-            onConfirm={blockUser}
-            onClose={closeConfirmDialog}
-          />
-        );
+        return blockUserConfirmDialog;
     }
     return null;
-  }, [confirmation, deleteChat, closeConfirmDialog, blockUser]);
+  }, [confirmation, deleteChatConfirmDialog, blockUserConfirmDialog]);
 
   const menuItemsList = useMemo(() => {
     const menuItems: MenuItemDescriptor[] = [

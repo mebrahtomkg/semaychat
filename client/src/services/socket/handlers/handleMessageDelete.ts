@@ -1,3 +1,4 @@
+import { QUERY_KEY_MESSAGES } from '@/constants';
 import queryClient from '@/queryClient';
 import { Message } from '@/types';
 
@@ -6,13 +7,14 @@ interface MessageDeletePayload {
   messageId: number;
 }
 
-const handleMessageDelete = (payload: MessageDeletePayload) => {
-  const { partnerId, messageId } = payload;
-
+const handleMessageDelete = ({
+  partnerId,
+  messageId,
+}: MessageDeletePayload) => {
   queryClient.setQueryData(
-    ['messages', partnerId],
+    [QUERY_KEY_MESSAGES, partnerId],
     (oldMessages: Message[]) => {
-      if (!oldMessages) return undefined;
+      if (!oldMessages) return [];
 
       return oldMessages.filter((oldMessage) => oldMessage.id !== messageId);
     },

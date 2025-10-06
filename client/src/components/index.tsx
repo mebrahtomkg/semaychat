@@ -5,3 +5,4 @@ export { default as TinySpinner } from './TinySpinner';
 export { default as ImageLoadingSpinner } from './ImageLoadingSpinner';
 export { default as SearchInput } from './SearchInput';
 export { default as ConfirmDialog } from './ConfirmDialog';
+export { default as Checkbox } from './Checkbox';

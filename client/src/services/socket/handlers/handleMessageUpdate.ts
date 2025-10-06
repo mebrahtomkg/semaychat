@@ -1,19 +1,20 @@
+import { QUERY_KEY_CHATS, QUERY_KEY_MESSAGES } from '@/constants';
 import queryClient from '@/queryClient';
 import { Chat, Message } from '@/types';
 
 const handleMessageUpdate = (message: Message) => {
   queryClient.setQueryData(
-    ['messages', message.senderId],
+    [QUERY_KEY_MESSAGES, message.senderId],
     (oldMessages: Message[]) => {
-      if (!oldMessages) return undefined;
+      if (!oldMessages) return [];
       return oldMessages.map((oldMessage) =>
         oldMessage.id === message.id ? message : oldMessage,
       );
     },
   );
 
-  queryClient.setQueryData(['chats'], (oldChats: Chat[]) => {
-    if (!oldChats) return;
+  queryClient.setQueryData([QUERY_KEY_CHATS], (oldChats: Chat[]) => {
+    if (!oldChats) return [];
 
     return oldChats.map((chat) =>
       chat.lastMessage?.id === message.id

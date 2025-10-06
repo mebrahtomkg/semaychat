@@ -6,3 +6,5 @@ export const DEFAULT_THEME: Theme = 'dark';
 
 export const QUERY_KEY_CONTACTS = 'contacts';
 export const QUERY_KEY_BLOCKED_USERS = 'blockedUsers';
+export const QUERY_KEY_MESSAGES = 'messages';
+export const QUERY_KEY_CHATS = 'chats';
