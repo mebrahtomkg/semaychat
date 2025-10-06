@@ -7,7 +7,8 @@ type ModalName =
   | 'NameEditor'
   | 'BioEditor'
   | 'PasswordEditor'
-  | 'PrivacyEditor';
+  | 'PrivacyEditor'
+  | 'BlockedUsers';
 
 interface SettingsItem {
   title: string;
@@ -64,7 +65,7 @@ const useSettings = () => {
       {
         title: 'Blocked Users',
         description: 'You blocked 0 users',
-        onClick: undefined,
+        onClick: () => openModal('BlockedUsers'),
       },
     ],
     [openModal],

@@ -26,6 +26,7 @@ import {
 import useSettings from './useSettings';
 import { PrivacySetting } from './types';
 import { useAppStateStore } from '@/store';
+import BlockedUsers from '../BlockedUsers';
 
 type SettingsCategory = 'account' | 'profilePhoto' | 'security' | 'privacy';
 
@@ -218,6 +219,10 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
             onClose={closeModal}
             animationStyle={passwordEditorAnimation.animationStyle}
           />
+        )}
+
+        {activeModal === 'BlockedUsers' && (
+          <BlockedUsers onClose={closeModal} />
         )}
 
         {privacyEditorAnimation.isMounted && (
