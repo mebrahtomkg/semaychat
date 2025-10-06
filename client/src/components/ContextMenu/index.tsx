@@ -37,6 +37,8 @@ const ContextMenu: FC<ContextMenuProps> = ({ menuItems, controlProps }) => {
   );
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
     if (e.target === e.currentTarget) closeMenu();
   };
 

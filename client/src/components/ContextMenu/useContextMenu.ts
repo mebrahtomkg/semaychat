@@ -1,4 +1,5 @@
 import React, {
+  MouseEventHandler,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -45,12 +46,17 @@ const useContextMenu = () => {
   const isMoreButtonUsedRef = useRef<boolean>(false);
 
   // Handler for when a dedicated "More" button is clicked to open the menu
-  const onMoreButtonClick = useCallback((e: React.MouseEvent<HTMLElement>) => {
-    const buttonRect = e.currentTarget.getBoundingClientRect();
-    isMoreButtonUsedRef.current = true;
-    setPosition({ x: buttonRect.right, y: buttonRect.top });
-    setIsVisible(true);
-  }, []);
+  const onMoreButtonClick = useCallback<MouseEventHandler<HTMLButtonElement>>(
+    (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      const buttonRect = e.currentTarget.getBoundingClientRect();
+      isMoreButtonUsedRef.current = true;
+      setPosition({ x: buttonRect.right, y: buttonRect.top });
+      setIsVisible(true);
+    },
+    [],
+  );
 
   // Adjust menu position if it overflows the viewport boundaries
   useLayoutEffect(() => {
