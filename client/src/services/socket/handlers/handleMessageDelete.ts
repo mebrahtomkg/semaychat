@@ -1,6 +1,7 @@
 import { QUERY_KEY_MESSAGES } from '@/constants';
 import queryClient from '@/queryClient';
 import { Message } from '@/types';
+import updateChatLastMessage from './updateChatLastMessage';
 
 interface MessageDeletePayload {
   partnerId: number;
@@ -13,14 +14,13 @@ const handleMessageDelete = ({
 }: MessageDeletePayload) => {
   queryClient.setQueryData(
     [QUERY_KEY_MESSAGES, partnerId],
-    (oldMessages: Message[]) => {
-      if (!oldMessages) return [];
-
-      return oldMessages.filter((oldMessage) => oldMessage.id !== messageId);
+    (messages: Message[] | undefined) => {
+      if (!messages) return [];
+      return messages.filter((message) => message.id !== messageId);
     },
   );
 
-  //TODO: update chat list, incase a chat is displaying the deleted message in the chat list
+  updateChatLastMessage(partnerId);
 };
 
 export default handleMessageDelete;
