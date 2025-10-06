@@ -1,27 +1,22 @@
-import { QUERY_KEY_CHATS, QUERY_KEY_MESSAGES } from '@/constants';
+import { QUERY_KEY_MESSAGES } from '@/constants';
 import queryClient from '@/queryClient';
-import { Chat, Message } from '@/types';
+import { Message } from '@/types';
+import updateChatLastMessage from './updateChatLastMessage';
 
 const handleMessageUpdate = (message: Message) => {
+  const partnerId = message.senderId; // Since message can only be edited by the sender
+
   queryClient.setQueryData(
-    [QUERY_KEY_MESSAGES, message.senderId],
-    (oldMessages: Message[]) => {
-      if (!oldMessages) return [];
-      return oldMessages.map((oldMessage) =>
+    [QUERY_KEY_MESSAGES, partnerId],
+    (messages: Message[] | undefined) => {
+      if (!messages) return [];
+      return messages.map((oldMessage) =>
         oldMessage.id === message.id ? message : oldMessage,
       );
     },
   );
 
-  queryClient.setQueryData([QUERY_KEY_CHATS], (oldChats: Chat[]) => {
-    if (!oldChats) return [];
-
-    return oldChats.map((chat) =>
-      chat.lastMessage?.id === message.id
-        ? { ...chat, lastMessage: message }
-        : chat,
-    );
-  });
+  updateChatLastMessage(partnerId);
 };
 
 export default handleMessageUpdate;

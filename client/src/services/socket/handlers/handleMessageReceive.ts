@@ -1,25 +1,18 @@
-import { QUERY_KEY_CHATS, QUERY_KEY_MESSAGES } from '@/constants';
+import { QUERY_KEY_MESSAGES } from '@/constants';
 import queryClient from '@/queryClient';
-import { Chat, Message } from '@/types';
+import { Message } from '@/types';
+import updateChatLastMessage from './updateChatLastMessage';
 
 const handleMessageReceive = (message: Message) => {
-  queryClient.setQueryData(
-    [QUERY_KEY_MESSAGES, message.senderId],
+  const partnerId = message.senderId;
 
-    (oldMessages: Message[]) =>
-      oldMessages ? [...oldMessages, message] : [message],
+  queryClient.setQueryData(
+    [QUERY_KEY_MESSAGES, partnerId],
+    (messages: Message[] | undefined) =>
+      messages ? [...messages, message] : [message],
   );
 
-  queryClient.setQueryData([QUERY_KEY_CHATS], (oldChats: Chat[]) => {
-    if (!oldChats) return [];
-
-    // Update last message of the target chat
-    return oldChats.map((chat) =>
-      chat.partner.id === message.senderId
-        ? { ...chat, lastMessage: message }
-        : chat,
-    );
-  });
+  updateChatLastMessage(partnerId);
 
   //TODO: what about if new message is received from no chat list.
 };
