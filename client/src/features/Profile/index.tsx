@@ -1,4 +1,11 @@
-import { CSSProperties, FC, MouseEvent, useMemo } from 'react';
+import {
+  CSSProperties,
+  FC,
+  MouseEvent,
+  MouseEventHandler,
+  useCallback,
+  useMemo,
+} from 'react';
 import ContextMenu, {
   MenuItemDescriptor,
   useContextMenu,
@@ -18,7 +25,6 @@ import {
 } from '@/components/icons';
 import {
   useAddContact,
-  useAnimation,
   useBlockUser,
   useFullScreenPhoto,
   useImageLoader,
@@ -44,6 +50,7 @@ import {
 import UserInfo from './UserInfo';
 import useUserProfilePhotos from './useUserProfilePhotos';
 import { FlexibleImage, NameInitial, TinySpinner } from '@/components';
+import useAnimationPro, { AnimationOptions } from '@/hooks/useAnimationPro';
 
 interface ProfileBaseProps {
   user: User;
@@ -144,8 +151,20 @@ const ProfileBase: FC<ProfileBaseProps> = ({
     }
   };
 
+  const handleOverlayClick: MouseEventHandler<HTMLDivElement> = useCallback(
+    (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      if (e.target === e.currentTarget) onClose(e);
+    },
+    [onClose],
+  );
+
   return (
-    <ProfileModalOverlay>
+    <ProfileModalOverlay
+      onClick={handleOverlayClick}
+      style={{ ...animationStyle, transform: undefined }}
+    >
       <ProfileModal style={animationStyle}>
         <ProfilePhotoStyled $isFullScreenMode={isFullScreenMode}>
           <PhotoHeaderSection>
@@ -208,7 +227,29 @@ interface ProfileProps extends Omit<ProfileBaseProps, 'animationStyle'> {
 }
 
 const Profile: FC<ProfileProps> = ({ isVisible, ...restProps }) => {
-  const { isMounted, animationStyle } = useAnimation(isVisible);
+  const animationOptions = useMemo<AnimationOptions>(
+    () => ({
+      initialStyles: {
+        opacity: '0.0',
+        transform: 'scale(0.8)',
+      },
+      finalStyles: {
+        opacity: '1.0',
+        transform: 'scale(1.0)',
+      },
+      transition: {
+        property: ['opacity', 'transform'],
+        duration: [300, 300],
+        timingFunction: ['ease-in-out', 'ease-in-out'],
+      },
+    }),
+    [],
+  );
+
+  const { isMounted, animationStyle } = useAnimationPro(
+    isVisible,
+    animationOptions,
+  );
 
   return (
     isMounted && <ProfileBase {...restProps} animationStyle={animationStyle} />
