@@ -9,10 +9,21 @@ import { useTimer } from '@/hooks';
 
 type CSSPropertyName = keyof CSSProperties;
 
+type TimingFunction =
+  | 'ease'
+  | 'linear'
+  | 'ease-in'
+  | 'ease-out'
+  | 'ease-in-out'
+  | 'step-start'
+  | 'step-end'
+  | `steps(${number}, ${'start' | 'end'})`
+  | `cubic-bezier(${number}, ${number}, ${number}, ${number})`;
+
 interface Transition {
   property: CSSPropertyName | CSSPropertyName[];
   duration: number | number[];
-  timingFunction?: string | string[];
+  timingFunction?: TimingFunction | TimingFunction[];
   delay?: number | number[];
 }
 
@@ -44,14 +55,14 @@ const parseTransition = (transition: Transition): CSSProperties => {
   };
 };
 
-type AnimationStatus = 'entering' | 'exiting' | 'at-rest';
+type AnimationStatus = 'entering' | 'exiting' | null;
 
 const useAnimationPro = (
   isVisible: boolean,
   { initialStyles, finalStyles, transition }: AnimationOptions,
 ) => {
   const [status, setStatus] = useState<AnimationStatus>(
-    isVisible ? 'entering' : 'at-rest',
+    isVisible ? 'entering' : null,
   );
 
   const [isMounted, setIsMounted] = useState<boolean>(isVisible);
@@ -66,8 +77,8 @@ const useAnimationPro = (
     [transition.duration],
   );
 
-  const { setTimer: setEnteringTimer, clearTimer: clearEnteringTimer } =
-    useTimer();
+  // const { setTimer: setEnteringTimer, clearTimer: clearEnteringTimer } =
+  //   useTimer();
 
   const { setTimer: setExitingTimer, clearTimer: clearExitingTimer } =
     useTimer();
