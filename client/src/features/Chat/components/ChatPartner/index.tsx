@@ -30,7 +30,6 @@ const ChatPartner: FC<ChatPartnerProps> = ({ user }) => {
   };
 
   return (
-    // biome-ignore lint/a11y/useSemanticElements: <temp fix>
     <ProfileLink
       role="button"
       $isLargeScreen={isLargeScreen}
@@ -55,9 +54,11 @@ const ChatPartner: FC<ChatPartnerProps> = ({ user }) => {
         </NameContainer>
       </UserContainer>
 
-      {user && isProfileVisible && (
-        <Profile user={user} onClose={closeProfile} />
-      )}
+      <Profile
+        isVisible={isProfileVisible}
+        user={user}
+        onClose={closeProfile}
+      />
     </ProfileLink>
   );
 };

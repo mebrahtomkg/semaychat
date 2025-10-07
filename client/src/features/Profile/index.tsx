@@ -1,11 +1,10 @@
-import { FC, MouseEvent, useMemo } from 'react';
+import { CSSProperties, FC, MouseEvent, useMemo } from 'react';
 import ContextMenu, {
   MenuItemDescriptor,
   useContextMenu,
 } from '@/components/ContextMenu';
 import {
   BackButton,
-  CloseButton,
   MoreButton,
   NextButton,
   PreviousButton,
@@ -19,13 +18,13 @@ import {
 } from '@/components/icons';
 import {
   useAddContact,
+  useAnimation,
   useBlockUser,
   useFullScreenPhoto,
   useImageLoader,
   usePhotoNavigation,
   useProfilePhoto,
   useRemoveContact,
-  useResponsive,
   useUnblockUser,
   useUserInfo,
 } from '@/hooks';
@@ -46,14 +45,17 @@ import UserInfo from './UserInfo';
 import useUserProfilePhotos from './useUserProfilePhotos';
 import { FlexibleImage, NameInitial, TinySpinner } from '@/components';
 
-interface ProfileProps {
+interface ProfileBaseProps {
   user: User;
   onClose: (e: MouseEvent) => void;
+  animationStyle?: CSSProperties;
 }
 
-const Profile: FC<ProfileProps> = ({ user, onClose }) => {
-  const { isLargeScreen, windowWidth } = useResponsive();
-
+const ProfileBase: FC<ProfileBaseProps> = ({
+  user,
+  onClose,
+  animationStyle,
+}) => {
   const { fullName, nameInitials, isBlocked, isContact } = useUserInfo(user);
 
   const { blockUser } = useBlockUser(user);
@@ -144,17 +146,10 @@ const Profile: FC<ProfileProps> = ({ user, onClose }) => {
 
   return (
     <ProfileModalOverlay>
-      <ProfileModal>
-        <ProfilePhotoStyled
-          $isFullScreenMode={isFullScreenMode}
-          $windowWidth={windowWidth}
-        >
+      <ProfileModal style={animationStyle}>
+        <ProfilePhotoStyled $isFullScreenMode={isFullScreenMode}>
           <PhotoHeaderSection>
-            {!isLargeScreen || isFullScreenMode ? (
-              <BackButton onClick={handleBackClick} />
-            ) : (
-              <CloseButton onClick={handleBackClick} />
-            )}
+            <BackButton onClick={handleBackClick} />
 
             {photosCount > 1 && (
               <PhotoIndexIndicator>{photoIndexIndicator}</PhotoIndexIndicator>
@@ -205,6 +200,18 @@ const Profile: FC<ProfileProps> = ({ user, onClose }) => {
         <UserInfo user={user} />
       </ProfileModal>
     </ProfileModalOverlay>
+  );
+};
+
+interface ProfileProps extends Omit<ProfileBaseProps, 'animationStyle'> {
+  isVisible: boolean;
+}
+
+const Profile: FC<ProfileProps> = ({ isVisible, ...restProps }) => {
+  const { isMounted, animationStyle } = useAnimation(isVisible);
+
+  return (
+    isMounted && <ProfileBase {...restProps} animationStyle={animationStyle} />
   );
 };
 

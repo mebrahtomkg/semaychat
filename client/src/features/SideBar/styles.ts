@@ -4,6 +4,7 @@ export const SideBarOverlay = styled.div<{
   $isVisible: boolean;
 }>`
   position: fixed;
+  z-index: 2;
   top: 0;
   left: 0;
   ${(props) =>
@@ -12,7 +13,6 @@ export const SideBarOverlay = styled.div<{
       right: 0;
     `}
   bottom: 0;
-  z-index: 150;
   background-color: #00000047;
 `;
 
