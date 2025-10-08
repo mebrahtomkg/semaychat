@@ -1,6 +1,6 @@
 import { BackButton, CloseButton } from '@/components/buttons';
 import { NextIcon } from '@/components/icons';
-import { useAnimation, useResponsive } from '@/hooks';
+import { useResponsive } from '@/hooks';
 import { useMemo, useState, type CSSProperties, type FC } from 'react';
 import BioEditor from './components/BioEditor';
 import NameEditor from './components/NameEditor';
@@ -27,6 +27,7 @@ import useSettings from './useSettings';
 import { PrivacySetting } from './types';
 import { useAppStateStore } from '@/store';
 import BlockedUsers from '../BlockedUsers';
+import { useAnimation } from '@/Animation';
 
 type SettingsCategory = 'account' | 'profilePhoto' | 'security' | 'privacy';
 
@@ -113,19 +114,49 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
     [privacySettingsItems],
   );
 
-  const usernameEditorAnimation = useAnimation(
-    activeModal === 'UsernameEditor',
+  const animationOptions = useMemo(
+    () => ({
+      initialStyles: {
+        opacity: 0.5,
+        transform: 'scale(0.8)',
+      },
+      finalStyles: {
+        opacity: 1,
+        transform: 'scale(1.0)',
+      },
+      transition: {
+        property: ['transform', 'opacity'],
+        duration: [200, 200],
+        timingFunction: ['ease-in-out', 'ease-in-out'],
+      },
+    }),
+    [],
   );
 
-  const nameEditorAnimation = useAnimation(activeModal === 'NameEditor');
+  const usernameEditorAnimation = useAnimation(
+    activeModal === 'UsernameEditor',
+    animationOptions,
+  );
 
-  const bioEditorAnimation = useAnimation(activeModal === 'BioEditor');
+  const nameEditorAnimation = useAnimation(
+    activeModal === 'NameEditor',
+    animationOptions,
+  );
+
+  const bioEditorAnimation = useAnimation(
+    activeModal === 'BioEditor',
+    animationOptions,
+  );
 
   const passwordEditorAnimation = useAnimation(
     activeModal === 'PasswordEditor',
+    animationOptions,
   );
 
-  const privacyEditorAnimation = useAnimation(activeModal === 'PrivacyEditor');
+  const privacyEditorAnimation = useAnimation(
+    activeModal === 'PrivacyEditor',
+    animationOptions,
+  );
 
   return (
     <SettingsPageOverlay style={{ ...animationStyle, transform: undefined }}>

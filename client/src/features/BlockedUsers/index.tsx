@@ -4,11 +4,12 @@ import {
   BlockedUsersOverlay,
   HeaderContainer,
 } from './styles';
-import { useAnimation, useBlockedUsers } from '@/hooks';
+import { useBlockedUsers } from '@/hooks';
 import { BlockedUser } from './components';
 import { CloseButton } from '@/components/buttons';
-import { CSSProperties, FC } from 'react';
+import { CSSProperties, FC, useMemo } from 'react';
 import { ModalTitle } from '@/styles';
+import { useAnimation } from '@/Animation';
 
 interface BlockedUsersBaseProps {
   onClose: () => void;
@@ -45,7 +46,29 @@ interface BlockedUsersProps
 }
 
 const BlockedUsers: FC<BlockedUsersProps> = ({ isVisible, ...restProps }) => {
-  const { isMounted, animationStyle } = useAnimation(isVisible);
+  const animationOptions = useMemo(
+    () => ({
+      initialStyles: {
+        opacity: 0.5,
+        transform: 'scale(0.8)',
+      },
+      finalStyles: {
+        opacity: 1,
+        transform: 'scale(1.0)',
+      },
+      transition: {
+        property: ['transform', 'opacity'],
+        duration: [200, 200],
+        timingFunction: ['ease-in-out', 'ease-in-out'],
+      },
+    }),
+    [],
+  );
+
+  const { isMounted, animationStyle } = useAnimation(
+    isVisible,
+    animationOptions,
+  );
 
   return (
     isMounted && (

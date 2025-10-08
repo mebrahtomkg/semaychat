@@ -11,7 +11,6 @@ export { default as useProfilePhoto } from './useProfilePhoto';
 export { default as useRouteTracker } from './useRouteTracker';
 export { default as useTimer } from './useTimer';
 export { default as useUserFetcher } from './useUserFetcher';
-export { default as useAnimation } from './useAnimation';
 export { default as useProfilePhotos } from './useProfilePhotos';
 export { default as useContacts } from './useContacts';
 export { default as useUsersSuggestion } from './useUsersSuggestion';
