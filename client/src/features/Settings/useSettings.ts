@@ -1,13 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
-import { useAccount, useAccountInfo, useBlockedUsers } from '@/hooks';
-import { PRIVACY_SETTINGS, VISIBILITY_OPTION_LABELS } from './constants';
+import { useAccountInfo, useBlockedUsers } from '@/hooks';
 
 type ModalName =
   | 'UsernameEditor'
   | 'NameEditor'
   | 'BioEditor'
   | 'PasswordEditor'
-  | 'PrivacyEditor'
   | 'BlockedUsers';
 
 interface SettingsItem {
@@ -17,19 +15,16 @@ interface SettingsItem {
 }
 
 const useSettings = () => {
-  const account = useAccount();
-
   const blockedUsers = useBlockedUsers();
 
   const { email, username, bio, fullName } = useAccountInfo();
 
   const [activeModal, setActiveModal] = useState<ModalName | null>(null);
-  const [modalPayload, setModalPayload] = useState<unknown>(null);
 
-  const openModal = useCallback((modalName: ModalName, payload?: unknown) => {
-    setModalPayload(payload);
-    setActiveModal(modalName);
-  }, []);
+  const openModal = useCallback(
+    (modalName: ModalName) => setActiveModal(modalName),
+    [],
+  );
 
   const closeModal = useCallback(() => setActiveModal(null), []);
 
@@ -73,23 +68,10 @@ const useSettings = () => {
     [openModal, blockedUsers.length],
   );
 
-  const privacySettingsItems: SettingsItem[] = useMemo(
-    () =>
-      PRIVACY_SETTINGS.map((privacySetting) => ({
-        title: privacySetting.title,
-        description:
-          VISIBILITY_OPTION_LABELS[account[privacySetting.settingkey]],
-        onClick: () => openModal('PrivacyEditor', privacySetting),
-      })),
-    [openModal, account],
-  );
-
   return {
     accountSettingsItems,
     securitySettingsItems,
-    privacySettingsItems,
     activeModal,
-    modalPayload,
     closeModal,
   };
 };

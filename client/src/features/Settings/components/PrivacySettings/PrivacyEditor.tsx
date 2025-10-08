@@ -4,12 +4,11 @@ import EditorModal from '../EditorModal';
 import RadioButton from '../RadioButton';
 import { VisibilityChoicesContainer } from './styles';
 import { useAccount } from '@/hooks';
-import { PrivacySetting } from '../../types';
-import { VISIBILITY_OPTION_LABELS } from '../../constants';
-import { Spinner } from '@/components';
+import { VISIBILITY_OPTION_LABELS } from '../PrivacySettings/constants';
+import { IPrivacySetting } from './types';
 
 interface PrivacyEditorProps {
-  privacySetting: PrivacySetting;
+  privacySetting: IPrivacySetting;
   onClose: () => void;
   animationStyle?: CSSProperties;
 }
@@ -28,7 +27,7 @@ const PrivacyEditor: FC<PrivacyEditorProps> = ({
   const handleValueChange: MouseEventHandler<SVGElement> = (e) =>
     setValue(e.currentTarget.dataset.value as typeof value);
 
-  const { updateAccount, isUpdating } = useAccountUpdater();
+  const { updateAccount } = useAccountUpdater();
 
   const updateSetting = async () => {
     const { success, message } = await updateAccount({
@@ -60,8 +59,6 @@ const PrivacyEditor: FC<PrivacyEditorProps> = ({
           />
         ))}
       </VisibilityChoicesContainer>
-
-      {isUpdating && <Spinner />}
     </EditorModal>
   );
 };

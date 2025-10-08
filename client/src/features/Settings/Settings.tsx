@@ -5,7 +5,6 @@ import { useMemo, useState, type CSSProperties, type FC } from 'react';
 import BioEditor from './components/BioEditor';
 import NameEditor from './components/NameEditor';
 import PasswordEditor from './components/PasswordEditor';
-import PrivacyEditor from './components/PrivacyEditor';
 import ProfilePhotoSettings from './components/ProfilePhotoSettings';
 import UsernameEditor from './components/UsernameEditor';
 import {
@@ -24,10 +23,10 @@ import {
   Title,
 } from './styles';
 import useSettings from './useSettings';
-import { PrivacySetting } from './types';
 import { useAppStateStore } from '@/store';
 import BlockedUsers from '../BlockedUsers';
 import { useAnimation } from '@/Animation';
+import PrivacySettings from './components/PrivacySettings';
 
 type SettingsCategory = 'account' | 'profilePhoto' | 'security' | 'privacy';
 
@@ -45,9 +44,7 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
   const {
     accountSettingsItems,
     securitySettingsItems,
-    privacySettingsItems,
     activeModal,
-    modalPayload,
     closeModal,
   } = useSettings();
 
@@ -94,26 +91,6 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
     [securitySettingsItems],
   );
 
-  const privacySettingsElements = useMemo(
-    () =>
-      privacySettingsItems.map((item, index) => (
-        <SettingsItemContainer
-          key={`${index}-${item.title}`}
-          onClick={item.onClick}
-        >
-          <div>
-            <Title>{item.title}</Title>
-            <Description>{item.description}</Description>
-          </div>
-
-          <ArrowIconContainer>
-            <NextIcon />
-          </ArrowIconContainer>
-        </SettingsItemContainer>
-      )),
-    [privacySettingsItems],
-  );
-
   const animationOptions = useMemo(
     () => ({
       initialStyles: {
@@ -150,11 +127,6 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
 
   const passwordEditorAnimation = useAnimation(
     activeModal === 'PasswordEditor',
-    animationOptions,
-  );
-
-  const privacyEditorAnimation = useAnimation(
-    activeModal === 'PrivacyEditor',
     animationOptions,
   );
 
@@ -213,11 +185,7 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
             {securitySettingsElements}
           </SettingsCategoryContainer>
         )}
-        {category === 'privacy' && (
-          <SettingsCategoryContainer>
-            {privacySettingsElements}
-          </SettingsCategoryContainer>
-        )}
+        {category === 'privacy' && <PrivacySettings />}
         {usernameEditorAnimation.isMounted && (
           <UsernameEditor
             onClose={closeModal}
@@ -247,14 +215,6 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
           isVisible={activeModal === 'BlockedUsers'}
           onClose={closeModal}
         />
-
-        {privacyEditorAnimation.isMounted && (
-          <PrivacyEditor
-            privacySetting={modalPayload as PrivacySetting}
-            onClose={closeModal}
-            animationStyle={privacyEditorAnimation.animationStyle}
-          />
-        )}
       </SettingsPage>
     </SettingsPageOverlay>
   );

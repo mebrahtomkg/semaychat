@@ -1,5 +1,5 @@
 import { VisibilityOption } from '@/types';
-import { PrivacySetting } from './types';
+import { IPrivacySetting } from './types';
 
 export const VISIBILITY_OPTION_LABELS: Record<VisibilityOption, string> = {
   everybody: 'Everybody',
@@ -7,7 +7,7 @@ export const VISIBILITY_OPTION_LABELS: Record<VisibilityOption, string> = {
   nobody: 'Only Me',
 };
 
-export const PRIVACY_SETTINGS: PrivacySetting[] = [
+export const PRIVACY_SETTINGS: IPrivacySetting[] = [
   {
     settingkey: 'emailVisibility',
     title: 'Who can see your email address?',

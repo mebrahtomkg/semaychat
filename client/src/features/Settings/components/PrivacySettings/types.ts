@@ -1,6 +1,6 @@
 import { VisibilityOption } from '@/types';
 
-export interface PrivacySetting {
+export interface IPrivacySetting {
   settingkey:
     | 'emailVisibility'
     | 'lastSeenVisibility'
