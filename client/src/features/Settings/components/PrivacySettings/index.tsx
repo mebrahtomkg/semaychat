@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import {
   ArrowIconContainer,
   Description,
@@ -12,12 +12,6 @@ import { PRIVACY_SETTINGS, VISIBILITY_OPTION_LABELS } from './constants';
 import { IPrivacySetting } from './types';
 import RadioGroup from '../RadioGroup';
 
-interface SettingsItem {
-  title: string;
-  description: string;
-  onClick?: () => void;
-}
-
 const PrivacySettings = () => {
   const account = useAccount();
   const { updateAccount } = useUpdateAccount();
@@ -30,30 +24,21 @@ const PrivacySettings = () => {
     null,
   );
 
-  const privacySettingsItems: SettingsItem[] = useMemo(
-    () =>
-      PRIVACY_SETTINGS.map((privacySetting) => ({
-        title: privacySetting.title,
-        description:
-          VISIBILITY_OPTION_LABELS[account[privacySetting.settingkey]],
-        onClick: () => {
-          setPrivacySetting(privacySetting);
-          openRadioGroup();
-        },
-      })),
-    [account, openRadioGroup],
-  );
-
   const privacySettingsElements = useMemo(
     () =>
-      privacySettingsItems.map((item, index) => (
+      PRIVACY_SETTINGS.map((setting) => (
         <SettingsItemContainer
-          key={`${index}-${item.title}`}
-          onClick={item.onClick}
+          key={`${setting.title}`}
+          onClick={() => {
+            setPrivacySetting(setting);
+            openRadioGroup();
+          }}
         >
           <div>
-            <Title>{item.title}</Title>
-            <Description>{item.description}</Description>
+            <Title>{setting.title}</Title>
+            <Description>
+              {VISIBILITY_OPTION_LABELS[account[setting.settingkey]]}
+            </Description>
           </div>
 
           <ArrowIconContainer>
@@ -61,7 +46,7 @@ const PrivacySettings = () => {
           </ArrowIconContainer>
         </SettingsItemContainer>
       )),
-    [privacySettingsItems],
+    [account, openRadioGroup],
   );
 
   const { setTimer } = useTimer();

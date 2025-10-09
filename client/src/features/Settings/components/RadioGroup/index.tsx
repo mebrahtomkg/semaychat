@@ -1,9 +1,8 @@
 import { CSSProperties, FC, useCallback, useMemo, useState } from 'react';
 import RadioButton from '../RadioButton';
-import useMemoizedValue from './useMemoizedValue';
 import { RadioGroupOverlay, RadioGroupStyled, Title } from './styles';
 import { useAnimation } from '@/Animation';
-import { useTimer } from '@/hooks';
+import { useStableValue, useTimer } from '@/hooks';
 
 interface RadioGroupProps {
   title: string;
@@ -24,7 +23,7 @@ const RadioGroupBase: FC<RadioGroupProps> = ({
   onClose,
   animationStyle,
 }) => {
-  const cachedOptions = useMemoizedValue(options);
+  const cachedOptions = useStableValue(options);
   const { setTimer } = useTimer();
   const [selectedValue, setSelectedValue] = useState(value);
 

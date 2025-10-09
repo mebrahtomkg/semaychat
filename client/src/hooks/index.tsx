@@ -29,3 +29,4 @@ export { default as useRemoveContact } from './useRemoveContact';
 export { default as useAbortController } from './useAbortController';
 export { default as useAddContact } from './useAddContact';
 export { default as useUpdateAccount } from './useUpdateAccount';
+export { default as useStableValue } from './useStableValue';
