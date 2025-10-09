@@ -3,8 +3,25 @@ import { RadioButtonBallIcon, RadioButtonIcon } from '@/components/icons';
 
 export const RadioButtonContainer = styled.div`
   margin: 1.4rem 0;
+`;
+
+export const HiddenRadioButtonInput = styled.input`
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  border: none;
+  white-space: nowrap;
+`;
+
+export const RadioButtonLabel = styled.label`
   display: flex;
   align-items: center;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--fg-normal);
 `;
 
 export const RadioButtonIconContainer = styled.div`
@@ -12,6 +29,7 @@ export const RadioButtonIconContainer = styled.div`
   width: 1.5rem;
   height: 1.5rem;
   color: var(--fg-radio-button);
+  margin-right: 1rem;
 `;
 
 export const RadioButtonIconStyled = styled(RadioButtonIcon)`
@@ -20,8 +38,6 @@ export const RadioButtonIconStyled = styled(RadioButtonIcon)`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 5;
-  cursor: pointer;
 `;
 
 export const RadioButtonBallIconStyled = styled(RadioButtonBallIcon)<{
@@ -34,18 +50,10 @@ export const RadioButtonBallIconStyled = styled(RadioButtonBallIcon)<{
   bottom: 0;
   transform: scale(0);
   transition: transform 0.17s ease-in-out;
+
   ${(props) =>
     props.$isVisible &&
     css`
       transform: scale(1);
     `}
-`;
-
-export const RadioButtonLabel = styled.label`
-  padding-left: 1rem;
-  align-self: center;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 400;
-  color: var(--fg-normal);
 `;

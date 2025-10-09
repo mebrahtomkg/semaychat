@@ -5,32 +5,55 @@ import {
   RadioButtonContainer,
   RadioButtonLabel,
   RadioButtonIconContainer,
+  HiddenRadioButtonInput,
 } from './styles';
 
 interface RadioButtonProps {
+  id: string;
+  name: string;
   isChecked: boolean;
   label: string;
   value: string;
-  onCheck: (value: string) => void;
+  onChange: (value: string) => void;
+  disabled?: boolean;
 }
 
 const RadioButton: FC<RadioButtonProps> = ({
+  id,
+  name,
   isChecked,
   label,
   value,
-  onCheck,
+  disabled = false,
+  onChange,
 }) => {
-  const handleClick = useCallback(() => onCheck(value), [onCheck, value]);
+  // Handle change event from the native input
+  const handleChange = useCallback(() => {
+    if (!disabled) {
+      onChange(value);
+    }
+  }, [onChange, value, disabled]);
 
   return (
     <RadioButtonContainer>
-      <RadioButtonIconContainer>
-        <RadioButtonIconStyled role="radio" onClick={handleClick} />
+      <HiddenRadioButtonInput
+        type="radio"
+        id={id}
+        name={name}
+        value={value}
+        checked={isChecked}
+        disabled={disabled}
+        onChange={handleChange}
+      />
 
-        <RadioButtonBallIconStyled $isVisible={isChecked} />
-      </RadioButtonIconContainer>
+      <RadioButtonLabel htmlFor={id}>
+        <RadioButtonIconContainer>
+          <RadioButtonIconStyled />
+          <RadioButtonBallIconStyled $isVisible={isChecked} />
+        </RadioButtonIconContainer>
 
-      <RadioButtonLabel onClick={handleClick}>{label}</RadioButtonLabel>
+        {label}
+      </RadioButtonLabel>
     </RadioButtonContainer>
   );
 };

@@ -40,13 +40,15 @@ const RadioGroupBase: FC<RadioGroupProps> = ({
       cachedOptions.map((option) => (
         <RadioButton
           key={`${option.label}-${option.value}`}
+          id={`id-${option.value}`}
+          name={name}
           isChecked={option.value === selectedValue}
           label={option.label}
           value={option.value}
-          onCheck={handleRadioButtonCheck}
+          onChange={handleRadioButtonCheck}
         />
       )),
-    [cachedOptions, selectedValue, handleRadioButtonCheck],
+    [cachedOptions, name, selectedValue, handleRadioButtonCheck],
   );
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLElement>) => {
