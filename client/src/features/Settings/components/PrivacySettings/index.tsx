@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ArrowIconContainer,
   Description,
@@ -7,11 +7,10 @@ import {
   Title,
 } from '../../styles';
 import { NextIcon } from '@/components/icons';
-import { useAccount } from '@/hooks';
-import { useAnimation } from '@/Animation';
-import PrivacyEditor from './PrivacyEditor';
+import { useAccount, useTimer, useUpdateAccount } from '@/hooks';
 import { PRIVACY_SETTINGS, VISIBILITY_OPTION_LABELS } from './constants';
 import { IPrivacySetting } from './types';
+import RadioGroup from '../RadioGroup';
 
 interface SettingsItem {
   title: string;
@@ -19,20 +18,17 @@ interface SettingsItem {
   onClick?: () => void;
 }
 
-type ModalName = 'PrivacyEditor' | null;
-
 const PrivacySettings = () => {
   const account = useAccount();
+  const { updateAccount } = useUpdateAccount();
 
-  const [activeModal, setActiveModal] = useState<ModalName>(null);
-  const [modalPayload, setModalPayload] = useState<unknown>(null);
+  const [isRadioGroupVisible, setIsRadioGroupVisible] = useState(false);
+  const openRadioGroup = useCallback(() => setIsRadioGroupVisible(true), []);
+  const closeRadioGroup = useCallback(() => setIsRadioGroupVisible(false), []);
 
-  const openModal = useCallback((modalName: ModalName, payload?: unknown) => {
-    setModalPayload(payload);
-    setActiveModal(modalName);
-  }, []);
-
-  const closeModal = useCallback(() => setActiveModal(null), []);
+  const [privacySetting, setPrivacySetting] = useState<IPrivacySetting | null>(
+    null,
+  );
 
   const privacySettingsItems: SettingsItem[] = useMemo(
     () =>
@@ -40,20 +36,13 @@ const PrivacySettings = () => {
         title: privacySetting.title,
         description:
           VISIBILITY_OPTION_LABELS[account[privacySetting.settingkey]],
-        onClick: () => openModal('PrivacyEditor', privacySetting),
+        onClick: () => {
+          setPrivacySetting(privacySetting);
+          openRadioGroup();
+        },
       })),
-    [openModal, account],
+    [account, openRadioGroup],
   );
-
-  const privacyEditorAnimation = useAnimation(activeModal === 'PrivacyEditor', {
-    initialStyles: { opacity: 0.5, transform: 'scale(0.8)' },
-    finalStyles: { opacity: 1, transform: 'scale(1.0)' },
-    transition: {
-      property: ['transform', 'opacity'],
-      duration: [200, 200],
-      timingFunction: ['ease-in-out', 'ease-in-out'],
-    },
-  });
 
   const privacySettingsElements = useMemo(
     () =>
@@ -75,17 +64,37 @@ const PrivacySettings = () => {
     [privacySettingsItems],
   );
 
+  const { setTimer } = useTimer();
+
+  const handleSelect = useCallback(
+    async (name: string, value: string) => {
+      closeRadioGroup();
+      await new Promise<void>((resolve) => {
+        setTimer(() => {
+          updateAccount({ [name]: value });
+          resolve();
+        }, 500);
+      });
+    },
+    [closeRadioGroup, setTimer, updateAccount],
+  );
+
   return (
     <SettingsCategoryContainer>
       {privacySettingsElements}
 
-      {privacyEditorAnimation.isMounted && (
-        <PrivacyEditor
-          privacySetting={modalPayload as IPrivacySetting}
-          onClose={closeModal}
-          animationStyle={privacyEditorAnimation.animationStyle}
-        />
-      )}
+      <RadioGroup
+        isVisible={isRadioGroupVisible}
+        title={privacySetting?.title}
+        name={privacySetting?.settingkey}
+        value={account[privacySetting?.settingkey]}
+        options={privacySetting?.visibilityOptions.map((vp) => ({
+          label: VISIBILITY_OPTION_LABELS[vp],
+          value: vp,
+        }))}
+        onSelect={handleSelect}
+        onClose={closeRadioGroup}
+      />
     </SettingsCategoryContainer>
   );
 };

@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler } from 'react';
+import { FC, useCallback } from 'react';
 import {
   RadioButtonIconStyled,
   RadioButtonBallIconStyled,
@@ -11,7 +11,7 @@ interface RadioButtonProps {
   isChecked: boolean;
   label: string;
   value: string;
-  onCheck: MouseEventHandler<SVGElement | HTMLLabelElement>;
+  onCheck: (value: string) => void;
 }
 
 const RadioButton: FC<RadioButtonProps> = ({
@@ -20,22 +20,17 @@ const RadioButton: FC<RadioButtonProps> = ({
   value,
   onCheck,
 }) => {
+  const handleClick = useCallback(() => onCheck(value), [onCheck, value]);
+
   return (
     <RadioButtonContainer>
       <RadioButtonIconContainer>
-        {/** biome-ignore lint/a11y/useSemanticElements: <temp fix> */}
-        <RadioButtonIconStyled
-          role="radio"
-          data-value={value}
-          onClick={onCheck}
-        />
+        <RadioButtonIconStyled role="radio" onClick={handleClick} />
 
         <RadioButtonBallIconStyled $isVisible={isChecked} />
       </RadioButtonIconContainer>
 
-      <RadioButtonLabel data-value={value} onClick={onCheck}>
-        {label}
-      </RadioButtonLabel>
+      <RadioButtonLabel onClick={handleClick}>{label}</RadioButtonLabel>
     </RadioButtonContainer>
   );
 };

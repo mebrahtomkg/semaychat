@@ -1,11 +1,11 @@
 import { Account } from '@/types';
 import { useCallback } from 'react';
 import queryClient from '@/queryClient';
-import { ACCOUNT_QUERY_KEY } from './useAccountQuery';
+import { QUERY_KEY_ACCOUNT } from '@/constants';
 
 const useAccountActions = () => {
   const setAccount = useCallback((account: Account) => {
-    queryClient.setQueryData([ACCOUNT_QUERY_KEY], () => account);
+    queryClient.setQueryData([QUERY_KEY_ACCOUNT], () => account);
   }, []);
 
   return {

@@ -1,12 +1,11 @@
 import { Account } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { ApiError, get } from '@/api';
-
-export const ACCOUNT_QUERY_KEY = 'account';
+import { QUERY_KEY_ACCOUNT } from '@/constants';
 
 const useAccountQuery = () => {
   const { isPending, isError, data, error } = useQuery({
-    queryKey: [ACCOUNT_QUERY_KEY],
+    queryKey: [QUERY_KEY_ACCOUNT],
     queryFn: () => get<Account>(`/users/me`),
     retry: (failureCount: number, error: Error) =>
       error instanceof ApiError && error.status === 401
