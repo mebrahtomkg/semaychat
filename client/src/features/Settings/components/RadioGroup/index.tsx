@@ -28,11 +28,15 @@ const RadioGroupBase: FC<RadioGroupProps> = ({
   const [selectedValue, setSelectedValue] = useState(value);
 
   const handleRadioButtonCheck = useCallback(
-    (value: string) => {
+    async (value: string) => {
       setSelectedValue(value);
-      setTimer(() => onSelect(name, value), 300);
+
+      // used await here to make sure no batch update happen
+      await new Promise<void>((resolve) => setTimer(resolve, 300));
+
+      onSelect(name, value);
     },
-    [setTimer, onSelect, name],
+    [onSelect, name, setTimer],
   );
 
   const radioButtons = useMemo(

@@ -1,3 +1,4 @@
+import { IS_PRODUCTION } from '@/config/general';
 import {
   EMAIL_VISIBILITY,
   LAST_SEEN_VISIBILITY,
@@ -25,6 +26,11 @@ const updateMyAccount = async (
   next: NextFunction,
 ) => {
   try {
+    if (!IS_PRODUCTION) {
+      // Delay for testing
+      await new Promise<void>((resolve) => setTimeout(() => resolve(), 4000));
+    }
+
     const body = req.body;
 
     const user = await User.findByPk(req.userId);

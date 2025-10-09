@@ -25,7 +25,11 @@ import {
 import useSettings from './useSettings';
 import { useAppStateStore } from '@/store';
 import BlockedUsers from '../BlockedUsers';
-import { useAnimation } from '@/Animation';
+import {
+  SUBSTANTIAL_MODAL_OPTIONS,
+  useAnimation,
+  WithAnimation,
+} from '@/Animation';
 import PrivacySettings from './components/PrivacySettings';
 
 type SettingsCategory = 'account' | 'profilePhoto' | 'security' | 'privacy';
@@ -211,9 +215,15 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
           />
         )}
 
-        <BlockedUsers
+        <WithAnimation
           isVisible={activeModal === 'BlockedUsers'}
-          onClose={closeModal}
+          options={SUBSTANTIAL_MODAL_OPTIONS}
+          render={(animationStyle) => (
+            <BlockedUsers
+              onClose={closeModal}
+              animationStyle={animationStyle}
+            />
+          )}
         />
       </SettingsPage>
     </SettingsPageOverlay>

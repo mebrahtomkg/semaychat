@@ -54,12 +54,11 @@ const PrivacySettings = () => {
   const handleSelect = useCallback(
     async (name: string, value: string) => {
       closeRadioGroup();
-      await new Promise<void>((resolve) => {
-        setTimer(() => {
-          updateAccount({ [name]: value });
-          resolve();
-        }, 500);
-      });
+
+      // Important! Let the UI update(closeRadioGroup Modal) before entering in to heavy task.
+      await new Promise<void>((resolve) => setTimer(resolve, 50));
+
+      updateAccount({ [name]: value });
     },
     [closeRadioGroup, setTimer, updateAccount],
   );
