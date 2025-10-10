@@ -25,11 +25,7 @@ import {
 import useSettings from './useSettings';
 import { useAppStateStore } from '@/store';
 import BlockedUsers from '../BlockedUsers';
-import {
-  SUBSTANTIAL_MODAL_OPTIONS,
-  useAnimation,
-  WithAnimation,
-} from '@/Animation';
+import { ANIMATION_DIALOG_FAST, WithAnimation } from '@/Animation';
 import PrivacySettings from './components/PrivacySettings';
 
 type SettingsCategory = 'account' | 'profilePhoto' | 'security' | 'privacy';
@@ -95,45 +91,6 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
     [securitySettingsItems],
   );
 
-  const animationOptions = useMemo(
-    () => ({
-      initialStyles: {
-        opacity: 0.5,
-        transform: 'scale(0.8)',
-      },
-      finalStyles: {
-        opacity: 1,
-        transform: 'scale(1.0)',
-      },
-      transition: {
-        property: ['transform', 'opacity'],
-        duration: [200, 200],
-        timingFunction: ['ease-in-out', 'ease-in-out'],
-      },
-    }),
-    [],
-  );
-
-  const usernameEditorAnimation = useAnimation(
-    activeModal === 'UsernameEditor',
-    animationOptions,
-  );
-
-  const nameEditorAnimation = useAnimation(
-    activeModal === 'NameEditor',
-    animationOptions,
-  );
-
-  const bioEditorAnimation = useAnimation(
-    activeModal === 'BioEditor',
-    animationOptions,
-  );
-
-  const passwordEditorAnimation = useAnimation(
-    activeModal === 'PasswordEditor',
-    animationOptions,
-  );
-
   return (
     <SettingsPageOverlay style={{ ...animationStyle, transform: undefined }}>
       <SettingsPage style={animationStyle} $windowWidth={windowWidth}>
@@ -190,34 +147,42 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
           </SettingsCategoryContainer>
         )}
         {category === 'privacy' && <PrivacySettings />}
-        {usernameEditorAnimation.isMounted && (
-          <UsernameEditor
-            onClose={closeModal}
-            animationStyle={usernameEditorAnimation.animationStyle}
-          />
-        )}
-        {nameEditorAnimation.isMounted && (
-          <NameEditor
-            onClose={closeModal}
-            animationStyle={nameEditorAnimation.animationStyle}
-          />
-        )}
-        {bioEditorAnimation.isMounted && (
-          <BioEditor
-            onClose={closeModal}
-            animationStyle={bioEditorAnimation.animationStyle}
-          />
-        )}
-        {passwordEditorAnimation.isMounted && (
-          <PasswordEditor
-            onClose={closeModal}
-            animationStyle={passwordEditorAnimation.animationStyle}
-          />
-        )}
+
+        <WithAnimation
+          isVisible={activeModal === 'UsernameEditor'}
+          options={ANIMATION_DIALOG_FAST}
+          render={(style) => (
+            <UsernameEditor onClose={closeModal} animationStyle={style} />
+          )}
+        />
+
+        <WithAnimation
+          isVisible={activeModal === 'NameEditor'}
+          options={ANIMATION_DIALOG_FAST}
+          render={(style) => (
+            <NameEditor onClose={closeModal} animationStyle={style} />
+          )}
+        />
+
+        <WithAnimation
+          isVisible={activeModal === 'BioEditor'}
+          options={ANIMATION_DIALOG_FAST}
+          render={(style) => (
+            <BioEditor onClose={closeModal} animationStyle={style} />
+          )}
+        />
+
+        <WithAnimation
+          isVisible={activeModal === 'PasswordEditor'}
+          options={ANIMATION_DIALOG_FAST}
+          render={(style) => (
+            <PasswordEditor onClose={closeModal} animationStyle={style} />
+          )}
+        />
 
         <WithAnimation
           isVisible={activeModal === 'BlockedUsers'}
-          options={SUBSTANTIAL_MODAL_OPTIONS}
+          options={ANIMATION_DIALOG_FAST}
           render={(animationStyle) => (
             <BlockedUsers
               onClose={closeModal}

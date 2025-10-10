@@ -1,6 +1,16 @@
 import { AnimationOptions } from './types';
 
-export const MODAL_ANIMATION_OPTIONS: AnimationOptions = {
+export const ANIMATION_DIALOG_FAST: AnimationOptions = {
+  initialStyles: { opacity: 0, transform: 'translateY(10px)' },
+  finalStyles: { opacity: 1, transform: 'translateY(0)' },
+  transition: {
+    property: ['transform', 'opacity'],
+    duration: [200, 200],
+    timingFunction: ['ease-out', 'ease-out'],
+  },
+};
+
+export const ANIMATION_MODAL: AnimationOptions = {
   initialStyles: { opacity: 0, transform: 'scale(0.8)' },
   finalStyles: { opacity: 1, transform: 'scale(1.0)' },
   transition: {
@@ -10,31 +20,9 @@ export const MODAL_ANIMATION_OPTIONS: AnimationOptions = {
   },
 };
 
-export const FAST_DIALOG_OPTIONS: AnimationOptions = {
-  initialStyles: {
-    opacity: 0,
-    transform: 'translateY(10px)', // Start slightly below center
-  },
-  finalStyles: {
-    opacity: 1,
-    transform: 'translateY(0)',
-  },
-  transition: {
-    property: ['transform', 'opacity'],
-    duration: [200, 200],
-    timingFunction: ['ease-out', 'ease-out'],
-  },
-};
-
-export const SUBSTANTIAL_MODAL_OPTIONS: AnimationOptions = {
-  initialStyles: {
-    opacity: 0,
-    transform: 'scale(0.95)',
-  },
-  finalStyles: {
-    opacity: 1,
-    transform: 'scale(1.0)',
-  },
+export const ANIMATION_MODAL_SUBSTANTIAL: AnimationOptions = {
+  initialStyles: { opacity: 0, transform: 'scale(0.95)' },
+  finalStyles: { opacity: 1, transform: 'scale(1.0)' },
   transition: {
     property: ['transform', 'opacity'],
     duration: [400, 400],
@@ -43,16 +31,9 @@ export const SUBSTANTIAL_MODAL_OPTIONS: AnimationOptions = {
   },
 };
 
-export const SUBTLE_FADE_OPTIONS: AnimationOptions = {
-  initialStyles: {
-    opacity: 0,
-    // Minimal or no transform for a subtle effect
-    transform: 'scale(1.0)',
-  },
-  finalStyles: {
-    opacity: 1,
-    transform: 'scale(1.0)',
-  },
+export const ANIMATION_FADE_SUBTLE: AnimationOptions = {
+  initialStyles: { opacity: 0, transform: 'scale(1.0)' },
+  finalStyles: { opacity: 1, transform: 'scale(1.0)' },
   transition: {
     property: ['opacity'],
     duration: [150],
