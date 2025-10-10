@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const RadioGroupOverlay = styled.div`
+export const PrivacyEditorOverlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -13,7 +13,7 @@ export const RadioGroupOverlay = styled.div`
   background-color: transparent;
 `;
 
-export const RadioGroupStyled = styled.div`
+export const PrivacyEditorStyled = styled.div`
   padding: 1.5rem;
   border-radius: 20px;
   border: 1px solid;
@@ -27,8 +27,4 @@ export const Title = styled.h2`
   font-size: 1.2rem;
   font-weight: 500;
   color: var(--fg-title);
-`;
-
-export const MainSection = styled.div`
-  margin-bottom: 1rem;
 `;

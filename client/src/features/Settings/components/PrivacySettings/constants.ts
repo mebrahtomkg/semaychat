@@ -1,11 +1,16 @@
-import { VisibilityOption } from '@/types';
-import { IPrivacySetting } from './types';
+import { Account, VisibilityOption } from '@/types';
 
-export const VISIBILITY_OPTION_LABELS: Record<VisibilityOption, string> = {
-  everybody: 'Everybody',
-  contacts: 'My Contacts',
-  nobody: 'Only Me',
-};
+interface IPrivacySetting {
+  settingkey: keyof Pick<
+    Account,
+    | 'emailVisibility'
+    | 'lastSeenVisibility'
+    | 'profilePhotosVisibility'
+    | 'messageSender'
+  >;
+  title: string;
+  visibilityOptions: VisibilityOption[];
+}
 
 export const PRIVACY_SETTINGS: IPrivacySetting[] = [
   {

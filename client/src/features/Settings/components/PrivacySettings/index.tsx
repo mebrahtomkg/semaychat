@@ -8,21 +8,21 @@ import {
 } from '../../styles';
 import { NextIcon } from '@/components/icons';
 import { useAccount } from '@/hooks';
-import { PRIVACY_SETTINGS, VISIBILITY_OPTION_LABELS } from './constants';
-import { IPrivacySetting } from './types';
+import { PRIVACY_SETTINGS } from './constants';
 import { ANIMATION_DIALOG_FAST, WithAnimation } from '@/Animation';
-import PrivacyEditor from './PrivacyEditor';
+import { VISIBILITY_OPTION_LABELS } from '../../constants';
+import PrivacyEditor from '../PrivacyEditor';
 
 const PrivacySettings = () => {
   const account = useAccount();
 
-  const [privacySetting, setPrivacySetting] = useState<IPrivacySetting | null>(
-    null,
-  );
+  const [privacySetting, setPrivacySetting] = useState<
+    (typeof PRIVACY_SETTINGS)[0] | null
+  >(null);
 
   const [isPrivacyEditorVisible, setIsPrivacyEditorVisible] = useState(false);
 
-  const openPrivacyEditor = useCallback((setting: IPrivacySetting) => {
+  const openPrivacyEditor = useCallback((setting: typeof privacySetting) => {
     setPrivacySetting(setting);
     setIsPrivacyEditorVisible(true);
   }, []);
@@ -66,7 +66,10 @@ const PrivacySettings = () => {
           options={ANIMATION_DIALOG_FAST}
           render={(style) => (
             <PrivacyEditor
-              setting={privacySetting}
+              title={privacySetting.title}
+              settingkey={privacySetting.settingkey}
+              currentValue={account[privacySetting.settingkey]}
+              possibleValues={privacySetting.visibilityOptions}
               onClose={closePrivacyEditor}
               animationStyle={style}
             />
