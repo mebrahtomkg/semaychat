@@ -1,65 +1,58 @@
-import { CSSProperties, type FC, useState, MouseEventHandler } from 'react';
-import useAccountUpdater from '../../hooks/useAccountUpdater';
-import EditorModal from '../EditorModal';
-import RadioButton from '../RadioButton';
-import { VisibilityChoicesContainer } from './styles';
-import { useAccount } from '@/hooks';
+import { CSSProperties, type FC, useCallback, useMemo } from 'react';
+import { useAccount, useTimer, useUpdateAccount } from '@/hooks';
 import { VISIBILITY_OPTION_LABELS } from '../PrivacySettings/constants';
 import { IPrivacySetting } from './types';
+import RadioGroup from '../RadioGroup';
 
 interface PrivacyEditorProps {
-  privacySetting: IPrivacySetting;
+  setting: IPrivacySetting;
   onClose: () => void;
   animationStyle?: CSSProperties;
 }
 
 const PrivacyEditor: FC<PrivacyEditorProps> = ({
-  privacySetting,
+  setting,
   animationStyle,
   onClose,
 }) => {
   const account = useAccount();
+  const { updateAccount } = useUpdateAccount();
 
-  const { settingkey, title, visibilityOptions } = privacySetting;
+  const { settingkey, title, visibilityOptions } = setting;
 
-  const [value, setValue] = useState(account[settingkey]);
+  const { setTimer } = useTimer();
 
-  const handleValueChange: MouseEventHandler<SVGElement> = (e) =>
-    setValue(e.currentTarget.dataset.value as typeof value);
-
-  const { updateAccount } = useAccountUpdater();
-
-  const updateSetting = async () => {
-    const { success, message } = await updateAccount({
-      [settingkey]: value,
-    });
-
-    if (success) {
+  const handleSelect = useCallback(
+    async (_name: string, value: string) => {
       onClose();
-    } else {
-      console.error(message);
-    }
-  };
+
+      // Important! Let the UI update(closeRadioGroup Modal) before entering in to heavy task.
+      await new Promise<void>((resolve) => setTimer(resolve, 70));
+
+      updateAccount({ [settingkey]: value });
+    },
+    [onClose, setTimer, updateAccount, settingkey],
+  );
+
+  const radioGroupOptions = useMemo(
+    () =>
+      visibilityOptions.map((option) => ({
+        label: VISIBILITY_OPTION_LABELS[option],
+        value: option,
+      })),
+    [visibilityOptions],
+  );
 
   return (
-    <EditorModal
+    <RadioGroup
       title={title}
-      animationStyle={animationStyle}
-      onDone={updateSetting}
+      name={settingkey}
+      value={account[settingkey]}
+      options={radioGroupOptions}
+      onSelect={handleSelect}
       onClose={onClose}
-    >
-      <VisibilityChoicesContainer>
-        {visibilityOptions.map((visibilityOption) => (
-          <RadioButton
-            key={`${visibilityOption}`}
-            isChecked={visibilityOption === value}
-            label={VISIBILITY_OPTION_LABELS[visibilityOption]}
-            value={visibilityOption}
-            onCheck={handleValueChange}
-          />
-        ))}
-      </VisibilityChoicesContainer>
-    </EditorModal>
+      animationStyle={animationStyle}
+    />
   );
 };
 

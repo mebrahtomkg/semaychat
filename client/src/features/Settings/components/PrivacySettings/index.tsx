@@ -7,21 +7,30 @@ import {
   Title,
 } from '../../styles';
 import { NextIcon } from '@/components/icons';
-import { useAccount, useTimer, useUpdateAccount } from '@/hooks';
+import { useAccount } from '@/hooks';
 import { PRIVACY_SETTINGS, VISIBILITY_OPTION_LABELS } from './constants';
 import { IPrivacySetting } from './types';
-import RadioGroup from '../RadioGroup';
+import { ANIMATION_DIALOG_FAST, WithAnimation } from '@/Animation';
+import PrivacyEditor from './PrivacyEditor';
 
 const PrivacySettings = () => {
   const account = useAccount();
-  const { updateAccount } = useUpdateAccount();
-
-  const [isRadioGroupVisible, setIsRadioGroupVisible] = useState(false);
-  const openRadioGroup = useCallback(() => setIsRadioGroupVisible(true), []);
-  const closeRadioGroup = useCallback(() => setIsRadioGroupVisible(false), []);
 
   const [privacySetting, setPrivacySetting] = useState<IPrivacySetting | null>(
     null,
+  );
+
+  const [isPrivacyEditorVisible, setIsPrivacyEditorVisible] = useState(false);
+
+  const openPrivacyEditor = useCallback((setting: IPrivacySetting) => {
+    setPrivacySetting(setting);
+    setIsPrivacyEditorVisible(true);
+  }, []);
+
+  const closePrivacyEditor = useCallback(
+    // setting privacySetting to null is avoided to allow the animation work as expected
+    () => setIsPrivacyEditorVisible(false),
+    [],
   );
 
   const privacySettingsElements = useMemo(
@@ -29,10 +38,7 @@ const PrivacySettings = () => {
       PRIVACY_SETTINGS.map((setting) => (
         <SettingsItemContainer
           key={`${setting.title}`}
-          onClick={() => {
-            setPrivacySetting(setting);
-            openRadioGroup();
-          }}
+          onClick={() => openPrivacyEditor(setting)}
         >
           <div>
             <Title>{setting.title}</Title>
@@ -46,39 +52,27 @@ const PrivacySettings = () => {
           </ArrowIconContainer>
         </SettingsItemContainer>
       )),
-    [account, openRadioGroup],
-  );
-
-  const { setTimer } = useTimer();
-
-  const handleSelect = useCallback(
-    async (name: string, value: string) => {
-      closeRadioGroup();
-
-      // Important! Let the UI update(closeRadioGroup Modal) before entering in to heavy task.
-      await new Promise<void>((resolve) => setTimer(resolve, 50));
-
-      updateAccount({ [name]: value });
-    },
-    [closeRadioGroup, setTimer, updateAccount],
+    [account, openPrivacyEditor],
   );
 
   return (
     <SettingsCategoryContainer>
       {privacySettingsElements}
 
-      <RadioGroup
-        isVisible={isRadioGroupVisible}
-        title={privacySetting?.title}
-        name={privacySetting?.settingkey}
-        value={account[privacySetting?.settingkey]}
-        options={privacySetting?.visibilityOptions.map((vp) => ({
-          label: VISIBILITY_OPTION_LABELS[vp],
-          value: vp,
-        }))}
-        onSelect={handleSelect}
-        onClose={closeRadioGroup}
-      />
+      {/** privacySetting has always value except at initial. so the animation works well */}
+      {privacySetting && (
+        <WithAnimation
+          isVisible={isPrivacyEditorVisible}
+          options={ANIMATION_DIALOG_FAST}
+          render={(style) => (
+            <PrivacyEditor
+              setting={privacySetting}
+              onClose={closePrivacyEditor}
+              animationStyle={style}
+            />
+          )}
+        />
+      )}
     </SettingsCategoryContainer>
   );
 };
