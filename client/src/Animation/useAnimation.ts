@@ -1,8 +1,7 @@
 import { CSSProperties, useEffect, useRef, useState, useMemo } from 'react';
-import { useTimer } from '@/hooks';
+import { useStableValue, useTimer } from '@/hooks';
 import parseTransition from './parseTransition';
 import { AnimationOptions } from './types';
-import { deepEqual } from '@/utils';
 
 type AnimationStatus = 'entering' | 'exiting' | null;
 
@@ -10,15 +9,10 @@ const useAnimation = (isVisible: boolean, options: AnimationOptions) => {
   // Memoize options object to avoid unnecessary re-renders.
   // Without this technique infinite re-render can happen if the consumer of this hook did
   // not use React.useMemo() to memoize the options object.
-  const optionsRef = useRef(options);
+  // this updates options object ONLY if it is actually changed(not just reference change)
+  const { initialStyles, finalStyles, transition } = useStableValue(options);
 
-  // Update options object ONLY if it is actually changed(not just reference change)
-  if (!deepEqual(options, optionsRef.current)) {
-    optionsRef.current = options;
-  }
-
-  const { initialStyles, finalStyles, transition } = optionsRef.current;
-
+  // Parse the duration. Take the max duration from the transition durations
   const duration = useMemo(
     () =>
       Array.isArray(transition.duration)
@@ -27,58 +21,93 @@ const useAnimation = (isVisible: boolean, options: AnimationOptions) => {
     [transition.duration],
   );
 
-  const { setTimer, clearTimer } = useTimer();
+  const { setTimer: setUnmountTimer, clearTimer: clearUnmountTimer } =
+    useTimer();
+
+  // This cleanup timer is used clear animation style. because animation styles should
+  // not stay in the DOM after the animation cycle is complate. eg if we allow transform
+  // styles to stay in the DOM, they can cause unexpected behaviors while using styles like
+  // position. example `position: fixed` style will not place an element relative to the viewport.
+  const { setTimer: setCleanupTimer, clearTimer: clearCleanupTimer } =
+    useTimer();
 
   const [status, setStatus] = useState<AnimationStatus>(
     isVisible ? 'entering' : null,
   );
   const [isMounted, setIsMounted] = useState<boolean>(isVisible);
-  const [style, setStyle] = useState<CSSProperties>(initialStyles);
+  const [style, setStyle] = useState<CSSProperties | null>(
+    isVisible ? initialStyles : null,
+  );
   const isFirstRenderRef = useRef<boolean>(true);
 
   // Here useEffect is better solution than useLayoutEffect.
   // useLayoutEffect made some components to not animate at entering stage, and
   // maybe it is unresponsive.
   useEffect(() => {
+    // If it is first render do nothing, because the states are initialized with
+    // expected behavior
     if (isFirstRenderRef.current) {
       isFirstRenderRef.current = false;
       return;
     }
 
-    clearTimer();
     if (isVisible) {
+      clearCleanupTimer();
+      clearUnmountTimer();
       setStyle(initialStyles);
       setIsMounted(true);
       setStatus('entering');
     } else {
+      clearCleanupTimer();
       setStyle(finalStyles);
       setStatus('exiting');
     }
-  }, [isVisible, clearTimer, initialStyles, finalStyles]);
+  }, [
+    isVisible,
+    clearUnmountTimer,
+    clearCleanupTimer,
+    initialStyles,
+    finalStyles,
+  ]);
 
   useEffect(() => {
-    clearTimer();
+    clearUnmountTimer();
     switch (status) {
       case 'entering':
+        clearCleanupTimer();
         setStyle(finalStyles);
+        setCleanupTimer(() => setStyle(null), duration);
         break;
 
       case 'exiting':
+        clearCleanupTimer();
         setStyle(initialStyles);
-        setTimer(() => setIsMounted(false), duration);
+        setUnmountTimer(() => setIsMounted(false), duration);
+        setCleanupTimer(() => setStyle(null), duration);
         break;
     }
-  }, [status, finalStyles, initialStyles, setTimer, clearTimer, duration]);
+  }, [
+    clearUnmountTimer,
+    status,
+    clearCleanupTimer,
+    finalStyles,
+    setCleanupTimer,
+    duration,
+    initialStyles,
+    setUnmountTimer,
+  ]);
 
   const transitionStyles = useMemo(
     () => parseTransition(transition),
     [transition],
   );
 
-  const animationStyle = useMemo(
-    () => ({ ...style, ...transitionStyles }),
-    [style, transitionStyles],
-  );
+  const animationStyle = useMemo(() => {
+    // If style is set to null, make animationStyle undefined. otherwise merge the style
+    // with the transitionStyles.
+    if (!style) return undefined;
+    return { ...style, ...transitionStyles };
+  }, [style, transitionStyles]);
 
   return { isMounted, animationStyle };
 };
