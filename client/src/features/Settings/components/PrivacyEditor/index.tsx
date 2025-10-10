@@ -3,26 +3,24 @@ import {
   FC,
   useCallback,
   useMemo,
-  MouseEvent,
   useState,
+  MouseEventHandler,
 } from 'react';
-import { useStableValue, useTimer, useUpdateAccount } from '@/hooks';
-import { Account, VisibilityOption } from '@/types';
+import { useStableValue, useTimer } from '@/hooks';
+import { VisibilityOption } from '@/types';
 import { VISIBILITY_OPTION_LABELS } from '../../constants';
 import { PrivacyEditorOverlay, PrivacyEditorStyled, Title } from './styles';
 import RadioButton from '../RadioButton';
+import { IPrivacySetting } from '../../types';
+
+type SettingKey = IPrivacySetting['settingkey'];
 
 interface PrivacyEditorProps {
   title: string;
-  settingkey: keyof Pick<
-    Account,
-    | 'emailVisibility'
-    | 'lastSeenVisibility'
-    | 'profilePhotosVisibility'
-    | 'messageSender'
-  >;
+  settingkey: SettingKey;
   currentValue: VisibilityOption;
   possibleValues: VisibilityOption[];
+  onSelect: (settingkey: SettingKey, value: VisibilityOption) => void;
   onClose: () => void;
   animationStyle?: CSSProperties;
 }
@@ -33,9 +31,9 @@ const PrivacyEditor: FC<PrivacyEditorProps> = ({
   currentValue,
   possibleValues,
   animationStyle,
+  onSelect,
   onClose,
 }) => {
-  const { updateAccount } = useUpdateAccount();
   const { setTimer } = useTimer();
   const stablePossibleValues = useStableValue(possibleValues);
   const [selectedValue, setSelectedValue] = useState(currentValue);
@@ -45,14 +43,11 @@ const PrivacyEditor: FC<PrivacyEditorProps> = ({
       setSelectedValue(value as VisibilityOption);
 
       // Let the user see the selected button get animated before closing the modal
-      await new Promise<void>((resolve) => setTimer(resolve, 300));
-      onClose();
+      await new Promise<void>((resolve) => setTimer(resolve, 250));
 
-      // Close this modal before entering into heavy task of updating account
-      await new Promise<void>((resolve) => setTimer(resolve, 70));
-      updateAccount({ [settingkey]: value });
+      onSelect(settingkey, value as VisibilityOption);
     },
-    [onClose, setTimer, updateAccount, settingkey],
+    [setTimer, onSelect, settingkey],
   );
 
   const radioButtons = useMemo(() => {
@@ -74,10 +69,13 @@ const PrivacyEditor: FC<PrivacyEditorProps> = ({
     ));
   }, [stablePossibleValues, settingkey, selectedValue, handleSelect]);
 
-  const handleOverlayClick = (e: MouseEvent<HTMLElement>) => {
-    e.stopPropagation();
-    if (e.target === e.currentTarget) onClose();
-  };
+  const handleOverlayClick = useCallback<MouseEventHandler<HTMLElement>>(
+    (e) => {
+      e.stopPropagation();
+      if (e.target === e.currentTarget) onClose();
+    },
+    [onClose],
+  );
 
   return (
     <PrivacyEditorOverlay onClick={handleOverlayClick}>

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import {
   ArrowIconContainer,
   Description,
@@ -7,23 +7,27 @@ import {
   Title,
 } from '../../styles';
 import { NextIcon } from '@/components/icons';
-import { useAccount } from '@/hooks';
+import { useAccount, useUpdateAccount } from '@/hooks';
 import { PRIVACY_SETTINGS } from './constants';
 import { ANIMATION_DIALOG_FAST, WithAnimation } from '@/Animation';
 import { VISIBILITY_OPTION_LABELS } from '../../constants';
 import PrivacyEditor from '../PrivacyEditor';
+import { VisibilityOption } from '@/types';
+import { IPrivacySetting } from '../../types';
+
+type DataUpdate = Partial<
+  Record<IPrivacySetting['settingkey'], VisibilityOption>
+>;
 
 const PrivacySettings = () => {
   const account = useAccount();
-
-  const [privacySetting, setPrivacySetting] = useState<
-    (typeof PRIVACY_SETTINGS)[0] | null
-  >(null);
-
+  const { updateAccount } = useUpdateAccount();
+  const dataUpdateRef = useRef<DataUpdate | null>(null);
+  const [setting, setSetting] = useState<IPrivacySetting | null>(null);
   const [isPrivacyEditorVisible, setIsPrivacyEditorVisible] = useState(false);
 
-  const openPrivacyEditor = useCallback((setting: typeof privacySetting) => {
-    setPrivacySetting(setting);
+  const openPrivacyEditor = useCallback((setting: IPrivacySetting) => {
+    setSetting(setting);
     setIsPrivacyEditorVisible(true);
   }, []);
 
@@ -32,6 +36,22 @@ const PrivacySettings = () => {
     () => setIsPrivacyEditorVisible(false),
     [],
   );
+
+  const handleVisibilitySelect = useCallback(
+    (settingkey: IPrivacySetting['settingkey'], value: VisibilityOption) => {
+      dataUpdateRef.current = { [settingkey]: value };
+      closePrivacyEditor();
+    },
+    [closePrivacyEditor],
+  );
+
+  const doAccountUpdate = useCallback(() => {
+    if (dataUpdateRef.current) {
+      const data = dataUpdateRef.current;
+      dataUpdateRef.current = null;
+      updateAccount(data);
+    }
+  }, [updateAccount]);
 
   const privacySettingsElements = useMemo(
     () =>
@@ -59,21 +79,23 @@ const PrivacySettings = () => {
     <SettingsCategoryContainer>
       {privacySettingsElements}
 
-      {/** privacySetting has always value except at initial. so the animation works well */}
-      {privacySetting && (
+      {/** setting has always value except at initial. so the animation works well */}
+      {setting && (
         <WithAnimation
           isVisible={isPrivacyEditorVisible}
           options={ANIMATION_DIALOG_FAST}
           render={(style) => (
             <PrivacyEditor
-              title={privacySetting.title}
-              settingkey={privacySetting.settingkey}
-              currentValue={account[privacySetting.settingkey]}
-              possibleValues={privacySetting.visibilityOptions}
+              title={setting.title}
+              settingkey={setting.settingkey}
+              currentValue={account[setting.settingkey]}
+              possibleValues={setting.visibilityOptions}
+              onSelect={handleVisibilitySelect}
               onClose={closePrivacyEditor}
               animationStyle={style}
             />
           )}
+          onUnmount={doAccountUpdate}
         />
       )}
     </SettingsCategoryContainer>

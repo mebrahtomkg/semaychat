@@ -1,16 +1,4 @@
-import { Account, VisibilityOption } from '@/types';
-
-interface IPrivacySetting {
-  settingkey: keyof Pick<
-    Account,
-    | 'emailVisibility'
-    | 'lastSeenVisibility'
-    | 'profilePhotosVisibility'
-    | 'messageSender'
-  >;
-  title: string;
-  visibilityOptions: VisibilityOption[];
-}
+import { IPrivacySetting } from '../../types';
 
 export const PRIVACY_SETTINGS: IPrivacySetting[] = [
   {
