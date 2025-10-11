@@ -7,13 +7,14 @@ import {
   Title,
 } from '../../styles';
 import { NextIcon } from '@/components/icons';
-import { useAccount, useUpdateAccount } from '@/hooks';
+import { useAccount } from '@/hooks';
 import { PRIVACY_SETTINGS } from './constants';
 import { ANIMATION_DIALOG_FAST, WithAnimation } from '@/Animation';
 import { VISIBILITY_OPTION_LABELS } from '../../constants';
 import PrivacyEditor from '../PrivacyEditor';
 import { VisibilityOption } from '@/types';
 import { IPrivacySetting } from '../../types';
+import { addAccountUpdateRequest } from '@/store/useAccountUpdateRequestStore';
 
 type DataUpdate = Partial<
   Record<IPrivacySetting['settingkey'], VisibilityOption>
@@ -21,7 +22,6 @@ type DataUpdate = Partial<
 
 const PrivacySettings = () => {
   const account = useAccount();
-  const { updateAccount } = useUpdateAccount();
   const dataUpdateRef = useRef<DataUpdate | null>(null);
   const [setting, setSetting] = useState<IPrivacySetting | null>(null);
   const [isPrivacyEditorVisible, setIsPrivacyEditorVisible] = useState(false);
@@ -49,9 +49,9 @@ const PrivacySettings = () => {
     if (dataUpdateRef.current) {
       const data = dataUpdateRef.current;
       dataUpdateRef.current = null;
-      updateAccount(data);
+      addAccountUpdateRequest(data);
     }
-  }, [updateAccount]);
+  }, []);
 
   const privacySettingsElements = useMemo(
     () =>

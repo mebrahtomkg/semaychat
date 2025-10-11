@@ -13,6 +13,7 @@ import { Spinner } from '@/components';
 import { useThemeStore } from '@/store';
 import AppThemeProvider from './AppThemeProvider';
 import SettingsModal from '@/features/Settings';
+import AccountUpdateProcessor from './AccountUpdateProcessor';
 
 const App = () => {
   useResponsiveController();
@@ -33,6 +34,8 @@ const App = () => {
       <AppThemeProvider $theme={theme}>
         {isLoggedIn ? (
           <AppStyled $isLargeScreen={isLargeScreen}>
+            <AccountUpdateProcessor />
+
             <MessageRequestsProcessor />
 
             <SideBar />
