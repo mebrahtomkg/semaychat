@@ -69,6 +69,10 @@ const darkThemeProperties = css`
   --fg-button: #a2b9f3;
   --fg-icon-button: #ffffff;
   --fg-msg-time: #b4b4b4;
+  --fg-text-input: #f0f0f0;
+  --fg-text-input-border: #0985a2;
+  --fg-text-input-border-focused: #10dddd;
+  --fg-text-input-placehoder: #969aa4;
 `;
 
 const AppThemeProvider = styled.div<{ $theme: Theme }>`

@@ -12,8 +12,8 @@ import useResponsiveController from './useResponsiveController';
 import { Spinner } from '@/components';
 import { useThemeStore } from '@/store';
 import AppThemeProvider from './AppThemeProvider';
-import SettingsModal from '@/features/Settings';
 import AccountUpdateProcessor from './AccountUpdateProcessor';
+import Modals from './Modals';
 
 const App = () => {
   useResponsiveController();
@@ -49,7 +49,7 @@ const App = () => {
               </Routes>
             </PageContainer>
 
-            <SettingsModal />
+            <Modals />
           </AppStyled>
         ) : (
           <Guest />

@@ -1,42 +1,198 @@
+import { BackButton, CloseButton } from '@/components/buttons';
+import { NextIcon } from '@/components/icons';
+import { useResponsive } from '@/hooks';
+import { useMemo, useState, type CSSProperties, type FC } from 'react';
+import BioEditor from './components/BioEditor';
+import NameEditor from './components/NameEditor';
+import PasswordEditor from './components/PasswordEditor';
+import ProfilePhotoSettings from './components/ProfilePhotoSettings';
+import UsernameEditor from './components/UsernameEditor';
+import {
+  ArrowIconContainer,
+  Description,
+  MainTitle,
+  MenuDivider,
+  MenuItemButton,
+  NavMenu,
+  NavMenuContainer,
+  SettingsCategoryContainer,
+  SettingsItemContainer,
+  SettingsPage,
+  SettingsPageHeader,
+  SettingsPageOverlay,
+  Title,
+} from './styles';
+import useSettings from './useSettings';
 import { useAppStateStore } from '@/store';
-import Settings from './Settings';
-import { useMemo } from 'react';
-import { useAnimation } from '@/Animation';
+import BlockedUsers from '../BlockedUsers';
+import { ANIMATION_DIALOG_FAST, WithAnimation } from '@/Animation';
+import PrivacySettings from './components/PrivacySettings';
 
-const SettingsModal = () => {
-  const isSettingsModalVisible = useAppStateStore(
-    (state) => state.isSettingsModalVisible,
+type SettingsCategory = 'account' | 'profilePhoto' | 'security' | 'privacy';
+
+interface SettingsProps {
+  animationStyle?: CSSProperties;
+}
+
+const Settings: FC<SettingsProps> = ({ animationStyle }) => {
+  const { windowWidth } = useResponsive();
+
+  const closeSettingsModal = useAppStateStore(
+    (state) => state.closeSettingsModal,
   );
 
-  const animationOptions = useMemo(
-    () => ({
-      initialStyles: {
-        opacity: 0.5,
-        transform: 'scale(0.8)',
-      },
-      finalStyles: {
-        opacity: 1,
-        transform: 'scale(1.0)',
-      },
-      transition: {
-        property: ['transform', 'opacity'],
-        duration: [200, 200],
-        timingFunction: ['ease-in-out', 'ease-in-out'],
-      },
-    }),
-    [],
+  const {
+    accountSettingsItems,
+    securitySettingsItems,
+    activeModal,
+    closeModal,
+  } = useSettings();
+
+  const [category, setCategory] = useState<SettingsCategory>('profilePhoto');
+
+  const accountSettingsElements = useMemo(
+    () =>
+      accountSettingsItems.map((item, index) => (
+        <SettingsItemContainer
+          key={`${index}-${item.title}`}
+          onClick={item.onClick}
+        >
+          <div>
+            <Title>{item.title}</Title>
+            <Description>{item.description}</Description>
+          </div>
+
+          <ArrowIconContainer>
+            <NextIcon />
+          </ArrowIconContainer>
+        </SettingsItemContainer>
+      )),
+
+    [accountSettingsItems],
   );
 
-  const settingsAnimation = useAnimation(
-    isSettingsModalVisible,
-    animationOptions,
+  const securitySettingsElements = useMemo(
+    () =>
+      securitySettingsItems.map((item, index) => (
+        <SettingsItemContainer
+          key={`${index}-${item.title}`}
+          onClick={item.onClick}
+        >
+          <div>
+            <Title>{item.title}</Title>
+            <Description>{item.description}</Description>
+          </div>
+
+          <ArrowIconContainer>
+            <NextIcon />
+          </ArrowIconContainer>
+        </SettingsItemContainer>
+      )),
+    [securitySettingsItems],
   );
 
   return (
-    settingsAnimation.isMounted && (
-      <Settings animationStyle={settingsAnimation.animationStyle} />
-    )
+    <SettingsPageOverlay style={{ ...animationStyle, transform: undefined }}>
+      <SettingsPage style={animationStyle} $windowWidth={windowWidth}>
+        {windowWidth > 500 && (
+          <SettingsPageHeader>
+            <MainTitle>Settings</MainTitle>
+            <CloseButton onClick={closeSettingsModal} />
+          </SettingsPageHeader>
+        )}
+        <NavMenuContainer>
+          {windowWidth <= 500 && <BackButton onClick={closeSettingsModal} />}
+          <NavMenu $windowWidth={windowWidth}>
+            <MenuItemButton
+              $isActive={category === 'account'}
+              onClick={() => setCategory('account')}
+            >
+              Account
+            </MenuItemButton>
+            <MenuDivider />
+
+            <MenuItemButton
+              $isActive={category === 'profilePhoto'}
+              onClick={() => setCategory('profilePhoto')}
+            >
+              Profile Photo
+            </MenuItemButton>
+            <MenuDivider />
+
+            <MenuItemButton
+              $isActive={category === 'security'}
+              onClick={() => setCategory('security')}
+            >
+              Security
+            </MenuItemButton>
+            <MenuDivider />
+
+            <MenuItemButton
+              $isActive={category === 'privacy'}
+              onClick={() => setCategory('privacy')}
+            >
+              Privacy
+            </MenuItemButton>
+          </NavMenu>
+        </NavMenuContainer>
+        {category === 'profilePhoto' && <ProfilePhotoSettings />}
+        {category === 'account' && (
+          <SettingsCategoryContainer>
+            {accountSettingsElements}
+          </SettingsCategoryContainer>
+        )}
+        {category === 'security' && (
+          <SettingsCategoryContainer>
+            {securitySettingsElements}
+          </SettingsCategoryContainer>
+        )}
+        {category === 'privacy' && <PrivacySettings />}
+
+        <WithAnimation
+          isVisible={activeModal === 'UsernameEditor'}
+          options={ANIMATION_DIALOG_FAST}
+          render={(style) => (
+            <UsernameEditor onClose={closeModal} animationStyle={style} />
+          )}
+        />
+
+        <WithAnimation
+          isVisible={activeModal === 'NameEditor'}
+          options={ANIMATION_DIALOG_FAST}
+          render={(style) => (
+            <NameEditor onClose={closeModal} animationStyle={style} />
+          )}
+        />
+
+        <WithAnimation
+          isVisible={activeModal === 'BioEditor'}
+          options={ANIMATION_DIALOG_FAST}
+          render={(style) => (
+            <BioEditor onClose={closeModal} animationStyle={style} />
+          )}
+        />
+
+        <WithAnimation
+          isVisible={activeModal === 'PasswordEditor'}
+          options={ANIMATION_DIALOG_FAST}
+          render={(style) => (
+            <PasswordEditor onClose={closeModal} animationStyle={style} />
+          )}
+        />
+
+        <WithAnimation
+          isVisible={activeModal === 'BlockedUsers'}
+          options={ANIMATION_DIALOG_FAST}
+          render={(animationStyle) => (
+            <BlockedUsers
+              onClose={closeModal}
+              animationStyle={animationStyle}
+            />
+          )}
+        />
+      </SettingsPage>
+    </SettingsPageOverlay>
   );
 };
 
-export default SettingsModal;
+export default Settings;

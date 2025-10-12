@@ -6,10 +6,10 @@ import {
 } from 'react';
 import { useAccount } from '@/hooks';
 import useAccountUpdater from '../../hooks/useAccountUpdater';
-import EditorModal from '../EditorModal';
-import TextInput from '../TextInput';
+import TextInput from '../TextInputPro';
 import { checkFirstName, checkLastName } from './utils';
-import { Spinner } from '@/components';
+import { HeaderSection, MainSection, NameEditorStyled, Title } from './styles';
+import { BackButton } from '@/components/buttons';
 
 interface NameEditorProps {
   onClose: () => void;
@@ -89,32 +89,33 @@ const NameEditor: FC<NameEditorProps> = ({ onClose, animationStyle }) => {
   };
 
   return (
-    <EditorModal
-      title={'Edit name'}
-      animationStyle={animationStyle}
-      onClose={onClose}
-      onDone={updateName}
-    >
-      <TextInput
-        name={'firstName'}
-        placeholder={'First name (required)'}
-        value={state.firstName}
-        shouldFocus={state.activeField === 'firstName'}
-        onChange={updateInputValue}
-        onEnterPress={handleEnterPress}
-        errorMessage={state.firstNameError}
-      />
-      <TextInput
-        name={'lastName'}
-        placeholder={'Last name (optional)'}
-        value={state.lastName}
-        shouldFocus={state.activeField === 'lastName'}
-        onChange={updateInputValue}
-        onEnterPress={handleEnterPress}
-        errorMessage={state.lastNameError}
-      />
-      {isUpdating && <Spinner />}
-    </EditorModal>
+    <NameEditorStyled>
+      <HeaderSection>
+        <BackButton onClick={onClose} />
+        <Title>Edit name</Title>
+      </HeaderSection>
+
+      <MainSection>
+        <TextInput
+          name={'firstName'}
+          value={state.firstName}
+          shouldFocus={state.activeField === 'firstName'}
+          onChange={updateInputValue}
+          onEnterPress={handleEnterPress}
+          errorMessage={state.firstNameError}
+          label="First name (required)"
+        />
+        <TextInput
+          name={'lastName'}
+          value={state.lastName}
+          shouldFocus={state.activeField === 'lastName'}
+          onChange={updateInputValue}
+          onEnterPress={handleEnterPress}
+          label="Last name (optional)"
+          errorMessage={state.lastNameError}
+        />
+      </MainSection>
+    </NameEditorStyled>
   );
 };
 
