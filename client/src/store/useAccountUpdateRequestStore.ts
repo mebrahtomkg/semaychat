@@ -1,4 +1,7 @@
+import { QUERY_KEY_ACCOUNT } from '@/constants';
+import queryClient from '@/queryClient';
 import { Account } from '@/types';
+import { deepEqual } from '@/utils';
 import { create } from 'zustand';
 
 let lastUniqueId = 0;
@@ -27,10 +30,17 @@ const useAccountUpdateRequestStore = create<AccountUpdateRequest | null>(
 export const addAccountUpdateRequest = (
   payload: AccountUpdateRequest['payload'],
 ) => {
+  const account = queryClient.getQueryData<Account>([QUERY_KEY_ACCOUNT]);
+
+  // If this payload does not bring any new update do not dispatch
+  if (account && deepEqual(account, { ...account, ...payload })) return;
+
   useAccountUpdateRequestStore.setState((prevRequest) => {
-    const id = getUniqueId();
-    if (!prevRequest) return { id, payload };
-    return { id, payload: { ...prevRequest.payload, ...payload } };
+    const data = prevRequest ? { ...prevRequest.payload, ...payload } : payload;
+    queryClient.setQueryData([QUERY_KEY_ACCOUNT], (oldAccount) =>
+      oldAccount ? { ...oldAccount, ...data } : undefined,
+    );
+    return { id: getUniqueId(), payload: data };
   }, true);
 };
 

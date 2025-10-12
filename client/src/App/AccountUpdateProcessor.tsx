@@ -67,15 +67,6 @@ const AccountUpdateProcessor = () => {
   });
 
   useEffect(() => {
-    if (request) {
-      queryClient.setQueryData([QUERY_KEY_ACCOUNT], (oldAccount) => {
-        if (!oldAccount) return undefined;
-        return { ...oldAccount, ...request.payload };
-      });
-    }
-  }, [request]);
-
-  useEffect(() => {
     if (request && variables?.id !== request.id) {
       abort();
       mutate(request);

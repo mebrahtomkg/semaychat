@@ -28,7 +28,7 @@ const RadioButton: FC<RadioButtonProps> = ({
   onChange,
 }) => {
   // Handle change event from the native input
-  const handleChange = useCallback(() => {
+  const handleClick = useCallback(() => {
     if (!disabled) {
       onChange(value);
     }
@@ -43,10 +43,11 @@ const RadioButton: FC<RadioButtonProps> = ({
         value={value}
         checked={isChecked}
         disabled={disabled}
-        onChange={handleChange}
+        onClick={handleClick}
+        onChange={handleClick}
       />
 
-      <RadioButtonLabel htmlFor={id}>
+      <RadioButtonLabel htmlFor={id} onClick={handleClick}>
         <RadioButtonIconContainer>
           <RadioButtonIconStyled />
           <RadioButtonBallIconStyled $isVisible={isChecked} />

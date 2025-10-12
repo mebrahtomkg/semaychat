@@ -19,6 +19,7 @@ export const RadioButtonLabel = styled.label`
   display: flex;
   align-items: center;
   cursor: pointer;
+  user-select: none;
   font-size: 1rem;
   font-weight: 400;
   color: var(--fg-normal);
