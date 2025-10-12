@@ -12,17 +12,13 @@ import { PRIVACY_SETTINGS } from './constants';
 import { ANIMATION_DIALOG_FAST, WithAnimation } from '@/Animation';
 import { VISIBILITY_OPTION_LABELS } from '../../constants';
 import PrivacyEditor from '../PrivacyEditor';
-import { VisibilityOption } from '@/types';
+import { Account, VisibilityOption } from '@/types';
 import { IPrivacySetting } from '../../types';
 import { addAccountUpdateRequest } from '@/store/useAccountUpdateRequestStore';
 
-type DataUpdate = Partial<
-  Record<IPrivacySetting['settingkey'], VisibilityOption>
->;
-
 const PrivacySettings = () => {
   const account = useAccount();
-  const dataUpdateRef = useRef<DataUpdate | null>(null);
+  const dataUpdateRef = useRef<Partial<Account> | null>(null);
   const [setting, setSetting] = useState<IPrivacySetting | null>(null);
   const [isPrivacyEditorVisible, setIsPrivacyEditorVisible] = useState(false);
 

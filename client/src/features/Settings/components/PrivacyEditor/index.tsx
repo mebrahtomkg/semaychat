@@ -40,6 +40,9 @@ const PrivacyEditor: FC<PrivacyEditorProps> = ({
 
   const handleSelect = useCallback(
     async (value: string) => {
+      // If the value is not changed. just close the modal.
+      if (value === currentValue) return onClose();
+
       setSelectedValue(value as VisibilityOption);
 
       // Let the user see the selected button get animated before closing the modal
@@ -47,7 +50,7 @@ const PrivacyEditor: FC<PrivacyEditorProps> = ({
 
       onSelect(settingkey, value as VisibilityOption);
     },
-    [setTimer, onSelect, settingkey],
+    [currentValue, onClose, setTimer, onSelect, settingkey],
   );
 
   const radioButtons = useMemo(() => {
