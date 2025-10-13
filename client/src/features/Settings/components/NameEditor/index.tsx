@@ -3,13 +3,23 @@ import {
   type FC,
   useState,
   InputEventHandler,
+  useCallback,
+  KeyboardEventHandler,
+  useRef,
 } from 'react';
 import { useAccount } from '@/hooks';
-import useAccountUpdater from '../../hooks/useAccountUpdater';
-import TextInput from '../TextInputPro';
+import TextInput, { TextInputImperativeHandle } from '../TextInputPro';
 import { checkFirstName, checkLastName } from './utils';
-import { HeaderSection, MainSection, NameEditorStyled, Title } from './styles';
+import {
+  DoneButton,
+  HeaderSection,
+  MainSection,
+  NameEditorStyled,
+  Title,
+} from './styles';
 import { BackButton } from '@/components/buttons';
+import { TickIcon } from '@/components/icons';
+import { addAccountUpdateRequest } from '@/store/useAccountUpdateRequestStore';
 
 interface NameEditorProps {
   onClose: () => void;
@@ -17,102 +27,132 @@ interface NameEditorProps {
 }
 
 const NameEditor: FC<NameEditorProps> = ({ onClose, animationStyle }) => {
-  const account = useAccount();
+  const { firstName: initialFirstName, lastName: initialLastName } =
+    useAccount();
 
-  const [state, setState] = useState({
-    firstName: account.firstName,
-    firstNameError: '',
-    lastName: account.lastName || '',
-    lastNameError: '',
-    activeField: 'firstName',
-  });
+  const firstNameInputRef = useRef<TextInputImperativeHandle | null>(null);
+  const lastNameInputRef = useRef<TextInputImperativeHandle | null>(null);
 
-  const updateInputValue: InputEventHandler<HTMLInputElement> = (event) => {
-    const { value, name } = event.currentTarget;
-    setState((prevState) => ({
-      ...prevState,
-      [name]: value,
-      firstNameError: '',
-      lastNameError: '',
-      activeField: name,
-    }));
-  };
+  const [firstName, setFirstName] = useState(initialFirstName || '');
+  const [lastName, setLastName] = useState(initialLastName || '');
 
-  const { updateAccount, isUpdating } = useAccountUpdater();
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
 
-  const updateName = async () => {
-    const firstName = state.firstName.trim();
-    const lastName = state.lastName.trim();
-    const firstNameError = checkFirstName(firstName);
-    const lastNameError = checkLastName(lastName);
-    if (firstNameError || lastNameError) {
-      const activeField = firstNameError ? 'firstName' : 'lastName';
-      setState((prevState) => ({
-        ...prevState,
-        firstNameError,
-        lastNameError,
-        activeField,
-      }));
-    } else {
-      if (firstName === account.firstName && lastName === account.lastName) {
-        onClose();
-      } else {
-        const { success, message } = await updateAccount({
-          firstName,
-          lastName,
-        });
+  const handleFirstNameChange: InputEventHandler<HTMLInputElement> =
+    useCallback((e) => {
+      setFirstName(e.currentTarget.value);
+      setFirstNameError('');
+    }, []);
 
-        if (success) {
-          onClose();
-        } else {
-          setState((prevState) => ({
-            ...prevState,
-            firstNameError: message || '',
-            lastNameError: '',
-          }));
+  const handleLastNameChange: InputEventHandler<HTMLInputElement> = useCallback(
+    (e) => {
+      setLastName(e.currentTarget.value);
+      setLastNameError('');
+    },
+    [],
+  );
+
+  const handleSubmit = useCallback(() => {
+    const trimmedFirstName = firstName.trim();
+    const trimmedLastName = lastName.trim();
+
+    let error = checkFirstName(trimmedFirstName);
+    if (error) {
+      setFirstNameError(error);
+      firstNameInputRef.current?.focusInput();
+      firstNameInputRef.current?.animateInfo();
+      return;
+    }
+
+    error = checkLastName(trimmedLastName);
+    if (error) {
+      setLastNameError(error);
+      lastNameInputRef.current?.focusInput();
+      lastNameInputRef.current?.animateInfo();
+      return;
+    }
+
+    if (
+      trimmedFirstName === initialFirstName &&
+      trimmedLastName === initialLastName
+    ) {
+      onClose();
+      return;
+    }
+
+    addAccountUpdateRequest({
+      firstName: trimmedFirstName,
+      lastName: trimmedLastName,
+    });
+
+    onClose();
+  }, [firstName, initialFirstName, initialLastName, lastName, onClose]);
+
+  const handleEnterPress = useCallback<KeyboardEventHandler<HTMLInputElement>>(
+    (e) => {
+      switch (e.currentTarget.name) {
+        case 'firstName': {
+          const error = checkFirstName(firstName.trim());
+          if (error) {
+            setFirstNameError(error);
+            firstNameInputRef.current?.animateInfo();
+          } else {
+            lastNameInputRef.current?.focusInput();
+          }
+          break;
+        }
+
+        case 'lastName': {
+          const error = checkLastName(lastName.trim());
+          if (error) {
+            setLastNameError(error);
+            lastNameInputRef.current?.animateInfo();
+          } else {
+            handleSubmit();
+          }
+          break;
         }
       }
-    }
-  };
-
-  const handleEnterPress: InputEventHandler<HTMLInputElement> = (event) => {
-    if (event.currentTarget.name === 'firstName') {
-      const firstNameError = checkFirstName(state.firstName.trim());
-      if (firstNameError) {
-        setState((prevState) => ({ ...prevState, firstNameError }));
-      } else {
-        setState((prevState) => ({ ...prevState, activeField: 'lastName' }));
-      }
-    } else {
-      updateName();
-    }
-  };
+    },
+    [firstName, lastName, handleSubmit],
+  );
 
   return (
-    <NameEditorStyled>
+    <NameEditorStyled style={animationStyle}>
       <HeaderSection>
         <BackButton onClick={onClose} />
+
         <Title>Edit name</Title>
+
+        <DoneButton type="button" onClick={handleSubmit}>
+          <TickIcon />
+        </DoneButton>
       </HeaderSection>
 
       <MainSection>
         <TextInput
-          name={'firstName'}
-          value={state.firstName}
-          shouldFocus={state.activeField === 'firstName'}
-          onChange={updateInputValue}
-          onEnterPress={handleEnterPress}
-          errorMessage={state.firstNameError}
+          id="id-first-name-text-input"
           label="First name (required)"
+          type="text"
+          name="firstName"
+          value={firstName}
+          ref={firstNameInputRef}
+          onChange={handleFirstNameChange}
+          onEnter={handleEnterPress}
+          errorMessage={firstNameError}
         />
+
         <TextInput
-          name={'lastName'}
-          value={state.lastName}
-          shouldFocus={state.activeField === 'lastName'}
-          onChange={updateInputValue}
-          onEnterPress={handleEnterPress}
+          id="id-last-name-text-input"
           label="Last name (optional)"
-          errorMessage={state.lastNameError}
+          type="text"
+          name="lastName"
+          value={lastName}
+          ref={lastNameInputRef}
+          onChange={handleLastNameChange}
+          onEnter={handleEnterPress}
+          errorMessage={lastNameError}
         />
       </MainSection>
     </NameEditorStyled>

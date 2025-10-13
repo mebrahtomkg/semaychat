@@ -1,101 +1,120 @@
 import {
   FC,
   FormEventHandler,
+  HTMLInputTypeAttribute,
   KeyboardEventHandler,
+  RefObject,
   useCallback,
   useEffect,
+  useImperativeHandle,
   useRef,
   useState,
 } from 'react';
 import {
-  HelperText,
+  Info,
+  InfoContainer,
   InputStyled,
   LabelStyled,
   TextInputStyled,
+  TextInputViewPort,
 } from './styles';
 
+export interface TextInputImperativeHandle {
+  focusInput: () => void;
+  animateInfo: () => void;
+}
+
 interface TextInputProps {
+  id: string;
   label: string;
-  type?: string;
+  type: HTMLInputTypeAttribute;
   name: string;
-  placeholder?: string;
   value: string;
-  shouldFocus?: boolean;
-  onChange: FormEventHandler;
-  onEnterPress?: KeyboardEventHandler<HTMLInputElement>;
+  onChange: FormEventHandler<HTMLInputElement>;
+  ref: RefObject<TextInputImperativeHandle | null>;
+  onEnter?: KeyboardEventHandler<HTMLInputElement>;
   helperText?: string;
   errorMessage?: string;
 }
 
 const TextInput: FC<TextInputProps> = ({
+  id,
   label,
-  type = 'text',
+  type,
   name,
-  placeholder = '',
   value,
-  shouldFocus = true,
   onChange,
-  onEnterPress,
+  ref,
+  onEnter,
   helperText,
   errorMessage,
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const infoRef = useRef<HTMLSpanElement | null>(null);
+  const infoRef = useRef<HTMLParagraphElement | null>(null);
 
   const [isFocused, setIsFocused] = useState(false);
   const handleFocus = useCallback(() => setIsFocused(true), []);
   const handleBlur = useCallback(() => setIsFocused(false), []);
 
-  useEffect(() => {
-    if (shouldFocus && inputRef.current) inputRef.current.focus();
-  }, [shouldFocus]);
+  useImperativeHandle<
+    TextInputImperativeHandle,
+    TextInputImperativeHandle
+  >(ref, () => {
+    return {
+      focusInput() {
+        inputRef.current?.focus();
+      },
 
-  useEffect(() => {
-    if (errorMessage && infoRef.current) {
-      infoRef.current.animate(
-        [
-          { transform: 'translateX(0px)' },
-          { transform: 'translateX(12px)' },
-          { transform: 'translateX(0px)' },
-          { transform: 'translateX(12px)' },
-          { transform: 'translateX(0px)' },
-        ],
-        700,
-      );
-    }
-  }, [errorMessage]);
-
-  const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (event) => {
-    if (onEnterPress && event.key === 'Enter') {
-      event.preventDefault();
-      onEnterPress(event);
-    }
-  };
-
-  const handleClick = useCallback(() => {
-    if (inputRef.current) inputRef.current.focus();
+      animateInfo() {
+        infoRef.current?.animate(
+          [
+            { transform: 'translateX(0rem)' },
+            { transform: 'translateX(0.8rem)' },
+            { transform: 'translateX(0rem)' },
+            { transform: 'translateX(0.8rem)' },
+            { transform: 'translateX(0rem)' },
+          ],
+          700,
+        );
+      },
+    };
   }, []);
 
-  return (
-    <TextInputStyled onClick={handleClick} $isFocused={isFocused}>
-      <LabelStyled htmlFor={name} $isAsLabel={!!value || isFocused}>
-        {label}
-      </LabelStyled>
+  const handleKeyDown = useCallback<KeyboardEventHandler<HTMLInputElement>>(
+    (e) => {
+      if (onEnter && e.key === 'Enter') {
+        e.preventDefault();
+        onEnter(e);
+      }
+    },
+    [onEnter],
+  );
 
-      <InputStyled
-        type={type}
-        name={name}
-        placeholder={placeholder}
-        value={value}
-        ref={inputRef}
-        onKeyDown={handleKeyDown}
-        onInput={onChange}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-      />
-      {(errorMessage || helperText) && (
-        <HelperText ref={infoRef}>{errorMessage || helperText}</HelperText>
-      )}
+  const focusInput = useCallback(() => inputRef.current?.focus(), []);
+
+  const info = errorMessage || helperText;
+
+  return (
+    <TextInputStyled>
+      <TextInputViewPort onClick={focusInput} $isFocused={isFocused}>
+        <LabelStyled htmlFor={id} $isAsLabel={!!value || isFocused}>
+          {label}
+        </LabelStyled>
+
+        <InputStyled
+          id={id}
+          type={type}
+          name={name}
+          value={value}
+          ref={inputRef}
+          onKeyDown={handleKeyDown}
+          onInput={onChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+        />
+      </TextInputViewPort>
+
+      <InfoContainer>{info && <Info ref={infoRef}>{info}</Info>}</InfoContainer>
     </TextInputStyled>
   );
 };

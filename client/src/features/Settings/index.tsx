@@ -27,6 +27,7 @@ import { useAppStateStore } from '@/store';
 import BlockedUsers from '../BlockedUsers';
 import { ANIMATION_DIALOG_FAST, WithAnimation } from '@/Animation';
 import PrivacySettings from './components/PrivacySettings';
+import NameSettings from './components/NameSettings';
 
 type SettingsCategory = 'account' | 'profilePhoto' | 'security' | 'privacy';
 
@@ -138,6 +139,7 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
         {category === 'profilePhoto' && <ProfilePhotoSettings />}
         {category === 'account' && (
           <SettingsCategoryContainer>
+            <NameSettings key="hghjdjd" />
             {accountSettingsElements}
           </SettingsCategoryContainer>
         )}
@@ -153,14 +155,6 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
           options={ANIMATION_DIALOG_FAST}
           render={(style) => (
             <UsernameEditor onClose={closeModal} animationStyle={style} />
-          )}
-        />
-
-        <WithAnimation
-          isVisible={activeModal === 'NameEditor'}
-          options={ANIMATION_DIALOG_FAST}
-          render={(style) => (
-            <NameEditor onClose={closeModal} animationStyle={style} />
           )}
         />
 

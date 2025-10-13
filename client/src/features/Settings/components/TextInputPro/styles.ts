@@ -1,21 +1,28 @@
 import styled, { css } from 'styled-components';
 
-export const TextInputStyled = styled.div<{ $isFocused: boolean }>`
+export const TextInputStyled = styled.div`
   --text-input-padding: 1rem;
   --text-input-font-size: 1rem;
   --text-input-border-color: var(--fg-text-input-border);
+  margin-bottom: 1.6rem;
+  background-color: inherit;
+`;
+
+export const TextInputViewPort = styled.div<{ $isFocused: boolean }>`
   position: relative;
-  margin-bottom: 3rem;
-  background-color: var(--bg-hover);
+  margin-bottom: 0.5rem;
+  padding: var(--text-input-padding);
+  background-color: inherit;
   height: 3.4rem;
-  border: 1px solid;
+  outline-style: solid;
+  outline-width: 1px;
   border-radius: 7px;
   cursor: text;
 
   ${(props) =>
     props.$isFocused &&
     css`
-      border: 2px solid;
+      outline-width: 2px;
       --text-input-border-color: var(--fg-text-input-border-focused);
     `}
 
@@ -23,7 +30,7 @@ export const TextInputStyled = styled.div<{ $isFocused: boolean }>`
     --text-input-border-color: var(--fg-text-input-border-focused);
   }
 
-  border-color: var(--text-input-border-color);
+  outline-color: var(--text-input-border-color);
 `;
 
 export const InputStyled = styled.input`
@@ -50,13 +57,8 @@ export const LabelStyled = styled.label<{
     display: block;
     width: fit-content;
     padding: 0 0.4rem;
-    margin-left: calc(var(--text-input-padding) - 0.4rem);
-    margin-top: var(--text-input-padding);
-    font-size: var(--text-input-font-size);
-    font-weight: 500;
+    margin-left: -0.4rem;
     background-color: inherit;
-    color: var(--fg-text-input-placehoder);
-    transform: translateY(0rem);
     transition:
       transform 200ms ease,
       font-size 200ms ease,
@@ -65,18 +67,29 @@ export const LabelStyled = styled.label<{
   `}
 
   ${(props) =>
-    props.$isAsLabel &&
-    css`
-      font-size: 0.8rem;
-      font-weight: 400;
-      color: var(--text-input-border-color);
-      transform: translateY(-1.65rem);
-    `}
+    props.$isAsLabel
+      ? css`
+          font-size: 0.8rem;
+          font-weight: 400;
+          color: var(--text-input-border-color);
+          transform: translateY(-1.7rem);
+        `
+      : css`
+          color: var(--fg-text-input-placehoder);
+          font-size: var(--text-input-font-size);
+          font-weight: 500;
+          transform: translateY(0rem);
+        `}
 `;
 
-export const HelperText = styled.span`
-  display: block;
-  color: var(--fg-main);
+export const InfoContainer = styled.div`
+  width: 100%;
+  height: 2rem;
+  margin-left: 0.2rem;
+`;
+
+export const Info = styled.p`
+  color: var(--fg-description);
   font-size: 0.8rem;
   font-weight: 500;
 `;

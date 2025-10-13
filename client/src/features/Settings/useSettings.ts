@@ -17,7 +17,7 @@ interface SettingsItem {
 const useSettings = () => {
   const blockedUsers = useBlockedUsers();
 
-  const { email, username, bio, fullName } = useAccountInfo();
+  const { email, username, bio } = useAccountInfo();
 
   const [activeModal, setActiveModal] = useState<ModalName | null>(null);
 
@@ -38,18 +38,13 @@ const useSettings = () => {
         onClick: () => openModal('UsernameEditor'),
       },
       {
-        title: fullName,
-        description: 'Name',
-        onClick: () => openModal('NameEditor'),
-      },
-      {
         title: bio ? bio : 'Bio',
         description: bio ? 'Bio' : 'Add a few words about yourself',
         onClick: () => openModal('BioEditor'),
       },
       { title: email || '', description: 'Email', onClick: undefined },
     ],
-    [bio, email, fullName, openModal, username],
+    [bio, email, openModal, username],
   );
 
   const securitySettingsItems: SettingsItem[] = useMemo(

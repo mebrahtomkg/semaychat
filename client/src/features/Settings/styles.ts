@@ -93,7 +93,10 @@ export const MenuDivider = styled.div`
   background-color: var(--bg-tab-divider);
 `;
 
-export const SettingsCategoryContainer = styled.div``;
+export const SettingsCategoryContainer = styled.div`
+  position: relative;
+  background-color: inherit;
+`;
 
 export const SettingsItemContainer = styled.div`
   padding: 0.8rem 1rem;
