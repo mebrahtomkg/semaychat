@@ -4,7 +4,7 @@ import { checkUsername } from './utils';
 import { useAccount } from '@/hooks';
 import TextInput from '../TextInput';
 import useAccountUpdater from '../../hooks/useAccountUpdater';
-import EditorModal from '../EditorModalPro';
+import EditorModal from '../EditorModal';
 
 interface UsernameEditorProps {
   onClose: () => void;

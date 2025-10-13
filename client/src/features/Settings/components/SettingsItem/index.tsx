@@ -10,7 +10,7 @@ import { FC } from 'react';
 interface SettingsItemProps {
   title: string;
   description: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const SettingsItem: FC<SettingsItemProps> = ({

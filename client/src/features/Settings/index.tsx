@@ -1,32 +1,26 @@
 import { BackButton, CloseButton } from '@/components/buttons';
-import { NextIcon } from '@/components/icons';
-import { useResponsive } from '@/hooks';
-import { useMemo, useState, type CSSProperties, type FC } from 'react';
-import BioEditor from './components/BioEditor';
-import PasswordEditor from './components/PasswordEditor';
+import { useAccountInfo, useResponsive } from '@/hooks';
+import { useState, type CSSProperties, type FC } from 'react';
 import ProfilePhotoSettings from './components/ProfilePhotoSettings';
 import {
-  ArrowIconContainer,
-  Description,
   MainTitle,
   MenuDivider,
   MenuItemButton,
   NavMenu,
   NavMenuContainer,
   SettingsCategoryContainer,
-  SettingsItemContainer,
   SettingsPage,
   SettingsPageHeader,
   SettingsPageOverlay,
-  Title,
 } from './styles';
-import useSettings from './useSettings';
 import { useAppStateStore } from '@/store';
-import BlockedUsers from '../BlockedUsers';
-import { ANIMATION_DIALOG_FAST, WithAnimation } from '@/Animation';
 import PrivacySettings from './components/PrivacySettings';
 import NameSettings from './components/NameSettings';
 import UsernameSettings from './components/UsernameSettings';
+import BioSettings from './components/BioSettings';
+import SettingsItem from './components/SettingsItem';
+import PasswordSettings from './components/PasswordSettings';
+import BlockedUsersSettings from './components/BlockedUsersSettings';
 
 type SettingsCategory = 'account' | 'profilePhoto' | 'security' | 'privacy';
 
@@ -36,60 +30,13 @@ interface SettingsProps {
 
 const Settings: FC<SettingsProps> = ({ animationStyle }) => {
   const { windowWidth } = useResponsive();
+  const { email } = useAccountInfo();
 
   const closeSettingsModal = useAppStateStore(
     (state) => state.closeSettingsModal,
   );
 
-  const {
-    accountSettingsItems,
-    securitySettingsItems,
-    activeModal,
-    closeModal,
-  } = useSettings();
-
   const [category, setCategory] = useState<SettingsCategory>('profilePhoto');
-
-  const accountSettingsElements = useMemo(
-    () =>
-      accountSettingsItems.map((item, index) => (
-        <SettingsItemContainer
-          key={`${index}-${item.title}`}
-          onClick={item.onClick}
-        >
-          <div>
-            <Title>{item.title}</Title>
-            <Description>{item.description}</Description>
-          </div>
-
-          <ArrowIconContainer>
-            <NextIcon />
-          </ArrowIconContainer>
-        </SettingsItemContainer>
-      )),
-
-    [accountSettingsItems],
-  );
-
-  const securitySettingsElements = useMemo(
-    () =>
-      securitySettingsItems.map((item, index) => (
-        <SettingsItemContainer
-          key={`${index}-${item.title}`}
-          onClick={item.onClick}
-        >
-          <div>
-            <Title>{item.title}</Title>
-            <Description>{item.description}</Description>
-          </div>
-
-          <ArrowIconContainer>
-            <NextIcon />
-          </ArrowIconContainer>
-        </SettingsItemContainer>
-      )),
-    [securitySettingsItems],
-  );
 
   return (
     <SettingsPageOverlay style={{ ...animationStyle, transform: undefined }}>
@@ -140,42 +87,17 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
           <SettingsCategoryContainer>
             <NameSettings />
             <UsernameSettings />
-            {accountSettingsElements}
+            <BioSettings />
+            <SettingsItem title={email} description="Email" />
           </SettingsCategoryContainer>
         )}
         {category === 'security' && (
           <SettingsCategoryContainer>
-            {securitySettingsElements}
+            <PasswordSettings />
+            <BlockedUsersSettings />
           </SettingsCategoryContainer>
         )}
         {category === 'privacy' && <PrivacySettings />}
-
-        <WithAnimation
-          isVisible={activeModal === 'BioEditor'}
-          options={ANIMATION_DIALOG_FAST}
-          render={(style) => (
-            <BioEditor onClose={closeModal} animationStyle={style} />
-          )}
-        />
-
-        <WithAnimation
-          isVisible={activeModal === 'PasswordEditor'}
-          options={ANIMATION_DIALOG_FAST}
-          render={(style) => (
-            <PasswordEditor onClose={closeModal} animationStyle={style} />
-          )}
-        />
-
-        <WithAnimation
-          isVisible={activeModal === 'BlockedUsers'}
-          options={ANIMATION_DIALOG_FAST}
-          render={(animationStyle) => (
-            <BlockedUsers
-              onClose={closeModal}
-              animationStyle={animationStyle}
-            />
-          )}
-        />
       </SettingsPage>
     </SettingsPageOverlay>
   );

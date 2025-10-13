@@ -11,7 +11,7 @@ import { useAccount } from '@/hooks';
 import { checkFirstName, checkLastName } from './utils';
 import { addAccountUpdateRequest } from '@/store/useAccountUpdateRequestStore';
 import TextInput, { TextInputImperativeHandle } from '@/components/TextInput';
-import EditorModal from '../EditorModalPro';
+import EditorModal from '../EditorModal';
 
 interface NameEditorProps {
   onClose: () => void;
