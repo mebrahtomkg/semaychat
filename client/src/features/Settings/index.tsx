@@ -3,10 +3,8 @@ import { NextIcon } from '@/components/icons';
 import { useResponsive } from '@/hooks';
 import { useMemo, useState, type CSSProperties, type FC } from 'react';
 import BioEditor from './components/BioEditor';
-import NameEditor from './components/NameEditor';
 import PasswordEditor from './components/PasswordEditor';
 import ProfilePhotoSettings from './components/ProfilePhotoSettings';
-import UsernameEditor from './components/UsernameEditor';
 import {
   ArrowIconContainer,
   Description,
@@ -28,6 +26,7 @@ import BlockedUsers from '../BlockedUsers';
 import { ANIMATION_DIALOG_FAST, WithAnimation } from '@/Animation';
 import PrivacySettings from './components/PrivacySettings';
 import NameSettings from './components/NameSettings';
+import UsernameSettings from './components/UsernameSettings';
 
 type SettingsCategory = 'account' | 'profilePhoto' | 'security' | 'privacy';
 
@@ -139,7 +138,8 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
         {category === 'profilePhoto' && <ProfilePhotoSettings />}
         {category === 'account' && (
           <SettingsCategoryContainer>
-            <NameSettings key="hghjdjd" />
+            <NameSettings />
+            <UsernameSettings />
             {accountSettingsElements}
           </SettingsCategoryContainer>
         )}
@@ -149,14 +149,6 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
           </SettingsCategoryContainer>
         )}
         {category === 'privacy' && <PrivacySettings />}
-
-        <WithAnimation
-          isVisible={activeModal === 'UsernameEditor'}
-          options={ANIMATION_DIALOG_FAST}
-          render={(style) => (
-            <UsernameEditor onClose={closeModal} animationStyle={style} />
-          )}
-        />
 
         <WithAnimation
           isVisible={activeModal === 'BioEditor'}

@@ -1,30 +1,40 @@
 import { useAccountInfo } from '@/hooks';
 import { WithAnimation } from '@/Animation';
-import NameEditor from './NameEditor';
 import { useState } from 'react';
 import { ANIMATION_EDITOR_MODAL } from '../../constants';
+import UsernameEditor from './UsernameEditor';
 import SettingsItem from '../SettingsItem';
 
-const NameSettings = () => {
-  const { fullName } = useAccountInfo();
+const UsernameSettings = () => {
+  const { username } = useAccountInfo();
 
   const [isEditorVisible, setIsEditorVisible] = useState(false);
   const openEditor = () => setIsEditorVisible(true);
   const closeEditor = () => setIsEditorVisible(false);
 
+  const title = username ? `@${username}` : 'Username';
+
+  const description = username
+    ? `Click to change username`
+    : 'Click to add username';
+
   return (
     <>
-      <SettingsItem title={fullName} description="Name" onClick={openEditor} />
+      <SettingsItem
+        title={title}
+        description={description}
+        onClick={openEditor}
+      />
 
       <WithAnimation
         isVisible={isEditorVisible}
         options={ANIMATION_EDITOR_MODAL}
         render={(style) => (
-          <NameEditor onClose={closeEditor} animationStyle={style} />
+          <UsernameEditor onClose={closeEditor} animationStyle={style} />
         )}
       />
     </>
   );
 };
 
-export default NameSettings;
+export default UsernameSettings;
