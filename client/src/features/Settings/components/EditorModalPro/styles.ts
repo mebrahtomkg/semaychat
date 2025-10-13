@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const NameEditorStyled = styled.div`
+export const EditorModalStyled = styled.div`
   position: absolute;
   top: 0;
   left: 0;

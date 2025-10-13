@@ -1,6 +1,6 @@
 import {
-  type CSSProperties,
-  type FC,
+  CSSProperties,
+  FC,
   useState,
   InputEventHandler,
   useCallback,
@@ -8,18 +8,10 @@ import {
   useRef,
 } from 'react';
 import { useAccount } from '@/hooks';
-import TextInput, { TextInputImperativeHandle } from '../TextInputPro';
 import { checkFirstName, checkLastName } from './utils';
-import {
-  DoneButton,
-  HeaderSection,
-  MainSection,
-  NameEditorStyled,
-  Title,
-} from './styles';
-import { BackButton } from '@/components/buttons';
-import { TickIcon } from '@/components/icons';
 import { addAccountUpdateRequest } from '@/store/useAccountUpdateRequestStore';
+import TextInput, { TextInputImperativeHandle } from '@/components/TextInput';
+import EditorModal from '../EditorModalPro';
 
 interface NameEditorProps {
   onClose: () => void;
@@ -119,43 +111,36 @@ const NameEditor: FC<NameEditorProps> = ({ onClose, animationStyle }) => {
   );
 
   return (
-    <NameEditorStyled style={animationStyle}>
-      <HeaderSection>
-        <BackButton onClick={onClose} />
+    <EditorModal
+      title="Edit name"
+      onDone={handleSubmit}
+      onClose={onClose}
+      animationStyle={animationStyle}
+    >
+      <TextInput
+        id="id-first-name-text-input"
+        label="First name (required)"
+        type="text"
+        name="firstName"
+        value={firstName}
+        ref={firstNameInputRef}
+        onChange={handleFirstNameChange}
+        onEnter={handleEnterPress}
+        errorMessage={firstNameError}
+      />
 
-        <Title>Edit name</Title>
-
-        <DoneButton type="button" onClick={handleSubmit}>
-          <TickIcon />
-        </DoneButton>
-      </HeaderSection>
-
-      <MainSection>
-        <TextInput
-          id="id-first-name-text-input"
-          label="First name (required)"
-          type="text"
-          name="firstName"
-          value={firstName}
-          ref={firstNameInputRef}
-          onChange={handleFirstNameChange}
-          onEnter={handleEnterPress}
-          errorMessage={firstNameError}
-        />
-
-        <TextInput
-          id="id-last-name-text-input"
-          label="Last name (optional)"
-          type="text"
-          name="lastName"
-          value={lastName}
-          ref={lastNameInputRef}
-          onChange={handleLastNameChange}
-          onEnter={handleEnterPress}
-          errorMessage={lastNameError}
-        />
-      </MainSection>
-    </NameEditorStyled>
+      <TextInput
+        id="id-last-name-text-input"
+        label="Last name (optional)"
+        type="text"
+        name="lastName"
+        value={lastName}
+        ref={lastNameInputRef}
+        onChange={handleLastNameChange}
+        onEnter={handleEnterPress}
+        errorMessage={lastNameError}
+      />
+    </EditorModal>
   );
 };
 

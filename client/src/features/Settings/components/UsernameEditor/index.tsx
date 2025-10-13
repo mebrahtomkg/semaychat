@@ -1,10 +1,10 @@
 import { type CSSProperties, type FC, useState, FormEventHandler } from 'react';
 import { Spinner } from '@/components';
 import { checkUsername } from './utils';
-import EditorModal from '../EditorModal';
 import { useAccount } from '@/hooks';
 import TextInput from '../TextInput';
 import useAccountUpdater from '../../hooks/useAccountUpdater';
+import EditorModal from '../EditorModalPro';
 
 interface UsernameEditorProps {
   onClose: () => void;
