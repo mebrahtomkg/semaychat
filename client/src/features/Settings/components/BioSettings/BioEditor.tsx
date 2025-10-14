@@ -1,55 +1,56 @@
-import { type CSSProperties, type FC, useState, FormEventHandler } from 'react';
+import {
+  CSSProperties,
+  FC,
+  useState,
+  FormEventHandler,
+  useCallback,
+  useRef,
+} from 'react';
 import { useAccount } from '@/hooks';
 import EditorModal from '../EditorModal';
-import BioInput from './BioInput';
-import useAccountUpdater from '../../hooks/useAccountUpdater';
-import { Spinner } from '@/components';
+import BioInput, { BioInputImperativeHandle } from './BioInput';
+import { addAccountUpdateRequest } from '@/store/useAccountUpdateRequestStore';
 
 const MAX_BIO_LENGTH = 70;
 
-interface NameEditorProps {
+interface BioEditorProps {
   onClose: () => void;
   animationStyle?: CSSProperties;
 }
 
-const BioEditor: FC<NameEditorProps> = ({ onClose, animationStyle }) => {
-  const account = useAccount();
+const BioEditor: FC<BioEditorProps> = ({ onClose, animationStyle }) => {
+  const bioInputRef = useRef<BioInputImperativeHandle | null>(null);
 
-  const [state, setState] = useState({
-    value: account.bio || '',
-    count: MAX_BIO_LENGTH - (account.bio?.length || 0),
-    shouldCounterShake: false,
-  });
+  const { bio: initialBio } = useAccount();
+  const [bio, setBio] = useState(initialBio || '');
 
-  const { updateAccount, isUpdating } = useAccountUpdater();
+  const [count, setCount] = useState(
+    MAX_BIO_LENGTH - (initialBio?.length || 0),
+  );
 
   const updateBio = async () => {
-    const value = state.value.trim();
-    if (value === account.bio) return onClose();
-
-    const { success, message } = await updateAccount({
-      bio: value,
-    });
-
-    if (success) {
+    const trimmedBio = bio.trim();
+    if (trimmedBio === initialBio) {
       onClose();
-    } else {
-      console.log(message);
+      return;
     }
+
+    addAccountUpdateRequest({ bio: trimmedBio });
+    onClose();
   };
 
-  const onChangeListener: FormEventHandler<HTMLTextAreaElement> = (event) => {
-    const value = event.currentTarget.value;
-    if (value.length <= MAX_BIO_LENGTH) {
-      setState({
-        value,
-        count: MAX_BIO_LENGTH - value.length,
-        shouldCounterShake: false,
-      });
-    } else {
-      setState((prevState) => ({ ...prevState, shouldCounterShake: true }));
-    }
-  };
+  const handleBioChange: FormEventHandler<HTMLTextAreaElement> = useCallback(
+    (e) => {
+      const value = e.currentTarget.value;
+      if (value.length <= MAX_BIO_LENGTH) {
+        setCount(MAX_BIO_LENGTH - value.length);
+        setBio(value);
+      } else {
+        bioInputRef.current?.shakeCounter();
+      }
+    },
+    [],
+  );
 
   return (
     <EditorModal
@@ -59,13 +60,12 @@ const BioEditor: FC<NameEditorProps> = ({ onClose, animationStyle }) => {
       animationStyle={animationStyle}
     >
       <BioInput
-        value={state.value}
-        count={state.count}
-        shouldCounterShake={state.shouldCounterShake}
-        onChange={onChangeListener}
-        onEnterPress={updateBio}
+        value={bio}
+        count={count}
+        ref={bioInputRef}
+        onChange={handleBioChange}
+        onEnter={updateBio}
       />
-      {isUpdating && <Spinner />}
     </EditorModal>
   );
 };

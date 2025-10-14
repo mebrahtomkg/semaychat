@@ -1,48 +1,59 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
-export const Counter = styled.p`
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-  line-height: 1.7;
-  font-weight: 500;
-  color: #bdbdbd;
-`;
-
-export const MultiLineInputContainer = styled.div`
-  display: flex;
-  align-items: flex-end;
-  margin-bottom: 1rem;
-`;
-
-export const MultiLineInput = styled.textarea`
-  width: 100%;
-  padding: 1.2rem 0 0.5rem 0;
-  margin-bottom: 0.7rem;
-  box-shadow: none;
+export const TextAreaStyled = styled.textarea`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  padding: var(--text-input-padding);
+  font-size: var(--text-input-font-size);
   outline-style: none;
   border: none;
-  border-bottom: 1px solid #43829f;
-  border-radius: 0;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #cfd3d4;
-  background: transparent;
-  &::placeholder {
-    color: #6e6f74;
-    font-family: system-ui, sans-serif;
-    font-size: 1rem;
-    font-weight: 500;
-    font-weight: 500;
-  }
-  &:focus {
-    border-color: #04c1ff;
-  }
-
-  margin-bottom: 0;
-  margin-right: 0.5rem;
+  border-radius: inherit;
+  color: var(--fg-text-input);
+  background-color: transparent;
+  box-shadow: none;
   overflow: hidden;
   overflow-wrap: break-word;
   line-height: 1.7;
   resize: none;
+`;
+
+const shake = keyframes`${css`
+  0% {
+    transform: translateX(0px);
+  }
+
+  25% {
+    transform: translateX(6px);
+  }
+
+  50% {
+    transform: translateX(0px);
+  }
+
+  100% {
+    transform: translateX(6px);
+  }
+`}
+`;
+
+export const Counter = styled.p<{ $shouldShake: boolean }>`
+  position: absolute;
+  top: -0.7rem;
+  right: 0.7rem;
+  z-index: 6;
+  padding: 0 0.4rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--fg-main);
+  background-color: var(--bg-main);
+
+  ${(props) =>
+    props.$shouldShake &&
+    css`
+      animation: 300ms linear 1 ${shake};
+    `}
 `;

@@ -2,80 +2,109 @@ import {
   FC,
   FormEventHandler,
   KeyboardEventHandler,
-  RefCallback,
+  RefObject,
+  useCallback,
   useEffect,
+  useImperativeHandle,
   useRef,
+  useState,
 } from 'react';
-import { HelperText, TextInputContainer } from '../../TextInput/styles';
-import { Counter, MultiLineInput, MultiLineInputContainer } from './styles';
+import { HelperText } from '../../TextInput/styles';
+import { Counter, TextAreaStyled } from './styles';
+import {
+  LabelStyled,
+  TextInputStyled,
+  TextInputViewPort,
+} from '@/components/TextInput/styles';
+
+export interface BioInputImperativeHandle {
+  shakeCounter: () => void;
+}
 
 interface BioInputProps {
   value: string;
   count: number;
-  shouldCounterShake: boolean;
+  ref: RefObject<BioInputImperativeHandle | null>;
   onChange: FormEventHandler<HTMLTextAreaElement>;
-  onEnterPress: () => void;
+  onEnter: () => void;
 }
 
 const BioInput: FC<BioInputProps> = ({
   value,
   count,
-  shouldCounterShake,
+  ref,
   onChange,
-  onEnterPress,
+  onEnter,
 }) => {
-  const handleInputRef: RefCallback<HTMLTextAreaElement> = (element) => {
-    if (!element) return;
+  const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
+  const viewPortRef = useRef<HTMLDivElement | null>(null);
 
-    element.focus();
-    const scrollHeight = element.scrollHeight;
-    const clientHeight = element.clientHeight;
-    if (scrollHeight - clientHeight > 1) {
-      element.style.height = `${scrollHeight}px`;
-    }
-  };
+  const [isFocused, setIsFocused] = useState(false);
+  const handleFocus = useCallback(() => setIsFocused(true), []);
+  const handleBlur = useCallback(() => setIsFocused(false), []);
 
-  const handleKeyDown: KeyboardEventHandler = (event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      onEnterPress();
-    }
-  };
+  const [counterKey, setCounterKey] = useState(1);
 
-  const counterRef = useRef<HTMLParagraphElement | null>(null);
+  useImperativeHandle(ref, () => {
+    return {
+      shakeCounter() {
+        setCounterKey((prevValue) => prevValue + 1);
+      },
+    };
+  }, []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <adjuest height on value change>
   useEffect(() => {
-    if (shouldCounterShake && counterRef.current) {
-      counterRef.current.animate(
-        [
-          { transform: 'translateX(0px)' },
-          { transform: 'translateX(6px)' },
-          { transform: 'translateX(0px)' },
-          { transform: 'translateX(6px)' },
-          { transform: 'translateX(0px)' },
-        ],
-        300,
-      );
+    const viewPort = viewPortRef.current;
+    const textArea = textAreaRef.current;
+    if (viewPort && textArea) {
+      textArea.focus();
+      textArea.style.height = 'auto';
+      viewPort.style.height = 'auto';
+      if (textArea.scrollHeight > textArea.clientHeight) {
+        viewPort.style.height = `${textArea.scrollHeight}px`;
+        textArea.style.height = `${textArea.scrollHeight}px`;
+      }
     }
-  }, [shouldCounterShake]);
+  }, [value]);
+
+  const handleKeyDown: KeyboardEventHandler = useCallback(
+    (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        onEnter();
+      }
+    },
+    [onEnter],
+  );
+
+  const id = 'id-bio-text-area';
 
   return (
-    <TextInputContainer>
-      <MultiLineInputContainer>
-        <MultiLineInput
+    <TextInputStyled>
+      <TextInputViewPort ref={viewPortRef} $isFocused={isFocused}>
+        <LabelStyled htmlFor={id} $isAsLabel={!!value || isFocused}>
+          Bio
+        </LabelStyled>
+
+        <TextAreaStyled
+          id={id}
           rows={1}
           cols={20}
           value={value}
-          placeholder={'Bio'}
-          ref={handleInputRef}
+          ref={textAreaRef}
           onKeyDown={handleKeyDown}
           onInput={onChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
-        <Counter ref={counterRef}>{count === -1 ? 0 : count}</Counter>
-      </MultiLineInputContainer>
+        <Counter key={`key-${counterKey}`} $shouldShake={true}>
+          {count === -1 ? 0 : count}
+        </Counter>
+      </TextInputViewPort>
 
       <HelperText>{'You can add a few lines about yourself.'}</HelperText>
-    </TextInputContainer>
+    </TextInputStyled>
   );
 };
 
