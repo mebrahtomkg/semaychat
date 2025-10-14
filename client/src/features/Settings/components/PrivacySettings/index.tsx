@@ -1,12 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import {
-  ArrowIconContainer,
-  Description,
-  SettingsCategoryContainer,
-  SettingsItemContainer,
-  Title,
-} from '../../styles';
-import { NextIcon } from '@/components/icons';
+import { SettingsCategoryContainer } from '../../styles';
 import { useAccount } from '@/hooks';
 import { PRIVACY_SETTINGS } from './constants';
 import { ANIMATION_DIALOG_FAST, WithAnimation } from '@/Animation';
@@ -15,6 +8,7 @@ import PrivacyEditor from '../PrivacyEditor';
 import { Account, VisibilityOption } from '@/types';
 import { IPrivacySetting } from '../../types';
 import { addAccountUpdateRequest } from '@/store/useAccountUpdateRequestStore';
+import SettingsItem from '../SettingsItem';
 
 const PrivacySettings = () => {
   const account = useAccount();
@@ -52,21 +46,12 @@ const PrivacySettings = () => {
   const privacySettingsElements = useMemo(
     () =>
       PRIVACY_SETTINGS.map((setting) => (
-        <SettingsItemContainer
+        <SettingsItem
           key={`${setting.title}`}
+          title={setting.title}
+          description={VISIBILITY_OPTION_LABELS[account[setting.settingkey]]}
           onClick={() => openPrivacyEditor(setting)}
-        >
-          <div>
-            <Title>{setting.title}</Title>
-            <Description>
-              {VISIBILITY_OPTION_LABELS[account[setting.settingkey]]}
-            </Description>
-          </div>
-
-          <ArrowIconContainer>
-            <NextIcon />
-          </ArrowIconContainer>
-        </SettingsItemContainer>
+        />
       )),
     [account, openPrivacyEditor],
   );

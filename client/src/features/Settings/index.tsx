@@ -20,7 +20,7 @@ import UsernameSettings from './components/UsernameSettings';
 import BioSettings from './components/BioSettings';
 import SettingsItem from './components/SettingsItem';
 import PasswordSettings from './components/PasswordSettings';
-import BlockedUsersSettings from './components/BlockedUsersSettings';
+import BlockedUsers from './components/BlockedUsers';
 
 type SettingsCategory = 'account' | 'profilePhoto' | 'security' | 'privacy';
 
@@ -94,7 +94,7 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
         {category === 'security' && (
           <SettingsCategoryContainer>
             <PasswordSettings />
-            <BlockedUsersSettings />
+            <BlockedUsers />
           </SettingsCategoryContainer>
         )}
         {category === 'privacy' && <PrivacySettings />}
