@@ -1,8 +1,21 @@
-import type { CSSProperties, FC } from 'react';
+import {
+  InputEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type FC,
+} from 'react';
 import EditorModal from '../EditorModal';
-import TextInput from '../TextInput';
-import usePasswordUpdate, { PASSWORD_UPDATE_STEPS } from './usePasswordUpdate';
 import { Spinner } from '@/components';
+import TextInput, { TextInputImperativeHandle } from '@/components/TextInput';
+import { useUpdateAccount } from '@/hooks';
+import {
+  checkConfirmPassword,
+  checkCurrentPassword,
+  checkNewPassword,
+} from './utils';
 
 interface PasswordEditorProps {
   onClose: () => void;
@@ -13,86 +26,154 @@ const PasswordEditor: FC<PasswordEditorProps> = ({
   animationStyle,
   onClose,
 }) => {
-  const {
-    currentStep,
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
 
+  const [newPasswordError, setNewPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [currentPasswordError, setCurrentPasswordError] = useState('');
+
+  const newPwdInputRef = useRef<TextInputImperativeHandle | null>(null);
+  const confirmPwdInputRef = useRef<TextInputImperativeHandle | null>(null);
+  const currentPwdInputRef = useRef<TextInputImperativeHandle | null>(null);
+
+  const { updateAccount, isPending, isSuccess, isError, error } =
+    useUpdateAccount();
+
+  const handleNewPasswordChange: InputEventHandler<HTMLInputElement> =
+    useCallback((e) => {
+      setNewPassword(e.currentTarget.value);
+      setNewPasswordError('');
+    }, []);
+
+  const handleConfirmPasswordChange: InputEventHandler<HTMLInputElement> =
+    useCallback((e) => {
+      setConfirmPassword(e.currentTarget.value);
+      setConfirmPasswordError('');
+    }, []);
+
+  const handleCurrentPasswordChange: InputEventHandler<HTMLInputElement> =
+    useCallback((e) => {
+      setCurrentPassword(e.currentTarget.value);
+      setCurrentPasswordError('');
+    }, []);
+
+  const validateNewPassword = useCallback(
+    () => checkNewPassword(newPassword.trim()),
+    [newPassword],
+  );
+
+  const validateConfirmPassword = useCallback(() => {
+    const trimmedConfirmPassword = confirmPassword.trim();
+    const error = checkConfirmPassword(trimmedConfirmPassword);
+    if (error) {
+      return error;
+    }
+    if (trimmedConfirmPassword !== newPassword.trim()) {
+      return 'Passwords do not match';
+    }
+    return '';
+  }, [confirmPassword, newPassword]);
+
+  const validateCurrentPassword = useCallback(
+    () => checkCurrentPassword(currentPassword.trim()),
+    [currentPassword],
+  );
+
+  const handleSubmit = useCallback(() => {
+    let error = validateNewPassword();
+    if (error) {
+      setNewPasswordError(error);
+      newPwdInputRef.current?.focusInput();
+      newPwdInputRef.current?.animateInfo();
+      return;
+    }
+
+    error = validateConfirmPassword();
+    if (error) {
+      setConfirmPasswordError(error);
+      confirmPwdInputRef.current?.focusInput();
+      confirmPwdInputRef.current?.animateInfo();
+      return;
+    }
+
+    error = validateCurrentPassword();
+    if (error) {
+      setCurrentPasswordError(error);
+      currentPwdInputRef.current?.focusInput();
+      currentPwdInputRef.current?.animateInfo();
+      return;
+    }
+
+    updateAccount({
+      newPassword: newPassword.trim(),
+      password: currentPassword.trim(),
+    });
+  }, [
+    validateNewPassword,
+    validateConfirmPassword,
+    validateCurrentPassword,
+    updateAccount,
     newPassword,
-    confirmPassword,
     currentPassword,
+  ]);
 
-    newPasswordError,
-    confirmPasswordError,
-    currentPasswordError,
+  useEffect(() => {
+    if (isSuccess) onClose();
+  }, [isSuccess, onClose]);
 
-    handleNewPasswordChange,
-    handleConfirmPasswordChange,
-    handleCurrentPasswordChange,
-
-    handleBackNav,
-    handleNextNav,
-
-    isLoading,
-  } = usePasswordUpdate(onClose);
+  useEffect(() => {
+    if (isError) setCurrentPasswordError(error.message);
+  }, [isError, error?.message]);
 
   return (
     <EditorModal
       title="Change Password"
       animationStyle={animationStyle}
-      onClose={handleBackNav}
-      onDone={handleNextNav}
-      leftButtonConfig={{
-        label:
-          currentStep === PASSWORD_UPDATE_STEPS.NEW_PASSWORD
-            ? 'Cancel'
-            : 'Previous',
-      }}
-      rightButtonConfig={{
-        label:
-          currentStep === PASSWORD_UPDATE_STEPS.CURRENT_PASSWORD
-            ? 'Done'
-            : 'Next',
-      }}
+      onClose={onClose}
+      onDone={handleSubmit}
     >
-      {currentStep === PASSWORD_UPDATE_STEPS.NEW_PASSWORD && (
-        <TextInput
-          label="New password"
-          type="password"
-          name="newPassword"
-          placeholder="Password"
-          value={newPassword}
-          onChange={handleNewPasswordChange}
-          onEnterPress={handleNextNav}
-          helperText="Choose a strong password."
-          errorMessage={newPasswordError}
-        />
-      )}
-      {currentStep === PASSWORD_UPDATE_STEPS.CONFIRM_PASSWORD && (
-        <TextInput
-          label="Confirm password"
-          type="password"
-          name="confirmPassword"
-          placeholder="Password"
-          value={confirmPassword}
-          onChange={handleConfirmPasswordChange}
-          onEnterPress={handleNextNav}
-          helperText="Confirm your new password."
-          errorMessage={confirmPasswordError}
-        />
-      )}
-      {currentStep === PASSWORD_UPDATE_STEPS.CURRENT_PASSWORD && (
-        <TextInput
-          label="Current password"
-          type="password"
-          name="currentPassword"
-          placeholder="Password"
-          value={currentPassword}
-          onChange={handleCurrentPasswordChange}
-          onEnterPress={handleNextNav}
-          helperText="Your current password helps us verify your identity."
-          errorMessage={currentPasswordError}
-        />
-      )}
-      {isLoading && <Spinner />}
+      <TextInput
+        id="id-new-pwd-text-input"
+        label="New password"
+        type="password"
+        name="newPassword"
+        value={newPassword}
+        ref={newPwdInputRef}
+        onChange={handleNewPasswordChange}
+        onEnter={handleSubmit}
+        helperText="Choose a strong password."
+        errorMessage={newPasswordError}
+      />
+
+      <TextInput
+        id="id-new-confirm-pwd-text-input"
+        label="Confirm password"
+        type="password"
+        name="confirmPassword"
+        value={confirmPassword}
+        ref={confirmPwdInputRef}
+        onChange={handleConfirmPasswordChange}
+        onEnter={handleSubmit}
+        helperText="Confirm your new password."
+        errorMessage={confirmPasswordError}
+      />
+
+      <TextInput
+        id="id-new-current-pwd-text-input"
+        label="Current password"
+        type="password"
+        name="currentPassword"
+        value={currentPassword}
+        ref={currentPwdInputRef}
+        onChange={handleCurrentPasswordChange}
+        onEnter={handleSubmit}
+        helperText="Your current password helps us verify your identity."
+        errorMessage={currentPasswordError}
+      />
+
+      {isPending && <Spinner />}
     </EditorModal>
   );
 };
