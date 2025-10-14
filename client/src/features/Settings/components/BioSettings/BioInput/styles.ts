@@ -40,7 +40,7 @@ const shake = keyframes`${css`
 `}
 `;
 
-export const Counter = styled.p<{ $shouldShake: boolean }>`
+export const Counter = styled.p`
   position: absolute;
   top: -0.7rem;
   right: 0.7rem;
@@ -50,10 +50,8 @@ export const Counter = styled.p<{ $shouldShake: boolean }>`
   font-weight: 500;
   color: var(--fg-main);
   background-color: var(--bg-main);
-
-  ${(props) =>
-    props.$shouldShake &&
-    css`
-      animation: 300ms linear 1 ${shake};
-    `}
+  animation-duration: 300ms;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  animation-name: ${shake};
 `;

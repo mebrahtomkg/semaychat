@@ -1,4 +1,5 @@
 import {
+  CSSProperties,
   FC,
   FormEventHandler,
   KeyboardEventHandler,
@@ -16,6 +17,7 @@ import {
   TextInputStyled,
   TextInputViewPort,
 } from '@/components/TextInput/styles';
+import { useTimer } from '@/hooks';
 
 export interface BioInputImperativeHandle {
   shakeCounter: () => void;
@@ -38,20 +40,31 @@ const BioInput: FC<BioInputProps> = ({
 }) => {
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const viewPortRef = useRef<HTMLDivElement | null>(null);
+  // const counterRef = useRef<HTMLParagraphElement | null>(null);
 
   const [isFocused, setIsFocused] = useState(false);
   const handleFocus = useCallback(() => setIsFocused(true), []);
   const handleBlur = useCallback(() => setIsFocused(false), []);
 
-  const [counterKey, setCounterKey] = useState(1);
+  const [counterStyle, setCounterStyle] = useState<CSSProperties | undefined>({
+    animationName: 'none', // This is to disable the animation-name specified in styles
+  });
+
+  const { setTimer, clearTimer } = useTimer();
 
   useImperativeHandle(ref, () => {
     return {
       shakeCounter() {
-        setCounterKey((prevValue) => prevValue + 1);
+        clearTimer();
+        // Remove all inline styles so that the animation-name specified
+        // in styles will work and shake the counter
+        setCounterStyle(undefined);
+
+        // After the shake is done disable the animation-name specified in styles
+        setTimer(() => setCounterStyle({ animationName: 'none' }), 400);
       },
     };
-  }, []);
+  }, [setTimer, clearTimer]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <adjuest height on value change>
   useEffect(() => {
@@ -98,9 +111,7 @@ const BioInput: FC<BioInputProps> = ({
           onFocus={handleFocus}
           onBlur={handleBlur}
         />
-        <Counter key={`key-${counterKey}`} $shouldShake={true}>
-          {count === -1 ? 0 : count}
-        </Counter>
+        <Counter style={counterStyle}>{count === -1 ? 0 : count}</Counter>
       </TextInputViewPort>
 
       <HelperText>{'You can add a few lines about yourself.'}</HelperText>
