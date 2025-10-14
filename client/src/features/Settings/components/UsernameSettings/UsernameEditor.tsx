@@ -1,10 +1,17 @@
-import { type CSSProperties, type FC, useState, FormEventHandler } from 'react';
+import {
+  type CSSProperties,
+  type FC,
+  useState,
+  FormEventHandler,
+  useRef,
+  useCallback,
+  useEffect,
+} from 'react';
 import { Spinner } from '@/components';
 import { checkUsername } from './utils';
-import { useAccount } from '@/hooks';
-import TextInput from '../TextInput';
-import useAccountUpdater from '../../hooks/useAccountUpdater';
+import { useAccount, useUpdateAccount } from '@/hooks';
 import EditorModal from '../EditorModal';
+import TextInput, { TextInputImperativeHandle } from '@/components/TextInput';
 
 interface UsernameEditorProps {
   onClose: () => void;
@@ -15,55 +22,68 @@ const UsernameEditor: FC<UsernameEditorProps> = ({
   onClose,
   animationStyle,
 }) => {
-  const account = useAccount();
+  const { username: initialUsername } = useAccount();
+  const [username, setUsername] = useState(initialUsername || '');
+  const [usernameError, setUsernameError] = useState<string>('');
+  const textInputRef = useRef<TextInputImperativeHandle | null>(null);
 
-  const [value, setValue] = useState(account.username);
-  const [errorMessage, setErrorMessage] = useState<string | undefined>(
-    undefined,
+  const { updateAccount, isPending, isSuccess, isError, error } =
+    useUpdateAccount();
+
+  const updateUsername = () => {
+    const trimmedUsername = username.trim();
+    if (trimmedUsername === initialUsername) {
+      onClose();
+      return;
+    }
+
+    const err = checkUsername(trimmedUsername);
+    if (err) {
+      setUsernameError(err);
+      textInputRef.current?.animateInfo();
+      return;
+    }
+
+    updateAccount({ username: trimmedUsername });
+  };
+
+  const handleUsernameChange = useCallback<FormEventHandler<HTMLInputElement>>(
+    (e) => {
+      setUsername(e.currentTarget.value);
+      setUsernameError('');
+    },
+    [],
   );
 
-  const { updateAccount, isUpdating } = useAccountUpdater();
+  useEffect(() => {
+    if (isSuccess) onClose();
+  }, [isSuccess, onClose]);
 
-  const updateUsername = async () => {
-    const newUsername = value.trim();
-    if (newUsername === account.username) return onClose();
-
-    const inputError = checkUsername(newUsername);
-    if (inputError) return setErrorMessage(inputError);
-
-    const { success, message } = await updateAccount({
-      username: newUsername,
-    });
-
-    if (success) {
-      onClose();
-    } else {
-      setErrorMessage(message || '');
-    }
-  };
-
-  const updateInputValue: FormEventHandler<HTMLInputElement> = (event) => {
-    setValue(event.currentTarget.value);
-    setErrorMessage(undefined);
-  };
+  useEffect(() => {
+    if (isError) setUsernameError(error.message);
+  }, [isError, error?.message]);
 
   return (
     <EditorModal
-      title={'Edit Username'}
+      title="Edit Username"
       animationStyle={animationStyle}
       onDone={updateUsername}
       onClose={onClose}
     >
       <TextInput
+        id="id-username-text-input"
+        label="Username"
+        type="text"
         name={'username'}
-        placeholder={'Username'}
-        value={value}
-        onChange={updateInputValue}
-        onEnterPress={updateUsername}
-        helperText={'Others can find and message you using this usernamexsdd.'}
-        errorMessage={errorMessage}
+        value={username}
+        ref={textInputRef}
+        onChange={handleUsernameChange}
+        onEnter={updateUsername}
+        helperText={'Others can find and message you using this username.'}
+        errorMessage={usernameError}
       />
-      {isUpdating && <Spinner />}
+
+      {isPending && <Spinner />}
     </EditorModal>
   );
 };
