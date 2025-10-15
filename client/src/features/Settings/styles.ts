@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const SettingsPageOverlay = styled.div`
   position: fixed;
@@ -12,20 +12,19 @@ export const SettingsPageOverlay = styled.div`
   justify-content: center;
 `;
 
-export const SettingsPage = styled.div<{ $windowWidth: number }>`
-  ${(props) =>
-    props.$windowWidth < 500
-      ? css`
-          width: 100vw;
-          padding-top: 0.5rem;
-        `
-      : css`
-          padding: 1rem;
-          border-radius: 10px;
-          margin-top: 5vh;
-          height: 90vh;
-        `}
+export const SettingsPage = styled.div`
+  position: relative;
+  width: 100vw;
+  padding-top: 0.5rem;
   background-color: var(--bg-main);
+
+  @media (min-width: 500px) {
+    width: 29rem;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 5vh;
+    height: 90vh;
+  }
 `;
 
 export const SettingsPageHeader = styled.div`
@@ -46,54 +45,18 @@ export const NavMenuContainer = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 `;
 
-export const NavMenu = styled.div<{ $windowWidth: number }>`
-  ${(props) =>
-    props.$windowWidth < 500
-      ? css`
-          margin: 0 1rem;
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          align-items: center;
-          padding: 2px;
-          border-radius: 12px;
-        `
-      : css`
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 2px;
-          border-radius: 12px;
-          background-color: #3c576e;
-        `}
-
+export const NavMenu = styled.div`
+  margin-left: 1rem;
+  flex-grow: 2;
+  display: flex;
+  padding: 2px;
+  border-radius: 12px;
   background-color: var(--bg-very-bright);
 `;
 
-export const MenuItemButton = styled.button<{ $isActive: boolean }>`
-  flex-grow: 1;
-  font-size: 1rem;
-  font-weight: 500;
-  color: white;
-  padding: 0.45rem 1.3rem;
-  border-radius: inherit;
-  ${(props) =>
-    props.$isActive &&
-    css`
-      background-color: var(--bg-active-tab);
-    `}
-`;
-
-export const MenuDivider = styled.div`
-  width: 1px;
-  height: 1rem;
-  background-color: var(--bg-tab-divider);
-`;
-
 export const SettingsCategoryContainer = styled.div`
-  position: relative;
   background-color: inherit;
 `;

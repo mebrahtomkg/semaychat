@@ -5,6 +5,7 @@ const initialState = {
   isContactsModalVisible: false,
   isSidebarVisible: false,
   isSettingsModalVisible: false,
+  isProfileModalVisible: false,
 };
 
 const useAppStateStore = create(
@@ -35,6 +36,13 @@ const useAppStateStore = create(
 
     closeSettingsModal: () => {
       set(() => ({ isSettingsModalVisible: false }));
+    },
+    openProfileModal: () => {
+      set(() => ({ isProfileModalVisible: true }));
+    },
+
+    closeProfileModal: () => {
+      set(() => ({ isProfileModalVisible: false }));
     },
   })),
 );

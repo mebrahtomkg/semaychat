@@ -1,11 +1,8 @@
 import { BackButton, CloseButton } from '@/components/buttons';
-import { useAccountInfo, useResponsive } from '@/hooks';
+import { useResponsive } from '@/hooks';
 import { useState, type CSSProperties, type FC } from 'react';
-import ProfilePhotoSettings from './components/ProfilePhotoSettings';
 import {
   MainTitle,
-  MenuDivider,
-  MenuItemButton,
   NavMenu,
   NavMenuContainer,
   SettingsCategoryContainer,
@@ -15,14 +12,11 @@ import {
 } from './styles';
 import { useAppStateStore } from '@/store';
 import PrivacySettings from './components/PrivacySettings';
-import NameSettings from './components/NameSettings';
-import UsernameSettings from './components/UsernameSettings';
-import BioSettings from './components/BioSettings';
-import SettingsItem from './components/SettingsItem';
 import PasswordSettings from './components/PasswordSettings';
 import BlockedUsers from './components/BlockedUsers';
+import TabButton from './components/TabButton';
 
-type SettingsCategory = 'account' | 'profilePhoto' | 'security' | 'privacy';
+type SettingsCategory = 'security' | 'privacy';
 
 interface SettingsProps {
   animationStyle?: CSSProperties;
@@ -30,17 +24,16 @@ interface SettingsProps {
 
 const Settings: FC<SettingsProps> = ({ animationStyle }) => {
   const { windowWidth } = useResponsive();
-  const { email } = useAccountInfo();
 
   const closeSettingsModal = useAppStateStore(
     (state) => state.closeSettingsModal,
   );
 
-  const [category, setCategory] = useState<SettingsCategory>('profilePhoto');
+  const [category, setCategory] = useState<SettingsCategory>('security');
 
   return (
     <SettingsPageOverlay style={{ ...animationStyle, transform: undefined }}>
-      <SettingsPage style={animationStyle} $windowWidth={windowWidth}>
+      <SettingsPage style={animationStyle}>
         {windowWidth > 500 && (
           <SettingsPageHeader>
             <MainTitle>Settings</MainTitle>
@@ -49,48 +42,20 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
         )}
         <NavMenuContainer>
           {windowWidth <= 500 && <BackButton onClick={closeSettingsModal} />}
-          <NavMenu $windowWidth={windowWidth}>
-            <MenuItemButton
-              $isActive={category === 'account'}
-              onClick={() => setCategory('account')}
-            >
-              Account
-            </MenuItemButton>
-            <MenuDivider />
-
-            <MenuItemButton
-              $isActive={category === 'profilePhoto'}
-              onClick={() => setCategory('profilePhoto')}
-            >
-              Profile Photo
-            </MenuItemButton>
-            <MenuDivider />
-
-            <MenuItemButton
-              $isActive={category === 'security'}
+          <NavMenu>
+            <TabButton
+              text="Security"
+              isActive={category === 'security'}
               onClick={() => setCategory('security')}
-            >
-              Security
-            </MenuItemButton>
-            <MenuDivider />
-
-            <MenuItemButton
-              $isActive={category === 'privacy'}
+            />
+            <TabButton
+              text="Privacy"
+              isActive={category === 'privacy'}
               onClick={() => setCategory('privacy')}
-            >
-              Privacy
-            </MenuItemButton>
+            />
           </NavMenu>
         </NavMenuContainer>
-        {category === 'profilePhoto' && <ProfilePhotoSettings />}
-        {category === 'account' && (
-          <SettingsCategoryContainer>
-            <NameSettings />
-            <UsernameSettings />
-            <BioSettings />
-            <SettingsItem title={email} description="Email" />
-          </SettingsCategoryContainer>
-        )}
+
         {category === 'security' && (
           <SettingsCategoryContainer>
             <PasswordSettings />

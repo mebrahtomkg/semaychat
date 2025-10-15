@@ -11,7 +11,7 @@ export const EditorModalStyled = styled.div`
 `;
 
 export const HeaderSection = styled.div`
-  padding: 0 1rem;
+  padding: 0.4rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;

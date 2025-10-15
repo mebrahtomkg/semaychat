@@ -42,6 +42,8 @@ const SideBar = () => {
     (state) => state.openSettingsModal,
   );
 
+  const openProfileModal = useAppStateStore((state) => state.openProfileModal);
+
   const isSidebarVisible = useAppStateStore((state) => state.isSidebarVisible);
   const hideSidebar = useAppStateStore((state) => state.hideSidebar);
   const toggleSidebar = useAppStateStore((state) => state.toggleSidebar);
@@ -53,6 +55,11 @@ const SideBar = () => {
   const logout = useLogout();
 
   const { handleImageLoad, imageSrc } = useImageLoader(photoUrl);
+
+  const openProfile = () => {
+    if (isSidebarVisible) hideSidebar();
+    openProfileModal();
+  };
 
   const openSettings = () => {
     if (isSidebarVisible) hideSidebar();
@@ -71,6 +78,11 @@ const SideBar = () => {
       onClick: openContacts,
       icon: <ContactsIcon />,
       label: 'Contacts',
+    },
+    {
+      onClick: openProfile,
+      icon: <ContactsIcon />,
+      label: 'My Profile',
     },
     {
       onClick: openSettings,
