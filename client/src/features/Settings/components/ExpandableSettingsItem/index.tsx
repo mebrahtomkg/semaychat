@@ -11,15 +11,17 @@ interface SettingsItemProps {
   title: string;
   description: string;
   onClick?: () => void;
+  isLast?: boolean;
 }
 
 const ExpandableSettingsItem: FC<SettingsItemProps> = ({
   title,
   description,
   onClick,
+  isLast,
 }) => {
   return (
-    <SettingsItemContainer onClick={onClick}>
+    <SettingsItemContainer $isLast={isLast} onClick={onClick}>
       <div>
         <Title>{title}</Title>
         <Description>{description}</Description>

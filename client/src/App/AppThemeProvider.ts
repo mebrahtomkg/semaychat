@@ -42,7 +42,7 @@ const darkThemeProperties = css`
   --bg-hover: #2b2b31;
   --bg-bright: #2c2c35;
   --bg-very-bright: #3c3c41;
-  --bg-active-tab: #1e6f82;
+  --bg-active-tab: #019abe;
   --bg-tab-divider: #1e6f82;
   --bg-overlay: #0000008f;
   --bg-button: #1e6f82;

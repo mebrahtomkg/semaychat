@@ -1,5 +1,8 @@
 import { FC, RefObject, useCallback, useMemo, useRef, useState } from 'react';
-import { SettingsCategoryContainer } from '../../styles';
+import {
+  SettingsCategoryContainer,
+  SettingsCategoryContainerBox,
+} from '../../styles';
 import { useAccount } from '@/hooks';
 import { PRIVACY_SETTINGS } from './constants';
 import { ANIMATION_DIALOG_FAST, WithAnimation } from '@/Animation';
@@ -49,19 +52,20 @@ const PrivacySettings: FC<PrivacySettingsProps> = ({ parentModalRef }) => {
 
   const privacySettingsElements = useMemo(
     () =>
-      PRIVACY_SETTINGS.map((setting) => (
+      PRIVACY_SETTINGS.map((setting, index) => (
         <ExpandableSettingsItem
           key={`${setting.title}`}
           title={setting.title}
           description={VISIBILITY_OPTION_LABELS[account[setting.settingkey]]}
           onClick={() => openPrivacyEditor(setting)}
+          isLast={index === PRIVACY_SETTINGS.length - 1}
         />
       )),
     [account, openPrivacyEditor],
   );
 
   return (
-    <SettingsCategoryContainer>
+    <SettingsCategoryContainerBox>
       {privacySettingsElements}
 
       {/** setting has always value except at initial. so the animation works well */}
@@ -84,7 +88,7 @@ const PrivacySettings: FC<PrivacySettingsProps> = ({ parentModalRef }) => {
           onUnmount={doAccountUpdate}
         />
       )}
-    </SettingsCategoryContainer>
+    </SettingsCategoryContainerBox>
   );
 };
 

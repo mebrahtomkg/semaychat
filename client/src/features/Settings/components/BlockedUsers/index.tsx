@@ -20,7 +20,7 @@ const BlockedUsers = () => {
   const openEditor = () => setIsEditorVisible(true);
   const closeEditor = () => setIsEditorVisible(false);
 
-  const description = `${blockedUsers.length} users blocked`;
+  const description = `${blockedUsers.length} Users`;
 
   return (
     <>
