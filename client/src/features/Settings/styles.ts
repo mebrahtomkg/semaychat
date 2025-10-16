@@ -13,17 +13,17 @@ export const SettingsPageOverlay = styled.div`
 `;
 
 export const SettingsPage = styled.div`
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0rem;
+  bottom: 0;
+  padding: 1rem;
   width: 100vw;
-  padding-top: 0.5rem;
   background-color: var(--bg-main);
 
   @media (min-width: 500px) {
-    width: 29rem;
-    padding: 1rem;
-    border-radius: 10px;
-    margin-top: 5vh;
-    height: 90vh;
+    left: 4rem;
+    width: 28rem;
   }
 `;
 
@@ -59,4 +59,8 @@ export const NavMenu = styled.div`
 
 export const SettingsCategoryContainer = styled.div`
   background-color: inherit;
+  @media (min-width: 500px) {
+    margin-left: 2.8rem;
+    position: relative;
+  }
 `;

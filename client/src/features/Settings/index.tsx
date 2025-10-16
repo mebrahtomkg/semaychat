@@ -1,13 +1,10 @@
-import { BackButton, CloseButton } from '@/components/buttons';
-import { useResponsive } from '@/hooks';
+import { BackButton } from '@/components/buttons';
 import { useState, type CSSProperties, type FC } from 'react';
 import {
-  MainTitle,
   NavMenu,
   NavMenuContainer,
   SettingsCategoryContainer,
   SettingsPage,
-  SettingsPageHeader,
   SettingsPageOverlay,
 } from './styles';
 import { useAppStateStore } from '@/store';
@@ -23,8 +20,6 @@ interface SettingsProps {
 }
 
 const Settings: FC<SettingsProps> = ({ animationStyle }) => {
-  const { windowWidth } = useResponsive();
-
   const closeSettingsModal = useAppStateStore(
     (state) => state.closeSettingsModal,
   );
@@ -34,14 +29,9 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
   return (
     <SettingsPageOverlay style={{ ...animationStyle, transform: undefined }}>
       <SettingsPage style={animationStyle}>
-        {windowWidth > 500 && (
-          <SettingsPageHeader>
-            <MainTitle>Settings</MainTitle>
-            <CloseButton onClick={closeSettingsModal} />
-          </SettingsPageHeader>
-        )}
         <NavMenuContainer>
-          {windowWidth <= 500 && <BackButton onClick={closeSettingsModal} />}
+          <BackButton onClick={closeSettingsModal} />
+
           <NavMenu>
             <TabButton
               text="Security"

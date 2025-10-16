@@ -1,14 +1,12 @@
-import { BackButton, CloseButton } from '@/components/buttons';
-import { useAccountInfo, useResponsive } from '@/hooks';
+import { BackButton } from '@/components/buttons';
+import { useAccountInfo } from '@/hooks';
 import { useState, type CSSProperties, type FC } from 'react';
 import ProfilePhotoSettings from './components/ProfilePhotoSettings';
 import {
-  MainTitle,
   NavMenu,
   NavMenuContainer,
   SettingsCategoryContainer,
   SettingsPage,
-  SettingsPageHeader,
   SettingsPageOverlay,
 } from './styles';
 import { useAppStateStore } from '@/store';
@@ -25,7 +23,6 @@ interface ProfileProps {
 }
 
 const Profile: FC<ProfileProps> = ({ animationStyle }) => {
-  const { windowWidth } = useResponsive();
   const { email } = useAccountInfo();
 
   const closeProfileModal = useAppStateStore(
@@ -37,14 +34,9 @@ const Profile: FC<ProfileProps> = ({ animationStyle }) => {
   return (
     <SettingsPageOverlay style={{ ...animationStyle, transform: undefined }}>
       <SettingsPage style={animationStyle}>
-        {windowWidth > 500 && (
-          <SettingsPageHeader>
-            <MainTitle>Settings</MainTitle>
-            <CloseButton onClick={closeProfileModal} />
-          </SettingsPageHeader>
-        )}
         <NavMenuContainer>
-          {windowWidth <= 500 && <BackButton onClick={closeProfileModal} />}
+          <BackButton onClick={closeProfileModal} />
+
           <NavMenu>
             <TabButton
               text="Profile Photo"

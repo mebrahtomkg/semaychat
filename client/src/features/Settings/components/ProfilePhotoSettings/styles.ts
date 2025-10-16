@@ -30,8 +30,8 @@ export const ProfilePhotoSettingsStyled = styled.div<{
           `
         : css`
             position: relative;
-            width: 27rem;
-            height: 27rem;
+            width: 25rem;
+            height: 25rem;
             border-radius: 10px;
             background-color: var(--bg-secondary);
           `

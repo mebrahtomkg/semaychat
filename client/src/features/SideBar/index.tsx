@@ -25,6 +25,7 @@ import {
   LogoutIcon,
   MenuIcon,
   MoonIcon,
+  ProfileIcon,
   SettingsIcon,
   SunIcon,
 } from '@/components/icons';
@@ -81,7 +82,7 @@ const SideBar = () => {
     },
     {
       onClick: openProfile,
-      icon: <ContactsIcon />,
+      icon: <ProfileIcon />,
       label: 'My Profile',
     },
     {
