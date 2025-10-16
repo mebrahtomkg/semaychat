@@ -5,9 +5,10 @@ import {
   useMemo,
   useState,
   MouseEventHandler,
+  RefObject,
 } from 'react';
-import { useStableValue, useTimer } from '@/hooks';
-import { ElementRect, VisibilityOption } from '@/types';
+import { useElementPosition, useStableValue, useTimer } from '@/hooks';
+import { VisibilityOption } from '@/types';
 import { VISIBILITY_OPTION_LABELS } from '../../constants';
 import {
   MainSection,
@@ -26,7 +27,7 @@ interface PrivacyEditorProps {
   settingkey: SettingKey;
   currentValue: VisibilityOption;
   possibleValues: VisibilityOption[];
-  viewPortRect: ElementRect;
+  parentModalRef: RefObject<Element | null>;
   onSelect: (settingkey: SettingKey, value: VisibilityOption) => void;
   onClose: () => void;
   animationStyle?: CSSProperties;
@@ -37,7 +38,7 @@ const PrivacyEditor: FC<PrivacyEditorProps> = ({
   settingkey,
   currentValue,
   possibleValues,
-  viewPortRect,
+  parentModalRef,
   animationStyle,
   onSelect,
   onClose,
@@ -80,7 +81,7 @@ const PrivacyEditor: FC<PrivacyEditorProps> = ({
     ));
   }, [stablePossibleValues, settingkey, selectedValue, handleSelect]);
 
-  const handleOverlayClick = useCallback<MouseEventHandler<HTMLElement>>(
+  const handleOutsideClick = useCallback<MouseEventHandler<HTMLElement>>(
     (e) => {
       e.stopPropagation();
       if (e.target === e.currentTarget) onClose();
@@ -88,19 +89,11 @@ const PrivacyEditor: FC<PrivacyEditorProps> = ({
     [onClose],
   );
 
-  const viewPortStyle = useMemo(
-    () => ({
-      top: `${viewPortRect.top}px`,
-      left: `${viewPortRect.left}px`,
-      right: `${viewPortRect.right}px`,
-      bottom: `${viewPortRect.bottom}px`,
-    }),
-    [viewPortRect],
-  );
+  const viewPortStyle = useElementPosition(parentModalRef);
 
   return (
-    <PrivacyEditorOverlay onClick={handleOverlayClick}>
-      <PrivacyEditorViewPort style={viewPortStyle} onClick={handleOverlayClick}>
+    <PrivacyEditorOverlay onClick={handleOutsideClick}>
+      <PrivacyEditorViewPort style={viewPortStyle} onClick={handleOutsideClick}>
         <PrivacyEditorStyled style={animationStyle}>
           <Title>{title}</Title>
           <MainSection>{radioButtons}</MainSection>

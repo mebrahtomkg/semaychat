@@ -1,20 +1,20 @@
-import { FC, useCallback, useMemo, useRef, useState } from 'react';
+import { FC, RefObject, useCallback, useMemo, useRef, useState } from 'react';
 import { SettingsCategoryContainer } from '../../styles';
 import { useAccount } from '@/hooks';
 import { PRIVACY_SETTINGS } from './constants';
 import { ANIMATION_DIALOG_FAST, WithAnimation } from '@/Animation';
 import { VISIBILITY_OPTION_LABELS } from '../../constants';
 import PrivacyEditor from '../PrivacyEditor';
-import { Account, ElementRect, VisibilityOption } from '@/types';
+import { Account, VisibilityOption } from '@/types';
 import { IPrivacySetting } from '../../types';
 import { addAccountUpdateRequest } from '@/store/useAccountUpdateRequestStore';
 import ExpandableSettingsItem from '../ExpandableSettingsItem';
 
 interface PrivacySettingsProps {
-  parentModalRect: ElementRect;
+  parentModalRef: RefObject<Element | null>;
 }
 
-const PrivacySettings: FC<PrivacySettingsProps> = ({ parentModalRect }) => {
+const PrivacySettings: FC<PrivacySettingsProps> = ({ parentModalRef }) => {
   const account = useAccount();
   const dataUpdateRef = useRef<Partial<Account> | null>(null);
   const [setting, setSetting] = useState<IPrivacySetting | null>(null);
@@ -71,7 +71,7 @@ const PrivacySettings: FC<PrivacySettingsProps> = ({ parentModalRect }) => {
           options={ANIMATION_DIALOG_FAST}
           render={(style) => (
             <PrivacyEditor
-              viewPortRect={parentModalRect}
+              parentModalRef={parentModalRef}
               title={setting.title}
               settingkey={setting.settingkey}
               currentValue={account[setting.settingkey]}

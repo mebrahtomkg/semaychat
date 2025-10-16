@@ -12,7 +12,6 @@ import PrivacySettings from './components/PrivacySettings';
 import PasswordSettings from './components/PasswordSettings';
 import BlockedUsers from './components/BlockedUsers';
 import TabButton from './components/TabButton';
-import useElementRect from './hooks/useElementRect';
 
 type SettingsCategory = 'security' | 'privacy';
 
@@ -22,8 +21,6 @@ interface SettingsProps {
 
 const Settings: FC<SettingsProps> = ({ animationStyle }) => {
   const settingsModalRef = useRef<HTMLDivElement>(null);
-
-  const settingsModalRect = useElementRect(settingsModalRef);
 
   const closeSettingsModal = useAppStateStore(
     (state) => state.closeSettingsModal,
@@ -58,7 +55,7 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
           </SettingsCategoryContainer>
         )}
         {category === 'privacy' && (
-          <PrivacySettings parentModalRect={settingsModalRect} />
+          <PrivacySettings parentModalRef={settingsModalRef} />
         )}
       </SettingsModal>
     </SettingsModalOverlay>
