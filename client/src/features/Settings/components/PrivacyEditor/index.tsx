@@ -7,9 +7,15 @@ import {
   MouseEventHandler,
 } from 'react';
 import { useStableValue, useTimer } from '@/hooks';
-import { VisibilityOption } from '@/types';
+import { ElementRect, VisibilityOption } from '@/types';
 import { VISIBILITY_OPTION_LABELS } from '../../constants';
-import { PrivacyEditorOverlay, PrivacyEditorStyled, Title } from './styles';
+import {
+  MainSection,
+  PrivacyEditorOverlay,
+  PrivacyEditorStyled,
+  PrivacyEditorViewPort,
+  Title,
+} from './styles';
 import RadioButton from '../RadioButton';
 import { IPrivacySetting } from '../../types';
 
@@ -20,6 +26,7 @@ interface PrivacyEditorProps {
   settingkey: SettingKey;
   currentValue: VisibilityOption;
   possibleValues: VisibilityOption[];
+  viewPortRect: ElementRect;
   onSelect: (settingkey: SettingKey, value: VisibilityOption) => void;
   onClose: () => void;
   animationStyle?: CSSProperties;
@@ -30,6 +37,7 @@ const PrivacyEditor: FC<PrivacyEditorProps> = ({
   settingkey,
   currentValue,
   possibleValues,
+  viewPortRect,
   animationStyle,
   onSelect,
   onClose,
@@ -80,12 +88,24 @@ const PrivacyEditor: FC<PrivacyEditorProps> = ({
     [onClose],
   );
 
+  const viewPortStyle = useMemo(
+    () => ({
+      top: `${viewPortRect.top}px`,
+      left: `${viewPortRect.left}px`,
+      right: `${viewPortRect.right}px`,
+      bottom: `${viewPortRect.bottom}px`,
+    }),
+    [viewPortRect],
+  );
+
   return (
     <PrivacyEditorOverlay onClick={handleOverlayClick}>
-      <PrivacyEditorStyled style={animationStyle}>
-        <Title>{title}</Title>
-        <div>{radioButtons}</div>
-      </PrivacyEditorStyled>
+      <PrivacyEditorViewPort style={viewPortStyle} onClick={handleOverlayClick}>
+        <PrivacyEditorStyled style={animationStyle}>
+          <Title>{title}</Title>
+          <MainSection>{radioButtons}</MainSection>
+        </PrivacyEditorStyled>
+      </PrivacyEditorViewPort>
     </PrivacyEditorOverlay>
   );
 };

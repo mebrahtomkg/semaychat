@@ -12,15 +12,13 @@ const BioSettings = () => {
   const openEditor = () => setIsEditorVisible(true);
   const closeEditor = () => setIsEditorVisible(false);
 
-  const title = bio ? bio : 'Bio';
-  const description = bio ? 'Bio' : 'Add a few words about yourself';
-
   return (
     <>
       <SettingsItem
-        title={title}
-        description={description}
-        onClick={openEditor}
+        label="Bio"
+        value={bio || '-'}
+        onEdit={openEditor}
+        isLast={true}
       />
 
       <WithAnimation

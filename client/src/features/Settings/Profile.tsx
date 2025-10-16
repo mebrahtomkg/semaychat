@@ -6,8 +6,8 @@ import {
   NavMenu,
   NavMenuContainer,
   SettingsCategoryContainer,
-  SettingsPage,
-  SettingsPageOverlay,
+  SettingsModal,
+  SettingsModalOverlay,
 } from './styles';
 import { useAppStateStore } from '@/store';
 import NameSettings from './components/NameSettings';
@@ -32,8 +32,8 @@ const Profile: FC<ProfileProps> = ({ animationStyle }) => {
   const [category, setCategory] = useState<ProfileCategory>('profilePhoto');
 
   return (
-    <SettingsPageOverlay style={{ ...animationStyle, transform: undefined }}>
-      <SettingsPage style={animationStyle}>
+    <SettingsModalOverlay style={{ ...animationStyle, transform: undefined }}>
+      <SettingsModal style={animationStyle}>
         <NavMenuContainer>
           <BackButton onClick={closeProfileModal} />
 
@@ -55,12 +55,12 @@ const Profile: FC<ProfileProps> = ({ animationStyle }) => {
           <SettingsCategoryContainer>
             <NameSettings />
             <UsernameSettings />
+            <SettingsItem value={email} label="Email" />
             <BioSettings />
-            <SettingsItem title={email} description="Email" />
           </SettingsCategoryContainer>
         )}
-      </SettingsPage>
-    </SettingsPageOverlay>
+      </SettingsModal>
+    </SettingsModalOverlay>
   );
 };
 

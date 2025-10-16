@@ -12,18 +12,12 @@ const UsernameSettings = () => {
   const openEditor = () => setIsEditorVisible(true);
   const closeEditor = () => setIsEditorVisible(false);
 
-  const title = username ? `@${username}` : 'Username';
-
-  const description = username
-    ? `Click to change username`
-    : 'Click to add username';
-
   return (
     <>
       <SettingsItem
-        title={title}
-        description={description}
-        onClick={openEditor}
+        label="Username"
+        value={username || '-'}
+        onEdit={openEditor}
       />
 
       <WithAnimation

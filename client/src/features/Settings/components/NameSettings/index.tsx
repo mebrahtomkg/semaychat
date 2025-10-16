@@ -14,7 +14,7 @@ const NameSettings = () => {
 
   return (
     <>
-      <SettingsItem title={fullName} description="Name" onClick={openEditor} />
+      <SettingsItem label="Name" value={fullName} onEdit={openEditor} />
 
       <WithAnimation
         isVisible={isEditorVisible}

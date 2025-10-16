@@ -5,13 +5,13 @@ import {
   Title,
 } from './styles';
 import { useBlockedUsers } from '@/hooks';
-import { BackButton, CloseButton } from '@/components/buttons';
+import { BackButton } from '@/components/buttons';
 import { useState } from 'react';
-import { ModalTitle } from '@/styles';
-import SettingsItem from '../SettingsItem';
 import { WithAnimation } from '@/Animation';
 import { ANIMATION_EDITOR_MODAL } from '../../constants';
 import BlockedUser from '../BlockedUser';
+import SettingsItem from '../SettingsItem';
+import ActionButton from '../ActionButton';
 
 const BlockedUsers = () => {
   const blockedUsers = useBlockedUsers();
@@ -20,14 +20,15 @@ const BlockedUsers = () => {
   const openEditor = () => setIsEditorVisible(true);
   const closeEditor = () => setIsEditorVisible(false);
 
-  const description = `You blocked ${blockedUsers.length} users`;
+  const description = `${blockedUsers.length} users blocked`;
 
   return (
     <>
       <SettingsItem
-        title="Blocked Users"
-        description={description}
-        onClick={openEditor}
+        label="Blocked Users"
+        value={description}
+        isLast={true}
+        actionButton={<ActionButton text="Open" onClick={openEditor} />}
       />
 
       <WithAnimation

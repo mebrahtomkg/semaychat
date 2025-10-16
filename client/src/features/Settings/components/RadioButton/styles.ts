@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { RadioButtonBallIcon, RadioButtonIcon } from '@/components/icons';
 
 export const RadioButtonContainer = styled.div`
-  margin: 1.4rem 0;
+  margin-bottom: 1.3rem;
 `;
 
 export const HiddenRadioButtonInput = styled.input`
@@ -17,18 +17,23 @@ export const HiddenRadioButtonInput = styled.input`
 
 export const RadioButtonLabel = styled.label`
   display: flex;
+  justify-content: space-between;
   align-items: center;
   cursor: pointer;
+`;
+
+export const RadioButtonLabelText = styled.p`
   user-select: none;
   font-size: 1rem;
   font-weight: 400;
-  color: var(--fg-normal);
+  color: var(--fg-main);
 `;
 
 export const RadioButtonIconContainer = styled.div`
+  --radio-btn-size: 1.4rem;
   position: relative;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: var(--radio-btn-size);
+  height: var(--radio-btn-size);
   color: var(--fg-radio-button);
   margin-right: 1rem;
 `;

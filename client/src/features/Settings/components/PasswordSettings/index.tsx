@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { ANIMATION_EDITOR_MODAL } from '../../constants';
 import SettingsItem from '../SettingsItem';
 import PasswordEditor from './PasswordEditor';
+import ActionButton from '../ActionButton';
 
 const PasswordSettings = () => {
   const [isEditorVisible, setIsEditorVisible] = useState(false);
@@ -12,9 +13,11 @@ const PasswordSettings = () => {
   return (
     <>
       <SettingsItem
-        title="Password"
-        description="Click to change password"
-        onClick={openEditor}
+        label="Password"
+        value=""
+        actionButton={
+          <ActionButton text="Change Password" onClick={openEditor} />
+        }
       />
 
       <WithAnimation

@@ -6,6 +6,7 @@ import {
   RadioButtonLabel,
   RadioButtonIconContainer,
   HiddenRadioButtonInput,
+  RadioButtonLabelText,
 } from './styles';
 
 interface RadioButtonProps {
@@ -48,12 +49,12 @@ const RadioButton: FC<RadioButtonProps> = ({
       />
 
       <RadioButtonLabel htmlFor={id} onClick={handleClick}>
+        <RadioButtonLabelText>{label}</RadioButtonLabelText>
+
         <RadioButtonIconContainer>
           <RadioButtonIconStyled />
           <RadioButtonBallIconStyled $isVisible={isChecked} />
         </RadioButtonIconContainer>
-
-        {label}
       </RadioButtonLabel>
     </RadioButtonContainer>
   );

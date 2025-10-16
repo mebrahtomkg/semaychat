@@ -1,22 +1,15 @@
 import styled from 'styled-components';
 
-export const SettingsPageOverlay = styled.div`
+export const SettingsModalOverlay = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   z-index: 300;
   background-color: var(--bg-overlay);
-  display: flex;
-  justify-content: center;
 `;
 
-export const SettingsPage = styled.div`
+export const SettingsModal = styled.div`
   position: absolute;
-  top: 0;
-  left: 0rem;
-  bottom: 0;
+  inset: 0;
   padding: 1rem;
   width: 100vw;
   background-color: var(--bg-main);
@@ -25,13 +18,6 @@ export const SettingsPage = styled.div`
     left: 4rem;
     width: 28rem;
   }
-`;
-
-export const SettingsPageHeader = styled.div`
-  margin-bottom: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 `;
 
 export const MainTitle = styled.h1`

@@ -1,17 +1,18 @@
 import { BackButton } from '@/components/buttons';
-import { useState, type CSSProperties, type FC } from 'react';
+import { useRef, useState, type CSSProperties, type FC } from 'react';
 import {
   NavMenu,
   NavMenuContainer,
   SettingsCategoryContainer,
-  SettingsPage,
-  SettingsPageOverlay,
+  SettingsModal,
+  SettingsModalOverlay,
 } from './styles';
 import { useAppStateStore } from '@/store';
 import PrivacySettings from './components/PrivacySettings';
 import PasswordSettings from './components/PasswordSettings';
 import BlockedUsers from './components/BlockedUsers';
 import TabButton from './components/TabButton';
+import useElementRect from './hooks/useElementRect';
 
 type SettingsCategory = 'security' | 'privacy';
 
@@ -20,6 +21,10 @@ interface SettingsProps {
 }
 
 const Settings: FC<SettingsProps> = ({ animationStyle }) => {
+  const settingsModalRef = useRef<HTMLDivElement>(null);
+
+  const settingsModalRect = useElementRect(settingsModalRef);
+
   const closeSettingsModal = useAppStateStore(
     (state) => state.closeSettingsModal,
   );
@@ -27,8 +32,8 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
   const [category, setCategory] = useState<SettingsCategory>('security');
 
   return (
-    <SettingsPageOverlay style={{ ...animationStyle, transform: undefined }}>
-      <SettingsPage style={animationStyle}>
+    <SettingsModalOverlay style={{ ...animationStyle, transform: undefined }}>
+      <SettingsModal ref={settingsModalRef} style={animationStyle}>
         <NavMenuContainer>
           <BackButton onClick={closeSettingsModal} />
 
@@ -52,9 +57,11 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
             <BlockedUsers />
           </SettingsCategoryContainer>
         )}
-        {category === 'privacy' && <PrivacySettings />}
-      </SettingsPage>
-    </SettingsPageOverlay>
+        {category === 'privacy' && (
+          <PrivacySettings parentModalRect={settingsModalRect} />
+        )}
+      </SettingsModal>
+    </SettingsModalOverlay>
   );
 };
 

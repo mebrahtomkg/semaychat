@@ -129,3 +129,10 @@ export type MessageRequest =
   | MessageUpdateRequest
   | MessageDeleteRequest
   | ChatDeleteRequest;
+
+export interface ElementRect {
+  top: number;
+  left: number;
+  right: number;
+  bottom: number;
+}

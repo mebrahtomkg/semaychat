@@ -1,34 +1,43 @@
-import { NextIcon } from '@/components/icons';
+import { EditIcon } from '@/components/icons';
 import {
-  ArrowIconContainer,
-  Description,
-  SettingsItemContainer,
-  Title,
+  EditButton,
+  SettingLabel,
+  SettingValue,
+  ItemDetailsContainer,
+  SettingsItemStyled,
 } from './styles';
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 
 interface SettingsItemProps {
-  title: string;
-  description: string;
-  onClick?: () => void;
+  label: string;
+  value: string;
+  onEdit?: () => void;
+  isLast?: boolean;
+  actionButton?: ReactNode;
 }
 
 const SettingsItem: FC<SettingsItemProps> = ({
-  title,
-  description,
-  onClick,
+  label,
+  value,
+  isLast,
+  onEdit,
+  actionButton,
 }) => {
   return (
-    <SettingsItemContainer onClick={onClick}>
-      <div>
-        <Title>{title}</Title>
-        <Description>{description}</Description>
-      </div>
+    <SettingsItemStyled $isLast={isLast}>
+      <ItemDetailsContainer>
+        <SettingLabel>{label}</SettingLabel>
+        <SettingValue>{value}</SettingValue>
+      </ItemDetailsContainer>
 
-      <ArrowIconContainer>
-        <NextIcon />
-      </ArrowIconContainer>
-    </SettingsItemContainer>
+      {actionButton}
+
+      {onEdit && (
+        <EditButton type="button" onClick={onEdit}>
+          <EditIcon />
+        </EditButton>
+      )}
+    </SettingsItemStyled>
   );
 };
 

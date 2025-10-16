@@ -1,16 +1,20 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { FC, useCallback, useMemo, useRef, useState } from 'react';
 import { SettingsCategoryContainer } from '../../styles';
 import { useAccount } from '@/hooks';
 import { PRIVACY_SETTINGS } from './constants';
 import { ANIMATION_DIALOG_FAST, WithAnimation } from '@/Animation';
 import { VISIBILITY_OPTION_LABELS } from '../../constants';
 import PrivacyEditor from '../PrivacyEditor';
-import { Account, VisibilityOption } from '@/types';
+import { Account, ElementRect, VisibilityOption } from '@/types';
 import { IPrivacySetting } from '../../types';
 import { addAccountUpdateRequest } from '@/store/useAccountUpdateRequestStore';
-import SettingsItem from '../SettingsItem';
+import ExpandableSettingsItem from '../ExpandableSettingsItem';
 
-const PrivacySettings = () => {
+interface PrivacySettingsProps {
+  parentModalRect: ElementRect;
+}
+
+const PrivacySettings: FC<PrivacySettingsProps> = ({ parentModalRect }) => {
   const account = useAccount();
   const dataUpdateRef = useRef<Partial<Account> | null>(null);
   const [setting, setSetting] = useState<IPrivacySetting | null>(null);
@@ -46,7 +50,7 @@ const PrivacySettings = () => {
   const privacySettingsElements = useMemo(
     () =>
       PRIVACY_SETTINGS.map((setting) => (
-        <SettingsItem
+        <ExpandableSettingsItem
           key={`${setting.title}`}
           title={setting.title}
           description={VISIBILITY_OPTION_LABELS[account[setting.settingkey]]}
@@ -67,6 +71,7 @@ const PrivacySettings = () => {
           options={ANIMATION_DIALOG_FAST}
           render={(style) => (
             <PrivacyEditor
+              viewPortRect={parentModalRect}
               title={setting.title}
               settingkey={setting.settingkey}
               currentValue={account[setting.settingkey]}
