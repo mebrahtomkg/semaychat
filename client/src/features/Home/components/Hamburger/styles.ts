@@ -29,10 +29,11 @@ export const ProfilePhotoContainer = styled.div`
   width: var(--photo-width);
   height: var(--photo-width);
   margin-right: 0.6rem;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%;
+  border-radius: 25%;
   background-color: #0b580b;
 `;
 

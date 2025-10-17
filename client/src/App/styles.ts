@@ -8,6 +8,12 @@ export const AppStyled = styled.div`
     background-color 0.5s ease-in-out,
     color 0.5s ease-in-out;
   display: flex;
+
+  --big-modal-width: 100vw;
+
+  @media (min-width: 500px) {
+    --big-modal-width: 22rem;
+  }
 `;
 
 export const PageContainer = styled.div`

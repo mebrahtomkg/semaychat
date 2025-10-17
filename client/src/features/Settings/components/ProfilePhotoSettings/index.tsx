@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   FetchingProgress,
   Name,
+  NameInitial,
+  NameInitialContainer,
   ProfilePhotoSettingsStyled,
   ProgressSpinner,
 } from './styles';
@@ -12,7 +14,7 @@ import {
   PhotoMetaText,
 } from '@/styles';
 import { AddPhotoIcon, DeleteIcon, DownloadIcon } from '@/components/icons';
-import { FlexibleImage, NameInitial, Spinner } from '@/components';
+import { FlexibleImage, Spinner } from '@/components';
 import ProfilePhotoUploader from '../ProfilePhotoUploader';
 import ContextMenu, { useContextMenu } from '@/components/ContextMenu';
 import {
@@ -28,15 +30,12 @@ import {
   usePhotoNavigation,
   useProfilePhotos,
   useAccountInfo,
-  useResponsive,
 } from '@/hooks';
 import useSelfProfilePhoto from '../../hooks/useSelfProfilePhoto';
 import AddPhotoButton from '../AddPhotoButton';
 import { MenuItemDescriptor } from '@/components/ContextMenu/types';
 
 const ProfilePhotoSettings = () => {
-  const { windowWidth } = useResponsive();
-
   const { fullName, nameInitials } = useAccountInfo();
 
   const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =
@@ -102,7 +101,6 @@ const ProfilePhotoSettings = () => {
       aria-modal={isFullScreenMode}
       aria-label="Profile photo settings"
       $isFullScreenMode={isFullScreenMode}
-      $windowWidth={windowWidth}
     >
       <PhotoHeaderSection>
         {isFullScreenMode ? (
@@ -143,7 +141,9 @@ const ProfilePhotoSettings = () => {
           isPhotoNavTarget={true}
         />
       ) : (
-        <NameInitial nameInitials={nameInitials} />
+        <NameInitialContainer>
+          <NameInitial>{nameInitials}</NameInitial>
+        </NameInitialContainer>
       )}
 
       {photosCount > 1 && (

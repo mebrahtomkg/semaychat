@@ -1,20 +1,11 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-export const HomePage = styled.div<{ $isLargeScreen: boolean }>`
+export const HomeStyled = styled.div`
   position: relative;
   height: 100vh;
+  width: var(--big-modal-width);
   overflow: hidden;
   background-color: var(--bg-main);
-
-  ${(props) =>
-    props.$isLargeScreen
-      ? css`
-          max-width: 19rem;
-          min-width: 19rem;
-        `
-      : css`
-          width: 100%;
-        `}
 `;
 
 export const HeaderContainer = styled.div`

@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router';
 import Home from '@/features/Home';
 import Chat from '@/features/Chat';
-import SideBar from '@/features/SideBar';
 import Guest from '@/features/Guest';
 import { GlobalStyle } from '@/styles';
 import { AppStyled, PageContainer } from './styles';
@@ -33,12 +32,10 @@ const App = () => {
 
       <AppThemeProvider $theme={theme}>
         {isLoggedIn ? (
-          <AppStyled $isLargeScreen={isLargeScreen}>
+          <AppStyled>
             <AccountUpdateProcessor />
 
             <MessageRequestsProcessor />
-
-            {/*<SideBar />*/}
 
             {isLargeScreen && <Home />}
 

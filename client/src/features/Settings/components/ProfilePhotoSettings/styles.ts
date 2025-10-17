@@ -2,40 +2,41 @@ import styled, { css, keyframes } from 'styled-components';
 
 export const ProfilePhotoSettingsStyled = styled.div<{
   $isFullScreenMode: boolean;
-  $windowWidth: number;
 }>`
   ${(props) =>
-    props.$isFullScreenMode &&
-    css`
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 350;
-      display: flex;
-      overflow: hidden;
-      background-color: rgb(0 0 0 / 90%);
-    `}
+    props.$isFullScreenMode
+      ? css`
+          position: fixed;
+          inset: 0;
+          display: flex;
+          overflow: hidden;
+          background-color: rgb(0 0 0 / 90%);
+        `
+      : css`
+          --profile-photo-modal-width: calc(var(--big-modal-width) - 2rem);
+          position: relative;
+          width: var(--profile-photo-modal-width);
+          height: var(--profile-photo-modal-width);
+          border-radius: 10px;
+          background-color: var(--bg-secondary);
+        `}
+`;
 
-  ${(props) =>
-    !props.$isFullScreenMode
-      ? props.$windowWidth < 500
-        ? css`
-            position: relative;
-            width: 100vw;
-            height: 100vw;
-            border-radius: 10px;
-            background-color: var(--bg-secondary);
-          `
-        : css`
-            position: relative;
-            width: 25rem;
-            height: 25rem;
-            border-radius: 10px;
-            background-color: var(--bg-secondary);
-          `
-      : ''}
+export const NameInitialContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: inherit;
+  background-color: var(--bg-name-initials);
+`;
+
+export const NameInitial = styled.span`
+  line-height: 1.5;
+  font-size: 15rem;
+  font-weight: 600;
+  color: #e9e9e9;
 `;
 
 export const Name = styled.h3`

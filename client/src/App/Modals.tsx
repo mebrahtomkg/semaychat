@@ -4,11 +4,11 @@ import Profile from '@/features/Settings/Profile';
 import { useAppStateStore } from '@/store';
 
 const ANIMATION_SLIDE_IN: AnimationOptions = {
-  initialStyles: { opacity: 0, transform: 'translateX(-10px)' },
-  finalStyles: { opacity: 1, transform: 'translateX(0)' },
+  initialStyles: { opacity: 0, transform: 'translate(0px, 20px)' },
+  finalStyles: { opacity: 1, transform: 'translate(0, 0)' },
   transition: {
     property: ['transform', 'opacity'],
-    duration: [250, 250],
+    duration: [200, 200],
     timingFunction: ['ease-out', 'ease-out'],
   },
 };

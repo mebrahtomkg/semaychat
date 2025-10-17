@@ -3,21 +3,15 @@ import styled from 'styled-components';
 export const SettingsModalOverlay = styled.div`
   position: fixed;
   inset: 0;
-  z-index: 300;
-  background-color: var(--bg-overlay);
+  background-color: transparent;
 `;
 
 export const SettingsModal = styled.div`
   position: absolute;
   inset: 0;
   padding: 1rem;
-  width: 100vw;
+  width: var(--big-modal-width);
   background-color: var(--bg-main);
-
-  @media (min-width: 500px) {
-    left: 4rem;
-    width: 28rem;
-  }
 `;
 
 export const MainTitle = styled.h1`
@@ -46,7 +40,6 @@ export const NavMenu = styled.div`
 export const SettingsCategoryContainer = styled.div`
   background-color: inherit;
   @media (min-width: 500px) {
-    margin-left: 2.8rem;
     position: relative;
   }
 `;
@@ -60,7 +53,6 @@ export const SettingsCategoryContainerBox = styled.div`
   overflow: hidden;
 
   @media (min-width: 500px) {
-    margin-left: 2.8rem;
     position: relative;
   }
 `;

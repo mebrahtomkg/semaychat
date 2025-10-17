@@ -3,7 +3,6 @@ import { combine } from 'zustand/middleware';
 
 const initialState = {
   isContactsModalVisible: false,
-  isSidebarVisible: false,
   isSettingsModalVisible: false,
   isProfileModalVisible: false,
 };
@@ -16,18 +15,6 @@ const useAppStateStore = create(
 
     closeContactsModal: () => {
       set(() => ({ isContactsModalVisible: false }));
-    },
-
-    showSidebar: () => {
-      set(() => ({ isSidebarVisible: true }));
-    },
-
-    hideSidebar: () => {
-      set(() => ({ isSidebarVisible: false }));
-    },
-
-    toggleSidebar: () => {
-      set((state) => ({ isSidebarVisible: !state.isSidebarVisible }));
     },
 
     openSettingsModal: () => {

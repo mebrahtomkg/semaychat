@@ -1,24 +1,13 @@
-import {
-  ChatListContainer,
-  HeaderContainer,
-  HomePage,
-  MenuButton,
-} from './styles';
-import { useResponsive } from '@/hooks';
+import { ChatListContainer, HeaderContainer, HomeStyled } from './styles';
 import useEnoughChats from './useEnoughChats';
 import { useAppStateStore } from '@/store';
 import Contacts from '../Contacts';
-import { MenuIcon } from '@/components/icons';
 import { SearchInput } from '@/components';
 import useSearch from './useSearch';
 import { ChatItem } from './components';
 import Hamburger from './components/Hamburger';
 
 const Home = () => {
-  const { isLargeScreen } = useResponsive();
-
-  const showSidebar = useAppStateStore((state) => state.showSidebar);
-
   const isContactsModalVisible = useAppStateStore(
     (state) => state.isContactsModalVisible,
   );
@@ -33,14 +22,8 @@ const Home = () => {
   return (
     <>
       {isContactsModalVisible && <Contacts />}
-      <HomePage $isLargeScreen={isLargeScreen}>
+      <HomeStyled>
         <HeaderContainer>
-          {!isLargeScreen && (
-            <MenuButton onClick={showSidebar}>
-              <MenuIcon />
-            </MenuButton>
-          )}
-
           <SearchInput
             placeholder="Search people"
             onChange={handleSearchInputChange}
@@ -54,7 +37,7 @@ const Home = () => {
         </ChatListContainer>
 
         <Hamburger />
-      </HomePage>
+      </HomeStyled>
     </>
   );
 };
