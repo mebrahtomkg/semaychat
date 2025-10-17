@@ -1,6 +1,6 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-export const AppStyled = styled.div<{ $isLargeScreen: boolean }>`
+export const AppStyled = styled.div`
   position: relative;
   color: var(--fg-main);
   background-color: var(--bg-page);
@@ -8,12 +8,6 @@ export const AppStyled = styled.div<{ $isLargeScreen: boolean }>`
     background-color 0.5s ease-in-out,
     color 0.5s ease-in-out;
   display: flex;
-
-  ${(props) =>
-    props.$isLargeScreen &&
-    css`
-      margin-left: 4rem;
-    `}
 `;
 
 export const PageContainer = styled.div`

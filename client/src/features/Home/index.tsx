@@ -12,6 +12,7 @@ import { MenuIcon } from '@/components/icons';
 import { SearchInput } from '@/components';
 import useSearch from './useSearch';
 import { ChatItem } from './components';
+import Hamburger from './components/Hamburger';
 
 const Home = () => {
   const { isLargeScreen } = useResponsive();
@@ -51,6 +52,8 @@ const Home = () => {
             <ChatItem key={`${chat.partner.id}`} chat={chat} />
           ))}
         </ChatListContainer>
+
+        <Hamburger />
       </HomePage>
     </>
   );

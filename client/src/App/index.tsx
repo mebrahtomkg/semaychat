@@ -38,7 +38,7 @@ const App = () => {
 
             <MessageRequestsProcessor />
 
-            <SideBar />
+            {/*<SideBar />*/}
 
             {isLargeScreen && <Home />}
 
