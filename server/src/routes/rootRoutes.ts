@@ -49,7 +49,47 @@ router.get(
         },
         {
           firstName: 'Bravo',
-          email: 'b@e.c',
+          email: 'b2@e.c',
+          password: await hashPassword('bbbb'),
+        },
+        {
+          firstName: 'Jackson',
+          email: 'b3@e.c',
+          password: await hashPassword('bbbb'),
+        },
+        {
+          firstName: 'Merit',
+          email: 'b4@e.c',
+          password: await hashPassword('bbbb'),
+        },
+        {
+          firstName: 'Abrham',
+          email: 'b5@e.c',
+          password: await hashPassword('bbbb'),
+        },
+        {
+          firstName: 'Sansa',
+          email: 'b6@e.c',
+          password: await hashPassword('bbbb'),
+        },
+        {
+          firstName: 'Sofiya',
+          email: 'b7@e.c',
+          password: await hashPassword('bbbb'),
+        },
+        {
+          firstName: 'Taiwen',
+          email: 'b8@e.c',
+          password: await hashPassword('bbbb'),
+        },
+        {
+          firstName: 'Muez',
+          email: 'b9@e.c',
+          password: await hashPassword('bbbb'),
+        },
+        {
+          firstName: 'Bob',
+          email: 'b10@e.c',
           password: await hashPassword('bbbb'),
         },
       ]);
