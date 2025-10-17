@@ -5,7 +5,7 @@ export const HamburgerContainer = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
-  height: 5rem;
+  height: var(--hamburger-height);
   padding: 0.6rem;
   overflow: hidden;
   background-color: var(--bg-main);

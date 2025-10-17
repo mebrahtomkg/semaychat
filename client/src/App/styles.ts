@@ -10,6 +10,7 @@ export const AppStyled = styled.div`
   display: flex;
 
   --big-modal-width: 100vw;
+  --hamburger-height: 5rem;
 
   @media (min-width: 500px) {
     --big-modal-width: 22rem;

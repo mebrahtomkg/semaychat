@@ -9,7 +9,7 @@ export const MenuOverlay = styled.div`
 export const MenuStyled = styled.div`
   position: fixed;
   left: 0.7rem;
-  bottom: 5rem;
+  bottom: var(--hamburger-height);
   width: 13rem;
   overflow: hidden;
   border-radius: 15px;
