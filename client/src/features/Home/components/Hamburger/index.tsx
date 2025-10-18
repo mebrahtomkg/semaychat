@@ -1,11 +1,9 @@
-import { useAccountInfo, useImageLoader, useLogout } from '@/hooks';
+import { useLogout } from '@/hooks';
 import {
   HamburgerContainer,
-  HamburgerStyled,
-  Name,
-  NameInitial,
-  ProfilePhoto,
-  ProfilePhotoContainer,
+  IconContainer,
+  MenuItemButton,
+  MenuItemLabel,
 } from './styles';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import Menu, { MenuItemProps } from '../Menu';
@@ -14,6 +12,7 @@ import { toggleTheme, useAppStateStore, useThemeStore } from '@/store';
 import {
   ContactsIcon,
   LogoutIcon,
+  MenuIcon,
   MoonIcon,
   ProfileIcon,
   SettingsIcon,
@@ -23,11 +22,6 @@ import {
 type Action = 'openProfile' | 'openSettings' | 'openContacts';
 
 const Hamburger = () => {
-  const { fullName, nameInitials, photoUrl } = useAccountInfo();
-
-  const { imageSrc, handleImageLoad, handleImageLoadError } =
-    useImageLoader(photoUrl);
-
   const action = useRef<Action | null>(null);
 
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -51,11 +45,6 @@ const Hamburger = () => {
     closeMenu();
   }, [closeMenu]);
 
-  const openContacts = useCallback(() => {
-    action.current = 'openContacts';
-    closeMenu();
-  }, [closeMenu]);
-
   const runAction = useCallback(() => {
     const actionValue = action.current;
     action.current = null;
@@ -67,46 +56,39 @@ const Hamburger = () => {
       case 'openSettings':
         openSettingsModal();
         break;
-
-      case 'openContacts':
-        openContactsModal();
-        break;
     }
-  }, [openProfileModal, openSettingsModal, openContactsModal]);
+  }, [openProfileModal, openSettingsModal]);
 
   const menuItems: MenuItemProps[] = useMemo(
     () => [
-      { onClick: openContacts, icon: <ContactsIcon />, label: 'Contacts' },
       { onClick: openProfile, icon: <ProfileIcon />, label: 'My Profile' },
       { onClick: openSettings, icon: <SettingsIcon />, label: 'Settings' },
       { onClick: logout, icon: <LogoutIcon />, label: 'Log out' },
-      {
-        onClick: toggleTheme,
-        icon: theme === 'light' ? <MoonIcon /> : <SunIcon />,
-        label: 'Theme',
-      },
     ],
-    [openContacts, openProfile, openSettings, logout, theme],
+    [openProfile, openSettings, logout],
   );
 
   return (
     <>
       <HamburgerContainer>
-        <HamburgerStyled onClick={openMenu}>
-          <ProfilePhotoContainer>
-            {imageSrc ? (
-              <ProfilePhoto
-                src={imageSrc}
-                onLoad={handleImageLoad}
-                onError={handleImageLoadError}
-              />
-            ) : (
-              <NameInitial>{nameInitials[0]}</NameInitial>
-            )}
-          </ProfilePhotoContainer>
+        <MenuItemButton type="button" onClick={openMenu}>
+          <IconContainer>
+            <MenuIcon />
+          </IconContainer>
+        </MenuItemButton>
 
-          <Name>{fullName}</Name>
-        </HamburgerStyled>
+        <MenuItemButton type="button" onClick={openContactsModal}>
+          <IconContainer>
+            <ContactsIcon />
+          </IconContainer>
+          <MenuItemLabel>Contacts</MenuItemLabel>
+        </MenuItemButton>
+
+        <MenuItemButton type="button" onClick={toggleTheme}>
+          <IconContainer>
+            {theme === 'light' ? <MoonIcon /> : <SunIcon />}
+          </IconContainer>
+        </MenuItemButton>
       </HamburgerContainer>
 
       <WithAnimation
