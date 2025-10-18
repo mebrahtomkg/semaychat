@@ -5,7 +5,7 @@ import Contacts from '../Contacts';
 import { SearchInput } from '@/components';
 import useSearch from './useSearch';
 import { ChatItem } from './components';
-import Hamburger from './components/Hamburger';
+import BottomMenu from './components/BottomMenu';
 
 const Home = () => {
   const isContactsModalVisible = useAppStateStore(
@@ -36,7 +36,7 @@ const Home = () => {
           ))}
         </ChatListContainer>
 
-        <Hamburger />
+        <BottomMenu />
       </HomeStyled>
     </>
   );
