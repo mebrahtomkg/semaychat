@@ -16,6 +16,7 @@ export const HeaderContainer = styled.div`
   background-color: var(--bg-secondary);
   border-bottom: 1px solid;
   border-color: var(--fg-border);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 `;
 
 export const ChatListContainer = styled.div`

@@ -1,21 +1,17 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-export const SettingsItemContainer = styled.div<{ $isLast?: boolean }>`
-  padding: 0.8rem 1rem;
+export const SettingsItemContainer = styled.div`
+  margin-bottom: 1rem;
+  padding: 1rem 1rem;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  ${(props) =>
-    !props.$isLast &&
-    css`
-      border-bottom: 1px solid;
-      border-color: var(--fg-border);
-    `}
+  border-radius: 15px;
+  background-color: #41414a;
 
   &:hover {
-    background-color: var(--bg-very-bright);
+    background-color: #545459;
   }
 `;
 

@@ -25,7 +25,7 @@ export const NavMenuContainer = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
 `;
 
 export const NavMenu = styled.div`
@@ -45,13 +45,6 @@ export const SettingsCategoryContainer = styled.div`
 `;
 
 export const SettingsCategoryContainerBox = styled.div`
-  background-color: var(--bg-hover);
-  border-radius: 10px;
-  border: 1px solid;
-  border-color: #1e1e22;
-  box-shadow: 5px 5px 15px #141313;
-  overflow: hidden;
-
   @media (min-width: 500px) {
     position: relative;
   }
