@@ -11,7 +11,7 @@ const TabButtonStyled = styled.button<{ $isActive: boolean }>`
   ${(props) =>
     props.$isActive &&
     css`
-      background-color: var(--bg-active-tab);
+      background-color: var(--bg-action);
     `}
 `;
 

@@ -13,7 +13,7 @@ export const LabelWrapper = styled.div`
 export const LabelStyled = styled.label`
   font-size: 1rem;
   font-weight: 500;
-  color: var(--fg-normal);
+
   display: block;
 `;
 

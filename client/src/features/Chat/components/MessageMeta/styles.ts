@@ -11,7 +11,7 @@ export const Time = styled.span`
   line-height: 1;
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--fg-msg-time);
+  color: var(--fg-muted);
 `;
 
 export const TickIconContainer = styled.div`

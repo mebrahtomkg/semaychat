@@ -16,7 +16,7 @@ export const SliderProgress = styled.div`
   height: 3px;
   user-select: none;
   border-radius: 80px;
-  background-color: var(--bg-button);
+  background-color: var(--bg-action);
 `;
 
 export const SliderThumb = styled.div`

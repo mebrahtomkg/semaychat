@@ -3,6 +3,7 @@ import { createGlobalStyle, css } from 'styled-components';
 const styles = css`
   * {
     box-sizing: border-box;
+    color: inherit;
   }
 
   html {

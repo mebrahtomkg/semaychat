@@ -8,7 +8,6 @@ export const MenuItemStyled = styled.li`
   border-radius: 7px;
   background-color: inherit;
   transition: background-color 0.15s ease;
-  color: var(--fg-normal);
 
   &:hover {
     background-color: var(--bg-hover);

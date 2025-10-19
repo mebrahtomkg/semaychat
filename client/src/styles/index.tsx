@@ -46,7 +46,7 @@ export const BasicButton = styled.button`
 
 export const PrimaryButton = styled(BasicButton)`
   color: #fff;
-  background-color: var(--bg-button);
+  background-color: var(--bg-action);
 
   &:hover {
     background-color: var(--bg-button-hover);

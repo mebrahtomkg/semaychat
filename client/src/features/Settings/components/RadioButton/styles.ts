@@ -33,7 +33,7 @@ export const RadioButtonIconContainer = styled.div`
   position: relative;
   width: var(--radio-btn-size);
   height: var(--radio-btn-size);
-  color: var(--fg-radio-button);
+  color: var(--bg-action);
   margin-right: 1rem;
 `;
 

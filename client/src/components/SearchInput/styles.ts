@@ -4,7 +4,7 @@ export const SearchInputContainer = styled.div`
   display: flex;
   align-items: center;
   border-radius: 25px;
-  background-color: var(--bg-text-input);
+  background-color: #29343e;
 `;
 
 export const SearchIconContainer = styled.div`

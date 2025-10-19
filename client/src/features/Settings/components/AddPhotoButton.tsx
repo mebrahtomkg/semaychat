@@ -12,7 +12,7 @@ const AddPhotoButtonStyled = styled.button`
   color: white;
   box-shadow: 3px 3px 14px #000000c4;
   transition: background-color 0.2s ease-in-out;
-  background-color: var(--bg-button);
+  background-color: var(--bg-action);
   &:hover {
     background-color: var(--bg-button-hover);
   }

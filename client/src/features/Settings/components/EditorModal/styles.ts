@@ -34,6 +34,6 @@ export const DoneButton = styled.button`
   width: var(--done-btn-width);
   height: var(--done-btn-width);
   padding: 0.5rem;
-  background-color: var(--bg-button);
+  background-color: var(--bg-action);
   border-radius: 50%;
 `;

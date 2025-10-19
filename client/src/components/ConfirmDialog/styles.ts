@@ -22,14 +22,12 @@ export const ConfirmDialogStyled = styled.div`
 export const DialogTitle = styled.h3`
   margin-bottom: 1.5rem;
   font-size: 1.3rem;
-  color: var(--fg-title);
 `;
 
 export const DialogMessage = styled.p`
   margin-bottom: 1.5rem;
   font-size: 1rem;
   font-weight: 400;
-  color: var(--fg-normal);
 `;
 
 export const DialogButtonsContainer = styled.div`

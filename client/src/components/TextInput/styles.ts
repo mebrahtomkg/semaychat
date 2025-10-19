@@ -89,7 +89,7 @@ export const InfoContainer = styled.div`
 `;
 
 export const Info = styled.p`
-  color: var(--fg-description);
+  color: var(--fg-muted);
   font-size: 0.8rem;
   font-weight: 500;
 `;

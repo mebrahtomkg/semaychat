@@ -18,7 +18,6 @@ export const MainTitle = styled.h1`
   font-size: 1.5rem;
   line-height: 1;
   font-weight: 500;
-  color: var(--fg-title);
 `;
 
 export const NavMenuContainer = styled.div`

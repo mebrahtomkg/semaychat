@@ -62,5 +62,4 @@ export const CheckBoxLabel = styled.label`
   font-size: 1rem;
   line-height: 1;
   cursor: pointer;
-  color: var(--fg-normal);
 `;

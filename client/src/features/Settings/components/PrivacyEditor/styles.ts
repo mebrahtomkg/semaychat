@@ -32,5 +32,4 @@ export const Title = styled.h2`
   margin-bottom: 1rem;
   font-size: 1.2rem;
   font-weight: 500;
-  color: var(--fg-title);
 `;

@@ -54,7 +54,7 @@ export const ChatItemDateTime = styled.p`
   white-space: nowrap;
   font-size: 0.8rem;
   font-weight: 500;
-  color: var(--fg-description);
+  color: var(--fg-muted);
 `;
 
 export const MessagePreview = styled.p`
@@ -63,5 +63,5 @@ export const MessagePreview = styled.p`
   text-overflow: ellipsis;
   font-size: 1rem;
   font-weight: 500;
-  color: var(--fg-description);
+  color: var(--fg-muted);
 `;
