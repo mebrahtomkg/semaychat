@@ -26,7 +26,6 @@ export const RadioButtonLabelText = styled.p`
   user-select: none;
   font-size: 1rem;
   font-weight: 400;
-  color: var(--fg-main);
 `;
 
 export const RadioButtonIconContainer = styled.div`

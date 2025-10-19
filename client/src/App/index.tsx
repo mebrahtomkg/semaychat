@@ -9,16 +9,13 @@ import { MessageRequestsProcessor } from '@/features/Chat/components';
 import useSocket from '@/hooks/useSocket';
 import useResponsiveController from './useResponsiveController';
 import { Spinner } from '@/components';
-import { useThemeStore } from '@/store';
-import AppThemeProvider from './AppThemeProvider';
 import AccountUpdateProcessor from './AccountUpdateProcessor';
 import Modals from './Modals';
+import AppThemeProvider from '@/AppThemeProvider';
 
 const App = () => {
   useResponsiveController();
   useSocket();
-
-  const theme = useThemeStore();
 
   const { isLargeScreen } = useResponsive();
 
@@ -30,7 +27,7 @@ const App = () => {
     <>
       <GlobalStyle />
 
-      <AppThemeProvider $theme={theme}>
+      <AppThemeProvider>
         {isLoggedIn ? (
           <AppStyled>
             <AccountUpdateProcessor />

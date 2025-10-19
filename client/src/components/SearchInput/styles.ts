@@ -19,7 +19,6 @@ export const SearchInputStyled = styled.input`
   flex-grow: 3;
   font-size: 1rem;
   background-color: inherit;
-  color: var(--fg-main);
 
   &:focus {
     border: none;

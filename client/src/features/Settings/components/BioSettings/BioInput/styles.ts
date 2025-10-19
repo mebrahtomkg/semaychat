@@ -48,7 +48,6 @@ export const Counter = styled.p`
   padding: 0 0.4rem;
   font-size: 1rem;
   font-weight: 500;
-  color: var(--fg-main);
   background-color: var(--bg-main);
   animation-duration: 300ms;
   animation-timing-function: linear;

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const AppStyled = styled.div`
   position: relative;
-  color: var(--fg-main);
+  color: var(--fg-primary);
   background-color: var(--bg-page);
   transition:
     background-color 0.5s ease-in-out,

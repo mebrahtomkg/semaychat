@@ -24,14 +24,13 @@ export const ItemDetailsContainer = styled.div`
 export const SettingLabel = styled.h3`
   user-select: none;
   font-size: 1rem;
-  color: var(--fg-main);
 `;
 
 export const SettingValue = styled.h3`
   flex-grow: 2;
   text-align: right;
   user-select: none;
-  color: var(--fg-main);
+
   font-size: 1rem;
 `;
 
@@ -42,6 +41,6 @@ export const EditButton = styled.button`
   padding: 0.7rem;
   border-radius: 7px;
   user-select: none;
-  color: var(--fg-main);
+
   background-color: var(--bg-very-bright);
 `;

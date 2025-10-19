@@ -28,7 +28,7 @@ export const InputStyled = styled.input`
   border-radius: 0;
   font-size: 1rem;
   font-weight: 500;
-  color: var(--fg-main);
+
   background-color: transparent;
 
   &::placeholder {
@@ -46,7 +46,7 @@ export const InputStyled = styled.input`
 
 export const HelperText = styled.span`
   display: block;
-  color: var(--fg-main);
+
   font-size: 0.8rem;
   font-weight: 500;
 `;
