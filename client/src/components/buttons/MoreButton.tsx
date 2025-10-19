@@ -5,7 +5,6 @@ import { FC, MouseEventHandler } from 'react';
 const MoreButtonStyled = styled.button`
   width: 2rem;
   padding: 0.3rem;
-  color: #fff;
 `;
 
 interface MoreButtonProps {

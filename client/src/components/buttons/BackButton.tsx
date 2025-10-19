@@ -7,7 +7,6 @@ const BackButtonStyled = styled.button`
   height: 2rem;
   min-width: 2rem;
   padding: 0.3rem;
-  color: #fff;
 `;
 
 interface BackButtonProps {

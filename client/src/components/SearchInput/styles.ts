@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 
 export const SearchInputContainer = styled.div`
+  overflow: hidden;
   display: flex;
   align-items: center;
-  border-radius: 25px;
-  background-color: #29343e;
+  border-radius: 15px;
+  background-color: var(--bg-primary);
 `;
 
 export const SearchIconContainer = styled.div`

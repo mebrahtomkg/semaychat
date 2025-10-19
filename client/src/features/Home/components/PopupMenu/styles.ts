@@ -13,7 +13,7 @@ export const PopupMenuStyled = styled.div`
   width: 11rem;
   overflow: hidden;
   border-radius: 15px;
-  background-color: #383839;
+  background-color: var(--bg-secondary);
 `;
 
 export const MenuItemButton = styled.button`
@@ -23,7 +23,7 @@ export const MenuItemButton = styled.button`
   align-items: center;
 
   &:hover {
-    background-color: #474747;
+    background-color: var(--bg-hover);
   }
 `;
 
