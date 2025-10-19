@@ -16,7 +16,7 @@ export const ConfirmDialogOverlay = styled.div`
 export const ConfirmDialogStyled = styled.div`
   padding: 1rem;
   border-radius: 10px;
-  background-color: var(--bg-main);
+  background-color: var(--bg-primary);
 `;
 
 export const DialogTitle = styled.h3`
@@ -43,9 +43,9 @@ const ActionButton = styled.button`
   line-height: 1;
   font-weight: 500;
   transition: background-color 0.2s ease-in-out;
-  color: var(--bg-button-hover);
+  color: var(--bg-action-hover);
   &:hover {
-    background-color: var(--bg-bright);
+    background-color: var(--bg-hover);
   }
 `;
 

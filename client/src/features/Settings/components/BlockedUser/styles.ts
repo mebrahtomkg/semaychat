@@ -58,6 +58,6 @@ export const MoreButtonStyled = styled.button`
   border-radius: 50%;
 
   &:hover {
-    background-color: var(--bg-very-bright);
+    background-color: var(--bg-secondary);
   }
 `;

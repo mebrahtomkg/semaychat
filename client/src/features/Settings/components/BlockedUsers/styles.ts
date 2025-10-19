@@ -8,7 +8,7 @@ export const BlockedUsersStyled = styled.div`
   bottom: 0;
   z-index: 5;
   padding: 0 1rem;
-  background-color: var(--bg-main);
+  background-color: var(--bg-primary);
 `;
 
 export const HeaderSection = styled.div`

@@ -21,7 +21,7 @@ export const PrivacyEditorStyled = styled.div`
   padding-bottom: 0.3rem;
   border-radius: 20px;
   border: 1px solid;
-  background-color: var(--bg-main);
+  background-color: var(--bg-primary);
   border-color: var(--fg-border);
   box-shadow: 10px 10px 30px #000000;
 `;

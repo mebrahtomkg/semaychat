@@ -16,5 +16,5 @@ export const ContextMenuStyled = styled.ul`
   min-width: 200px;
   padding: 0;
   border-radius: 7px;
-  background-color: var(--bg-main);
+  background-color: var(--bg-primary);
 `;

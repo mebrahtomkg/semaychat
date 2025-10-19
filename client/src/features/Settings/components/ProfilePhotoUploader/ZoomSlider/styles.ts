@@ -26,5 +26,5 @@ export const SliderThumb = styled.div`
   border-radius: 50%;
   user-select: none;
   cursor: pointer;
-  background-color: var(--bg-button-hover);
+  background-color: var(--bg-action-hover);
 `;

@@ -11,7 +11,7 @@ export const MessageInputStyled = styled.div`
   cursor: text;
   border: 1px solid;
   border-color: var(--fg-border);
-  background-color: var(--bg-main);
+  background-color: var(--bg-primary);
 `;
 
 export const GrowingTextArea = styled.textarea`
@@ -23,7 +23,7 @@ export const GrowingTextArea = styled.textarea`
   background-color: transparent;
 
   &::placeholder {
-    color: var(--fg-placeholder);
+    color: var(--fg-muted);
   }
   &::-webkit-scrollbar {
     display: none;

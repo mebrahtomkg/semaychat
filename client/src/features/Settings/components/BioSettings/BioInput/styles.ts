@@ -12,7 +12,6 @@ export const TextAreaStyled = styled.textarea`
   outline-style: none;
   border: none;
   border-radius: inherit;
-  color: var(--fg-text-input);
   background-color: transparent;
   box-shadow: none;
   overflow: hidden;
@@ -48,7 +47,7 @@ export const Counter = styled.p`
   padding: 0 0.4rem;
   font-size: 1rem;
   font-weight: 500;
-  background-color: var(--bg-main);
+  background-color: var(--bg-primary);
   animation-duration: 300ms;
   animation-timing-function: linear;
   animation-iteration-count: 1;

@@ -41,5 +41,5 @@ export const Status = styled.span`
   display: block;
   font-size: 0.8rem;
   font-weight: 500;
-  color: var(--fg-secondary-description);
+  color: var(--fg-muted);
 `;

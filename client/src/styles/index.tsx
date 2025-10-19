@@ -28,7 +28,7 @@ export const CenteredModal = styled.div`
   padding: 1rem;
   border-radius: 15px;
   border: 1px solid;
-  background-color: var(--bg-main);
+  background-color: var(--bg-primary);
   border-color: var(--fg-bright);
 `;
 
@@ -49,13 +49,13 @@ export const PrimaryButton = styled(BasicButton)`
   background-color: var(--bg-action);
 
   &:hover {
-    background-color: var(--bg-button-hover);
+    background-color: var(--bg-action-hover);
   }
 `;
 
 export const DisabledPrimaryButton = styled(BasicButton)`
-  background-color: var(--bg-button-disabled);
-  color: var(--fg-button-disabled);
+  background-color: var(--bg-secondary);
+  color: var(--fg-muted);
   cursor: not-allowed;
 `;
 

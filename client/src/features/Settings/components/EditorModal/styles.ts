@@ -7,7 +7,7 @@ export const EditorModalStyled = styled.div`
   right: 0;
   bottom: 0;
   z-index: 5;
-  background-color: var(--bg-main);
+  background-color: var(--bg-primary);
 `;
 
 export const HeaderSection = styled.div`

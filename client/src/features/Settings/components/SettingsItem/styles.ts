@@ -42,5 +42,5 @@ export const EditButton = styled.button`
   border-radius: 7px;
   user-select: none;
 
-  background-color: var(--bg-very-bright);
+  background-color: var(--bg-secondary);
 `;

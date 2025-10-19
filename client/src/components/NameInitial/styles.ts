@@ -7,7 +7,7 @@ export const NameInitialsContainer = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: inherit;
-  background-color: var(--bg-name-initials);
+  background-color: #005d27;
 `;
 
 export const NameInitials = styled.span`
@@ -23,7 +23,7 @@ export const SmallNameInitialsContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--bg-name-initials);
+  background-color: #005d27;
 `;
 
 export const SmallNameInitials = styled.span`

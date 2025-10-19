@@ -32,7 +32,7 @@ export const InputStyled = styled.input`
   background-color: transparent;
 
   &::placeholder {
-    color: var(--fg-placeholder);
+    color: var(--fg-muted);
     font-family: system-ui, sans-serif;
     font-size: 1rem;
     font-weight: 500;

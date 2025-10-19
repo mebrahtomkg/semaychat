@@ -7,7 +7,7 @@ export const FileSelectorModal = styled.div`
   bottom: 0;
   padding: 0 1rem;
   border-radius: 10px;
-  background-color: var(--bg-main);
+  background-color: var(--bg-primary);
   border: 1px solid;
   border-color: #464651;
   cursor: default;

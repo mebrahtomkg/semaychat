@@ -11,14 +11,14 @@ const SendButtonStyled = styled.button<{ $isDisabled?: boolean }>`
   ${(props) =>
     props.$isDisabled
       ? css`
-          background-color: var(--bg-button-disabled);
-          color: var(--fg-button-disabled);
+          background-color: var(--bg-secondary);
+          color: var(--fg-muted);
           cursor: not-allowed;
         `
       : css`
           background-color: var(--bg-action);
           &:hover {
-            background-color: var(--bg-button-hover);
+            background-color: var(--bg-action-hover);
           }
         `}
 `;

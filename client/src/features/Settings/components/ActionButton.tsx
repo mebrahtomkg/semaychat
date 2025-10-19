@@ -6,7 +6,7 @@ const ActionButtonStyled = styled.button`
   font-size: 1rem;
   font-weight: 500;
   padding: 0.6rem 0.8rem;
-  background-color: var(--bg-very-bright);
+  background-color: var(--bg-secondary);
   border-radius: 7px;
 `;
 

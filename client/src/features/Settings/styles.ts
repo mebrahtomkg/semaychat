@@ -11,7 +11,7 @@ export const SettingsModal = styled.div`
   inset: 0;
   padding: 1rem;
   width: var(--big-modal-width);
-  background-color: var(--bg-main);
+  background-color: var(--bg-primary);
 `;
 
 export const MainTitle = styled.h1`
@@ -33,7 +33,7 @@ export const NavMenu = styled.div`
   display: flex;
   padding: 2px;
   border-radius: 12px;
-  background-color: var(--bg-very-bright);
+  background-color: var(--bg-secondary);
 `;
 
 export const SettingsCategoryContainer = styled.div`

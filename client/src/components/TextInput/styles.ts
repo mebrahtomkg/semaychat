@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 export const TextInputStyled = styled.div`
   --text-input-padding: 1rem;
   --text-input-font-size: 1rem;
-  --text-input-border-color: var(--fg-text-input-border);
+  --text-input-border-color: var(--bg-action);
   margin-bottom: 1.6rem;
   background-color: inherit;
 `;
@@ -23,11 +23,11 @@ export const TextInputViewPort = styled.div<{ $isFocused: boolean }>`
     props.$isFocused &&
     css`
       outline-width: 2px;
-      --text-input-border-color: var(--fg-text-input-border-focused);
+      --text-input-border-color: var(--bg-action-hover);
     `}
 
   &:hover {
-    --text-input-border-color: var(--fg-text-input-border-focused);
+    --text-input-border-color: var(--bg-action-hover);
   }
 
   outline-color: var(--text-input-border-color);
@@ -46,7 +46,6 @@ export const InputStyled = styled.input`
   outline-style: none;
   border: none;
   border-radius: inherit;
-  color: var(--fg-text-input);
   background-color: transparent;
 `;
 
@@ -75,7 +74,7 @@ export const LabelStyled = styled.label<{
           transform: translateY(-1.7rem);
         `
       : css`
-          color: var(--fg-text-input-placehoder);
+          color: var(--fg-muted);
           font-size: var(--text-input-font-size);
           font-weight: 500;
           transform: translateY(0rem);

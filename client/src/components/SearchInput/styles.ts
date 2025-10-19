@@ -11,7 +11,7 @@ export const SearchIconContainer = styled.div`
   width: 2rem;
   height: 2rem;
   padding: 0.5rem;
-  color: var(--fg-placeholder);
+  color: var(--fg-muted);
 `;
 
 export const SearchInputStyled = styled.input`
@@ -26,6 +26,6 @@ export const SearchInputStyled = styled.input`
   }
 
   &::placeholder {
-    color: var(--fg-placeholder);
+    color: var(--fg-muted);
   }
 `;

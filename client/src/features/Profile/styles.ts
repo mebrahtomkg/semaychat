@@ -7,7 +7,7 @@ export const ProfileModalOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--bg-overlay);
+  background-color: 0000008f;
   display: flex;
   justify-content: center;
 `;
@@ -16,7 +16,7 @@ export const ProfileModal = styled.div`
   height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: var(--bg-main);
+  background-color: var(--bg-primary);
 `;
 
 export const ProfilePhotoStyled = styled.div<{
@@ -31,7 +31,7 @@ export const ProfilePhotoStyled = styled.div<{
           right: 0;
           bottom: 0;
           display: flex;
-          background-color: var(--bg-overlay);
+          background-color: 0000008f;
         `
       : css`
           --profile-photo-width: 100vw;

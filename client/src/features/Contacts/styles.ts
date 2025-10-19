@@ -8,7 +8,7 @@ export const ContactsModal = styled.div<{ $isLargeScreen: boolean }>`
   right: 0;
   bottom: 0;
   overflow: hidden;
-  background-color: var(--bg-main);
+  background-color: var(--bg-primary);
 
   ${(props) =>
     props.$isLargeScreen
@@ -40,9 +40,9 @@ export const ContactsContainer = styled.div`
 
   &::-webkit-scrollbar {
     width: 4px;
-    background-color: var(--bg-main);
+    background-color: var(--bg-primary);
   }
   &::-webkit-scrollbar-thumb {
-    background-color: var(--bg-bright);
+    background-color: var(--bg-hover);
   }
 `;

@@ -5,7 +5,7 @@ export const HomeStyled = styled.div`
   height: 100vh;
   width: var(--big-modal-width);
   overflow: hidden;
-  background-color: var(--bg-main);
+  background-color: var(--bg-primary);
 `;
 
 export const HeaderContainer = styled.div`
@@ -28,10 +28,10 @@ export const ChatListContainer = styled.div`
 
   &::-webkit-scrollbar {
     width: 4px;
-    background-color: var(--bg-main);
+    background-color: var(--bg-primary);
   }
   &::-webkit-scrollbar-thumb {
-    background-color: var(--bg-bright);
+    background-color: var(--bg-hover);
   }
 `;
 

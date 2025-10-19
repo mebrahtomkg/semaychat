@@ -8,7 +8,7 @@ export const BottomMenuStyled = styled.div`
   height: var(--bottom-menu-height);
   padding: 0.6rem;
   overflow: hidden;
-  background-color: var(--bg-main);
+  background-color: var(--bg-primary);
   display: flex;
   align-items: center;
   justify-content: space-between;
