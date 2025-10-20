@@ -8,20 +8,16 @@ import { useShallow } from 'zustand/shallow';
 import { MessageRequestsState } from '@/store/useMessageRequestsStore';
 import queryClient from '@/queryClient';
 import { QUERY_KEY_MESSAGES } from '@/constants';
-import useFileMessageRequestsProcessor from './useFileMessageRequestsProcessor';
 import updateChatLastMessage from '@/services/socket/handlers/updateChatLastMessage';
 
 // Selects the first request from the request Queue of messageRequests
-// File message sending requests are filtering out. they are handled in other custom hook.
+// File message sending requests are filtering out.
 const selectFirstRequest = (state: MessageRequestsState) =>
   state.messageRequests.filter(
     (req) => req.requestType !== 'FILE_MESSAGE_SEND',
   )[0];
 
 const MessageRequestsProcessor = () => {
-  // Process file message requests in parallel with the light message requests.
-  useFileMessageRequestsProcessor();
-
   const request = useStableValue(
     useMessageRequestsStore(useShallow(selectFirstRequest)),
   );

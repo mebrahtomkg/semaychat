@@ -7,7 +7,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import { useShallow } from 'zustand/shallow';
 
-const useFileMessageRequestsProcessor = () => {
+const AttachmentUploadProcessor = () => {
   // Selects the first file message request from the request Queue of messageRequests
   const selector = useCallback(
     (state: MessageRequestsState) =>
@@ -73,6 +73,8 @@ const useFileMessageRequestsProcessor = () => {
   if (isError) {
     console.log('File Message request error:', error);
   }
+
+  return null;
 };
 
-export default useFileMessageRequestsProcessor;
+export default AttachmentUploadProcessor;

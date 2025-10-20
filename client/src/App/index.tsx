@@ -10,7 +10,11 @@ import useResponsiveController from './useResponsiveController';
 import { Spinner } from '@/components';
 import Modals from './Modals';
 import AppThemeProvider from '@/AppThemeProvider';
-import { AccountUpdateProcessor, MessageRequestsProcessor } from '@/processors';
+import {
+  AccountUpdateProcessor,
+  AttachmentUploadProcessor,
+  MessageRequestsProcessor,
+} from '@/processors';
 
 const App = () => {
   useResponsiveController();
@@ -31,6 +35,7 @@ const App = () => {
           <AppStyled>
             <AccountUpdateProcessor />
             <MessageRequestsProcessor />
+            <AttachmentUploadProcessor />
 
             {isLargeScreen && <Home />}
 
