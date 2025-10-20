@@ -6,9 +6,8 @@ import { useMessageRequestsStore } from '@/store';
 import { emitWithAck, SocketResponseError } from '@/services/socket';
 import { useShallow } from 'zustand/shallow';
 import { MessageRequestsState } from '@/store/useMessageRequestsStore';
-import queryClient from '@/queryClient';
+import queryClient, { messagesCache } from '@/queryClient';
 import { QUERY_KEY_MESSAGES } from '@/constants';
-import messagesCache from '@/services/messagesCache';
 
 // Selects the first request from the request Queue of messageRequests
 // File message sending requests are filtering out.

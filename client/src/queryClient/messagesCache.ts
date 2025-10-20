@@ -1,7 +1,7 @@
 import { QUERY_KEY_ACCOUNT, QUERY_KEY_MESSAGES } from '@/constants';
-import queryClient from '@/queryClient';
 import { Account, Message } from '@/types';
 import { updateChatLastMessage } from '@/utils';
+import queryClient from './queryClient';
 
 const getMessagePartnerId = (message: Message) => {
   const account = queryClient.getQueryData<Account>([QUERY_KEY_ACCOUNT]);
