@@ -77,15 +77,11 @@ const MessageRequestsProcessor = () => {
 
       switch (requestType) {
         case 'TEXT_MESSAGE_SEND':
-          messagesCache.add(payload.receiverId, data as Message);
+          messagesCache.add(data as Message);
           break;
 
         case 'MESSAGE_UPDATE':
-          {
-            const message = data as Message;
-            const partnerId = getMessagePartnerId(message);
-            messagesCache.update(partnerId, message);
-          }
+          messagesCache.update(data as Message);
           break;
 
         case 'MESSAGE_DELETE':

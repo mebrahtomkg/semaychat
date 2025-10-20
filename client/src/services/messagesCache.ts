@@ -1,10 +1,19 @@
-import { QUERY_KEY_MESSAGES } from '@/constants';
+import { QUERY_KEY_ACCOUNT, QUERY_KEY_MESSAGES } from '@/constants';
 import queryClient from '@/queryClient';
-import { Message } from '@/types';
+import { Account, Message } from '@/types';
 import { updateChatLastMessage } from '@/utils';
 
+const getMessagePartnerId = (message: Message) => {
+  const account = queryClient.getQueryData<Account>([QUERY_KEY_ACCOUNT]);
+  if (!account) throw new Error('Invalid account! You maynot loggedin!');
+  return message.senderId === account.id
+    ? message.receiverId
+    : message.senderId;
+};
+
 const messagesCache = {
-  add: (partnerId: number, message: Message) => {
+  add: (message: Message) => {
+    const partnerId = getMessagePartnerId(message);
     queryClient.setQueryData(
       [QUERY_KEY_MESSAGES, partnerId],
       (messages: Message[]) => (messages ? [...messages, message] : [message]),
@@ -12,7 +21,8 @@ const messagesCache = {
     updateChatLastMessage(partnerId);
   },
 
-  update: (partnerId: number, message: Message) => {
+  update: (message: Message) => {
+    const partnerId = getMessagePartnerId(message);
     queryClient.setQueryData(
       [QUERY_KEY_MESSAGES, partnerId],
       (messages: Message[]) =>
