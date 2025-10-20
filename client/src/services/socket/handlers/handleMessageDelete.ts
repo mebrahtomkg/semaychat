@@ -1,7 +1,7 @@
 import { QUERY_KEY_MESSAGES } from '@/constants';
 import queryClient from '@/queryClient';
 import { Message } from '@/types';
-import updateChatLastMessage from './updateChatLastMessage';
+import { updateChatLastMessage } from '@/utils';
 
 interface MessageDeletePayload {
   partnerId: number;

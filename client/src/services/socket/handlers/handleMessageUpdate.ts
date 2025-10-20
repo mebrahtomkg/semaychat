@@ -1,7 +1,7 @@
 import { QUERY_KEY_MESSAGES } from '@/constants';
 import queryClient from '@/queryClient';
 import { Message } from '@/types';
-import updateChatLastMessage from './updateChatLastMessage';
+import { updateChatLastMessage } from '@/utils';
 
 const handleMessageUpdate = (message: Message) => {
   const partnerId = message.senderId; // Since message can only be edited by the sender

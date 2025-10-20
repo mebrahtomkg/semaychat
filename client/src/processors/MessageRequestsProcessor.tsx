@@ -8,7 +8,7 @@ import { useShallow } from 'zustand/shallow';
 import { MessageRequestsState } from '@/store/useMessageRequestsStore';
 import queryClient from '@/queryClient';
 import { QUERY_KEY_MESSAGES } from '@/constants';
-import updateChatLastMessage from '@/services/socket/handlers/updateChatLastMessage';
+import { updateChatLastMessage } from '@/utils';
 
 // Selects the first request from the request Queue of messageRequests
 // File message sending requests are filtering out.
