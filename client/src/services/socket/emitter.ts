@@ -1,4 +1,5 @@
 import { Socket } from 'socket.io-client';
+import SocketResponseError from './SocketResponseError';
 
 let socket: Socket;
 
@@ -11,22 +12,23 @@ export const initEmitter = (clientSocket: Socket) => {
 interface SocketResponse<Data> {
   status: 'ok' | 'error';
   message: string;
-  data?: Data;
+  data: Data;
 }
 
-export const emitWithAck = async <Result = unknown>(
+export const emitWithAck = async <Result>(
   eventName: string,
   payload: unknown,
-): Promise<Result | undefined> => {
+): Promise<Result> => {
   if (!socket) throw Error('Emitter socket not initialized!');
 
-  const { status, message, data }: SocketResponse<Result> =
-    await socket.emitWithAck(eventName, payload);
+  const { status, message, data } = (await socket.emitWithAck(
+    eventName,
+    payload,
+  )) as SocketResponse<Result>;
 
-  console.log('api message', message);
-
-  if (!(status === 'ok' || status === 'error'))
-    throw Error('Connection issue!');
+  if (status === 'error') {
+    throw new SocketResponseError(message);
+  }
 
   return data;
 };
