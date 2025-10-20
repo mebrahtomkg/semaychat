@@ -8,7 +8,7 @@ import { useShallow } from 'zustand/shallow';
 import { MessageRequestsState } from '@/store/useMessageRequestsStore';
 import queryClient from '@/queryClient';
 import { QUERY_KEY_MESSAGES } from '@/constants';
-import { updateChatLastMessage } from '@/utils';
+import messagesCache from '@/services/messagesCache';
 
 // Selects the first request from the request Queue of messageRequests
 // File message sending requests are filtering out.
@@ -77,31 +77,14 @@ const MessageRequestsProcessor = () => {
 
       switch (requestType) {
         case 'TEXT_MESSAGE_SEND':
-          {
-            const message = data as Message;
-            queryClient.setQueryData(
-              [QUERY_KEY_MESSAGES, payload.receiverId],
-              (oldMessages: Message[]) =>
-                oldMessages ? [...oldMessages, message] : [message],
-            );
-            updateChatLastMessage(payload.receiverId);
-          }
+          messagesCache.add(payload.receiverId, data as Message);
           break;
 
         case 'MESSAGE_UPDATE':
           {
             const message = data as Message;
             const partnerId = getMessagePartnerId(message);
-            queryClient.setQueryData(
-              [QUERY_KEY_MESSAGES, partnerId],
-              (oldMessages: Message[]) =>
-                oldMessages
-                  ? oldMessages.map((oldMessage) =>
-                      oldMessage.id === message.id ? message : oldMessage,
-                    )
-                  : [],
-            );
-            updateChatLastMessage(partnerId);
+            messagesCache.update(partnerId, message);
           }
           break;
 
@@ -109,16 +92,7 @@ const MessageRequestsProcessor = () => {
           {
             const { message } = payload;
             const partnerId = getMessagePartnerId(message);
-            queryClient.setQueryData(
-              [QUERY_KEY_MESSAGES, partnerId],
-              (oldMessages: Message[]) =>
-                oldMessages
-                  ? oldMessages.filter(
-                      (oldMessage) => oldMessage.id !== message.id,
-                    )
-                  : [],
-            );
-            updateChatLastMessage(partnerId);
+            messagesCache.remove(partnerId, message.id);
           }
           break;
 
