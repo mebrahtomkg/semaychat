@@ -1,19 +1,8 @@
-import { QUERY_KEY_MESSAGES } from '@/constants';
-import queryClient from '@/queryClient';
+import { messagesCache } from '@/queryClient';
 import { Message } from '@/types';
-import { updateChatLastMessage } from '@/utils';
 
 const handleMessageReceive = (message: Message) => {
-  const partnerId = message.senderId;
-
-  queryClient.setQueryData(
-    [QUERY_KEY_MESSAGES, partnerId],
-    (messages: Message[] | undefined) =>
-      messages ? [...messages, message] : [message],
-  );
-
-  updateChatLastMessage(partnerId);
-
+  messagesCache.add(message);
   //TODO: what about if new message is received from no chat list.
 };
 
