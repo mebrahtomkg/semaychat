@@ -5,13 +5,12 @@ import Guest from '@/features/Guest';
 import { GlobalStyle } from '@/styles';
 import { AppStyled, PageContainer } from './styles';
 import { useAuth, useResponsive } from '@/hooks';
-import { MessageRequestsProcessor } from '@/features/Chat/components';
 import useSocket from '@/hooks/useSocket';
 import useResponsiveController from './useResponsiveController';
 import { Spinner } from '@/components';
-import AccountUpdateProcessor from './AccountUpdateProcessor';
 import Modals from './Modals';
 import AppThemeProvider from '@/AppThemeProvider';
+import { AccountUpdateProcessor, MessageRequestsProcessor } from '@/processors';
 
 const App = () => {
   useResponsiveController();
@@ -31,7 +30,6 @@ const App = () => {
         {isLoggedIn ? (
           <AppStyled>
             <AccountUpdateProcessor />
-
             <MessageRequestsProcessor />
 
             {isLargeScreen && <Home />}

@@ -5,7 +5,6 @@ export { default as FileSelector } from './FileSelector';
 export { default as MessageDeleteConfirmDialog } from './MessageDeleteConfirmDialog';
 export { default as MessageInput } from './MessageInput';
 export { default as MessageMeta } from './MessageMeta';
-export { default as MessageRequestsProcessor } from './MessageRequestsProcessor';
 export { default as PhotoMessage } from './PhotoMessage';
 export { default as PhotoViewer } from './PhotoViewer';
 export { default as SendButton } from './SendButton';
