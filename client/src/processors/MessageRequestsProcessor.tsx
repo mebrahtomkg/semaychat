@@ -1,4 +1,4 @@
-import { useAccount, useStableValue } from '@/hooks';
+import { useMessageUtils, useStableValue } from '@/hooks';
 import { Message, MessageRequest } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
@@ -26,7 +26,7 @@ const MessageRequestsProcessor = () => {
     (state) => state.deleteMessageRequest,
   );
 
-  const { id: selfId } = useAccount();
+  const { getMessagePartnerId } = useMessageUtils();
 
   const { mutate } = useMutation({
     mutationFn: (req: MessageRequest) => {
@@ -91,8 +91,9 @@ const MessageRequestsProcessor = () => {
         case 'MESSAGE_UPDATE':
           {
             const message = data as Message;
+            const partnerId = getMessagePartnerId(message);
             queryClient.setQueryData(
-              [QUERY_KEY_MESSAGES, message.receiverId],
+              [QUERY_KEY_MESSAGES, partnerId],
               (oldMessages: Message[]) =>
                 oldMessages
                   ? oldMessages.map((oldMessage) =>
@@ -100,16 +101,14 @@ const MessageRequestsProcessor = () => {
                     )
                   : [],
             );
+            updateChatLastMessage(partnerId);
           }
           break;
 
         case 'MESSAGE_DELETE':
           {
             const { message } = payload;
-            const partnerId =
-              message.senderId === selfId
-                ? message.receiverId
-                : message.senderId;
+            const partnerId = getMessagePartnerId(message);
             queryClient.setQueryData(
               [QUERY_KEY_MESSAGES, partnerId],
               (oldMessages: Message[]) =>
@@ -119,6 +118,7 @@ const MessageRequestsProcessor = () => {
                     )
                   : [],
             );
+            updateChatLastMessage(partnerId);
           }
           break;
 

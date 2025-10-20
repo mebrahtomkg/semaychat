@@ -32,3 +32,4 @@ export { default as useUpdateAccount } from './useUpdateAccount';
 export { default as useStableValue } from './useStableValue';
 export { default as useIsChanged } from './useIsChanged';
 export { default as useElementPosition } from './useElementPosition';
+export { default as useMessageUtils } from './useMessageUtils';
