@@ -3,7 +3,6 @@ import { useResponsive, useUserFetcher } from '@/hooks';
 import { Message } from '@/types';
 import { type FC, useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router';
-import ChatContext from './ChatContext';
 import {
   BaseMessage,
   MessageInput,
@@ -18,7 +17,6 @@ import {
   ChatStyled,
   Gap,
 } from './styles';
-import { useChat } from './hooks';
 import useChatMessages from './hooks/useChatMessages';
 
 const Chat: FC = () => {
@@ -60,32 +58,28 @@ const Chat: FC = () => {
     }
   }, [messages.length]);
 
-  const chatContextLogic = useChat(chatPartnerId);
-
   return (
-    <ChatContext.Provider value={chatContextLogic}>
-      <ChatStyled>
-        <ChatHeader>
-          {!isLargeScreen && <BackLink />}
+    <ChatStyled>
+      <ChatHeader>
+        {!isLargeScreen && <BackLink />}
 
-          {chatPartner && <ChatPartner user={chatPartner} />}
+        {chatPartner && <ChatPartner user={chatPartner} />}
 
-          {chatPartner && <ChatContextMenu chatPartner={chatPartner} />}
-        </ChatHeader>
+        {chatPartner && <ChatContextMenu chatPartner={chatPartner} />}
+      </ChatHeader>
 
-        <ChatMessagesListContainer ref={chatRef}>
-          <ChatMessagesList>
-            <Gap />
-            {messagesInComponent}
-            <Gap />
-          </ChatMessagesList>
-        </ChatMessagesListContainer>
+      <ChatMessagesListContainer ref={chatRef}>
+        <ChatMessagesList>
+          <Gap />
+          {messagesInComponent}
+          <Gap />
+        </ChatMessagesList>
+      </ChatMessagesListContainer>
 
-        <ChatFooter>
-          <MessageInput />
-        </ChatFooter>
-      </ChatStyled>
-    </ChatContext.Provider>
+      <ChatFooter>
+        {chatPartner && <MessageInput chatPartnerId={chatPartner.id} />}
+      </ChatFooter>
+    </ChatStyled>
   );
 };
 

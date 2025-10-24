@@ -1,5 +1,3 @@
-export { default as useChat } from './useChat';
-export { default as useChatContext } from './useChatContext';
 export { default as useFilesSelector } from './useFilesSelector';
 export { default as useMessageActions } from './useMessageActions';
 export { default as useMessageContent } from './useMessageContent';

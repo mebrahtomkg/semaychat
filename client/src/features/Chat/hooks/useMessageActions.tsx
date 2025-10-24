@@ -1,9 +1,9 @@
 import { useDownload } from '@/hooks';
 import { Message } from '@/types';
 import { useCallback } from 'react';
-import { useChatContext } from '.';
 import { useMessageRequestsStore } from '@/store';
 import { getFileExtension } from '@/utils';
+import { setMessageInputState } from '@/store/useMessageInputStateStore';
 
 const useMessageActions = (message: Message) => {
   const addMessageDeleteRequest = useMessageRequestsStore(
@@ -31,15 +31,13 @@ const useMessageActions = (message: Message) => {
     );
   }, [message, download]);
 
-  const { editMessage, replyMessage } = useChatContext();
-
   const edit = useCallback(() => {
-    if (message.createdAt) editMessage(message);
-  }, [editMessage, message]);
+    if (message.createdAt) setMessageInputState({ mode: 'edit', message });
+  }, [message]);
 
   const reply = useCallback(() => {
-    if (message.createdAt) replyMessage(message);
-  }, [replyMessage, message]);
+    if (message.createdAt) setMessageInputState({ mode: 'reply', message });
+  }, [message]);
 
   return {
     edit,
