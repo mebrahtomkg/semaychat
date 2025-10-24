@@ -1,8 +1,9 @@
 import { ApiError, post } from '@/api';
 import { getMessageRequestFile } from '@/services/messageRequestFilesStore';
-import { useMessageRequestsStore } from '@/store';
-import { MessageRequestsState } from '@/store/useMessageRequestsStore';
-import { Message } from '@/types';
+import useMessageRequestsStore, {
+  deleteMessageRequest,
+} from '@/store/useMessageRequestsStore';
+import { Message, MessageRequest } from '@/types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import { useShallow } from 'zustand/shallow';
@@ -10,18 +11,12 @@ import { useShallow } from 'zustand/shallow';
 const AttachmentUploadProcessor = () => {
   // Selects the first file message request from the request Queue of messageRequests
   const selector = useCallback(
-    (state: MessageRequestsState) =>
-      state.messageRequests.filter(
-        (req) => req.requestType === 'FILE_MESSAGE_SEND',
-      )[0],
+    (requests: MessageRequest[]) =>
+      requests.filter((req) => req.requestType === 'FILE_MESSAGE_SEND')[0],
     [],
   );
 
   const request = useMessageRequestsStore(useShallow(selector));
-
-  const deleteMessageRequest = useMessageRequestsStore(
-    (state) => state.deleteMessageRequest,
-  );
 
   const queryClient = useQueryClient();
 
@@ -62,7 +57,7 @@ const AttachmentUploadProcessor = () => {
     deleteMessageRequest(request.requestId);
 
     return null;
-  }, [request, deleteMessageRequest, queryClient]);
+  }, [request, queryClient]);
 
   const retry = useCallback((_failureCount: number, error: Error) => {
     return !(error instanceof ApiError && error.status);

@@ -1,12 +1,12 @@
-import { useMessageRequestsStore } from '@/store';
-import { MessageRequestsState } from '@/store/useMessageRequestsStore';
+import useMessageRequestsStore from '@/store/useMessageRequestsStore';
+import { MessageRequest } from '@/types';
 import { useCallback, useMemo } from 'react';
 import { useShallow } from 'zustand/shallow';
 
 const useMessageStatus = (messageId: number, hasAttachment: boolean) => {
   const selector = useCallback(
-    (state: MessageRequestsState) =>
-      state.messageRequests.filter(
+    (requests: MessageRequest[]) =>
+      requests.filter(
         (req) =>
           (req.requestType === 'MESSAGE_UPDATE' &&
             req.payload.messageId === messageId) ||

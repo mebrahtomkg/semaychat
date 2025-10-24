@@ -1,17 +1,16 @@
 import { useAccount } from '@/hooks';
-import { Message } from '@/types';
+import { Message, MessageRequest } from '@/types';
 import { useCallback, useMemo } from 'react';
-import { useMessageRequestsStore } from '@/store';
 import { getMessageRequestFile } from '@/services/messageRequestFilesStore';
-import { MessageRequestsState } from '@/store/useMessageRequestsStore';
 import { useShallow } from 'zustand/shallow';
+import useMessageRequestsStore from '@/store/useMessageRequestsStore';
 
 const usePendingMessages = (receiverId: number) => {
   const { id: selfId } = useAccount();
 
   const targetRequestsSelector = useCallback(
-    (state: MessageRequestsState) =>
-      state.messageRequests.filter(
+    (requests: MessageRequest[]) =>
+      requests.filter(
         (req) =>
           (req.requestType === 'TEXT_MESSAGE_SEND' ||
             req.requestType === 'FILE_MESSAGE_SEND') &&

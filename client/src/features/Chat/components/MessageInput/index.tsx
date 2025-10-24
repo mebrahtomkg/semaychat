@@ -11,8 +11,11 @@ import AttachFileButton from '../AttachFileButton';
 import useMessageInputStateStore, {
   resetMessageInputState,
 } from '@/store/useMessageInputStateStore';
-import { useMessageRequestsStore } from '@/store';
 import useMessageTextArea from './useMessageTextArea';
+import {
+  addMessageUpdateRequest,
+  addTextMessageSendRequest,
+} from '@/store/useMessageRequestsStore';
 
 interface MessageInputProps {
   chatPartnerId: number;
@@ -40,14 +43,6 @@ const MessageInput: FC<MessageInputProps> = ({ chatPartnerId }) => {
     resetMessageInputState();
   }, [chatPartnerId]);
 
-  const addTextMessageSendRequest = useMessageRequestsStore(
-    (state) => state.addTextMessageSendRequest,
-  );
-
-  const addMessageUpdateRequest = useMessageRequestsStore(
-    (state) => state.addMessageUpdateRequest,
-  );
-
   const handleSend = useCallback(() => {
     const trimmedValue = value.trim();
     const savedInputState = messageInputState;
@@ -64,14 +59,7 @@ const MessageInput: FC<MessageInputProps> = ({ chatPartnerId }) => {
         content: trimmedValue,
       });
     }
-  }, [
-    value,
-    setValue,
-    messageInputState,
-    addMessageUpdateRequest,
-    addTextMessageSendRequest,
-    chatPartnerId,
-  ]);
+  }, [value, messageInputState, chatPartnerId]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {

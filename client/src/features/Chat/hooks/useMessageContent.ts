@@ -1,6 +1,5 @@
-import { useMessageRequestsStore } from '@/store';
-import { MessageRequestsState } from '@/store/useMessageRequestsStore';
-import { MessageUpdateRequest } from '@/types';
+import useMessageRequestsStore from '@/store/useMessageRequestsStore';
+import { MessageRequest, MessageUpdateRequest } from '@/types';
 import { useCallback, useMemo } from 'react';
 import { useShallow } from 'zustand/shallow';
 
@@ -12,8 +11,8 @@ const useMessageContent = (
   // Also just pick the frist request. It is unlikely that multiple requests happen at
   // the same time for one message.
   const selector = useCallback(
-    (state: MessageRequestsState) =>
-      state.messageRequests.filter(
+    (requests: MessageRequest[]) =>
+      requests.filter(
         (req) =>
           req.requestType === 'MESSAGE_UPDATE' &&
           req.payload.messageId === messageId,

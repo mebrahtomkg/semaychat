@@ -2,27 +2,22 @@ import { useMessageUtils, useStableValue } from '@/hooks';
 import { Message, MessageRequest } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { useMessageRequestsStore } from '@/store';
 import { emitWithAck, SocketResponseError } from '@/services/socket';
 import { useShallow } from 'zustand/shallow';
-import { MessageRequestsState } from '@/store/useMessageRequestsStore';
 import queryClient, { messagesCache } from '@/queryClient';
 import { QUERY_KEY_MESSAGES } from '@/constants';
+import useMessageRequestsStore, {
+  deleteMessageRequest,
+} from '@/store/useMessageRequestsStore';
 
 // Selects the first request from the request Queue of messageRequests
 // File message sending requests are filtering out.
-const selectFirstRequest = (state: MessageRequestsState) =>
-  state.messageRequests.filter(
-    (req) => req.requestType !== 'FILE_MESSAGE_SEND',
-  )[0];
+const selectFirstRequest = (requests: MessageRequest[]) =>
+  requests.filter((req) => req.requestType !== 'FILE_MESSAGE_SEND')[0];
 
 const MessageRequestsProcessor = () => {
   const request = useStableValue(
     useMessageRequestsStore(useShallow(selectFirstRequest)),
-  );
-
-  const deleteMessageRequest = useMessageRequestsStore(
-    (state) => state.deleteMessageRequest,
   );
 
   const { getMessagePartnerId } = useMessageUtils();

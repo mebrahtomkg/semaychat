@@ -2,8 +2,10 @@ import { SyntheticEvent, useCallback, useMemo, useRef, useState } from 'react';
 import { isImage, shortenFileName } from '../../utils';
 import { addMessageRequestFile } from '@/services/messageRequestFilesStore';
 import { getFileExtension } from '@/utils';
-import { useMessageRequestsStore } from '@/store';
-import { getUniqueId } from '@/store/useMessageRequestsStore';
+import {
+  addFileMessageSendRequest,
+  getUniqueId,
+} from '@/store/useMessageRequestsStore';
 import { PendingAttachment } from './types';
 
 const useFilesProcessor = (
@@ -12,10 +14,6 @@ const useFilesProcessor = (
   onClose: () => void,
 ) => {
   const lastIdRef = useRef<number>(0);
-
-  const addFileMessageSendRequest = useMessageRequestsStore(
-    (state) => state.addFileMessageSendRequest,
-  );
 
   const createAttachment = useCallback(
     (file: File): PendingAttachment => ({
@@ -97,7 +95,7 @@ const useFilesProcessor = (
       });
     });
     onClose();
-  }, [attachments, chatPartnerId, onClose, addFileMessageSendRequest]);
+  }, [attachments, chatPartnerId, onClose]);
 
   return {
     attachments,

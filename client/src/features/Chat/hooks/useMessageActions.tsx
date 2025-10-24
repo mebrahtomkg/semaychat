@@ -1,15 +1,11 @@
 import { useDownload } from '@/hooks';
 import { Message } from '@/types';
 import { useCallback } from 'react';
-import { useMessageRequestsStore } from '@/store';
 import { getFileExtension } from '@/utils';
 import { setMessageInputState } from '@/store/useMessageInputStateStore';
+import { addMessageDeleteRequest } from '@/store/useMessageRequestsStore';
 
 const useMessageActions = (message: Message) => {
-  const addMessageDeleteRequest = useMessageRequestsStore(
-    (state) => state.addMessageDeleteRequest,
-  );
-
   const deleteMessage = useCallback(
     (deleteForReceiver = true) => {
       addMessageDeleteRequest({
@@ -17,7 +13,7 @@ const useMessageActions = (message: Message) => {
         deleteForReceiver,
       });
     },
-    [addMessageDeleteRequest, message],
+    [message],
   );
 
   const download = useDownload();
