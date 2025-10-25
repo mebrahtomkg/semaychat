@@ -7,6 +7,14 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       staleTime: Number.POSITIVE_INFINITY,
       gcTime: Number.POSITIVE_INFINITY,
+      retry: (_failureCount: number, error: Error) => {
+        // No retry if the error is api error such as 400, 401, ..500
+        if (error instanceof ApiError && error.status) {
+          return false;
+        }
+        return true;
+      },
+      networkMode: 'always',
     },
     mutations: {
       retry: (failureCount: number, error: Error) => {
