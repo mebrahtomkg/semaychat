@@ -32,20 +32,18 @@ const Chat: FC = () => {
 
   const messages: Message[] = useChatMessages(chatPartnerId, true);
 
-  const messagesInComponent = useMemo(
-    () =>
-      messages.map((message, index) => (
-        <BaseMessage
-          key={`${message.id}`}
-          message={message}
-          isLastInGroup={
-            !messages[index + 1] ||
-            messages[index + 1].senderId !== message.senderId
-          }
-        />
-      )),
-    [messages],
-  );
+  const messagesInComponent = useMemo(() => {
+    return messages.map((message, index) => (
+      <BaseMessage
+        key={`${message.id}`}
+        message={message}
+        isLastInGroup={
+          !messages[index + 1] ||
+          messages[index + 1].senderId !== message.senderId
+        }
+      />
+    ));
+  }, [messages]);
 
   const chatRef = useRef<HTMLDivElement | null>(null);
 

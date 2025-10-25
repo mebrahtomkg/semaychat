@@ -1,12 +1,10 @@
 import { ApiError, post } from '@/api';
+import { useMessageRequests } from '@/hooks';
 import { getMessageRequestFile } from '@/services/messageRequestFilesStore';
-import useMessageRequestsStore, {
-  deleteMessageRequest,
-} from '@/store/useMessageRequestsStore';
+import { deleteMessageRequest } from '@/store/useMessageRequestsStore';
 import { Message, MessageRequest } from '@/types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
-import { useShallow } from 'zustand/shallow';
 
 const AttachmentUploadProcessor = () => {
   // Selects the first file message request from the request Queue of messageRequests
@@ -16,7 +14,7 @@ const AttachmentUploadProcessor = () => {
     [],
   );
 
-  const request = useMessageRequestsStore(useShallow(selector));
+  const request = useMessageRequests(selector);
 
   const queryClient = useQueryClient();
 

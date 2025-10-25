@@ -1,7 +1,6 @@
-import useMessageRequestsStore from '@/store/useMessageRequestsStore';
+import { useMessageRequests } from '@/hooks';
 import { MessageRequest, MessageUpdateRequest } from '@/types';
 import { useCallback, useMemo } from 'react';
-import { useShallow } from 'zustand/shallow';
 
 const useMessageContent = (
   messageId: number,
@@ -20,7 +19,7 @@ const useMessageContent = (
     [messageId],
   );
 
-  const request = useMessageRequestsStore(useShallow(selector));
+  const request = useMessageRequests(selector);
 
   const content = useMemo(
     () =>

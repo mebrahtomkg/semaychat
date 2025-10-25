@@ -1,9 +1,7 @@
-import { useAccount } from '@/hooks';
+import { useAccount, useMessageRequests } from '@/hooks';
 import { Message, MessageRequest } from '@/types';
 import { useCallback, useMemo } from 'react';
 import { getMessageRequestFile } from '@/services/messageRequestFilesStore';
-import { useShallow } from 'zustand/shallow';
-import useMessageRequestsStore from '@/store/useMessageRequestsStore';
 
 const usePendingMessages = (receiverId: number) => {
   const { id: selfId } = useAccount();
@@ -19,7 +17,7 @@ const usePendingMessages = (receiverId: number) => {
     [receiverId],
   );
 
-  const requests = useMessageRequestsStore(useShallow(targetRequestsSelector));
+  const requests = useMessageRequests(targetRequestsSelector);
 
   const pendingMessages: Message[] = useMemo(() => {
     return requests.map((req) => {

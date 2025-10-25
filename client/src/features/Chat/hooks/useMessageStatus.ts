@@ -1,7 +1,6 @@
-import useMessageRequestsStore from '@/store/useMessageRequestsStore';
+import { useMessageRequests } from '@/hooks';
 import { MessageRequest } from '@/types';
 import { useCallback, useMemo } from 'react';
-import { useShallow } from 'zustand/shallow';
 
 const useMessageStatus = (messageId: number, hasAttachment: boolean) => {
   const selector = useCallback(
@@ -16,7 +15,7 @@ const useMessageStatus = (messageId: number, hasAttachment: boolean) => {
     [messageId],
   );
 
-  const request = useMessageRequestsStore(useShallow(selector));
+  const request = useMessageRequests(selector);
 
   const status = useMemo(() => {
     // Pending messages status is just known to be 'sending...' or 'uploading...'.
