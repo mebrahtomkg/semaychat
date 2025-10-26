@@ -1,9 +1,13 @@
 import { messagesCache } from '@/queryClient';
-import { Message } from '@/types';
+import { Message, User } from '@/types';
 
-const handleMessageReceive = (message: Message) => {
-  messagesCache.add(message);
-  //TODO: what about if new message is received from no chat list.
+interface MessageReceivePayload {
+  message: Message;
+  sender: User;
+}
+
+const handleMessageReceive = ({ message, sender }: MessageReceivePayload) => {
+  messagesCache.add(message, sender);
 };
 
 export default handleMessageReceive;

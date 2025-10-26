@@ -16,12 +16,13 @@ import {
   addMessageUpdateRequest,
   addTextMessageSendRequest,
 } from '@/store/useMessageRequestsStore';
+import { User } from '@/types';
 
 interface MessageInputProps {
-  chatPartnerId: number;
+  chatPartner: User;
 }
 
-const MessageInput: FC<MessageInputProps> = ({ chatPartnerId }) => {
+const MessageInput: FC<MessageInputProps> = ({ chatPartner }) => {
   const { textAreaRef, value, setValue, handleInput, focusTextArea } =
     useMessageTextArea();
 
@@ -41,7 +42,7 @@ const MessageInput: FC<MessageInputProps> = ({ chatPartnerId }) => {
   // biome-ignore lint/correctness/useExhaustiveDependencies: <reset message input state>
   useEffect(() => {
     resetMessageInputState();
-  }, [chatPartnerId]);
+  }, [chatPartner.id]);
 
   const handleSend = useCallback(() => {
     const trimmedValue = value.trim();
@@ -55,11 +56,11 @@ const MessageInput: FC<MessageInputProps> = ({ chatPartnerId }) => {
       });
     } else {
       addTextMessageSendRequest({
-        receiverId: chatPartnerId,
+        receiver: chatPartner,
         content: trimmedValue,
       });
     }
-  }, [value, messageInputState, chatPartnerId]);
+  }, [value, messageInputState, chatPartner]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -118,7 +119,7 @@ const MessageInput: FC<MessageInputProps> = ({ chatPartnerId }) => {
       {isFileSelectorVisible && (
         <FileSelector
           files={selectedFiles}
-          chatPartnerId={chatPartnerId}
+          chatPartner={chatPartner}
           onClose={closeFileSelector}
         />
       )}

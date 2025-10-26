@@ -75,7 +75,7 @@ const Chat: FC = () => {
       </ChatMessagesListContainer>
 
       <ChatFooter>
-        {chatPartner && <MessageInput chatPartnerId={chatPartner.id} />}
+        {chatPartner && <MessageInput chatPartner={chatPartner} />}
       </ChatFooter>
     </ChatStyled>
   );

@@ -42,7 +42,7 @@ const listChatMessages = async (
       },
     });
 
-    const data = messages.map((message) => filterMessageData(message.toJSON()));
+    const data = messages.map((message) => filterMessageData(message));
 
     res.status(200).json({
       success: true,

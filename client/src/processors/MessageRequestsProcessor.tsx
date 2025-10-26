@@ -1,5 +1,5 @@
 import { useMessageRequests, useMessageUtils, useStableValue } from '@/hooks';
-import { Message, MessageRequest } from '@/types';
+import { Message, MessageRequest, User } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { emitWithAck, SocketResponseError } from '@/services/socket';
@@ -24,7 +24,7 @@ const MessageRequestsProcessor = () => {
       switch (requestType) {
         case 'TEXT_MESSAGE_SEND':
           return emitWithAck<Message>('send_text_message', {
-            receiverId: payload.receiverId,
+            receiverId: payload.receiver.id,
             content: payload.content,
           });
 
@@ -66,7 +66,7 @@ const MessageRequestsProcessor = () => {
 
       switch (requestType) {
         case 'TEXT_MESSAGE_SEND':
-          messagesCache.add(data as Message);
+          messagesCache.add(data as Message, payload.receiver);
           break;
 
         case 'MESSAGE_UPDATE':

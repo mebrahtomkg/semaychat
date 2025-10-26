@@ -6,18 +6,18 @@ import { getMessageRequestFile } from '@/services/messageRequestFilesStore';
 const usePendingMessages = (receiverId: number) => {
   const { id: selfId } = useAccount();
 
-  const targetRequestsSelector = useCallback(
+  const selector = useCallback(
     (requests: MessageRequest[]) =>
       requests.filter(
         (req) =>
           (req.requestType === 'TEXT_MESSAGE_SEND' ||
             req.requestType === 'FILE_MESSAGE_SEND') &&
-          req.payload.receiverId === receiverId,
+          req.payload.receiver.id === receiverId,
       ),
     [receiverId],
   );
 
-  const requests = useMessageRequests(targetRequestsSelector);
+  const requests = useMessageRequests(selector);
 
   const pendingMessages: Message[] = useMemo(() => {
     return requests.map((req) => {

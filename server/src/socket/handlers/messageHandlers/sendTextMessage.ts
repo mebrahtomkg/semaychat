@@ -1,9 +1,9 @@
-import commitSendingMessage from './commitSendingMessage';
 import { isPositiveInteger } from '@/utils';
-import sequelize from '@/config/db';
 import { Acknowledgement, AuthenticatedSocket } from '@/types';
 import { emitToUser } from '@/socket/emitter';
 import { IS_PRODUCTION } from '@/config/general';
+import { sendMessage } from '@/services';
+import { MessageSendError } from '@/services/sendMessage';
 
 interface TextMessageSendPayload {
   receiverId: number;
@@ -19,7 +19,7 @@ const sendTextMessage = async (
     if (!payload || typeof payload !== 'object') {
       return acknowledgement({
         status: 'error',
-        message: 'Invalid message info.',
+        message: 'Invalid message payload.',
       });
     }
 
@@ -50,38 +50,35 @@ const sendTextMessage = async (
       //TODO: Check content for xss security, filter it.
     }
 
-    const transaction = await sequelize.transaction();
-
-    try {
-      const { status, message, data } = await commitSendingMessage({
-        transaction,
-        senderId: socket.userId as number,
-        receiverId,
-        content,
-      });
-
-      transaction.commit();
-
-      acknowledgement({
-        status: status === 200 ? 'ok' : 'error',
-        message,
-        data,
-      });
-
-      if (status === 200) {
-        emitToUser(receiverId, 'message_received', data);
-      }
-    } catch (err) {
-      transaction.rollback();
-      throw err;
-    }
-  } catch (error) {
-    acknowledgement({
-      status: 'error',
-      message: IS_PRODUCTION
-        ? 'INTERNAL SERVER ERROR'
-        : `INTERNAL SERVER ERROR: ${(error as Error).toString()}  ${(error as Error).stack}`,
+    const { message, sender } = await sendMessage({
+      senderId: socket.userId as number,
+      receiverId,
+      content,
     });
+
+    acknowledgement({
+      status: 'ok',
+      message: 'Message sent successfully!',
+      data: message,
+    });
+
+    emitToUser(receiverId, 'message_received', { message, sender });
+  } catch (err) {
+    if (err instanceof MessageSendError) {
+      acknowledgement({
+        status: 'error',
+        message: err.message,
+      });
+    } else {
+      const error = err as Error;
+      console.error(error);
+      acknowledgement({
+        status: 'error',
+        message: IS_PRODUCTION
+          ? 'INTERNAL SERVER ERROR'
+          : `INTERNAL SERVER ERROR: ${error.toString()}  ${error.stack}`,
+      });
+    }
   }
 };
 

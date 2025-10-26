@@ -1,7 +1,6 @@
 import { QUERY_KEY_MESSAGES } from '@/constants';
-import queryClient from '@/queryClient';
+import queryClient, { updateChatLastMessage } from '@/queryClient';
 import { Message } from '@/types';
-import { updateChatLastMessage } from '@/utils';
 
 interface ChatDeletePayload {
   partnerId: number; // User id who deleted the chat

@@ -1,26 +1,23 @@
-import { Message } from '../models';
+import { Message } from '@/models';
+import filterAttachmentData from './filterAttachmentData';
 
-const filterMessageData = (message: Message): Partial<Message> => {
-  const {
-    id,
-    senderId,
-    receiverId,
-    content,
-    createdAt,
-    editedAt,
-    attachment,
-    isSeen,
-  } = message;
+const filterMessageData = (message: Message) => {
+  const attachment = message.attachment
+    ? filterAttachmentData(message.attachment)
+    : undefined;
+
+  const { id, senderId, receiverId, content, createdAt, editedAt, isSeen } =
+    message.toJSON();
 
   return {
     id,
     senderId,
     receiverId,
     content,
-    attachment,
     isSeen,
     createdAt,
     editedAt,
+    attachment,
   };
 };
 

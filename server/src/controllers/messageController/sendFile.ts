@@ -1,8 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import commitSendingMessage from './commitSendingMessage';
 import { isPositiveInteger } from '@/utils';
-import { Attachment } from '@/models';
-import sequelize from '@/config/db';
 import {
   IS_PRODUCTION,
   MAX_MESSAGE_FILE_SIZE,
@@ -11,6 +8,9 @@ import {
 import storage from '@/config/storage';
 import multer from 'multer';
 import path from 'node:path';
+import { emitToUser } from '@/socket/emitter';
+import { sendMessage } from '@/services';
+import { MessageSendError } from '@/services/sendMessage';
 
 const attachmentUploader = multer({
   storage: storage.createStorageEngine(MESSAGE_FILES_BUCKET),
@@ -40,7 +40,7 @@ const sendFile = async (req: Request, res: Response, next: NextFunction) => {
     if (!IS_PRODUCTION) {
       // delay for local dev testing
       await new Promise((resolve) => {
-        setTimeout(() => resolve(null), 3_000);
+        setTimeout(() => resolve(null), 1_000);
       });
     }
 
@@ -92,11 +92,11 @@ const sendFile = async (req: Request, res: Response, next: NextFunction) => {
 
     const { path: filePath, size, originalname } = file;
 
-    const transaction = await sequelize.transaction();
-
     try {
-      const attachment = await Attachment.create(
-        {
+      const { message, sender } = await sendMessage({
+        senderId: req.userId as number,
+        receiverId,
+        attachment: {
           name: path.basename(filePath),
           originalname,
           size,
@@ -104,23 +104,24 @@ const sendFile = async (req: Request, res: Response, next: NextFunction) => {
           height,
           caption,
         },
-        { transaction },
-      );
-
-      const { status, message, success, data } = await commitSendingMessage({
-        transaction,
-        senderId: req.userId as number,
-        receiverId,
-        attachmentId: attachment.id,
       });
 
-      await transaction.commit();
+      res.status(200).json({
+        success: true,
+        message: 'Message sent successfully!',
+        data: message,
+      });
 
-      res.status(status).json({ message, success, data });
+      emitToUser(receiverId, 'message_received', { message, sender });
     } catch (err) {
-      await transaction.rollback();
       await storage.deleteFile(MESSAGE_FILES_BUCKET, filePath);
-      throw err;
+      if (err instanceof MessageSendError) {
+        res.status(err.status).json({
+          message: err.message,
+        });
+      } else {
+        throw err;
+      }
     }
   } catch (error) {
     next(error);

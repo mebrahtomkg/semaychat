@@ -7,10 +7,11 @@ import {
   getUniqueId,
 } from '@/store/useMessageRequestsStore';
 import { PendingAttachment } from './types';
+import { User } from '@/types';
 
 const useFilesProcessor = (
   files: File[],
-  chatPartnerId: number,
+  chatPartner: User,
   onClose: () => void,
 ) => {
   const lastIdRef = useRef<number>(0);
@@ -87,7 +88,7 @@ const useFilesProcessor = (
       addMessageRequestFile(fileId, attachment.file);
 
       addFileMessageSendRequest({
-        receiverId: chatPartnerId,
+        receiver: chatPartner,
         fileId,
         caption: attachment.caption,
         width: attachment.width,
@@ -95,7 +96,7 @@ const useFilesProcessor = (
       });
     });
     onClose();
-  }, [attachments, chatPartnerId, onClose]);
+  }, [attachments, chatPartner, onClose]);
 
   return {
     attachments,

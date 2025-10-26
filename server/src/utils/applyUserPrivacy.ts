@@ -1,5 +1,5 @@
+import { User } from '@/models';
 import { VISIBILITY_OPTIONS } from '../constants';
-import { User } from '../models';
 
 interface Options {
   requesterIsBlocked: boolean;
@@ -7,7 +7,7 @@ interface Options {
 }
 
 interface FilteredUserData extends Partial<User> {
-  acceptsMessage?: boolean;
+  acceptsMessage: boolean;
 }
 
 /**
@@ -20,7 +20,7 @@ interface FilteredUserData extends Partial<User> {
  * @param options.requesterIsContact  Whether the requester(accessor) is a contact of the user.
  * @returns Filtered user data.
  */
-const applyUserPrivacy = (userData: User, options: Options) => {
+const applyUserPrivacy = (userData: Partial<User>, options: Options) => {
   const { requesterIsBlocked, requesterIsContact } = options;
 
   const {
@@ -41,7 +41,14 @@ const applyUserPrivacy = (userData: User, options: Options) => {
     profilePhoto,
   } = userData;
 
-  const user: FilteredUserData = { id, firstName, lastName, username, bio };
+  const user: FilteredUserData = {
+    id,
+    firstName,
+    lastName,
+    username,
+    bio,
+    acceptsMessage: false,
+  };
 
   if (
     emailVisibility === VISIBILITY_OPTIONS.everybody ||

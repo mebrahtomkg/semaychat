@@ -1,9 +1,10 @@
 import { ApiError, post } from '@/api';
 import { useMessageRequests } from '@/hooks';
+import { messagesCache } from '@/queryClient';
 import { getMessageRequestFile } from '@/services/messageRequestFilesStore';
 import { deleteMessageRequest } from '@/store/useMessageRequestsStore';
 import { Message, MessageRequest } from '@/types';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 
 const AttachmentUploadProcessor = () => {
@@ -16,8 +17,6 @@ const AttachmentUploadProcessor = () => {
 
   const request = useMessageRequests(selector);
 
-  const queryClient = useQueryClient();
-
   const queryKey = useMemo(
     () => (request ? ['/messages/file', request.requestId] : ['']),
     [request],
@@ -26,7 +25,7 @@ const AttachmentUploadProcessor = () => {
   const queryFn = useCallback(async () => {
     if (!request) return null;
 
-    const { receiverId, fileId, caption, width, height } = request.payload;
+    const { receiver, fileId, caption, width, height } = request.payload;
 
     const file = getMessageRequestFile(fileId);
 
@@ -36,7 +35,7 @@ const AttachmentUploadProcessor = () => {
     }
 
     const body = new FormData();
-    body.append('receiverId', `${receiverId}`);
+    body.append('receiverId', `${receiver.id}`);
     body.append('attachment', file);
     if (width) body.append('width', width.toString());
     if (height) body.append('height', height.toString());
@@ -44,18 +43,12 @@ const AttachmentUploadProcessor = () => {
 
     const message = await post<Message>('/messages/file', body);
 
-    queryClient.setQueryData(
-      ['messages', receiverId],
-      (oldMessages: Message[]) => {
-        if (!oldMessages) return [message];
-        return [...oldMessages, message];
-      },
-    );
+    messagesCache.add(message, request.payload.receiver);
 
     deleteMessageRequest(request.requestId);
 
     return null;
-  }, [request, queryClient]);
+  }, [request]);
 
   const retry = useCallback((_failureCount: number, error: Error) => {
     return !(error instanceof ApiError && error.status);

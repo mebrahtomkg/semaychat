@@ -2,7 +2,6 @@ export { default as getFileExtension } from './getFileExtension';
 export { default as getImageDimensions } from './getImageDimensions';
 export { default as registerServiceWorker } from './registerServiceWorker';
 export { default as deepEqual } from './deepEqual';
-export { default as updateChatLastMessage } from './updateChatLastMessage';
 
 export function ready(handler: () => void) {
   if (document.readyState === 'loading') {
