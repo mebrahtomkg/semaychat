@@ -9,7 +9,10 @@ const router = express.Router();
 
 router.get('/', async (_req: Request, res: Response, next: NextFunction) => {
   try {
-    res.status(200).send('SemayChat backend server is running.');
+    // Hit database to check database health
+    await User.findByPk(1);
+
+    res.status(200).send('semaychat server is running.');
   } catch (err) {
     next(err);
   }
