@@ -82,8 +82,8 @@ const deleteMessage = async ({
 
     const [user1Id, user2Id] = sortChatUsersId(userId, partnerId);
 
-    const [lastMessagesForUser1, lastMessagesForUser2] = await Promise.all([
-      Message.findAll({
+    const [lastMessageForUser1, lastMessageForUser2] = await Promise.all([
+      Message.findOne({
         where: {
           chatId,
           [Op.or]: [
@@ -104,7 +104,7 @@ const deleteMessage = async ({
         transaction,
       }),
 
-      Message.findAll({
+      Message.findOne({
         where: {
           chatId,
           [Op.or]: [
@@ -126,8 +126,8 @@ const deleteMessage = async ({
       }),
     ]);
 
-    const lastMessageIdForUser1 = lastMessagesForUser1[0]?.id || null;
-    const lastMessageIdForUser2 = lastMessagesForUser2[0]?.id || null;
+    const lastMessageIdForUser1 = lastMessageForUser1?.id || null;
+    const lastMessageIdForUser2 = lastMessageForUser2?.id || null;
 
     if (lastMessageIdForUser1 || lastMessageIdForUser2) {
       await Chat.update(

@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { Dialect, Options, Sequelize } from 'sequelize';
-import { ROOT_DIR } from './general';
+import { IS_PRODUCTION, ROOT_DIR } from './general';
 
 const SUPPORTED_DATABASE_DIALECTS: Dialect[] = ['sqlite', 'postgres'];
 
@@ -15,7 +15,7 @@ console.log(`Database dialect: ${dialect}`);
 
 const options: Options = {
   dialect,
-  logging: false,
+  logging: !IS_PRODUCTION,
 };
 
 let databaseUri: string | undefined;
