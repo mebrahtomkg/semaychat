@@ -29,6 +29,7 @@ const deleteMessage = async ({
   try {
     const message = await Message.scope('withAttachment').findByPk(messageId, {
       transaction,
+      lock: transaction.LOCK.UPDATE,
     });
 
     if (!message) {
@@ -56,6 +57,12 @@ const deleteMessage = async ({
     }
 
     const { chatId } = message;
+
+    // Lock the parent Chat row to prevent concurrent updates to its lastMessageId fields.
+    await Chat.findByPk(chatId, {
+      transaction,
+      lock: transaction.LOCK.UPDATE,
+    });
 
     const partnerId = isSentMessage ? message.receiverId : message.senderId;
 
