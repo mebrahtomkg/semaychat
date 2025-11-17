@@ -5,8 +5,8 @@ import { Acknowledgement, AuthenticatedSocket } from '@/types';
 import { isPositiveInteger, sortChatUsersId } from '@/utils';
 import { emitToUser } from '@/socket/emitter';
 import { IS_PRODUCTION } from '@/config/general';
-import deleteMessageFiles from './deleteMessageFiles';
 import cleanupChatMessages from './cleanupChatMessages';
+import { deleteMessageFiles } from '@/services';
 
 interface ChatDeletePayload {
   chatPartnerId: number;

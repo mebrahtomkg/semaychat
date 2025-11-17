@@ -1,8 +1,8 @@
 import { Op } from 'sequelize';
 import sequelize from '@/config/db';
 import { Chat, Message } from '@/models';
-import { MESSAGE_FILES_BUCKET } from '@/config/general';
-import storage from '@/config/storage';
+import deleteMessageFiles from './deleteMessageFiles';
+import { sortChatUsersId } from '@/utils';
 
 export class MessageDeleteError extends Error {
   constructor(message: string) {
@@ -24,10 +24,11 @@ const deleteMessage = async ({
 }: MessageDeleteProps) => {
   const transaction = await sequelize.transaction();
 
+  const staleFiles: string[] = [];
+
   try {
     const message = await Message.scope('withAttachment').findByPk(messageId, {
       transaction,
-      lock: transaction.LOCK.UPDATE,
     });
 
     if (!message) {
@@ -68,10 +69,7 @@ const deleteMessage = async ({
       isDeletedByPartner || (isSentMessage && deleteForReceiver);
 
     if (shouldDestroy) {
-      if (message.attachment) {
-        await storage.deleteFile(MESSAGE_FILES_BUCKET, message.attachment.name);
-      }
-
+      if (message.attachment) staleFiles.push(message.attachment.name);
       await message.destroy({ transaction });
     } else {
       await message.update(
@@ -82,16 +80,7 @@ const deleteMessage = async ({
       );
     }
 
-    const chat = await Chat.findByPk(chatId, {
-      transaction,
-      lock: transaction.LOCK.UPDATE,
-    });
-
-    if (!chat) {
-      throw new Error('A message without chat found! this should not happen');
-    }
-
-    const { user1Id, user2Id } = chat;
+    const [user1Id, user2Id] = sortChatUsersId(userId, partnerId);
 
     const [lastMessagesForUser1, lastMessagesForUser2] = await Promise.all([
       Message.findAll({
@@ -141,15 +130,23 @@ const deleteMessage = async ({
     const lastMessageIdForUser2 = lastMessagesForUser2[0]?.id || null;
 
     if (lastMessageIdForUser1 || lastMessageIdForUser2) {
-      await chat.update(
+      await Chat.update(
         { lastMessageIdForUser1, lastMessageIdForUser2 },
-        { transaction },
+        {
+          where: { id: chatId },
+          transaction,
+        },
       );
     } else {
-      await chat.destroy({ transaction });
+      await Chat.destroy({
+        where: { id: chatId },
+        transaction,
+      });
     }
 
     await transaction.commit();
+
+    deleteMessageFiles(staleFiles); // no need to await
 
     return {
       // Notify partner only if he/she did not delete the message and if the message is

@@ -1,7 +1,7 @@
 import sequelize from '@/config/db';
 import { Message } from '@/models';
+import { deleteMessageFiles } from '@/services';
 import { Op } from 'sequelize';
-import deleteMessageFiles from './deleteMessageFiles';
 
 const cleanupChatMessages = async (
   chatUser1Id: number,
