@@ -7,6 +7,7 @@ import {
 } from 'sequelize';
 import sequelize from '@/config/db';
 import Attachment from './Attachment';
+import type Chat from './Chat';
 
 class Message extends Model<
   InferAttributes<Message>,
@@ -17,12 +18,14 @@ class Message extends Model<
   declare receiverId: number;
   declare content: string | null;
   declare attachmentId: number | null;
+  declare chatId: number;
   declare isSeen: CreationOptional<boolean>;
   declare isDeletedBySender: CreationOptional<boolean>;
   declare isDeletedByReceiver: CreationOptional<boolean>;
   declare createdAt: CreationOptional<number>;
   declare editedAt: CreationOptional<number>;
 
+  declare chat?: Chat;
   declare attachment?: Attachment;
 }
 
@@ -41,6 +44,11 @@ Message.init(
     },
 
     receiverId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+
+    chatId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

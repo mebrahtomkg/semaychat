@@ -87,27 +87,26 @@ const sendMessage = async ({
 
     const [user1Id, user2Id] = sortChatUsersId(senderId, receiverId);
 
-    const [[chat], message] = await Promise.all([
-      Chat.findOrCreate({
-        where: { user1Id, user2Id },
-        transaction,
-        lock: transaction.LOCK.UPDATE,
-      }),
+    const [chat] = await Chat.findOrCreate({
+      where: { user1Id, user2Id },
+      transaction,
+      lock: transaction.LOCK.UPDATE,
+    });
 
-      Message.create(
-        {
-          senderId,
-          receiverId,
-          content: content || null,
-          attachmentId: savedAttachment?.id || null,
-          // If the sender is blocked by the receiver, soft delete the message for
-          // the receiver. so that the message will not be visible by the receiver.
-          // only the sender can see the message.
-          isDeletedByReceiver: isSenderBlockedByReceiver,
-        },
-        { transaction },
-      ),
-    ]);
+    const message = await Message.create(
+      {
+        senderId,
+        receiverId,
+        chatId: chat.id,
+        content: content || null,
+        attachmentId: savedAttachment?.id || null,
+        // If the sender is blocked by the receiver, soft delete the message for
+        // the receiver. so that the message will not be visible by the receiver.
+        // only the sender can see the message.
+        isDeletedByReceiver: isSenderBlockedByReceiver,
+      },
+      { transaction },
+    );
 
     type ChatUpdateValues = Partial<
       Pick<Chat, 'lastMessageIdForUser1' | 'lastMessageIdForUser2'>

@@ -37,6 +37,19 @@ Chat.belongsTo(Message, {
   onDelete: 'SET NULL',
 });
 
+Message.belongsTo(Chat, {
+  foreignKey: 'chatId',
+  as: 'chat',
+});
+
+Message.addScope('withChat', {
+  include: {
+    model: Chat,
+    as: 'chat',
+    required: true,
+  },
+});
+
 // Helps us to get the  actual contact as a user model.
 Contact.belongsTo(User, {
   foreignKey: 'addedId',
