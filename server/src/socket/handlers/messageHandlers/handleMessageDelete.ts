@@ -1,9 +1,9 @@
 import { Acknowledgement, AuthenticatedSocket } from '@/types';
 import { isPositiveInteger } from '@/utils';
-import { IS_PRODUCTION } from '@/config/general';
 import { deleteMessage } from '@/services';
 import { MessageDeleteError } from '@/services/deleteMessage';
 import { emitToUser } from '@/socket/emitter';
+import handleSocketError from '@/socket/handleSocketError';
 
 interface MessageDeletePayload {
   messageId: number;
@@ -53,19 +53,12 @@ const handleMessageDelete = async (
     }
   } catch (err) {
     if (err instanceof MessageDeleteError) {
-      return acknowledgement({
+      acknowledgement({
         status: 'error',
         message: err.message,
       });
     } else {
-      const error = err as Error;
-      console.error(error);
-      acknowledgement({
-        status: 'error',
-        message: IS_PRODUCTION
-          ? 'INTERNAL SERVER ERROR'
-          : `INTERNAL SERVER ERROR: ${error.toString()}  ${error.stack}`,
-      });
+      handleSocketError(err as Error, acknowledgement);
     }
   }
 };

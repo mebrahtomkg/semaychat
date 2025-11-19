@@ -1,6 +1,6 @@
-import { IS_PRODUCTION } from '@/config/general';
 import { Message } from '@/models';
 import { emitToUser } from '@/socket/emitter';
+import handleSocketError from '@/socket/handleSocketError';
 import { Acknowledgement, AuthenticatedSocket } from '@/types';
 import { isPositiveInteger } from '@/utils';
 
@@ -92,12 +92,7 @@ const updateTextMessage = async (
       emitToUser(partnerId, 'message_updated', updatedMessage?.toJSON());
     }
   } catch (err) {
-    acknowledgement({
-      status: 'error',
-      message: IS_PRODUCTION
-        ? 'INTERNAL SERVER ERROR'
-        : `INTERNAL SERVER ERROR: ${(err as Error).toString()}  ${(err as Error).stack}`,
-    });
+    handleSocketError(err as Error, acknowledgement);
   }
 };
 

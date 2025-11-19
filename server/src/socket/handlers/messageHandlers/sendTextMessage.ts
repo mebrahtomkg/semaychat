@@ -1,9 +1,9 @@
 import { isPositiveInteger } from '@/utils';
 import { Acknowledgement, AuthenticatedSocket } from '@/types';
 import { emitToUser } from '@/socket/emitter';
-import { IS_PRODUCTION } from '@/config/general';
 import { sendMessage } from '@/services';
 import { MessageSendError } from '@/services/sendMessage';
+import handleSocketError from '@/socket/handleSocketError';
 
 interface TextMessageSendPayload {
   receiverId: number;
@@ -70,14 +70,7 @@ const sendTextMessage = async (
         message: err.message,
       });
     } else {
-      const error = err as Error;
-      console.error(error);
-      acknowledgement({
-        status: 'error',
-        message: IS_PRODUCTION
-          ? 'INTERNAL SERVER ERROR'
-          : `INTERNAL SERVER ERROR: ${error.toString()}  ${error.stack}`,
-      });
+      handleSocketError(err as Error, acknowledgement);
     }
   }
 };

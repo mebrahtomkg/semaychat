@@ -1,9 +1,9 @@
 import { Acknowledgement, AuthenticatedSocket } from '@/types';
 import { isPositiveInteger } from '@/utils';
 import { emitToUser } from '@/socket/emitter';
-import { IS_PRODUCTION } from '@/config/general';
 import { deleteChat } from '@/services';
 import { ChatDeleteError } from '@/services/deleteChat';
+import handleSocketError from '@/socket/handleSocketError';
 
 interface ChatDeletePayload {
   chatPartnerId: number;
@@ -50,21 +50,14 @@ const handleChatDelete = async (
         partnerMessagesDeleted: deleteForReceiver,
       });
     }
-  } catch (err) {
-    if (err instanceof ChatDeleteError) {
-      return acknowledgement({
-        status: 'error',
-        message: err.message,
-      });
-    } else {
-      const error = err as Error;
-      console.error(error);
+  } catch (error) {
+    if (error instanceof ChatDeleteError) {
       acknowledgement({
         status: 'error',
-        message: IS_PRODUCTION
-          ? 'INTERNAL SERVER ERROR'
-          : `INTERNAL SERVER ERROR: ${error.toString()}  ${error.stack}`,
+        message: error.message,
       });
+    } else {
+      handleSocketError(error as Error, acknowledgement);
     }
   }
 };
