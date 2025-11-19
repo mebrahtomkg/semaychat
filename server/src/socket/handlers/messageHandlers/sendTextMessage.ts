@@ -19,7 +19,7 @@ const sendTextMessage = async (
     if (!payload || typeof payload !== 'object') {
       return acknowledgement({
         status: 'error',
-        message: 'Invalid message payload.',
+        message: 'Invalid text message send payload.',
       });
     }
 
