@@ -96,12 +96,10 @@ const deleteMessage = async ({
           [Op.or]: [
             {
               senderId: user1Id,
-              receiverId: user2Id,
               isDeletedBySender: false,
             },
             {
               receiverId: user1Id,
-              senderId: user2Id,
               isDeletedByReceiver: false,
             },
           ],
@@ -117,12 +115,10 @@ const deleteMessage = async ({
           [Op.or]: [
             {
               senderId: user2Id,
-              receiverId: user1Id,
               isDeletedBySender: false,
             },
             {
               receiverId: user2Id,
-              senderId: user1Id,
               isDeletedByReceiver: false,
             },
           ],

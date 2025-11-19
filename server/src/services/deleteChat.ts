@@ -127,7 +127,7 @@ const deleteChat = async ({
       type ChatUser = 'user1' | 'user2';
 
       const partnerChatUser: ChatUser =
-        chat.user1Id === partnerId ? 'user1' : 'user2';
+        partnerId === chat.user1Id ? 'user1' : 'user2';
 
       const lastMessageIdForUser1 =
         partnerChatUser === 'user1' ? lastMessageForPartner.id : null;

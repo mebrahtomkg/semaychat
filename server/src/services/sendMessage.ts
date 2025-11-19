@@ -37,25 +37,26 @@ const sendMessage = async ({
   const transaction = await sequelize.transaction();
 
   try {
-    const [[sender], [receiver]] = await Promise.all([
+    const [sender, receiver] = await Promise.all([
       // Get The Sender
       User.scope([
         { method: ['withBlockedUsers', { blockedId: receiverId }] },
         { method: ['withContacts', { addedId: receiverId }] },
-      ]).findAll({ where: { id: senderId }, limit: 1, transaction }),
+      ]).findOne({ where: { id: senderId }, limit: 1, transaction }),
 
       // Get The Receiver
       User.scope([
         { method: ['withBlockedUsers', { blockedId: senderId }] },
         { method: ['withContacts', { addedId: senderId }] },
-      ]).findAll({ where: { id: receiverId }, limit: 1, transaction }),
+      ]).findOne({ where: { id: receiverId }, limit: 1, transaction }),
     ]);
 
+    if (!sender) {
+      throw new MessageSendError('Sender does not exist.', 409);
+    }
+
     if (!receiver) {
-      throw new MessageSendError(
-        'Cannot send message to non existed user.',
-        409,
-      );
+      throw new MessageSendError('Receiver does not exist.', 409);
     }
 
     const isSenderBlockedByReceiver = !!receiver.blockedUsers?.length;
@@ -134,6 +135,7 @@ const sendMessage = async ({
     }
 
     await chat.update(chatUpdateValues, { transaction });
+
     await transaction.commit();
 
     const filteredMessage = {
