@@ -5,25 +5,27 @@ import { sendMessage } from '@/services';
 import { MessageSendError } from '@/services/sendMessage';
 import handleSocketError from '@/socket/handleSocketError';
 
-interface TextMessageSendPayload {
+interface MessageSendPayload {
   receiverId: number;
   content: string;
 }
 
-const sendTextMessage = async (
+const handleMessageSend = async (
   socket: AuthenticatedSocket,
-  payload: TextMessageSendPayload,
+  payload: MessageSendPayload,
   acknowledgement: Acknowledgement,
 ) => {
   try {
     if (!payload || typeof payload !== 'object') {
       return acknowledgement({
         status: 'error',
-        message: 'Invalid text message send payload.',
+        message: 'Invalid message send payload.',
       });
     }
 
-    const { receiverId } = payload;
+    const { receiverId, content } = payload;
+
+    const userId = socket.userId as number;
 
     if (!isPositiveInteger(receiverId)) {
       return acknowledgement({
@@ -32,26 +34,16 @@ const sendTextMessage = async (
       });
     }
 
-    if (socket.userId === receiverId) {
-      return acknowledgement({
-        status: 'error',
-        message: 'You cannot send message to yourself.',
-      });
-    }
-
-    const content =
-      typeof payload.content === 'string' ? payload.content.trim() : null;
-
-    if (!content) {
+    if (typeof content !== 'string') {
       return acknowledgement({
         status: 'error',
         message: 'Invalid message content.',
       });
-      //TODO: Check content for xss security, filter it.
     }
 
     const { message, sender } = await sendMessage({
-      senderId: socket.userId as number,
+      messageType: 'text',
+      userId,
       receiverId,
       content,
     });
@@ -75,4 +67,4 @@ const sendTextMessage = async (
   }
 };
 
-export default sendTextMessage;
+export default handleMessageSend;

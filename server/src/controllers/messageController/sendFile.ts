@@ -1,10 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { isPositiveInteger } from '@/utils';
-import {
-  IS_PRODUCTION,
-  MAX_MESSAGE_FILE_SIZE,
-  MESSAGE_FILES_BUCKET,
-} from '@/config/general';
+import { MAX_MESSAGE_FILE_SIZE, MESSAGE_FILES_BUCKET } from '@/config/general';
 import storage from '@/config/storage';
 import multer from 'multer';
 import path from 'node:path';
@@ -37,13 +33,6 @@ const attachmentUploaderAsync = (
 
 const sendFile = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    if (!IS_PRODUCTION) {
-      // delay for local dev testing
-      await new Promise((resolve) => {
-        setTimeout(() => resolve(null), 1_000);
-      });
-    }
-
     if (!req.userId) {
       res.status(401).json({ message: 'Not Authenticated!' });
       return;
@@ -61,13 +50,6 @@ const sendFile = async (req: Request, res: Response, next: NextFunction) => {
     if (!isPositiveInteger(receiverId)) {
       res.status(400).json({
         message: 'Invalid receiver id.',
-      });
-      return;
-    }
-
-    if (req.userId === receiverId) {
-      res.status(400).json({
-        message: 'You cannot send message to yourself.',
       });
       return;
     }
@@ -94,7 +76,8 @@ const sendFile = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
       const { message, sender } = await sendMessage({
-        senderId: req.userId as number,
+        messageType: 'attachment',
+        userId: req.userId as number,
         receiverId,
         attachment: {
           name: path.basename(filePath),

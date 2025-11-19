@@ -18,25 +18,50 @@ export class MessageSendError extends Error {
   }
 }
 
-interface MessageSendProps {
-  senderId: number;
+interface BaseMessageSendPayload {
+  messageType: 'text' | 'attachment';
+  userId: number;
   receiverId: number;
-  content?: string;
-  attachment?: Pick<
+}
+
+interface TextMessageSendPayload extends BaseMessageSendPayload {
+  messageType: 'text';
+  content: string;
+}
+
+interface AttachmentSendPayload extends BaseMessageSendPayload {
+  messageType: 'attachment';
+  attachment: Pick<
     Attachment,
     'name' | 'originalname' | 'size' | 'width' | 'height' | 'caption'
   >;
 }
 
-const sendMessage = async ({
-  senderId,
-  receiverId,
-  content,
-  attachment,
-}: MessageSendProps) => {
+type MessageSendPayload = TextMessageSendPayload | AttachmentSendPayload;
+
+const sendMessage = async (payload: MessageSendPayload) => {
   const transaction = await sequelize.transaction();
 
   try {
+    const { messageType, userId, receiverId } = payload;
+
+    const senderId = userId;
+
+    let content: string | null = null;
+
+    if (messageType === 'text') {
+      content = payload.content.trim();
+
+      if (!content) {
+        throw new MessageSendError('Invalid message content.', 400);
+      }
+      //TODO: Check content for xss security, filter it.
+    }
+
+    if (userId === receiverId) {
+      throw new MessageSendError('You cannot send message to yourself.', 400);
+    }
+
     const [sender, receiver] = await Promise.all([
       // Get The Sender
       User.scope([
@@ -82,9 +107,13 @@ const sendMessage = async ({
       throw new MessageSendError('Receiver is not accepting messages.', 403);
     }
 
-    const savedAttachment = attachment
-      ? await Attachment.create(attachment, { transaction })
-      : null;
+    let attachment: Attachment | null = null;
+
+    if (messageType === 'attachment') {
+      attachment = await Attachment.create(payload.attachment, {
+        transaction,
+      });
+    }
 
     const [user1Id, user2Id] = sortChatUsersId(senderId, receiverId);
 
@@ -99,8 +128,8 @@ const sendMessage = async ({
         senderId,
         receiverId,
         chatId: chat.id,
-        content: content || null,
-        attachmentId: savedAttachment?.id || null,
+        content,
+        attachmentId: attachment?.id || null,
         // If the sender is blocked by the receiver, soft delete the message for
         // the receiver. so that the message will not be visible by the receiver.
         // only the sender can see the message.
@@ -140,9 +169,7 @@ const sendMessage = async ({
 
     const filteredMessage = {
       ...filterMessageData(message),
-      attachment: savedAttachment
-        ? filterAttachmentData(savedAttachment)
-        : undefined,
+      attachment: attachment ? filterAttachmentData(attachment) : undefined,
     };
 
     return {

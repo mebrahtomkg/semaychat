@@ -1,12 +1,12 @@
-import sendTextMessage from './sendTextMessage';
 import { AuthenticatedSocket } from '@/types';
 import handleMessageDelete from './handleMessageDelete';
 import handleChatDelete from './handleChatDelete';
 import handleMessageEdit from './handleMessageEdit';
+import handleMessageSend from './handleMessageSend';
 
 const registerMessageHandlers = (socket: AuthenticatedSocket) => {
   socket.on('send_text_message', (data, callback) => {
-    sendTextMessage(socket, data, callback);
+    handleMessageSend(socket, data, callback);
   });
 
   socket.on('update_text_message', (data, callback) => {
