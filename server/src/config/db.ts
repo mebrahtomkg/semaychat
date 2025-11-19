@@ -15,7 +15,7 @@ console.log(`Database dialect: ${dialect}`);
 
 const options: Options = {
   dialect,
-  logging: !IS_PRODUCTION,
+  logging: IS_PRODUCTION ? false : console.log,
 };
 
 let databaseUri: string | undefined;
