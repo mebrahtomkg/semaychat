@@ -1,38 +1,50 @@
 import { Op } from 'sequelize';
-import { Chat, Message, User } from '../../models';
-import { applyUserPrivacy } from '../../utils';
 import { Request, Response, NextFunction } from 'express';
+import { Chat, Message, User } from '@/models';
+import { applyUserPrivacy } from '@/utils';
 
-const list = async (req: Request, res: Response, next: NextFunction) => {
+const listChats = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const requesterId = req.userId;
+    if (!req.userId) {
+      res.status(401).json({ message: 'Not Authenticated!' });
+      return;
+    }
+
+    const userId = req.userId;
 
     const chats = await Chat.findAll({
       where: {
-        [Op.or]: [{ user1Id: requesterId }, { user2Id: requesterId }],
+        [Op.or]: [
+          {
+            user1Id: userId,
+          },
+          {
+            user2Id: userId,
+          },
+        ],
       },
       include: [
         {
           model: User.scope([
             'withProfilePhoto',
-            { method: ['withBlockedUsers', { blockedId: requesterId }] },
-            { method: ['withContacts', { addedId: requesterId }] },
+            { method: ['withBlockedUsers', { blockedId: userId }] },
+            { method: ['withContacts', { addedId: userId }] },
           ]),
           as: 'user1',
           where: {
-            id: { [Op.not]: requesterId },
+            id: { [Op.not]: userId },
           },
           required: false,
         },
         {
           model: User.scope([
             'withProfilePhoto',
-            { method: ['withBlockedUsers', { blockedId: requesterId }] },
-            { method: ['withContacts', { addedId: requesterId }] },
+            { method: ['withBlockedUsers', { blockedId: userId }] },
+            { method: ['withContacts', { addedId: userId }] },
           ]),
           as: 'user2',
           where: {
-            id: { [Op.not]: requesterId },
+            id: { [Op.not]: userId },
           },
           required: false,
         },
@@ -41,7 +53,7 @@ const list = async (req: Request, res: Response, next: NextFunction) => {
           as: 'lastMessageForUser1',
           required: false,
           where: {
-            '$Chat.user1Id$': requesterId,
+            '$Chat.user1Id$': userId,
           },
         },
         {
@@ -49,7 +61,7 @@ const list = async (req: Request, res: Response, next: NextFunction) => {
           as: 'lastMessageForUser2',
           required: false,
           where: {
-            '$Chat.user2Id$': requesterId,
+            '$Chat.user2Id$': userId,
           },
         },
       ],
@@ -84,4 +96,4 @@ const list = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default list;
+export default listChats;

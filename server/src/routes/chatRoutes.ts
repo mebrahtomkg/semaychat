@@ -1,8 +1,8 @@
+import { listChats } from '@/controllers/chatController';
 import express from 'express';
-import { list } from '../controllers/chatController';
 
 const router = express.Router();
 
-router.get('/', list);
+router.get('/', listChats);
 
 export default router;
