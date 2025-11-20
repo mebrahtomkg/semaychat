@@ -57,6 +57,12 @@ export const ChatItemDateTime = styled.p`
   color: var(--fg-muted);
 `;
 
+export const MessagePreviewContainer = styled.div`
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const MessagePreview = styled.p`
   white-space: nowrap;
   overflow: hidden;
@@ -64,4 +70,18 @@ export const MessagePreview = styled.p`
   font-size: 1rem;
   font-weight: 500;
   color: var(--fg-muted);
+`;
+
+export const UnseenMessagesCount = styled.div`
+  padding: 0.2rem;
+  --new-msg-count-width: 1.4rem;
+  width: var(--new-msg-count-width);
+  height: var(--new-msg-count-width);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background-color: var(--bg-action);
+  border-radius: 50%;
 `;

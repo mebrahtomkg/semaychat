@@ -4,10 +4,12 @@ import {
   ChatItemInfoContainer,
   ChatItemStyled,
   MessagePreview,
+  MessagePreviewContainer,
   Name,
   NameContainer,
   PhotoImg,
   ProfilePhotoContainer,
+  UnseenMessagesCount,
 } from './styles';
 import { useImageLoader, useUserInfo } from '@/hooks';
 import { Chat } from '@/types';
@@ -22,6 +24,8 @@ const ChatItem: FC<ChatItemProps> = ({ chat }) => {
   const { fullName, nameInitials, photoUrl } = useUserInfo(chat.partner);
 
   const { messagePreview, dateTime } = useChatItemInfo(chat);
+
+  const { unseenMessagesCount } = chat;
 
   const { imageSrc, handleImageLoad, handleImageLoadError } =
     useImageLoader(photoUrl);
@@ -49,7 +53,13 @@ const ChatItem: FC<ChatItemProps> = ({ chat }) => {
           {dateTime && <ChatItemDateTime>{dateTime}</ChatItemDateTime>}
         </NameContainer>
 
-        {messagePreview && <MessagePreview>{messagePreview}</MessagePreview>}
+        <MessagePreviewContainer>
+          {messagePreview && <MessagePreview>{messagePreview}</MessagePreview>}
+
+          {unseenMessagesCount && (
+            <UnseenMessagesCount>{unseenMessagesCount}</UnseenMessagesCount>
+          )}
+        </MessagePreviewContainer>
       </ChatItemInfoContainer>
     </ChatItemStyled>
   );

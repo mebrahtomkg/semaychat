@@ -67,6 +67,7 @@ export interface Message {
 export interface Chat {
   partner: User;
   lastMessage?: Message;
+  unseenMessagesCount?: number;
 }
 
 interface BaseMessageRequest {
