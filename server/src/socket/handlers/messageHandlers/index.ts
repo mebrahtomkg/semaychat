@@ -3,6 +3,7 @@ import handleMessageDelete from './handleMessageDelete';
 import handleChatDelete from './handleChatDelete';
 import handleMessageEdit from './handleMessageEdit';
 import handleMessageSend from './handleMessageSend';
+import handleMessageMarkAsRead from './handleMessageMarkAsRead';
 
 const registerMessageHandlers = (socket: AuthenticatedSocket) => {
   socket.on('send_text_message', (data, callback) => {
@@ -19,6 +20,10 @@ const registerMessageHandlers = (socket: AuthenticatedSocket) => {
 
   socket.on('delete_chat', (data, callback) => {
     handleChatDelete(socket, data, callback);
+  });
+
+  socket.on('mark_message_as_read', (data, callback) => {
+    handleMessageMarkAsRead(socket, data, callback);
   });
 };
 
