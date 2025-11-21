@@ -5,7 +5,7 @@ import {
   EditIcon,
   ReplyIcon,
 } from '@/components/icons';
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, RefObject, useCallback, useMemo, useRef, useState } from 'react';
 import {
   AudioMessage,
   FileMessage,
@@ -22,17 +22,20 @@ import useMarkMessageAsRead from './useMarkMessageAsRead';
 interface BaseMessageProps {
   message: Message;
   isLastInGroup: boolean;
+  containerElementRef: RefObject<HTMLDivElement | null>;
 }
 
-const BaseMessage: FC<BaseMessageProps> = ({ message, isLastInGroup }) => {
+const BaseMessage: FC<BaseMessageProps> = ({
+  message,
+  isLastInGroup,
+  containerElementRef,
+}) => {
   const messageInfo = useMessageInfo(message);
 
   const { type, isOutgoing } = messageInfo;
 
   const { edit, reply, downloadFile, deleteMessage } =
     useMessageActions(message);
-
-  useMarkMessageAsRead(message);
 
   const [isDeleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
   const openDeleteConfirm = useCallback(
@@ -101,8 +104,16 @@ const BaseMessage: FC<BaseMessageProps> = ({ message, isLastInGroup }) => {
   const onContextMenuFn =
     type === 'audio' || type === 'file' ? undefined : onContextMenu;
 
+  const messageElementRef = useRef<HTMLDivElement>(null);
+
+  useMarkMessageAsRead(messageElementRef, containerElementRef, message);
+
   return (
-    <MessageStyled $isOutgoing={isOutgoing} $isLastInGroup={isLastInGroup}>
+    <MessageStyled
+      ref={messageElementRef}
+      $isOutgoing={isOutgoing}
+      $isLastInGroup={isLastInGroup}
+    >
       <MessageContainer
         $shouldFlexGrow={type === 'audio' || type === 'file'}
         $isTransparentBackground={type === 'photo' || type === 'video'}

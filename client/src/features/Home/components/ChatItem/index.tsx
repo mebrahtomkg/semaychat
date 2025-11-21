@@ -56,7 +56,7 @@ const ChatItem: FC<ChatItemProps> = ({ chat }) => {
         <MessagePreviewContainer>
           {messagePreview && <MessagePreview>{messagePreview}</MessagePreview>}
 
-          {unseenMessagesCount && (
+          {(unseenMessagesCount || 0) > 0 && (
             <UnseenMessagesCount>{unseenMessagesCount}</UnseenMessagesCount>
           )}
         </MessagePreviewContainer>

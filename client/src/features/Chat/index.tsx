@@ -26,6 +26,8 @@ const Chat: FC = () => {
     ? Number.parseInt(params.chatPartnerId, 10)
     : 0;
 
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+
   const { isLargeScreen } = useResponsive();
 
   const chatPartner = useUserFetcher(chatPartnerId);
@@ -41,20 +43,20 @@ const Chat: FC = () => {
           !messages[index + 1] ||
           messages[index + 1].senderId !== message.senderId
         }
+        containerElementRef={messagesContainerRef}
       />
     ));
   }, [messages]);
 
-  const chatRef = useRef<HTMLDivElement | null>(null);
+  // const chatRef = useRef<HTMLDivElement | null>(null);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: to scroll if messages length change
-  useEffect(() => {
-    if (chatRef.current) {
-      const messagesContainer: HTMLDivElement = chatRef.current;
-      messagesContainer.scrollTop =
-        messagesContainer.scrollHeight - messagesContainer.clientHeight;
-    }
-  }, [messages.length]);
+  // useEffect(() => {
+  //   if (chatRef.current) {
+  //     const messagesContainer: HTMLDivElement = chatRef.current;
+  //     messagesContainer.scrollTop =
+  //       messagesContainer.scrollHeight - messagesContainer.clientHeight;
+  //   }
+  // }, [messages.length]);
 
   return (
     <ChatStyled>
@@ -66,7 +68,7 @@ const Chat: FC = () => {
         {chatPartner && <ChatContextMenu chatPartner={chatPartner} />}
       </ChatHeader>
 
-      <ChatMessagesListContainer ref={chatRef}>
+      <ChatMessagesListContainer ref={messagesContainerRef}>
         <ChatMessagesList>
           <Gap />
           {messagesInComponent}
