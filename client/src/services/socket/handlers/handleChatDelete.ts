@@ -1,5 +1,5 @@
 import { QUERY_KEY_MESSAGES } from '@/constants';
-import queryClient, { updateChatLastMessage } from '@/queryClient';
+import queryClient, { chatsCache } from '@/queryClient';
 import { Message } from '@/types';
 
 interface ChatDeletePayload {
@@ -22,7 +22,7 @@ const handleChatDelete = ({
     );
 
     // Update last message of the target chat
-    updateChatLastMessage(partnerId);
+    chatsCache.updateChatLastMessage(partnerId);
   }
 };
 

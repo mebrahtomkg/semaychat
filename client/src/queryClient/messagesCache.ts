@@ -1,50 +1,23 @@
-import {
-  QUERY_KEY_ACCOUNT,
-  QUERY_KEY_CHATS,
-  QUERY_KEY_MESSAGES,
-} from '@/constants';
-import { Account, Chat, Message, User } from '@/types';
+import { QUERY_KEY_CHATS, QUERY_KEY_MESSAGES } from '@/constants';
+import { Chat, Message, User } from '@/types';
 import queryClient from './queryClient';
-import updateChatLastMessage from './updateChatLastMessage';
-
-const getAccount = () => {
-  const account = queryClient.getQueryData<Account>([QUERY_KEY_ACCOUNT]);
-  if (!account) throw new Error('Invalid account! You maynot have loggedin!');
-  return account;
-};
+import accountCache from './accountCache';
+import chatsCache from './chatsCache';
 
 const getMessagePartnerId = (message: Message) => {
-  const account = getAccount();
+  const account = accountCache.get();
   return message.senderId === account.id
     ? message.receiverId
     : message.senderId;
 };
 
-const incrementChatUnseenMessagesCount = (partnerId: number) => {
-  queryClient.setQueryData<Chat[] | undefined>(
-    [QUERY_KEY_CHATS],
-    (chats): Chat[] => {
-      if (!chats) return [];
-
-      return chats.map((chat) => {
-        if (chat.partner.id === partnerId) {
-          const unseenMessagesCount = (chat.unseenMessagesCount || 0) + 1;
-          return { ...chat, unseenMessagesCount };
-        }
-
-        return chat;
-      });
-    },
-  );
-};
-
 const messagesCache = {
   add: (message: Message, partner: User) => {
-    const account = getAccount();
+    const account = accountCache.get();
 
     // Update unseen messages count of the target if the message is received message.
     if (message.receiverId === account.id) {
-      incrementChatUnseenMessagesCount(partner.id);
+      chatsCache.incrementChatUnseenMessagesCount(partner.id);
     }
 
     const existingChats = queryClient.getQueryData<Chat[] | undefined>([
@@ -73,7 +46,7 @@ const messagesCache = {
       (messages: Message[]) => (messages ? [...messages, message] : [message]),
     );
 
-    updateChatLastMessage(partner.id);
+    chatsCache.updateChatLastMessage(partner.id);
   },
 
   update: (message: Message) => {
@@ -87,7 +60,7 @@ const messagesCache = {
             )
           : [message],
     );
-    updateChatLastMessage(partnerId);
+    chatsCache.updateChatLastMessage(partnerId);
   },
 
   remove: (partnerId: number, messageId: number) => {
@@ -96,7 +69,7 @@ const messagesCache = {
       (messages: Message[]) =>
         messages ? messages.filter((message) => message.id !== messageId) : [],
     );
-    updateChatLastMessage(partnerId);
+    chatsCache.updateChatLastMessage(partnerId);
   },
 };
 
