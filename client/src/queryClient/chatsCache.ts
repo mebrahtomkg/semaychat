@@ -39,6 +39,18 @@ const chatsCache = {
       );
     });
   },
+
+  setChatUnseenMessagesCount: (
+    partnerId: number,
+    unseenMessagesCount: number,
+  ) => {
+    queryClient.setQueryData([QUERY_KEY_CHATS], (chats: Chat[] | undefined) => {
+      if (!chats) return [];
+      return chats.map((chat) =>
+        chat.partner.id === partnerId ? { ...chat, unseenMessagesCount } : chat,
+      );
+    });
+  },
 };
 
 export default chatsCache;

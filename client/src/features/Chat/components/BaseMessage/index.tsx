@@ -17,6 +17,7 @@ import MessageDeleteConfirmDialog from '../MessageDeleteConfirmDialog';
 import { MessageContainer, MessageStyled } from './styles';
 import { Message } from '@/types';
 import { useMessageActions, useMessageInfo } from '../../hooks';
+import useMarkMessageAsRead from './useMarkMessageAsRead';
 
 interface BaseMessageProps {
   message: Message;
@@ -30,6 +31,8 @@ const BaseMessage: FC<BaseMessageProps> = ({ message, isLastInGroup }) => {
 
   const { edit, reply, downloadFile, deleteMessage } =
     useMessageActions(message);
+
+  useMarkMessageAsRead(message);
 
   const [isDeleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
   const openDeleteConfirm = useCallback(

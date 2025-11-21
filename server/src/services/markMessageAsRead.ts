@@ -23,14 +23,25 @@ const markMessageAsRead = async ({
     { isSeen: true },
     {
       where: {
-        senderId: chatPartnerId,
         receiverId: userId,
+        senderId: chatPartnerId,
+        isSeen: false,
         id: {
           [Op.lte]: messageId,
         },
       },
     },
   );
+
+  const unseenMessagesCount = await Message.count({
+    where: {
+      receiverId: userId,
+      senderId: chatPartnerId,
+      isSeen: false,
+    },
+  });
+
+  return { unseenMessagesCount };
 };
 
 export default markMessageAsRead;

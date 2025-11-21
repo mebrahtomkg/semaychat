@@ -1,9 +1,9 @@
 import { useMessageRequests, useMessageUtils, useStableValue } from '@/hooks';
-import { Message, MessageRequest, User } from '@/types';
+import { Message, MessageRequest } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { emitWithAck, SocketResponseError } from '@/services/socket';
-import queryClient, { messagesCache } from '@/queryClient';
+import queryClient, { chatsCache, messagesCache } from '@/queryClient';
 import { QUERY_KEY_MESSAGES } from '@/constants';
 import { deleteMessageRequest } from '@/store/useMessageRequestsStore';
 
@@ -44,6 +44,12 @@ const MessageRequestsProcessor = () => {
           return emitWithAck('delete_chat', {
             chatPartnerId: payload.chatPartnerId,
             deleteForReceiver: payload.deleteForReceiver,
+          });
+
+        case 'MESSAGE_MARK_AS_READ':
+          return emitWithAck('mark_message_as_read', {
+            chatPartnerId: payload.chatPartnerId,
+            messageId: payload.messageId,
           });
       }
 
@@ -87,6 +93,15 @@ const MessageRequestsProcessor = () => {
             [],
           );
           break;
+
+        case 'MESSAGE_MARK_AS_READ': {
+          const result = data as { unseenMessagesCount: number };
+          chatsCache.setChatUnseenMessagesCount(
+            req.payload.chatPartnerId,
+            result.unseenMessagesCount,
+          );
+          break;
+        }
       }
       deleteMessageRequest(req.requestId);
     },

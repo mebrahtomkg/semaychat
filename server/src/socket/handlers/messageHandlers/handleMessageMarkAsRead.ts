@@ -40,7 +40,7 @@ const handleMessageMarkAsRead = async (
       });
     }
 
-    await markMessageAsRead({
+    const { unseenMessagesCount } = await markMessageAsRead({
       userId,
       chatPartnerId,
       messageId,
@@ -48,6 +48,7 @@ const handleMessageMarkAsRead = async (
 
     acknowledgement({
       status: 'ok',
+      data: { unseenMessagesCount },
       message: 'Message marked as read successfully.',
     });
 

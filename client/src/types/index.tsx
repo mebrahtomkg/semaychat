@@ -77,7 +77,8 @@ interface BaseMessageRequest {
     | 'FILE_MESSAGE_SEND'
     | 'MESSAGE_UPDATE'
     | 'MESSAGE_DELETE'
-    | 'CHAT_DELETE';
+    | 'CHAT_DELETE'
+    | 'MESSAGE_MARK_AS_READ';
   payload: object;
 }
 
@@ -124,9 +125,18 @@ export interface ChatDeleteRequest extends BaseMessageRequest {
   };
 }
 
+export interface MessageMarkAsReadRequest extends BaseMessageRequest {
+  requestType: 'MESSAGE_MARK_AS_READ';
+  payload: {
+    chatPartnerId: number;
+    messageId: number;
+  };
+}
+
 export type MessageRequest =
   | TextMessageSendRequest
   | FileMessageSendRequest
   | MessageUpdateRequest
   | MessageDeleteRequest
-  | ChatDeleteRequest;
+  | ChatDeleteRequest
+  | MessageMarkAsReadRequest;
