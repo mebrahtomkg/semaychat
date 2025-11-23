@@ -76,10 +76,19 @@ const messagesCache = {
     chatsCache.updateChatLastMessage(partnerId);
   },
 
-  markAsRead: (partnerId: number, messageId: number) => {
+  markAsRead: (
+    partnerId: number,
+    messageId: number,
+    messagesType: 'sent' | 'received',
+  ) => {
+    const account = accountCache.get();
     setCache(partnerId, (messages: Message[]) =>
       messages.map((message) =>
-        message.id <= messageId && !message.isSeen
+        (messagesType === 'sent'
+          ? message.senderId === account.id
+          : message.receiverId === account.id) &&
+        message.id <= messageId &&
+        !message.isSeen
           ? { ...message, isSeen: true }
           : message,
       ),

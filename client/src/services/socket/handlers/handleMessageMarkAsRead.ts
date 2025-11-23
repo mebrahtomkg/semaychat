@@ -8,6 +8,7 @@ interface MessageMarkAsReadPayload {
 const handleMessageMarkAsRead = ({
   partnerId,
   messageId,
-}: MessageMarkAsReadPayload) => messagesCache.markAsRead(partnerId, messageId);
+}: MessageMarkAsReadPayload) =>
+  messagesCache.markAsRead(partnerId, messageId, 'sent');
 
 export default handleMessageMarkAsRead;

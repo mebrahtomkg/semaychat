@@ -103,6 +103,7 @@ const MessageRequestsProcessor = () => {
           messagesCache.markAsRead(
             req.payload.chatPartnerId,
             req.payload.messageId,
+            'received',
           );
           break;
         }
