@@ -52,7 +52,7 @@ const handleMessageMarkAsRead = async (
       message: 'Message marked as read successfully.',
     });
 
-    emitToUser(chatPartnerId, 'message_read', {
+    emitToUser(chatPartnerId, 'message_marked_as_read', {
       partnerId: userId,
       messageId,
     });
