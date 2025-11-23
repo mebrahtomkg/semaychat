@@ -101,6 +101,10 @@ const MessageRequestsProcessor = () => {
             req.payload.chatPartnerId,
             result.unseenMessagesCount,
           );
+          messagesCache.markAsRead(
+            req.payload.chatPartnerId,
+            req.payload.messageId,
+          );
           break;
         }
       }

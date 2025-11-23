@@ -11,6 +11,19 @@ const getMessagePartnerId = (message: Message) => {
     : message.senderId;
 };
 
+const getCache = (partnerId: number) =>
+  queryClient.getQueryData<Message[]>([QUERY_KEY_MESSAGES, partnerId]) || [];
+
+const setCache = (
+  partnerId: number,
+  setterFn: (messages: Message[]) => Message[],
+) => {
+  queryClient.setQueryData<Message[]>(
+    [QUERY_KEY_MESSAGES, partnerId],
+    (messages) => setterFn(messages || []),
+  );
+};
+
 const messagesCache = {
   add: (message: Message, partner: User) => {
     const account = accountCache.get();
@@ -41,35 +54,34 @@ const messagesCache = {
       );
     }
 
-    queryClient.setQueryData(
-      [QUERY_KEY_MESSAGES, partner.id],
-      (messages: Message[]) => (messages ? [...messages, message] : [message]),
-    );
+    setCache(partner.id, (messages: Message[]) => [...messages, message]);
 
     chatsCache.updateChatLastMessage(partner.id);
   },
 
   update: (message: Message) => {
     const partnerId = getMessagePartnerId(message);
-    queryClient.setQueryData(
-      [QUERY_KEY_MESSAGES, partnerId],
-      (messages: Message[]) =>
-        messages
-          ? messages.map((oldMessage) =>
-              oldMessage.id === message.id ? message : oldMessage,
-            )
-          : [message],
+    setCache(partnerId, (messages: Message[]) =>
+      messages.map((oldMessage) =>
+        oldMessage.id === message.id ? message : oldMessage,
+      ),
     );
     chatsCache.updateChatLastMessage(partnerId);
   },
 
   remove: (partnerId: number, messageId: number) => {
-    queryClient.setQueryData(
-      [QUERY_KEY_MESSAGES, partnerId],
-      (messages: Message[]) =>
-        messages ? messages.filter((message) => message.id !== messageId) : [],
+    setCache(partnerId, (messages: Message[]) =>
+      messages.filter((message) => message.id !== messageId),
     );
     chatsCache.updateChatLastMessage(partnerId);
+  },
+
+  markAsRead: (partnerId: number, messageId: number) => {
+    setCache(partnerId, (messages: Message[]) =>
+      messages.map((message) =>
+        message.id <= messageId ? { ...message, isSeen: true } : message,
+      ),
+    );
   },
 };
 
