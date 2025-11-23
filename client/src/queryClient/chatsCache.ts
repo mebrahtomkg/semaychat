@@ -51,6 +51,12 @@ const chatsCache = {
       );
     });
   },
+
+  getChat: (partnerId: number) => {
+    return queryClient
+      .getQueryData<Chat[]>([QUERY_KEY_CHATS])
+      ?.find((chat) => chat.partner.id === partnerId);
+  },
 };
 
 export default chatsCache;

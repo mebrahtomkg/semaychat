@@ -25,7 +25,7 @@ const usePendingMessages = (receiverId: number) => {
         // Use negative number to avoid id conflict with the persisted in server messages
         id: -1 * req.requestId,
         receiverId: receiverId,
-        senderId: selfId as number,
+        senderId: selfId,
         content:
           req.requestType === 'TEXT_MESSAGE_SEND' ? req.payload.content : null,
         createdAt: 0,

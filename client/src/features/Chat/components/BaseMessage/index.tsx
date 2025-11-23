@@ -26,13 +26,13 @@ import useMarkMessageAsRead from './useMarkMessageAsRead';
 interface BaseMessageProps {
   message: Message;
   isLastInGroup: boolean;
-  containerElementRef: RefObject<HTMLDivElement | null>;
+  intersectionObserverRootRef: RefObject<HTMLDivElement | null>;
 }
 
 const BaseMessage: FC<BaseMessageProps> = ({
   message,
   isLastInGroup,
-  containerElementRef,
+  intersectionObserverRootRef,
 }) => {
   const messageInfo = useMessageInfo(message);
 
@@ -112,7 +112,7 @@ const BaseMessage: FC<BaseMessageProps> = ({
 
   useMarkMessageAsRead(
     intersectionObserverTargetRef,
-    containerElementRef,
+    intersectionObserverRootRef,
     message,
   );
 

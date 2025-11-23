@@ -17,7 +17,7 @@ const MessageRequestsProcessor = () => {
 
   const { getMessagePartnerId } = useMessageUtils();
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (req: MessageRequest) => {
       const { requestType, payload } = req;
 
@@ -69,6 +69,7 @@ const MessageRequestsProcessor = () => {
     },
     onSuccess: (data, req) => {
       const { requestType, payload } = req;
+      console.log('done', req);
 
       switch (requestType) {
         case 'TEXT_MESSAGE_SEND':
@@ -108,10 +109,13 @@ const MessageRequestsProcessor = () => {
   });
 
   useEffect(() => {
-    if (request) {
+    // Perform next request only if there is no pending request currently.
+    // Otherwise after the current pending request is complete it will deleted from store
+    // and this effect will re-run due to change of the first request of the store
+    if (request && !isPending) {
       mutate(request);
     }
-  }, [request, mutate]);
+  }, [request, mutate, isPending]);
 
   return null; // Renders Nothing.
 };

@@ -1,13 +1,13 @@
 import BackLink from '@/components/BackLink';
 import { useResponsive, useUserFetcher } from '@/hooks';
-import { Message } from '@/types';
-import { type FC, useEffect, useMemo, useRef } from 'react';
+import { type FC, useRef } from 'react';
 import { useParams } from 'react-router';
 import {
-  BaseMessage,
   MessageInput,
   ChatPartner,
   ChatContextMenu,
+  PendingMessages,
+  ChatMessages,
 } from './components';
 import {
   ChatFooter,
@@ -17,7 +17,7 @@ import {
   ChatStyled,
   Gap,
 } from './styles';
-import useChatMessages from './hooks/useChatMessages';
+import { chatsCache } from '@/queryClient';
 
 const Chat: FC = () => {
   const params = useParams();
@@ -26,27 +26,12 @@ const Chat: FC = () => {
     ? Number.parseInt(params.chatPartnerId, 10)
     : 0;
 
-  const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const intersectionObserverRootRef = useRef<HTMLDivElement>(null);
 
   const { isLargeScreen } = useResponsive();
 
-  const chatPartner = useUserFetcher(chatPartnerId);
-
-  const messages: Message[] = useChatMessages(chatPartnerId, true);
-
-  const messagesInComponent = useMemo(() => {
-    return messages.map((message, index) => (
-      <BaseMessage
-        key={`${message.id}`}
-        message={message}
-        isLastInGroup={
-          !messages[index + 1] ||
-          messages[index + 1].senderId !== message.senderId
-        }
-        containerElementRef={messagesContainerRef}
-      />
-    ));
-  }, [messages]);
+  const chatPartner =
+    useUserFetcher(chatPartnerId) || chatsCache.getChat(chatPartnerId)?.partner;
 
   // const chatRef = useRef<HTMLDivElement | null>(null);
 
@@ -68,10 +53,20 @@ const Chat: FC = () => {
         {chatPartner && <ChatContextMenu chatPartner={chatPartner} />}
       </ChatHeader>
 
-      <ChatMessagesListContainer ref={messagesContainerRef}>
+      <ChatMessagesListContainer ref={intersectionObserverRootRef}>
         <ChatMessagesList>
           <Gap />
-          {messagesInComponent}
+
+          <ChatMessages
+            partnerId={chatPartnerId}
+            intersectionObserverRootRef={intersectionObserverRootRef}
+          />
+
+          <PendingMessages
+            receiverId={chatPartnerId}
+            intersectionObserverRootRef={intersectionObserverRootRef}
+          />
+
           <Gap />
         </ChatMessagesList>
       </ChatMessagesListContainer>
