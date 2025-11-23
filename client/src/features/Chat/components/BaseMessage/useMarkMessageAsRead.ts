@@ -3,23 +3,26 @@ import { Message } from '@/types';
 import { RefObject, useCallback, useEffect } from 'react';
 
 const useMarkMessageAsRead = (
-  messageElementRef: RefObject<HTMLDivElement | null>,
-  containerElementRef: RefObject<HTMLDivElement | null>,
+  // intersection observer target is an html element that is rendered at the base of
+  // the message element. By placing the intersection observer target element at the foot
+  // of the overall message content we effectly know that the message is seen(read) or scrolled
+  // to the top of the messages container. the magical case that foced us to do this is that a
+  // message could be very big enough not to be visible 100%(1.0 threshold) in the root.
+  intersectionObserverTargetRef: RefObject<HTMLDivElement | null>,
+  intersectionObserverRootRef: RefObject<HTMLDivElement | null>,
   message: Message,
 ) => {
   const handleIntersectionObserver: IntersectionObserverCallback = useCallback(
     (entries, observer) => {
-      if (message.isSeen) return;
+      if (message.isSeen) {
+        return observer.disconnect();
+      }
 
       const [entry] = entries;
-      const root = observer.root as HTMLElement;
-      const rootRect = root.getBoundingClientRect();
-      const targetRect = entry.target.getBoundingClientRect();
 
-      // If the target message element is scrolled in to view or even scrolled above the
-      // root, mark it as read. since the message could be huge enough not to be visible
-      // 100%(1.0 threshold) in the root.
-      if (targetRect.bottom <= rootRect.bottom) {
+      if (entry.isIntersecting) {
+        observer.disconnect();
+
         addMessageMarkAsReadRequest({
           chatPartnerId: message.senderId,
           messageId: message.id,
@@ -31,17 +34,18 @@ const useMarkMessageAsRead = (
 
   useEffect(() => {
     let observer: IntersectionObserver | null = null;
-    const messageElement = messageElementRef.current;
-    const containerElement = containerElementRef.current;
+    const target = intersectionObserverTargetRef.current;
+    const root = intersectionObserverRootRef.current;
 
     // Do intersection observe only if the message is not seen (marked as red) already
-    if (!message.isSeen && messageElement && containerElement) {
+    if (!message.isSeen && target && root) {
       observer = new IntersectionObserver(handleIntersectionObserver, {
-        root: containerElement,
-        threshold: [0.0, 0.75, 1.0],
+        root,
+        // a threshold of '0.0' is the best option for handling edge cases in here.
+        threshold: 0.0,
       });
 
-      observer.observe(messageElement);
+      observer.observe(target);
     }
 
     // Cleanup function
@@ -51,9 +55,10 @@ const useMarkMessageAsRead = (
       }
     };
   }, [
-    messageElementRef.current,
-    containerElementRef.current,
-    message.isSeen,
+    intersectionObserverTargetRef.current,
+    intersectionObserverRootRef.current,
+    // Use message as dependency instead of message.isSeen to rerun the effect if message change.
+    message,
     handleIntersectionObserver,
   ]);
 };

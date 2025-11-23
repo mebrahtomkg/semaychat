@@ -46,3 +46,9 @@ export const MessageContainer = styled.div<{
       ? 'transparent'
       : `var(--bg-msg-${props.$isOutgoing ? 'sent' : 'received'})`};
 `;
+
+export const MessageIntersectionObserverTarget = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: transparent;
+`;

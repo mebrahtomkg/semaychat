@@ -14,7 +14,11 @@ import {
   VideoMessage,
 } from '..';
 import MessageDeleteConfirmDialog from '../MessageDeleteConfirmDialog';
-import { MessageContainer, MessageStyled } from './styles';
+import {
+  MessageContainer,
+  MessageIntersectionObserverTarget,
+  MessageStyled,
+} from './styles';
 import { Message } from '@/types';
 import { useMessageActions, useMessageInfo } from '../../hooks';
 import useMarkMessageAsRead from './useMarkMessageAsRead';
@@ -104,16 +108,16 @@ const BaseMessage: FC<BaseMessageProps> = ({
   const onContextMenuFn =
     type === 'audio' || type === 'file' ? undefined : onContextMenu;
 
-  const messageElementRef = useRef<HTMLDivElement>(null);
+  const intersectionObserverTargetRef = useRef<HTMLDivElement>(null);
 
-  useMarkMessageAsRead(messageElementRef, containerElementRef, message);
+  useMarkMessageAsRead(
+    intersectionObserverTargetRef,
+    containerElementRef,
+    message,
+  );
 
   return (
-    <MessageStyled
-      ref={messageElementRef}
-      $isOutgoing={isOutgoing}
-      $isLastInGroup={isLastInGroup}
-    >
+    <MessageStyled $isOutgoing={isOutgoing} $isLastInGroup={isLastInGroup}>
       <MessageContainer
         $shouldFlexGrow={type === 'audio' || type === 'file'}
         $isTransparentBackground={type === 'photo' || type === 'video'}
@@ -129,6 +133,10 @@ const BaseMessage: FC<BaseMessageProps> = ({
             controlProps={contextMenuControlProps}
           />
         )}
+
+        <MessageIntersectionObserverTarget
+          ref={intersectionObserverTargetRef}
+        />
       </MessageContainer>
 
       {isDeleteConfirmVisible && (
