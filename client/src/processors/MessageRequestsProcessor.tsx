@@ -69,7 +69,6 @@ const MessageRequestsProcessor = () => {
     },
     onSuccess: (data, req) => {
       const { requestType, payload } = req;
-      console.log('done', req);
 
       switch (requestType) {
         case 'TEXT_MESSAGE_SEND':

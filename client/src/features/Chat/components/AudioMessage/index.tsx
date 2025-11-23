@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC, MouseEventHandler } from 'react';
 import PlaybackControlButton from './PlaybackControlButton';
 import SmallMoreButton from '../SmallMoreButton';
 import {
@@ -12,17 +12,20 @@ import useAudioPlaybackController from './useAudioPlaybackController';
 import PlaybackTimeSlider from './PlaybackTimeSlider';
 import MessageMeta from '../MessageMeta';
 import { MessageInfo } from '../../types';
+import { Message } from '@/types';
 
 interface AudioMessageProps {
   messageInfo: MessageInfo;
-  onMoreButtonClick: (e: React.MouseEvent<HTMLElement>) => void;
+  message: Message;
+  onMoreButtonClick: MouseEventHandler;
 }
 
 const AudioMessage: FC<AudioMessageProps> = ({
   messageInfo,
+  message,
   onMoreButtonClick,
 }) => {
-  const { isOutgoing, status, fileUrl, time } = messageInfo;
+  const { fileUrl } = messageInfo;
 
   const {
     audioElementRef,
@@ -62,7 +65,7 @@ const AudioMessage: FC<AudioMessageProps> = ({
       <SmallMoreButton onClick={onMoreButtonClick} />
 
       <AudioMetaContainer>
-        <MessageMeta isOutgoing={isOutgoing} status={status} time={time} />
+        <MessageMeta message={message} />
       </AudioMetaContainer>
     </AudioMessageStyled>
   );

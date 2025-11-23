@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import { FC, MouseEventHandler, useMemo } from 'react';
 import SmallMoreButton from '../SmallMoreButton';
 import {
   FileExtension,
@@ -14,22 +14,14 @@ import { FileIcon } from '@/components/icons';
 import MessageMeta from '../MessageMeta';
 import { getSizeInAppropriateUnit, shortenFileName } from '../../utils';
 import { Message } from '@/types';
-import { MessageInfo } from '../../types';
 import { getFileExtension } from '@/utils';
 
 interface FileMessageProps {
   message: Message;
-  messageInfo: MessageInfo;
-  onMoreButtonClick: (e: React.MouseEvent<HTMLElement>) => void;
+  onMoreButtonClick: MouseEventHandler;
 }
 
-const FileMessage: FC<FileMessageProps> = ({
-  message,
-  messageInfo,
-  onMoreButtonClick,
-}) => {
-  const { isOutgoing, status, time } = messageInfo;
-
+const FileMessage: FC<FileMessageProps> = ({ message, onMoreButtonClick }) => {
   const extension = useMemo(() => {
     return getFileExtension(message.attachment?.name);
   }, [message.attachment?.name]);
@@ -55,7 +47,7 @@ const FileMessage: FC<FileMessageProps> = ({
       <SmallMoreButton onClick={onMoreButtonClick} />
 
       <FileMetaContainer>
-        <MessageMeta isOutgoing={isOutgoing} status={status} time={time} />
+        <MessageMeta message={message} />
       </FileMetaContainer>
     </FileMessageStyled>
   );

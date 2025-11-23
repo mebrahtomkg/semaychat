@@ -86,18 +86,18 @@ const BaseMessage: FC<BaseMessageProps> = ({
       case 'photo':
         return <PhotoMessage messageInfo={messageInfo} message={message} />;
       case 'video':
-        return <VideoMessage messageInfo={messageInfo} />;
+        return <VideoMessage messageInfo={messageInfo} message={message} />;
       case 'audio':
         return (
           <AudioMessage
             messageInfo={messageInfo}
+            message={message}
             onMoreButtonClick={onMoreButtonClick}
           />
         );
       case 'file':
         return (
           <FileMessage
-            messageInfo={messageInfo}
             onMoreButtonClick={onMoreButtonClick}
             message={message}
           />

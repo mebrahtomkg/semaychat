@@ -6,13 +6,15 @@ import {
 } from './styles';
 import { MessageInfo } from '../../types';
 import MessageMeta from '../MessageMeta';
+import { Message } from '@/types';
 
 interface VideoMessageProps {
+  message: Message;
   messageInfo: MessageInfo;
 }
 
-const VideoMessage: FC<VideoMessageProps> = ({ messageInfo }) => {
-  const { isOutgoing, status, fileUrl, time } = messageInfo;
+const VideoMessage: FC<VideoMessageProps> = ({ messageInfo, message }) => {
+  const { fileUrl } = messageInfo;
 
   return (
     <VideoMessageStyled>
@@ -22,7 +24,7 @@ const VideoMessage: FC<VideoMessageProps> = ({ messageInfo }) => {
       </VideoTagStyled>
 
       <VideoMetaContainer>
-        <MessageMeta isOutgoing={isOutgoing} status={status} time={time} />
+        <MessageMeta message={message} />
       </VideoMetaContainer>
     </VideoMessageStyled>
   );

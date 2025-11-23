@@ -20,7 +20,7 @@ interface PhotoMessageProps {
 }
 
 const PhotoMessage: FC<PhotoMessageProps> = ({ message, messageInfo }) => {
-  const { chatPartnerId, fileUrl, isOutgoing, status, time } = messageInfo;
+  const { chatPartnerId, fileUrl } = messageInfo;
 
   const [isPhotoViewerVisible, setIsPhotoViewerVisible] = useState(false);
   const openPhotoViewer = () => setIsPhotoViewerVisible(true);
@@ -74,7 +74,7 @@ const PhotoMessage: FC<PhotoMessageProps> = ({ message, messageInfo }) => {
       )}
 
       <ImageMetaContainer>
-        <MessageMeta isOutgoing={isOutgoing} status={status} time={time} />
+        <MessageMeta message={message} />
       </ImageMetaContainer>
 
       {isPhotoViewerVisible && (

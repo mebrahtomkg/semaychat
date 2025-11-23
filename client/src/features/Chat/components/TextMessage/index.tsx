@@ -11,7 +11,7 @@ interface TextMessageProps {
 }
 
 const TextMessage: FC<TextMessageProps> = ({ message, messageInfo }) => {
-  const { isOutgoing, status, time } = messageInfo;
+  const { isOutgoing } = messageInfo;
 
   const content = useMessageContent(message.id, message.content);
 
@@ -19,21 +19,11 @@ const TextMessage: FC<TextMessageProps> = ({ message, messageInfo }) => {
     <TextMessageStyled $isOutgoing={isOutgoing}>
       <Content>{content}</Content>
       <HiddenMeta>
-        <MessageMeta
-          isOutgoing={isOutgoing}
-          isSeen={message.isSeen}
-          status={status}
-          time={time}
-        />
+        <MessageMeta message={message} />
       </HiddenMeta>
 
       <VisibleMeta>
-        <MessageMeta
-          isOutgoing={isOutgoing}
-          isSeen={message.isSeen}
-          status={status}
-          time={time}
-        />
+        <MessageMeta message={message} />
       </VisibleMeta>
     </TextMessageStyled>
   );
