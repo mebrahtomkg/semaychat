@@ -1,15 +1,17 @@
-import { FC, RefObject, useMemo } from 'react';
+import { FC, RefObject, useEffect, useMemo } from 'react';
 import BaseMessage from '../BaseMessage';
 import usePendingMessages from './usePendingMessages';
 
 interface PendingMessagesProps {
   receiverId: number;
   intersectionObserverRootRef: RefObject<HTMLDivElement | null>;
+  scrollMessagesListToBottom: () => void;
 }
 
 const PendingMessages: FC<PendingMessagesProps> = ({
   receiverId,
   intersectionObserverRootRef,
+  scrollMessagesListToBottom,
 }) => {
   const messages = usePendingMessages(receiverId);
 
@@ -26,6 +28,12 @@ const PendingMessages: FC<PendingMessagesProps> = ({
       />
     ));
   }, [messages, intersectionObserverRootRef]);
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      scrollMessagesListToBottom();
+    }
+  }, [messages.length, scrollMessagesListToBottom]);
 
   return <>{messagesInComponent}</>;
 };

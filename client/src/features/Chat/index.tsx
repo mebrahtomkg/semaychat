@@ -1,6 +1,6 @@
 import BackLink from '@/components/BackLink';
 import { useResponsive, useUserFetcher } from '@/hooks';
-import { type FC, useRef } from 'react';
+import { type FC, useRef, useCallback } from 'react';
 import { useParams } from 'react-router';
 import {
   MessageInput,
@@ -26,22 +26,20 @@ const Chat: FC = () => {
     ? Number.parseInt(params.chatPartnerId, 10)
     : 0;
 
-  const intersectionObserverRootRef = useRef<HTMLDivElement>(null);
+  const messagesListContainerRef = useRef<HTMLDivElement>(null);
 
   const { isLargeScreen } = useResponsive();
 
   const chatPartner =
     useUserFetcher(chatPartnerId) || chatsCache.getChat(chatPartnerId)?.partner;
 
-  // const chatRef = useRef<HTMLDivElement | null>(null);
-
-  // useEffect(() => {
-  //   if (chatRef.current) {
-  //     const messagesContainer: HTMLDivElement = chatRef.current;
-  //     messagesContainer.scrollTop =
-  //       messagesContainer.scrollHeight - messagesContainer.clientHeight;
-  //   }
-  // }, [messages.length]);
+  const scrollMessagesListToBottom = useCallback(() => {
+    const messagesListContainer = messagesListContainerRef.current;
+    if (messagesListContainer) {
+      const { scrollHeight, clientHeight } = messagesListContainer;
+      messagesListContainer.scrollTop = scrollHeight - clientHeight;
+    }
+  }, []);
 
   return (
     <ChatStyled>
@@ -53,18 +51,19 @@ const Chat: FC = () => {
         {chatPartner && <ChatContextMenu chatPartner={chatPartner} />}
       </ChatHeader>
 
-      <ChatMessagesListContainer ref={intersectionObserverRootRef}>
+      <ChatMessagesListContainer ref={messagesListContainerRef}>
         <ChatMessagesList>
           <Gap />
 
           <ChatMessages
             partnerId={chatPartnerId}
-            intersectionObserverRootRef={intersectionObserverRootRef}
+            intersectionObserverRootRef={messagesListContainerRef}
           />
 
           <PendingMessages
             receiverId={chatPartnerId}
-            intersectionObserverRootRef={intersectionObserverRootRef}
+            intersectionObserverRootRef={messagesListContainerRef}
+            scrollMessagesListToBottom={scrollMessagesListToBottom}
           />
 
           <Gap />
