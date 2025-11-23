@@ -1,3 +1,4 @@
+import { useAccount } from '@/hooks';
 import { addMessageMarkAsReadRequest } from '@/store/useMessageRequestsStore';
 import { Message } from '@/types';
 import { RefObject, useCallback, useEffect } from 'react';
@@ -12,9 +13,18 @@ const useMarkMessageAsRead = (
   intersectionObserverRootRef: RefObject<HTMLDivElement | null>,
   message: Message,
 ) => {
+  const { id: selfId } = useAccount();
+
+  const isReceivedMessage = message.receiverId === selfId;
+
+  // Only non pending and received messages which are not seen (already marked as red)
+  // can be marked as read
+  const canMarkAsReadThisMessage =
+    message.id > 0 && isReceivedMessage && !message.isSeen;
+
   const handleIntersectionObserver: IntersectionObserverCallback = useCallback(
     (entries, observer) => {
-      if (message.isSeen) {
+      if (!canMarkAsReadThisMessage) {
         return observer.disconnect();
       }
 
@@ -29,7 +39,7 @@ const useMarkMessageAsRead = (
         });
       }
     },
-    [message],
+    [canMarkAsReadThisMessage, message],
   );
 
   useEffect(() => {
@@ -37,8 +47,7 @@ const useMarkMessageAsRead = (
     const target = intersectionObserverTargetRef.current;
     const root = intersectionObserverRootRef.current;
 
-    // Do intersection observe only if the message is not seen (marked as red) already
-    if (!message.isSeen && target && root) {
+    if (canMarkAsReadThisMessage && target && root) {
       observer = new IntersectionObserver(handleIntersectionObserver, {
         root,
         // a threshold of '0.0' is the best option for handling edge cases in here.
@@ -57,8 +66,7 @@ const useMarkMessageAsRead = (
   }, [
     intersectionObserverTargetRef.current,
     intersectionObserverRootRef.current,
-    // Use message as dependency instead of message.isSeen to rerun the effect if message change.
-    message,
+    canMarkAsReadThisMessage,
     handleIntersectionObserver,
   ]);
 };
