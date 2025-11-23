@@ -7,10 +7,10 @@
    viewBox="0 0 24 24"
    version="1.1"
    id="svg1"
-   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
-   sodipodi:docname="previous.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="doubleTick.svg"
    fill="#aaa"
-   stroke-width="0"
+   stroke-width="0.2"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -25,17 +25,42 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
      inkscape:document-units="mm"
-     inkscape:zoom="19.43"
-     inkscape:cx="12.454967"
-     inkscape:cy="12.197633"
+     inkscape:zoom="18.11"
+     inkscape:cx="8.3379348"
+     inkscape:cy="12.175594"
      inkscape:window-width="1280"
-     inkscape:window-height="737"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-height="721"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg1" />
+     inkscape:current-layer="svg1"
+     showguides="true"
+     showgrid="false" />
   <defs
      id="defs1">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 12 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="24 : 12 : 1"
+       inkscape:persp3d-origin="12 : 8 : 1"
+       id="perspective2" />
+    <inkscape:path-effect
+       effect="skeletal"
+       id="path-effect1"
+       is_visible="true"
+       lpeversion="1"
+       pattern="m 10.420877,10.391859 c -0.06605,-0.5359652 0.43819,-0.9423182 0.938235,-0.9512814 0.740693,-0.013277 1.275652,0.6811674 1.250661,1.3859974 -0.03348,0.944275 -0.924752,1.611601 -1.83376,1.55004 C 9.6283653,12.298891 8.8271698,11.20804 8.9265944,10.095093 9.0472846,8.7441039 10.339119,7.8082727 11.655878,7.9462953 c 1.55434,0.1629258 2.625255,1.6565492 2.448177,3.1770457 -0.204704,1.757709 -1.900625,2.963994 -3.624807,2.747556 C 8.5181519,13.624719 7.1763015,11.726161 7.4323121,9.7983278 7.7197511,7.6338302 9.8211863,6.1562757 11.952643,6.452013 c 2.367913,0.3285451 3.981274,2.633032 3.645694,4.968093 -0.0239,0.166281 -0.05704,0.331228 -0.09916,0.493848"
+       copytype="single_stretched"
+       prop_scale="1"
+       scale_y_rel="false"
+       spacing="0"
+       normal_offset="0"
+       tang_offset="0"
+       prop_units="false"
+       vertical_pattern="false"
+       hide_knot="false"
+       fuse_tolerance="0" />
     <inkscape:path-effect
        effect="skeletal"
        id="path-effect6"
@@ -115,14 +140,11 @@
        id="path-effect30" />
   </defs>
   <path
-     style="opacity:0.49;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
-     d="M 22.483789,1.595471 1.3597529,11.98456"
+     d="M 1.4417448,16 V 9.4743491 c 0,-1.8806782 2,-1.9842492 2,0 V 14 H 16.944781 c 1.518928,0 1.531667,2 0,2 z"
      id="path2"
-     sodipodi:nodetypes="cc" />
+     sodipodi:nodetypes="csscssc" />
   <path
-     style="opacity:0.49;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
-     d="m 15.131241,11.940298 v 6.12455"
-     id="path6"
-     sodipodi:nodetypes="cc"
-     inkscape:original-d="m 15.131241,11.940298 v 6.12455" />
+     d="m 5.3136045,20.206149 v -5.740448 h 2 v 3.740448 H 21.589695 c 1.443111,0 1.448436,2 0,2 z"
+     id="path1346"
+     sodipodi:nodetypes="ccccssc" />
 </svg>

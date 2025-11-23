@@ -5,15 +5,21 @@ import {
   TickIconContainer,
   Time,
 } from './styles';
-import { TickIcon } from '@/components/icons';
+import { DoubleTickIcon, TickIcon } from '@/components/icons';
 
 interface MessageMetaProps {
   isOutgoing: boolean;
+  isSeen: boolean;
   status: string | null;
   time: string;
 }
 
-const MessageMeta: FC<MessageMetaProps> = ({ isOutgoing, status, time }) => {
+const MessageMeta: FC<MessageMetaProps> = ({
+  isOutgoing,
+  isSeen,
+  status,
+  time,
+}) => {
   return (
     <MessageMetaStyled onContextMenu={(e) => e.stopPropagation()}>
       {status ? (
@@ -23,7 +29,7 @@ const MessageMeta: FC<MessageMetaProps> = ({ isOutgoing, status, time }) => {
           <Time>{time}</Time>
           {isOutgoing && (
             <TickIconContainer>
-              <TickIcon />
+              {isSeen ? <DoubleTickIcon /> : <TickIcon />}
             </TickIconContainer>
           )}
         </>

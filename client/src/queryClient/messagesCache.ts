@@ -79,7 +79,9 @@ const messagesCache = {
   markAsRead: (partnerId: number, messageId: number) => {
     setCache(partnerId, (messages: Message[]) =>
       messages.map((message) =>
-        message.id <= messageId ? { ...message, isSeen: true } : message,
+        message.id <= messageId && !message.isSeen
+          ? { ...message, isSeen: true }
+          : message,
       ),
     );
   },

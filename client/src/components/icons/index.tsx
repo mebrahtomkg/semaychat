@@ -34,4 +34,5 @@ export { default as NextIcon } from './NextIcon';
 export { default as PauseIcon } from './PauseIcon';
 export { default as PlayIcon } from './PlayIcon';
 export { default as SelectedIcon } from './SelectedIcon';
-export { default as TickIcon } from './TickIcon';
+export { default as TickIcon } from '@/assets/icons/tick.svg';
+export { default as DoubleTickIcon } from '@/assets/icons/doubleTick.svg';

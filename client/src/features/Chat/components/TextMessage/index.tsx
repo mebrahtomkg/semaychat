@@ -19,11 +19,21 @@ const TextMessage: FC<TextMessageProps> = ({ message, messageInfo }) => {
     <TextMessageStyled $isOutgoing={isOutgoing}>
       <Content>{content}</Content>
       <HiddenMeta>
-        <MessageMeta isOutgoing={isOutgoing} status={status} time={time} />
+        <MessageMeta
+          isOutgoing={isOutgoing}
+          isSeen={message.isSeen}
+          status={status}
+          time={time}
+        />
       </HiddenMeta>
 
       <VisibleMeta>
-        <MessageMeta isOutgoing={isOutgoing} status={status} time={time} />
+        <MessageMeta
+          isOutgoing={isOutgoing}
+          isSeen={message.isSeen}
+          status={status}
+          time={time}
+        />
       </VisibleMeta>
     </TextMessageStyled>
   );

@@ -17,6 +17,7 @@ export const Time = styled.span`
 export const TickIconContainer = styled.div`
   display: inline-block;
   width: 1.15rem;
+  transform: rotate(-45deg);
 `;
 
 export const ProgressText = styled.span`
