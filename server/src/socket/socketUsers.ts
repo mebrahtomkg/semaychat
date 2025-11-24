@@ -1,13 +1,20 @@
-const socketUsers = new Map<number, string>();
+interface SocketUser {
+  socketId: string;
+  expiresAt: number;
+}
 
-export const addSocketUser = (userId: number, socketId: string) => {
-  socketUsers.set(userId, socketId);
+const socketUsersMap = new Map<number, SocketUser>();
+
+const socketUsers = {
+  set: (userId: number, socketUser: SocketUser) => {
+    socketUsersMap.set(userId, socketUser);
+  },
+
+  del: (userId: number) => {
+    socketUsersMap.delete(userId);
+  },
+
+  get: (userId: number) => socketUsersMap.get(userId),
 };
 
-export const removeSocketUser = (userId: number) => {
-  socketUsers.delete(userId);
-};
-
-export const getSocketId = (userId: number): string | undefined => {
-  return socketUsers.get(userId);
-};
+export default socketUsers;

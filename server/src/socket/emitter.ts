@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import { getSocketId } from './socketUsers';
+import socketUsers from './socketUsers';
 
 let io: Server;
 
@@ -17,9 +17,9 @@ export const emitToUser = (
 ) => {
   if (!io) throw Error('Emitter not initialized!');
 
-  const socketId = getSocketId(userId);
+  const socketUser = socketUsers.get(userId);
 
-  if (socketId) {
-    io.to(socketId).emit(eventName, data);
+  if (socketUser) {
+    io.to(socketUser.socketId).emit(eventName, data);
   }
 };

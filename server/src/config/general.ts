@@ -50,3 +50,5 @@ if (ALLOWED_ORIGINS.length) {
 } else {
   console.warn('No allowed origin(s) is/are provided. Browsers maynot work!');
 }
+
+export const SOCKET_USER_TIME_TO_LIVE = 45000; // 45seconds
