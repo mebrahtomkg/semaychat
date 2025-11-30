@@ -13,6 +13,7 @@ import AppThemeProvider from '@/AppThemeProvider';
 import {
   AccountUpdateProcessor,
   AttachmentUploadProcessor,
+  HeartbeatProcessor,
   MessageRequestsProcessor,
 } from '@/processors';
 
@@ -33,6 +34,7 @@ const App = () => {
       <AppThemeProvider>
         {isLoggedIn ? (
           <AppStyled>
+            <HeartbeatProcessor />
             <AccountUpdateProcessor />
             <MessageRequestsProcessor />
             <AttachmentUploadProcessor />

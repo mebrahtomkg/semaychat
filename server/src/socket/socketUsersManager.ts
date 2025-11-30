@@ -1,8 +1,9 @@
 import { getUserStatusObservers, updateUsersLastSeenTime } from '@/services';
 import { SocketUser } from './types';
-import { AuthenticatedSocket } from '@/types';
+import { Acknowledgement, AuthenticatedSocket } from '@/types';
 import { SOCKET_USER_TIME_TO_LIVE } from '@/config/general';
 import { emitToUser } from './emitter';
+import handleSocketError from './handleSocketError';
 
 const socketUsersMap = new Map<number, SocketUser>();
 
@@ -28,7 +29,9 @@ class SocketUsersManager {
         expiresAt: Date.now() + SOCKET_USER_TIME_TO_LIVE,
       });
 
-      socket.on('heartbeat', () => this.handleHeartbeat(socket));
+      socket.on('heartbeat', (data, callback) =>
+        this.handleHeartbeat(socket, data, callback),
+      );
       socket.on('disconnect', () => this.handleDisconnect(socket));
 
       const observers = await getUserStatusObservers(userId);
@@ -40,7 +43,11 @@ class SocketUsersManager {
     }
   }
 
-  private async handleHeartbeat(socket: AuthenticatedSocket) {
+  private async handleHeartbeat(
+    socket: AuthenticatedSocket,
+    _data: object,
+    acknowledgement: Acknowledgement,
+  ) {
     try {
       const { userId } = socket;
 
@@ -52,8 +59,13 @@ class SocketUsersManager {
         socketId: socket.id,
         expiresAt: Date.now() + SOCKET_USER_TIME_TO_LIVE,
       });
+
+      acknowledgement({
+        status: 'ok',
+        message: 'Heartbeat processed successfully.',
+      });
     } catch (err) {
-      console.error(err);
+      handleSocketError(err as Error, acknowledgement);
     }
   }
 
