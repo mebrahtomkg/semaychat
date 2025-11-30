@@ -37,7 +37,9 @@ const readUser = async (req: Request, res: Response, next: NextFunction) => {
       requesterIsContact: user.contacts ? user.contacts.length > 0 : false,
     });
 
-    cleanUser.isOnline = socketUsersManager.isOnline(cleanUser.id as number);
+    if (cleanUser.lastSeenAt) {
+      cleanUser.isOnline = socketUsersManager.isOnline(cleanUser.id as number);
+    }
 
     res.status(200).json({
       success: true,

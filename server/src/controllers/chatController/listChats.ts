@@ -84,7 +84,9 @@ const listChats = async (req: Request, res: Response, next: NextFunction) => {
         requesterIsContact: !!user2.contacts?.length,
       });
 
-      partner.isOnline = socketUsersManager.isOnline(partner.id as number);
+      if (partner.lastSeenAt) {
+        partner.isOnline = socketUsersManager.isOnline(partner.id as number);
+      }
 
       const lastMessage = filterMessageData(lastMessageForUser2);
 
@@ -107,7 +109,9 @@ const listChats = async (req: Request, res: Response, next: NextFunction) => {
         requesterIsContact: !!user1.contacts?.length,
       });
 
-      partner.isOnline = socketUsersManager.isOnline(partner.id as number);
+      if (partner.lastSeenAt) {
+        partner.isOnline = socketUsersManager.isOnline(partner.id as number);
+      }
 
       const lastMessage = filterMessageData(lastMessageForUser1);
 
