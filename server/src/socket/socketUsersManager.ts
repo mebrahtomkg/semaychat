@@ -12,6 +12,10 @@ class SocketUsersManager {
     setInterval(this.processOfflineUsers, 15000);
   }
 
+  public isOnline(userId: number) {
+    return socketUsersMap.has(userId);
+  }
+
   public get(userId: number) {
     return socketUsersMap.get(userId);
   }

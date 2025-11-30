@@ -18,7 +18,7 @@ interface ChatPartnerProps {
 }
 
 const ChatPartner: FC<ChatPartnerProps> = ({ user }) => {
-  const { fullName, nameInitials, photoUrl } = useUserInfo(user);
+  const { fullName, nameInitials, photoUrl, status } = useUserInfo(user);
   const { imageSrc, handleImageLoad } = useImageLoader(photoUrl);
   const { isLargeScreen } = useResponsive();
 
@@ -50,7 +50,7 @@ const ChatPartner: FC<ChatPartnerProps> = ({ user }) => {
 
         <NameContainer>
           <Name>{fullName}</Name>
-          <Status>{'Last seen recently'}</Status>
+          <Status>{status}</Status>
         </NameContainer>
       </UserContainer>
 

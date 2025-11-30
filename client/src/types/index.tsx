@@ -38,9 +38,10 @@ export interface User {
   username: string;
   bio: string;
   acceptsMessage: boolean; // The user could disallowed message via privacy
+  isOnline: boolean;
   email?: string; // Could be privacy protected
   profilePhoto?: ProfilePhoto; // Could be privacy protected
-  lastSeentAt?: number; // Could be privacy protected
+  lastSeenAt?: number; // Could be privacy protected
 }
 
 export interface Attachment {

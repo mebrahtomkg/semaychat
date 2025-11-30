@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { Chat, Message, User } from '@/models';
 import { applyUserPrivacy, filterMessageData } from '@/utils';
+import socketUsersManager from '@/socket/socketUsersManager';
 
 const listChats = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -83,6 +84,8 @@ const listChats = async (req: Request, res: Response, next: NextFunction) => {
         requesterIsContact: !!user2.contacts?.length,
       });
 
+      partner.isOnline = socketUsersManager.isOnline(partner.id as number);
+
       const lastMessage = filterMessageData(lastMessageForUser2);
 
       return { id, partner, lastMessage };
@@ -103,6 +106,8 @@ const listChats = async (req: Request, res: Response, next: NextFunction) => {
         requesterIsBlocked: !!user1.blockedUsers?.length,
         requesterIsContact: !!user1.contacts?.length,
       });
+
+      partner.isOnline = socketUsersManager.isOnline(partner.id as number);
 
       const lastMessage = filterMessageData(lastMessageForUser1);
 

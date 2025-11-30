@@ -38,6 +38,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare contacts?: Contact[];
   declare chatsWithUser1?: Chat[];
   declare chatsWithUser2?: Chat[];
+  declare isOnline?: boolean;
 }
 
 User.init(

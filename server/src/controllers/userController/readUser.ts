@@ -1,6 +1,7 @@
 import { User } from '../../models';
 import { Request, Response, NextFunction } from 'express';
 import { applyUserPrivacy, isPositiveInteger } from '../../utils';
+import socketUsersManager from '@/socket/socketUsersManager';
 
 const readUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -35,6 +36,8 @@ const readUser = async (req: Request, res: Response, next: NextFunction) => {
         : false,
       requesterIsContact: user.contacts ? user.contacts.length > 0 : false,
     });
+
+    cleanUser.isOnline = socketUsersManager.isOnline(cleanUser.id as number);
 
     res.status(200).json({
       success: true,
