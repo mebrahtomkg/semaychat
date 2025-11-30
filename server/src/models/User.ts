@@ -12,10 +12,11 @@ import {
   PROFILE_PHOTOS_VISIBILITY,
   MESSAGE_SENDER,
 } from '@/constants';
-import { VisibilityOption } from '@/types';
-import BlockedUser from './BlockedUser';
-import Contact from './Contact';
-import ProfilePhoto from './ProfilePhoto';
+import { type VisibilityOption } from '@/types';
+import type BlockedUser from './BlockedUser';
+import type Contact from './Contact';
+import type ProfilePhoto from './ProfilePhoto';
+import type Chat from './Chat';
 
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare id: CreationOptional<number>;
@@ -35,6 +36,8 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare profilePhoto?: ProfilePhoto;
   declare blockedUsers?: BlockedUser[];
   declare contacts?: Contact[];
+  declare chatsWithUser1?: Chat[];
+  declare chatsWithUser2?: Chat[];
 }
 
 User.init(

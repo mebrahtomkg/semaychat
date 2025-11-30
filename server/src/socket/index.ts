@@ -5,8 +5,8 @@ import registerMessageHandlers from './handlers/messageHandlers';
 import { AuthenticatedSocket } from '@/types';
 import { initEmitter } from './emitter';
 import { isPositiveInteger } from '@/utils';
-import { ALLOWED_ORIGINS, SOCKET_USER_TIME_TO_LIVE } from '@/config/general';
-import socketUsers from './socketUsers';
+import { ALLOWED_ORIGINS } from '@/config/general';
+import socketUsersManager from './socketUsersManager';
 
 let isInitialized = false;
 
@@ -30,21 +30,7 @@ const initSocket = (httpServer: HttpServer) => {
       return socket.disconnect(true);
     }
 
-    socketUsers.set(userId, {
-      socketId: socket.id,
-      expiresAt: Date.now() + SOCKET_USER_TIME_TO_LIVE,
-    });
-
-    socket.on('heartbeat', () => {
-      socketUsers.set(userId, {
-        socketId: socket.id,
-        expiresAt: Date.now() + SOCKET_USER_TIME_TO_LIVE,
-      });
-    });
-
-    socket.on('disconnect', () => {
-      socketUsers.del(userId);
-    });
+    socketUsersManager.handleConnection(socket);
 
     registerMessageHandlers(socket);
   });

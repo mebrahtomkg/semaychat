@@ -19,10 +19,10 @@ Message.belongsTo(Attachment, {
   as: 'attachment',
 });
 
-User.hasMany(Chat, { foreignKey: 'user1Id' });
+User.hasMany(Chat, { foreignKey: 'user1Id', as: 'chatsWithUser2' });
 Chat.belongsTo(User, { foreignKey: 'user1Id', as: 'user1' });
 
-User.hasMany(Chat, { foreignKey: 'user2Id' });
+User.hasMany(Chat, { foreignKey: 'user2Id', as: 'chatsWithUser1' });
 Chat.belongsTo(User, { foreignKey: 'user2Id', as: 'user2' });
 
 Chat.belongsTo(Message, {

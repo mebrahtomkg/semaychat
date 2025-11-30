@@ -12,3 +12,4 @@ export { default as fileExists } from './fileExists';
 export { default as randomFileName } from './randomFileName';
 export { default as sortChatUsersId } from './sortChatUsersId';
 export { default as filterAttachmentData } from './filterAttachmentData';
+export { default as chunkArray } from './chunkArray';
