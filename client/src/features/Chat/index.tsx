@@ -17,7 +17,7 @@ import {
   ChatStyled,
   Gap,
 } from './styles';
-import { chatsCache } from '@/queryClient';
+import { useChat } from './hooks';
 
 const Chat: FC = () => {
   const params = useParams();
@@ -30,8 +30,11 @@ const Chat: FC = () => {
 
   const { isLargeScreen } = useResponsive();
 
-  const chatPartner =
-    useUserFetcher(chatPartnerId) || chatsCache.getChat(chatPartnerId)?.partner;
+  const chat = useChat(chatPartnerId);
+
+  const user = useUserFetcher(chatPartnerId);
+
+  const chatPartner = chat?.partner || user;
 
   const scrollMessagesListToBottom = useCallback(() => {
     const messagesListContainer = messagesListContainerRef.current;
