@@ -39,6 +39,7 @@ export const ChatMessagesListContainer = styled.div`
 export const ChatMessagesList = styled.div`
   flex-grow: 1;
   max-width: 40rem;
+  overflow: hidden;
   margin-top: auto;
   padding: 0 1rem;
 `;
@@ -52,6 +53,7 @@ export const Gap = styled.div`
 `;
 
 export const ChatFooter = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   padding-top: 0.2rem;

@@ -4,6 +4,7 @@ export const HomeStyled = styled.div`
   position: relative;
   height: 100vh;
   width: var(--big-modal-width);
+  min-width: var(--big-modal-width);
   overflow: hidden;
   background-color: var(--bg-primary);
 `;

@@ -17,6 +17,7 @@ import {
   addTextMessageSendRequest,
 } from '@/store/useMessageRequestsStore';
 import { User } from '@/types';
+import ParentMessage from './ParentMessage';
 
 interface MessageInputProps {
   chatPartner: User;
@@ -55,10 +56,18 @@ const MessageInput: FC<MessageInputProps> = ({ chatPartner }) => {
         newContent: trimmedValue,
       });
     } else {
-      addTextMessageSendRequest({
-        receiver: chatPartner,
-        content: trimmedValue,
-      });
+      if (savedInputState.mode === 'reply') {
+        addTextMessageSendRequest({
+          receiver: chatPartner,
+          content: trimmedValue,
+          parentMessageId: savedInputState.message.id,
+        });
+      } else {
+        addTextMessageSendRequest({
+          receiver: chatPartner,
+          content: trimmedValue,
+        });
+      }
     }
   }, [value, messageInputState, chatPartner]);
 
@@ -93,37 +102,46 @@ const MessageInput: FC<MessageInputProps> = ({ chatPartner }) => {
   );
 
   return (
-    <MessageInputStyled onClick={handleMessageInputClick}>
-      <GrowingTextArea
-        rows={1}
-        placeholder="Message"
-        onKeyDown={handleKeyDown}
-        value={value}
-        onInput={handleInput}
-        ref={textAreaRef}
-      />
-
-      <ActionButtonsContainer>
-        <AttachFileButton onClick={triggerFileSelection} />
-        <SendButton isDisabled={!value?.trim()} onClick={handleSend} />
-      </ActionButtonsContainer>
-
-      <input
-        type="file"
-        multiple
-        style={{ display: 'none' }}
-        ref={fileInputRef}
-        onChange={handleFileChange}
-      />
-
-      {isFileSelectorVisible && (
-        <FileSelector
-          files={selectedFiles}
+    <>
+      {messageInputState.mode === 'reply' && (
+        <ParentMessage
+          message={messageInputState.message}
           chatPartner={chatPartner}
-          onClose={closeFileSelector}
         />
       )}
-    </MessageInputStyled>
+
+      <MessageInputStyled onClick={handleMessageInputClick}>
+        <GrowingTextArea
+          rows={1}
+          placeholder="Message"
+          onKeyDown={handleKeyDown}
+          value={value}
+          onInput={handleInput}
+          ref={textAreaRef}
+        />
+
+        <ActionButtonsContainer>
+          <AttachFileButton onClick={triggerFileSelection} />
+          <SendButton isDisabled={!value?.trim()} onClick={handleSend} />
+        </ActionButtonsContainer>
+
+        <input
+          type="file"
+          multiple
+          style={{ display: 'none' }}
+          ref={fileInputRef}
+          onChange={handleFileChange}
+        />
+
+        {isFileSelectorVisible && (
+          <FileSelector
+            files={selectedFiles}
+            chatPartner={chatPartner}
+            onClose={closeFileSelector}
+          />
+        )}
+      </MessageInputStyled>
+    </>
   );
 };
 

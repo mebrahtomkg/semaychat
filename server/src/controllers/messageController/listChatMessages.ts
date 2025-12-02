@@ -25,7 +25,10 @@ const listChatMessages = async (
 
     const userId = req.userId as number;
 
-    const messages = await Message.scope(['withAttachment']).findAll({
+    const messages = await Message.scope([
+      'withAttachment',
+      'withParentMessage',
+    ]).findAll({
       where: {
         [Op.or]: [
           {

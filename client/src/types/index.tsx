@@ -63,6 +63,7 @@ export interface Message {
   createdAt: number;
   editedAt: number;
   attachment?: Attachment;
+  parentMessage?: Message;
 }
 
 export interface Chat {
@@ -88,6 +89,7 @@ export interface TextMessageSendRequest extends BaseMessageRequest {
   payload: {
     receiver: User;
     content: string;
+    parentMessageId?: number;
   };
 }
 

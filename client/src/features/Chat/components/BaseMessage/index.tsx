@@ -22,6 +22,7 @@ import {
 import { Message } from '@/types';
 import { useMessageActions, useMessageInfo } from '../../hooks';
 import useMarkMessageAsRead from './useMarkMessageAsRead';
+import ParentMessage from '../ParentMessage';
 
 interface BaseMessageProps {
   message: Message;
@@ -125,6 +126,10 @@ const BaseMessage: FC<BaseMessageProps> = ({
         $isOutgoing={isOutgoing}
         onContextMenu={onContextMenuFn}
       >
+        {message.parentMessage && (
+          <ParentMessage message={message.parentMessage} />
+        )}
+
         {messageComponent}
 
         {isContextMenuVisible && (

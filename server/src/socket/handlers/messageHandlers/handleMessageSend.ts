@@ -8,6 +8,7 @@ import handleSocketError from '@/socket/handleSocketError';
 interface MessageSendPayload {
   receiverId: number;
   content: string;
+  parentMessageId?: number;
 }
 
 const handleMessageSend = async (
@@ -23,7 +24,7 @@ const handleMessageSend = async (
       });
     }
 
-    const { receiverId, content } = payload;
+    const { receiverId, content, parentMessageId } = payload;
 
     const userId = socket.userId as number;
 
@@ -41,11 +42,22 @@ const handleMessageSend = async (
       });
     }
 
+    if (
+      parentMessageId !== undefined &&
+      !isPositiveInteger(payload.parentMessageId)
+    ) {
+      return acknowledgement({
+        status: 'error',
+        message: 'Invalid parent message id.',
+      });
+    }
+
     const { message, sender } = await sendMessage({
       messageType: 'text',
       userId,
       receiverId,
       content,
+      parentMessageId,
     });
 
     acknowledgement({

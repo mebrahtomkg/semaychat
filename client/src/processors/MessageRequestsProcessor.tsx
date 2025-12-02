@@ -26,6 +26,7 @@ const MessageRequestsProcessor = () => {
           return emitWithAck<Message>('send_text_message', {
             receiverId: payload.receiver.id,
             content: payload.content,
+            parentMessageId: payload.parentMessageId,
           });
 
         case 'MESSAGE_UPDATE':

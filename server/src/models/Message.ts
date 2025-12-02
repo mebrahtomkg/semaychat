@@ -6,7 +6,7 @@ import {
   Model,
 } from 'sequelize';
 import sequelize from '@/config/db';
-import Attachment from './Attachment';
+import type Attachment from './Attachment';
 import type Chat from './Chat';
 
 class Message extends Model<
@@ -19,6 +19,7 @@ class Message extends Model<
   declare content: string | null;
   declare attachmentId: number | null;
   declare chatId: number;
+  declare parentMessageId: number | null;
   declare isSeen: CreationOptional<boolean>;
   declare isDeletedBySender: CreationOptional<boolean>;
   declare isDeletedByReceiver: CreationOptional<boolean>;
@@ -27,6 +28,7 @@ class Message extends Model<
 
   declare chat?: Chat;
   declare attachment?: Attachment;
+  declare parentMessage?: Message;
 }
 
 Message.init(
@@ -51,6 +53,11 @@ Message.init(
     chatId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+
+    parentMessageId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
 
     content: {

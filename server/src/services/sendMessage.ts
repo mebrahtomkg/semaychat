@@ -22,6 +22,7 @@ interface BaseMessageSendPayload {
   messageType: 'text' | 'attachment';
   userId: number;
   receiverId: number;
+  parentMessageId?: number;
 }
 
 interface TextMessageSendPayload extends BaseMessageSendPayload {
@@ -43,7 +44,7 @@ const sendMessage = async (payload: MessageSendPayload) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const { messageType, userId, receiverId } = payload;
+    const { messageType, userId, receiverId, parentMessageId } = payload;
 
     const senderId = userId;
 
@@ -60,6 +61,31 @@ const sendMessage = async (payload: MessageSendPayload) => {
 
     if (userId === receiverId) {
       throw new MessageSendError('You cannot send message to yourself.', 400);
+    }
+
+    const [user1Id, user2Id] = sortChatUsersId(senderId, receiverId);
+    let chat = await Chat.findOne({
+      where: { user1Id, user2Id },
+      transaction,
+      lock: transaction.LOCK.UPDATE,
+    });
+
+    if (parentMessageId) {
+      const parentMessage = await Message.findByPk(parentMessageId, {
+        transaction,
+      });
+
+      if (!parentMessage) {
+        throw new MessageSendError('Message being replied to not found.', 400);
+      }
+
+      // Parent message must be in this chat
+      if (!chat || parentMessage.chatId !== chat.id) {
+        throw new MessageSendError(
+          'Cannot reply to a message outside of this chat.',
+          400,
+        );
+      }
     }
 
     const [sender, receiver] = await Promise.all([
@@ -115,13 +141,15 @@ const sendMessage = async (payload: MessageSendPayload) => {
       });
     }
 
-    const [user1Id, user2Id] = sortChatUsersId(senderId, receiverId);
-
-    const [chat] = await Chat.findOrCreate({
-      where: { user1Id, user2Id },
-      transaction,
-      lock: transaction.LOCK.UPDATE,
-    });
+    if (!chat) {
+      chat = await Chat.create(
+        { user1Id, user2Id },
+        {
+          transaction,
+          lock: transaction.LOCK.UPDATE,
+        },
+      );
+    }
 
     const message = await Message.create(
       {
@@ -130,6 +158,7 @@ const sendMessage = async (payload: MessageSendPayload) => {
         chatId: chat.id,
         content,
         attachmentId: attachment?.id || null,
+        parentMessageId: parentMessageId || null,
         // If the sender is blocked by the receiver, soft delete the message for
         // the receiver. so that the message will not be visible by the receiver.
         // only the sender can see the message.
@@ -165,12 +194,18 @@ const sendMessage = async (payload: MessageSendPayload) => {
 
     await chat.update(chatUpdateValues, { transaction });
 
-    await transaction.commit();
+    const sentMessage = await Message.scope([
+      'withAttachment',
+      'withParentMessage',
+    ]).findByPk(message.id, { transaction });
 
-    const filteredMessage = {
-      ...filterMessageData(message),
-      attachment: attachment ? filterAttachmentData(attachment) : undefined,
-    };
+    if (!sentMessage) {
+      throw new Error('Unable to fetch saved message from database.');
+    }
+
+    const filteredMessage = filterMessageData(sentMessage);
+
+    await transaction.commit();
 
     return {
       message: filteredMessage,
