@@ -22,7 +22,7 @@ module.exports = {
     static: false,
   },
   watchOptions: {
-    aggregateTimeout: 30,
+    aggregateTimeout: 40,
     ignored: [
       path.resolve(__dirname, '.swc'),
       path.resolve(__dirname, 'dist'),
