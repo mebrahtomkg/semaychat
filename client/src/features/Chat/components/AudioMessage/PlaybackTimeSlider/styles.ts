@@ -11,7 +11,7 @@ export const SliderTrack = styled.div`
   align-self: center;
   flex-grow: 5;
   display: flex;
-  background-color: #4b4876;
+  background-color: #04718a;
   user-select: none;
   border-radius: 100px;
 `;
@@ -22,7 +22,7 @@ export const SliderProgress = styled.div`
   height: 0.3rem;
   align-self: center;
   border-radius: inherit;
-  background-color: #2b45d0;
+  background-color: var(--bg-action);
 `;
 
 export const SliderThumb = styled.div`
@@ -34,5 +34,5 @@ export const SliderThumb = styled.div`
   border-radius: 50%;
   user-select: none;
   cursor: pointer;
-  background-color: #bfc8cb;
+  background-color: var(--bg-action);
 `;

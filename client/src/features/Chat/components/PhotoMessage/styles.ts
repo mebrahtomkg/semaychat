@@ -4,7 +4,7 @@ export const PhotoMessageStyled = styled.div`
   position: relative;
   max-width: 13rem;
   border: 2px solid;
-  border-radius: 13px;
+  border-radius: inherit;
   border-color: inherit;
 `;
 

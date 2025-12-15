@@ -1,15 +1,8 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const TextMessageStyled = styled.div<{ $isOutgoing: boolean }>`
   position: relative;
-  ${(props) =>
-    props.$isOutgoing
-      ? css`
-          padding: 0.3rem 0.5rem 0.4rem 0.9rem;
-        `
-      : css`
-          padding: 0.3rem 0.95rem 0.3rem 0.75rem;
-        `}
+  padding: 0.4rem 0.7rem;
 `;
 
 export const Content = styled.span`

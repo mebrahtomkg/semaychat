@@ -22,7 +22,7 @@ const MessageMeta: FC<MessageMetaProps> = ({ message }) => {
         <ProgressText>{status}</ProgressText>
       ) : (
         <>
-          <Time>{time}</Time>
+          <Time $isOutgoing={isOutgoing}>{time}</Time>
           {isOutgoing && (
             <TickIconContainer>
               {message.isSeen ? <DoubleTickIcon /> : <TickIcon />}

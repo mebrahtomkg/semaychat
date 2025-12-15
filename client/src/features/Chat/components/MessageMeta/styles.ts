@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const MessageMetaStyled = styled.div`
   background: transparent;
@@ -6,12 +6,19 @@ export const MessageMetaStyled = styled.div`
   align-items: center;
 `;
 
-export const Time = styled.span`
+export const Time = styled.span<{ $isOutgoing: boolean }>`
   margin-right: 0.1rem;
   line-height: 1;
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--fg-muted);
+  ${(props) =>
+    props.$isOutgoing
+      ? css`
+          color: var(--fg-msg-sent-time);
+        `
+      : css`
+          color: var(--fg-msg-received-time);
+        `}
 `;
 
 export const TickIconContainer = styled.div`

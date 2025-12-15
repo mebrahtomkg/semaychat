@@ -31,6 +31,6 @@ export const PlaybackTime = styled.span`
   display: block;
   font-size: 0.9rem;
   white-space: nowrap;
-  color: #d2d8dd;
+  color: inherit;
   background-color: transparent;
 `;

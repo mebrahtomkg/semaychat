@@ -37,9 +37,21 @@ export const MessageContainer = styled.div<{
     css`
       flex-grow: 1;
     `}
-  border-radius: 15px;
+  border-radius: 20px;
   cursor: pointer;
-  color: #fff;
+
+  ${(props) =>
+    props.$isOutgoing
+      ? css`
+          border-bottom-right-radius: 0px;
+          border-color: var(--bg-msg-sent);
+          color: var(--fg-msg-sent);
+        `
+      : css`
+          border-bottom-left-radius: 0px;
+          border-color: var(--bg-msg-received);
+          color: var(--fg-msg-received);
+        `}
 
   background-color: ${(props) =>
     props.$isTransparentBackground

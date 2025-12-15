@@ -9,8 +9,8 @@ const PlaybackControlButtonStyled = styled.button`
   padding: 0.65rem;
   margin-right: 1rem;
   border-radius: 50%;
-  background: #2f43b1;
-  color: #d1d1d1;
+  background-color: var(--bg-action);
+  color: #fff;
 `;
 
 interface PlaybackControlButtonProps {

@@ -18,7 +18,7 @@ export const FileIconContainer = styled.div`
   width: 2.5rem;
   min-width: 2.5rem;
   margin-right: 1rem;
-  color: #d1d1d1;
+  color: #e1ac0f;
 `;
 
 export const FileInfoContainer = styled.div`
@@ -28,7 +28,7 @@ export const FileInfoContainer = styled.div`
 
 export const FileExtension = styled.span`
   font-size: 0.9rem;
-  color: #e6e0e0;
+  color: inherit;
   text-transform: uppercase;
 `;
 
@@ -36,12 +36,12 @@ export const FileName = styled.span`
   display: block;
   white-space: nowrap;
   font-size: 1rem;
-  color: white;
+  color: inherit;
 `;
 
 export const FileSize = styled.span`
   font-size: 0.9rem;
-  color: #c5ccd1;
+  color: inherit;
   margin-right: 0.6rem;
 `;
 

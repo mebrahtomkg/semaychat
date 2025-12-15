@@ -7,14 +7,18 @@ const darkThemeVars = css`
   --fg-icon: #f4f4f4;
   --fg-border: #464651;
   --fg-error: #db1d7c;
+  --fg-msg-sent: #fff;
+  --fg-msg-received: #fff;
+  --fg-msg-sent-time: #cbc9c9;
+  --fg-msg-received-time: #bababa;
   --bg-page: #0b0d14;
   --bg-primary: #232328;
   --bg-secondary: #3c3c41;
   --bg-action: #019abe;
   --bg-action-hover: #1e8097;
   --bg-hover: #2b2b31;
-  --bg-msg-sent: #43136d;
-  --bg-msg-received: #314352;
+  --bg-msg-sent: #005599;
+  --bg-msg-received: #2b2b31;
 `;
 
 export default darkThemeVars;
