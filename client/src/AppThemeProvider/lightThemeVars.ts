@@ -11,6 +11,7 @@ const lightThemeVars = css`
   --fg-msg-received: #000000;
   --fg-msg-sent-time: #ebebeb;
   --fg-msg-received-time: #706a6a;
+  --fg-msg-parent-sender: #00007f;
   --bg-page: #ffffff;
   --bg-primary: #f6f6f8;
   --bg-secondary: #dfdfe5;
@@ -19,6 +20,7 @@ const lightThemeVars = css`
   --bg-hover: #e7e7e7;
   --bg-msg-sent: #b650cf;
   --bg-msg-received: #dfdfe5;
+  --bg-msg-parent: rgba(0 0 0 / 10%);
 `;
 
 export default lightThemeVars;

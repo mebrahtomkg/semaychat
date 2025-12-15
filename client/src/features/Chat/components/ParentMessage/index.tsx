@@ -1,14 +1,7 @@
-import { CloseButton } from '@/components/buttons';
 import { useAccountInfo, useChats } from '@/hooks';
-import { resetMessageInputState } from '@/store/useMessageInputStateStore';
 import { Message } from '@/types';
 import { FC } from 'react';
-import {
-  MessageContent,
-  MessageDetails,
-  MessageSender,
-  ParentMessageStyled,
-} from './styles';
+import { MessageContent, MessageSender, ParentMessageStyled } from './styles';
 import { useMessageInfo } from '../../hooks';
 import { calculateFullName } from '@/utils';
 

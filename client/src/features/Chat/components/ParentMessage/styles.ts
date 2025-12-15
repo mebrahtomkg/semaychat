@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
 export const ParentMessageStyled = styled.div`
-  margin: 0.6rem 0.6rem 0 0.6rem;
-  padding: 0.3rem;
+  margin: 0.5rem;
+  padding: 0.3rem 0.5rem;
   overflow: hidden;
   border-left: 4px solid;
   border-color: var(--bg-action);
-  border-radius: 5px;
-  background-color: #551291;
+  border-radius: 10px;
+  background-color: var(--bg-msg-parent);
 `;
 
 export const MessageSender = styled.h3`
@@ -17,7 +17,7 @@ export const MessageSender = styled.h3`
   text-overflow: ellipsis;
   font-size: 1rem;
   font-weight: 600;
-  color: #0fc5f0;
+  color: var(--fg-msg-parent-sender);
 `;
 
 export const MessageContent = styled.p`
@@ -26,5 +26,5 @@ export const MessageContent = styled.p`
   text-overflow: ellipsis;
   font-size: 1rem;
   font-weight: 500;
-  color: var(--fg-primary);
+  color: inherit;
 `;
