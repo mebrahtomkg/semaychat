@@ -2,13 +2,13 @@ import styled from 'styled-components';
 
 export const AudioMessageStyled = styled.div`
   position: relative;
-  padding: 0rem 0rem 1.5rem 1rem;
+  padding: 0rem 0rem 0.7rem 0.7rem;
   display: flex;
 `;
 
 export const ControlArea = styled.div`
   flex-grow: 1;
-  margin-top: 1rem;
+  margin-top: 0.7rem;
   display: flex;
   align-items: center;
 `;

@@ -1,11 +1,12 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const PhotoMessageStyled = styled.div`
   position: relative;
   max-width: 13rem;
-  border: 2px solid;
   border-radius: inherit;
-  border-color: inherit;
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: inherit;
 `;
 
 export const ImageStyled = styled.img`
@@ -36,12 +37,21 @@ export const LoadingError = styled.p`
   color: red;
 `;
 
-export const ImageMetaContainer = styled.div`
+export const ImageMetaContainer = styled.div<{ $isReceived: boolean }>`
   position: absolute;
-  right: 0.1rem;
-  bottom: 0.1rem;
-  padding: 0.2rem 0.6rem;
+  ${(props) =>
+    props.$isReceived
+      ? css`
+          right: 0.4rem;
+          bottom: 0.3rem;
+          padding: 0.4rem 0.6rem;
+        `
+      : css`
+          right: 0.1rem;
+          bottom: 0.1rem;
+          padding: 0.2rem 0.6rem;
+        `}
   display: flex;
-  background: rgb(0 0 0 / 52%);
+  background-color: rgb(0 0 0 / 40%);
   border-radius: 7px;
 `;

@@ -17,13 +17,12 @@ export const MenuItemStyled = styled.li`
 export const MenuItemIconContainer = styled.div`
   width: 1.25rem;
   margin-right: 0.95rem;
-  color: inherit;
-  background: inherit;
+  color: var(--fg-primary);
 `;
 
 export const MenuItemLabel = styled.label`
   display: block;
   font-size: 0.9rem;
   font-weight: 500;
-  color: inherit;
+  color: var(--fg-primary);
 `;

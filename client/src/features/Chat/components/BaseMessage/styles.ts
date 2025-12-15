@@ -44,12 +44,12 @@ export const MessageContainer = styled.div<{
     props.$isOutgoing
       ? css`
           border-bottom-right-radius: 0px;
-          border-color: var(--bg-msg-sent);
+          outline-color: var(--bg-msg-sent);
           color: var(--fg-msg-sent);
         `
       : css`
           border-bottom-left-radius: 0px;
-          border-color: var(--bg-msg-received);
+          outline-color: var(--bg-msg-received);
           color: var(--fg-msg-received);
         `}
 

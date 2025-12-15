@@ -6,24 +6,31 @@ export const MessageMetaStyled = styled.div`
   align-items: center;
 `;
 
-export const Time = styled.span<{ $isOutgoing: boolean }>`
+export const Time = styled.span<{
+  $isImageOrVideo: boolean;
+  $isOutgoing: boolean;
+}>`
   margin-right: 0.1rem;
   line-height: 1;
   font-size: 0.7rem;
   font-weight: 600;
   ${(props) =>
-    props.$isOutgoing
+    props.$isImageOrVideo
       ? css`
-          color: var(--fg-msg-sent-time);
+          color: white;
         `
-      : css`
-          color: var(--fg-msg-received-time);
-        `}
+      : props.$isOutgoing
+        ? css`
+            color: var(--fg-msg-sent-time);
+          `
+        : css`
+            color: var(--fg-msg-received-time);
+          `}
 `;
 
 export const TickIconContainer = styled.div`
   display: inline-block;
-  width: 1.15rem;
+  width: 1.05rem;
   transform: rotate(-45deg);
 `;
 

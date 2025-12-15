@@ -14,7 +14,9 @@ interface MessageMetaProps {
 }
 
 const MessageMeta: FC<MessageMetaProps> = ({ message }) => {
-  const { status, time, isOutgoing } = useMessageInfo(message);
+  const { status, time, isOutgoing, type } = useMessageInfo(message);
+
+  const isImageOrVideo = type === 'photo' || type === 'video';
 
   return (
     <MessageMetaStyled onContextMenu={(e) => e.stopPropagation()}>
@@ -22,7 +24,9 @@ const MessageMeta: FC<MessageMetaProps> = ({ message }) => {
         <ProgressText>{status}</ProgressText>
       ) : (
         <>
-          <Time $isOutgoing={isOutgoing}>{time}</Time>
+          <Time $isImageOrVideo={isImageOrVideo} $isOutgoing={isOutgoing}>
+            {time}
+          </Time>
           {isOutgoing && (
             <TickIconContainer>
               {message.isSeen ? <DoubleTickIcon /> : <TickIcon />}

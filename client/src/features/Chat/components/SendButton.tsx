@@ -17,6 +17,7 @@ const SendButtonStyled = styled.button<{ $isDisabled?: boolean }>`
         `
       : css`
           background-color: var(--bg-action);
+          color: white;
           &:hover {
             background-color: var(--bg-action-hover);
           }
