@@ -4,11 +4,6 @@ const styles = css`
   * {
     box-sizing: border-box;
     color: inherit;
-    transition:
-      background-color 0.7s ease-in-out,
-      color 0.7s ease-in-out,
-      outline-color 0.7s ease-in-out,
-      border-color 0.7s ease-in-out;
   }
 
   html {
@@ -152,6 +147,14 @@ const styles = css`
     top: 4vh;
     right: 2vw;
     background: rgb(25, 29, 41);
+  }
+
+  .theme-transition * {
+    transition:
+      background-color 700ms ease-in-out,
+      color 700ms ease-in-out,
+      outline-color 700ms ease-in-out,
+      border-color 700ms ease-in-out;
   }
 `;
 
