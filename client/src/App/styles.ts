@@ -21,11 +21,11 @@ export const PageContainer = styled.div`
   justify-content: center;
 
   &::-webkit-scrollbar {
-    background-color: var(--bg-primary);
+    background-color: transparent;
     width: 4px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: var(--bg-primary);
+    background-color: var(--bg-scrollbar-thumb);
     border-radius: 30px;
   }
 `;

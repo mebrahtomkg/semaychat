@@ -7,7 +7,8 @@ const styles = css`
     transition:
       background-color 0.7s ease-in-out,
       color 0.7s ease-in-out,
-      outline-color 0.7s ease-in-out;
+      outline-color 0.7s ease-in-out,
+      border-color 0.7s ease-in-out;
   }
 
   html {

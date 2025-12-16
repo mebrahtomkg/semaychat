@@ -5,7 +5,7 @@ const darkThemeVars = css`
   --fg-secondary: #efefef;
   --fg-muted: #9c9c9c;
   --fg-icon: #f4f4f4;
-  --fg-border: #464651;
+  --fg-border: rgba(200 200 200 / 30%);
   --fg-error: #db1d7c;
   --fg-msg-sent: #fff;
   --fg-msg-received: #fff;
@@ -21,6 +21,8 @@ const darkThemeVars = css`
   --bg-msg-sent: #005599;
   --bg-msg-received: #2b2b31;
   --bg-msg-parent: rgba(0 0 0 / 30%);
+  --bg-scrollbar: rgba(150 150 150 / 25%);
+  --bg-scrollbar-thumb: rgba(150 150 150 / 30%);
 `;
 
 export default darkThemeVars;

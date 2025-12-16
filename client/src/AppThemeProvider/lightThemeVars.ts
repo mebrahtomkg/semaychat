@@ -5,7 +5,7 @@ const lightThemeVars = css`
   --fg-secondary: #535353;
   --fg-muted: #5c5858;
   --fg-icon: #2f2f2f;
-  --fg-border: #bfbfbf;
+  --fg-border: rgba(100 100 100 / 30%);
   --fg-error: #db1d7c;
   --fg-msg-sent: #ffffff;
   --fg-msg-received: #000000;
@@ -21,6 +21,8 @@ const lightThemeVars = css`
   --bg-msg-sent: #b650cf;
   --bg-msg-received: #dfdfe5;
   --bg-msg-parent: rgba(0 0 0 / 10%);
+  --bg-scrollbar: rgba(80 80 80 / 25%);
+  --bg-scrollbar-thumb: rgba(80 80 80 / 30%);
 `;
 
 export default lightThemeVars;

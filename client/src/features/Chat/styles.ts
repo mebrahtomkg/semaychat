@@ -28,10 +28,10 @@ export const ChatMessagesListContainer = styled.div`
   justify-content: center;
   &::-webkit-scrollbar {
     width: 4px;
-    background-color: var(--bg-primary);
+    background-color: transparent;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: var(--bg-hover);
+    background-color: var(--bg-scrollbar-thumb);
   }
 `;
 
