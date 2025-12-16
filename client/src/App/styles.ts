@@ -3,10 +3,6 @@ import styled from 'styled-components';
 export const AppStyled = styled.div`
   position: relative;
   color: var(--fg-primary);
-  background-color: var(--bg-page);
-  transition:
-    background-color 0.5s ease-in-out,
-    color 0.5s ease-in-out;
   display: flex;
 
   --big-modal-width: 100vw;
@@ -25,11 +21,11 @@ export const PageContainer = styled.div`
   justify-content: center;
 
   &::-webkit-scrollbar {
-    background: inherit;
+    background-color: var(--bg-primary);
     width: 4px;
   }
   &::-webkit-scrollbar-thumb {
-    background: #3d455c;
+    background-color: var(--bg-primary);
     border-radius: 30px;
   }
 `;

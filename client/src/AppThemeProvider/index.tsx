@@ -4,8 +4,13 @@ import darkThemeVars from './darkThemeVars';
 import lightThemeVars from './lightThemeVars';
 import { useThemeStore } from '@/store';
 import { FC, ReactNode } from 'react';
+import { darkBackground, lightBackground } from './appBackgrounds';
 
-const AppThemeProviderStyled = styled.div<{ $theme: Theme }>`
+const AppBackground = styled.div<{ $theme: Theme }>`
+  ${(props) => (props.$theme === 'dark' ? darkBackground : lightBackground)}
+`;
+
+const AppThemeProviderStyled = styled(AppBackground)<{ $theme: Theme }>`
   ${(props) => (props.$theme === 'dark' ? darkThemeVars : lightThemeVars)}
 `;
 

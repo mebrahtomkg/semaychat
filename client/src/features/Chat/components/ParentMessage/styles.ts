@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const ParentMessageStyled = styled.div`
-  margin: 0.5rem;
-  padding: 0.3rem 0.5rem;
+  margin: 0.5rem 0.5rem 0 0.5rem;
+  padding: 0.2rem 0.5rem;
   overflow: hidden;
   border-left: 4px solid;
   border-color: var(--bg-action);
@@ -24,6 +24,7 @@ export const MessageContent = styled.p`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.3;
   font-size: 1rem;
   font-weight: 500;
   color: inherit;

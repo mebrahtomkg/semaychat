@@ -4,6 +4,10 @@ const styles = css`
   * {
     box-sizing: border-box;
     color: inherit;
+    transition:
+      background-color 0.7s ease-in-out,
+      color 0.7s ease-in-out,
+      outline-color 0.7s ease-in-out;
   }
 
   html {

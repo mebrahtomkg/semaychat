@@ -7,7 +7,6 @@ export const ChatStyled = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-page);
 `;
 
 export const ChatHeader = styled.div`
@@ -29,10 +28,10 @@ export const ChatMessagesListContainer = styled.div`
   justify-content: center;
   &::-webkit-scrollbar {
     width: 4px;
-    background-color: #131620;
+    background-color: var(--bg-primary);
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #242a3d;
+    background-color: var(--bg-hover);
   }
 `;
 
