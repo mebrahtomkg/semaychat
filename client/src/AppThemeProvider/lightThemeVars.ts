@@ -16,7 +16,7 @@ const lightThemeVars = css`
   --bg-primary: #f6f6f8;
   --bg-secondary: #dfdfe5;
   --bg-action: #019abe;
-  --bg-action-hover: #1e8097;
+  --bg-action-hover: #08b4dd;
   --bg-hover: #e7e7e7;
   --bg-msg-sent: #b650cf;
   --bg-msg-received: #dfdfe5;

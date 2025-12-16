@@ -8,6 +8,7 @@ export const ChatItemStyled = styled(Link)`
   align-items: center;
   border-radius: 10px;
   cursor: pointer;
+  color: var(--fg-primary);
 
   &:hover {
     background-color: var(--bg-hover);
