@@ -106,7 +106,7 @@ const BaseMessage: FC<BaseMessageProps> = ({
     }
   }, [messageInfo, message, onMoreButtonClick, type]);
 
-  const onContextMenuFn =
+  const handleContextMenu =
     type === 'audio' || type === 'file' ? undefined : onContextMenu;
 
   const intersectionObserverTargetRef = useRef<HTMLDivElement>(null);
@@ -117,14 +117,19 @@ const BaseMessage: FC<BaseMessageProps> = ({
     message,
   );
 
+  const handleClick =
+    type === 'audio' || type === 'file' || type === 'photo'
+      ? undefined
+      : onContextMenu;
+
   return (
     <MessageStyled $isOutgoing={isOutgoing} $isLastInGroup={isLastInGroup}>
       <MessageContainer
-        $shouldFlexGrow={type === 'audio' || type === 'file'}
-        $isTransparentBackground={type === 'photo' || type === 'video'}
         $isLastInGroup={isLastInGroup}
         $isOutgoing={isOutgoing}
-        onContextMenu={onContextMenuFn}
+        $messageType={type}
+        onClick={handleClick}
+        onContextMenu={handleContextMenu}
       >
         {message.parentMessage && (
           <ParentMessage message={message.parentMessage} />

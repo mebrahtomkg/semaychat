@@ -4,6 +4,7 @@ export const FileMessageStyled = styled.div`
   position: relative;
   padding: 0rem 0rem 1.5rem 0.7rem;
   display: flex;
+  border-radius: inherit;
 `;
 
 export const MainSection = styled.div`

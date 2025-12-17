@@ -17,4 +17,7 @@ export const ContextMenuStyled = styled.ul`
   padding: 0;
   border-radius: 7px;
   background-color: var(--bg-primary);
+  outline-style: solid;
+  outline-width: 1px;
+  outline-color: var(--fg-border);
 `;

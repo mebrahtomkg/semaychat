@@ -4,6 +4,7 @@ export const AudioMessageStyled = styled.div`
   position: relative;
   padding: 0rem 0rem 0.7rem 0.7rem;
   display: flex;
+  border-radius: inherit;
 `;
 
 export const ControlArea = styled.div`

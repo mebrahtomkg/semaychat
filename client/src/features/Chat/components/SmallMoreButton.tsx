@@ -3,12 +3,14 @@ import styled from 'styled-components';
 import { MoreIcon } from '@/components/icons';
 
 const SmallMoreButtonStyled = styled.button`
+  --small-more-btn-size: 2.4rem;
   align-self: flex-start;
-  width: 2.2rem;
-  min-width: 2.2rem;
-  height: 2.2rem;
+  width: var(--small-more-btn-size);
+  min-width: var(--small-more-btn-size);
+  height: var(--small-more-btn-size);
   padding: 0.55rem;
-  color: #ffffff;
+  color: var(--fg-primary);
+  border-radius: inherit;
 `;
 
 interface SmallMoreButtonProps {

@@ -1,3 +1,4 @@
+import { MessageType } from '@/types';
 import styled, { css } from 'styled-components';
 
 export const MessageStyled = styled.div<{
@@ -26,19 +27,24 @@ export const MessageStyled = styled.div<{
 `;
 
 export const MessageContainer = styled.div<{
-  $shouldFlexGrow: boolean;
   $isLastInGroup: boolean;
   $isOutgoing: boolean;
-  $isTransparentBackground: boolean;
+  $messageType: MessageType;
 }>`
   max-width: 65%;
-  ${(props) =>
-    props.$shouldFlexGrow &&
+  border-radius: 20px;
+  ${({ $messageType }) =>
+    ($messageType === 'audio' || $messageType === 'file') &&
     css`
       flex-grow: 1;
     `}
-  border-radius: 20px;
-  cursor: pointer;
+
+  ${({ $messageType }) =>
+    $messageType !== 'audio' &&
+    $messageType !== 'file' &&
+    css`
+      cursor: pointer;
+    `}
 
   ${(props) =>
     props.$isOutgoing
@@ -53,10 +59,18 @@ export const MessageContainer = styled.div<{
           color: var(--fg-msg-received);
         `}
 
-  background-color: ${(props) =>
-    props.$isTransparentBackground
-      ? 'transparent'
-      : `var(--bg-msg-${props.$isOutgoing ? 'sent' : 'received'})`};
+  ${({ $messageType, $isOutgoing }) =>
+    $messageType === 'photo' || $messageType === 'video'
+      ? css`
+          background-color: transparent;
+        `
+      : $isOutgoing
+        ? css`
+            background-color: var(--bg-msg-sent);
+          `
+        : css`
+            background-color: var(--bg-msg-received);
+          `}
 `;
 
 export const MessageIntersectionObserverTarget = styled.div`
