@@ -1,16 +1,32 @@
 import { useAccountInfo, useChats } from '@/hooks';
-import { Message } from '@/types';
+import { Message, MessageType } from '@/types';
 import { FC } from 'react';
-import { MessageContent, MessageSender, ParentMessageStyled } from './styles';
+import {
+  MessageContent,
+  MessageSender,
+  MessageTypeIndicator,
+  ParentMessageStyled,
+} from './styles';
 import { useMessageInfo } from '../../hooks';
 import { calculateFullName } from '@/utils';
+import PhotoThumbnail from './PhotoThumbnail';
+
+const formattedMessageTypes: Record<MessageType, string> = {
+  text: 'Text',
+  photo: 'Photo',
+  video: 'Video',
+  audio: 'Audio',
+  file: 'File',
+};
 
 interface ParentMessageProps {
   message: Message;
 }
 
 const ParentMessage: FC<ParentMessageProps> = ({ message }) => {
-  const { chatPartnerId } = useMessageInfo(message);
+  const { chatPartnerId, type } = useMessageInfo(message);
+
+  const { content } = message;
 
   const chatPartner = useChats().find(
     (chat) => chat.partner.id === chatPartnerId,
@@ -32,8 +48,18 @@ const ParentMessage: FC<ParentMessageProps> = ({ message }) => {
 
   return (
     <ParentMessageStyled>
-      <MessageSender>{senderFullName}</MessageSender>
-      <MessageContent>{message.content}</MessageContent>
+      {type === 'photo' && <PhotoThumbnail message={message} />}
+
+      <div>
+        <MessageSender>{senderFullName}</MessageSender>
+        {content ? (
+          <MessageContent>{content}</MessageContent>
+        ) : (
+          <MessageTypeIndicator>
+            {formattedMessageTypes[type]}
+          </MessageTypeIndicator>
+        )}
+      </div>
     </ParentMessageStyled>
   );
 };

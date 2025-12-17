@@ -138,5 +138,12 @@ Message.addScope('withParentMessage', {
     model: Message,
     as: 'parentMessage',
     required: false,
+    include: [
+      {
+        model: Attachment,
+        as: 'attachment',
+        required: false,
+      },
+    ],
   },
 });

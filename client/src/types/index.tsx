@@ -9,6 +9,8 @@ export type Theme = 'dark' | 'light';
 
 export type VisibilityOption = 'everybody' | 'contacts' | 'nobody';
 
+export type MessageType = 'text' | 'photo' | 'audio' | 'video' | 'file';
+
 export interface ProfilePhoto {
   id: number;
   userId: number;

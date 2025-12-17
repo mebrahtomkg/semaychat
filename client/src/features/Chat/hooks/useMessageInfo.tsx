@@ -1,5 +1,5 @@
 import { useAccount } from '@/hooks';
-import { Message } from '@/types';
+import { Message, MessageType } from '@/types';
 import { useMemo } from 'react';
 import {
   formatDateTime,
@@ -11,8 +11,6 @@ import {
 import { API_BASE_URL } from '@/constants';
 import { useMessageStatus } from '.';
 import { getFileExtension } from '@/utils';
-
-type MessageType = 'text' | 'photo' | 'audio' | 'video' | 'file';
 
 const useMessageInfo = (message: Message) => {
   const { id: selfId } = useAccount();
