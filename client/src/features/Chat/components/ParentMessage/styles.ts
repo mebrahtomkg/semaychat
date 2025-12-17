@@ -40,5 +40,5 @@ export const MessageTypeIndicator = styled.p`
   line-height: 1.3;
   font-size: 1rem;
   font-weight: 500;
-  color: var(--fg-msg-parent-sender);
+  color: var(--fg-msg-parent-type);
 `;

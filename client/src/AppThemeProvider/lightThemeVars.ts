@@ -12,6 +12,7 @@ const lightThemeVars = css`
   --fg-msg-sent-time: #ebebeb;
   --fg-msg-received-time: #706a6a;
   --fg-msg-parent-sender: #00007f;
+  --fg-msg-parent-type: #0428ed;
   --bg-page: #ffffff;
   --bg-primary: #f6f6f8;
   --bg-secondary: #dfdfe5;
