@@ -3,7 +3,7 @@ import {
   ChatItemDateTime,
   ChatItemInfoContainer,
   ChatItemStyled,
-  MessagePreview,
+  HiddenUnseenMessagesCount,
   MessagePreviewContainer,
   Name,
   NameContainer,
@@ -13,6 +13,7 @@ import { useUserInfo } from '@/hooks';
 import { Chat } from '@/types';
 import useChatItemInfo from './useChatItemInfo';
 import Avatar from '@/components/Avatar';
+import MessagePreview from './MessagePreview';
 
 interface ChatItemProps {
   chat: Chat;
@@ -20,13 +21,15 @@ interface ChatItemProps {
 }
 
 const ChatItem: FC<ChatItemProps> = ({ chat, index }) => {
+  const { lastMessage } = chat;
+
   const { fullName, nameInitials, photoUrl, isOnline } = useUserInfo(
     chat.partner,
   );
 
-  const { messagePreview, dateTime } = useChatItemInfo(chat);
+  const { dateTime } = useChatItemInfo(chat);
 
-  const { unseenMessagesCount } = chat;
+  const unseenMessagesCount = chat.unseenMessagesCount || 0;
 
   return (
     <ChatItemStyled to={`/chat/${chat.partner.id}`}>
@@ -45,14 +48,15 @@ const ChatItem: FC<ChatItemProps> = ({ chat, index }) => {
         </NameContainer>
 
         <MessagePreviewContainer>
-          {messagePreview && (
-            <MessagePreview $hasUnseenMsg={!!unseenMessagesCount}>
-              {messagePreview}
-            </MessagePreview>
-          )}
+          {lastMessage && <MessagePreview message={lastMessage} />}
 
-          {(unseenMessagesCount || 0) > 0 && (
-            <UnseenMessagesCount>{unseenMessagesCount}</UnseenMessagesCount>
+          {unseenMessagesCount > 0 && (
+            <>
+              <HiddenUnseenMessagesCount>
+                {unseenMessagesCount}
+              </HiddenUnseenMessagesCount>
+              <UnseenMessagesCount>{unseenMessagesCount}</UnseenMessagesCount>
+            </>
           )}
         </MessagePreviewContainer>
       </ChatItemInfoContainer>

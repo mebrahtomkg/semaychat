@@ -8,16 +8,13 @@ const useChatItemInfo = (chat: Chat) => {
 
   const { lastMessage } = chat;
   const createdAt = lastMessage?.createdAt;
-  const content = lastMessage?.content;
-
-  const messagePreview = useMemo(() => content, [content]);
 
   const dateTime = useMemo(
     () => (createdAt ? formatChatTimestamp(createdAt, currentDateTime) : null),
     [createdAt, currentDateTime],
   );
 
-  return { messagePreview, dateTime };
+  return { dateTime };
 };
 
 export default useChatItemInfo;

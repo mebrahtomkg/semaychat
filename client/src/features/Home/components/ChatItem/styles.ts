@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const ChatItemStyled = styled(Link)`
   margin: 0 0.2rem;
@@ -32,6 +32,7 @@ export const Name = styled.h3`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.3;
   font-size: 1rem;
   font-weight: 500;
 `;
@@ -44,28 +45,11 @@ export const ChatItemDateTime = styled.p`
 `;
 
 export const MessagePreviewContainer = styled.div`
-  overflow: hidden;
+  --msg-count-min-size: 1.7rem;
   display: flex;
-  justify-content: space-between;
-`;
-
-export const MessagePreview = styled.p<{ $hasUnseenMsg: boolean }>`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--fg-muted);
-
-  ${(props) =>
-    props.$hasUnseenMsg &&
-    css`
-      margin-right: 2rem;
-    `}
 `;
 
 export const UnseenMessagesCount = styled.div`
-  --msg-count-min-size: 1.7rem;
   position: absolute;
   right: 0;
   bottom: 0;
@@ -81,4 +65,11 @@ export const UnseenMessagesCount = styled.div`
   font-weight: 500;
   color: #fff;
   background-color: var(--bg-unseen-msg-count);
+`;
+
+// we just wanna the width placeholder. since UnseenMessagesCount is positioned absolute
+export const HiddenUnseenMessagesCount = styled.div`
+  visibility: hidden;
+  min-width: var(--msg-count-min-size);
+  background-color: aqua;
 `;
