@@ -12,8 +12,8 @@ export const HomeStyled = styled.div`
 export const HeaderContainer = styled.div`
   height: 3.5rem;
   display: flex;
-  justify-content: center;
   align-items: center;
+  padding: 0 1rem;
   background-color: var(--bg-secondary);
   border-bottom: 1px solid;
   border-color: var(--fg-border);

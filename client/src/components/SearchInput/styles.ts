@@ -6,6 +6,8 @@ export const SearchInputContainer = styled.div`
   align-items: center;
   border-radius: 15px;
   background-color: var(--bg-primary);
+  width: 100%;
+  height: 2.5rem;
 `;
 
 export const SearchIconContainer = styled.div`
@@ -20,6 +22,8 @@ export const SearchInputStyled = styled.input`
   flex-grow: 3;
   font-size: 1rem;
   background-color: inherit;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 
   &:focus {
     border: none;
