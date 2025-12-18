@@ -15,24 +15,8 @@ export const ChatItemStyled = styled(Link)`
   }
 `;
 
-export const ProfilePhotoContainer = styled.div`
-  --profile-photo-width: 3.8rem;
-  width: var(--profile-photo-width);
-  min-width: var(--profile-photo-width);
-  height: var(--profile-photo-width);
-  margin-right: 0.7rem;
-  border-radius: 50%;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const PhotoImg = styled.img`
-  width: 100%;
-`;
-
 export const ChatItemInfoContainer = styled.div`
+  margin-left: 0.6rem;
   flex-grow: 3;
   overflow: hidden;
 `;

@@ -7,44 +7,35 @@ import {
   MessagePreviewContainer,
   Name,
   NameContainer,
-  PhotoImg,
-  ProfilePhotoContainer,
   UnseenMessagesCount,
 } from './styles';
-import { useImageLoader, useUserInfo } from '@/hooks';
+import { useUserInfo } from '@/hooks';
 import { Chat } from '@/types';
-import { NameInitial } from '@/components';
 import useChatItemInfo from './useChatItemInfo';
+import Avatar from '@/components/Avatar';
 
 interface ChatItemProps {
   chat: Chat;
+  index: number;
 }
 
-const ChatItem: FC<ChatItemProps> = ({ chat }) => {
-  const { fullName, nameInitials, photoUrl } = useUserInfo(chat.partner);
+const ChatItem: FC<ChatItemProps> = ({ chat, index }) => {
+  const { fullName, nameInitials, photoUrl, isOnline } = useUserInfo(
+    chat.partner,
+  );
 
   const { messagePreview, dateTime } = useChatItemInfo(chat);
 
   const { unseenMessagesCount } = chat;
 
-  const { imageSrc, handleImageLoad, handleImageLoadError } =
-    useImageLoader(photoUrl);
-
   return (
     <ChatItemStyled to={`/chat/${chat.partner.id}`}>
-      {imageSrc ? (
-        <ProfilePhotoContainer>
-          <PhotoImg
-            src={imageSrc}
-            onLoad={handleImageLoad}
-            onError={handleImageLoadError}
-          />
-        </ProfilePhotoContainer>
-      ) : (
-        <ProfilePhotoContainer>
-          <NameInitial isSmall={true} nameInitials={nameInitials} />
-        </ProfilePhotoContainer>
-      )}
+      <Avatar
+        initials={nameInitials}
+        itemIndex={index}
+        imageUrl={photoUrl}
+        isOnline={isOnline}
+      />
 
       <ChatItemInfoContainer>
         <NameContainer>

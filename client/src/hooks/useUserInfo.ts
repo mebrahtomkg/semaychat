@@ -58,6 +58,7 @@ const useUserInfo = (user: User) => {
     isBlocked,
     isContact,
     status,
+    isOnline,
   };
 };
 

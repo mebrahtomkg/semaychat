@@ -31,8 +31,8 @@ const Home = () => {
         </HeaderContainer>
 
         <ChatListContainer>
-          {chatsToShow.map((chat) => (
-            <ChatItem key={`${chat.partner.id}`} chat={chat} />
+          {chatsToShow.map((chat, index) => (
+            <ChatItem key={`${chat.partner.id}`} chat={chat} index={index} />
           ))}
         </ChatListContainer>
 
