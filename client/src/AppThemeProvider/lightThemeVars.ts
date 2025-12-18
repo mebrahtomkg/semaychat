@@ -24,14 +24,14 @@ const lightThemeVars = css`
   --bg-msg-parent: rgba(0 0 0 / 10%);
   --bg-scrollbar: rgba(80 80 80 / 25%);
   --bg-scrollbar-thumb: rgba(80 80 80 / 30%);
-  --bg-avatar-0: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-  --bg-avatar-1: linear-gradient(135deg, #fc6076 0%, #ff9a44 100%);
-  --bg-avatar-2: linear-gradient(135deg, #00c6fb 0%, #005bea 100%);
-  --bg-avatar-3: linear-gradient(105deg, #8aff00 0%, #e400ff 100%);
-  --bg-avatar-4: linear-gradient(135deg, #03ff61 0%, #0040ff 100%);
-  --bg-avatar-5: linear-gradient(25deg, #e400ff 0%, #0e2fe2 100%);
-  --bg-avatar-6: linear-gradient(135deg, #f43406 0%, #673ab7 100%);
-  --bg-avatar-7: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+  --bg-avatar-0: linear-gradient(135deg, #2196f3 0%, #00bcd4 100%);
+  --bg-avatar-1: linear-gradient(135deg, #e91e63 0%, #ffc107 100%);
+  --bg-avatar-2: linear-gradient(135deg, #4caf50 0%, #009688 100%);
+  --bg-avatar-3: linear-gradient(135deg, #ff5722 0%, #ffc107 100%);
+  --bg-avatar-4: linear-gradient(135deg, #673ab7 0%, #3f51b5 100%);
+  --bg-avatar-5: linear-gradient(135deg, #f44336 0%, #e91e63 100%);
+  --bg-avatar-6: linear-gradient(135deg, #00bcd4 0%, #8bc34a 100%);
+  --bg-avatar-7: linear-gradient(135deg, #ff9800 0%, #ffb300 100%);
 `;
 
 export default lightThemeVars;
