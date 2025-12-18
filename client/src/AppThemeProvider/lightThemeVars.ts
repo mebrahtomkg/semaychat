@@ -32,6 +32,7 @@ const lightThemeVars = css`
   --bg-avatar-5: linear-gradient(135deg, #f44336 0%, #e91e63 100%);
   --bg-avatar-6: linear-gradient(135deg, #00bcd4 0%, #8bc34a 100%);
   --bg-avatar-7: linear-gradient(135deg, #ff9800 0%, #ffb300 100%);
+  --bg-unseen-msg-count: #329cf0;
 `;
 
 export default lightThemeVars;

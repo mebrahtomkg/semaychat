@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const ChatItemStyled = styled(Link)`
   margin: 0 0.2rem;
@@ -16,6 +16,7 @@ export const ChatItemStyled = styled(Link)`
 `;
 
 export const ChatItemInfoContainer = styled.div`
+  position: relative;
   margin-left: 0.6rem;
   flex-grow: 3;
   overflow: hidden;
@@ -48,25 +49,36 @@ export const MessagePreviewContainer = styled.div`
   justify-content: space-between;
 `;
 
-export const MessagePreview = styled.p`
+export const MessagePreview = styled.p<{ $hasUnseenMsg: boolean }>`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 1rem;
   font-weight: 500;
   color: var(--fg-muted);
+
+  ${(props) =>
+    props.$hasUnseenMsg &&
+    css`
+      margin-right: 2rem;
+    `}
 `;
 
 export const UnseenMessagesCount = styled.div`
-  padding: 0.2rem;
-  --new-msg-count-width: 1.4rem;
-  width: var(--new-msg-count-width);
-  height: var(--new-msg-count-width);
+  --msg-count-min-size: 1.7rem;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 0.4rem;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  min-width: var(--msg-count-min-size);
+  min-height: var(--msg-count-min-size);
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 0.9rem;
   font-weight: 500;
-  background-color: var(--bg-action);
-  border-radius: 50%;
+  color: #fff;
+  background-color: var(--bg-unseen-msg-count);
 `;
