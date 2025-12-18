@@ -11,3 +11,5 @@ export const QUERY_KEY_CHATS = 'chats';
 export const QUERY_KEY_ACCOUNT = 'account';
 
 export const HEARTBEAT_INTERVAL_TIME = 30000;
+
+export const AVATAR_VARIANTS_COUNT = 8;

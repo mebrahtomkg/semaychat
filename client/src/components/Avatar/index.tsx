@@ -6,8 +6,8 @@ import {
   AvatarStyled,
   OnlineIndicator,
 } from './styles';
-import gradientPalette from './gradientPalette';
 import { useImageLoader } from '@/hooks';
+import { AVATAR_VARIANTS_COUNT } from '@/constants';
 
 interface AvatarProps {
   initials: string;
@@ -22,14 +22,14 @@ const Avatar: FC<AvatarProps> = ({
   isOnline,
   imageUrl,
 }) => {
-  const gradient = gradientPalette[itemIndex % gradientPalette.length];
+  const variantIndex = itemIndex % AVATAR_VARIANTS_COUNT;
 
   const { imageSrc, handleImageLoad, handleImageLoadError } =
     useImageLoader(imageUrl);
 
   return (
     <AvatarContainer>
-      <AvatarStyled $gradient={gradient}>
+      <AvatarStyled $variantIndex={variantIndex}>
         {imageSrc ? (
           <AvatarImage
             src={imageSrc}

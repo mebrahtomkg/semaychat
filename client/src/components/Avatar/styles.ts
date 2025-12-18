@@ -5,7 +5,7 @@ export const AvatarContainer = styled.div`
   display: flex;
 `;
 
-export const AvatarStyled = styled.div<{ $gradient: string }>`
+export const AvatarStyled = styled.div<{ $variantIndex: number }>`
   --avatar-width: 4rem;
   width: var(--avatar-width);
   height: var(--avatar-width);
@@ -21,7 +21,7 @@ export const AvatarStyled = styled.div<{ $gradient: string }>`
   border: 1px solid rgba(255, 255, 255, 0.1);
   flex-shrink: 0;
 
-  background: ${(props) => props.$gradient};
+  background: var(--bg-avatar-${(props) => props.$variantIndex});
 `;
 
 export const AvatarInitials = styled.span`

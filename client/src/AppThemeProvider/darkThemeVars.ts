@@ -24,6 +24,14 @@ const darkThemeVars = css`
   --bg-msg-parent: rgba(0 0 0 / 30%);
   --bg-scrollbar: rgba(150 150 150 / 25%);
   --bg-scrollbar-thumb: rgba(150 150 150 / 30%);
+  --bg-avatar-0: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  --bg-avatar-1: linear-gradient(135deg, #fc6076 0%, #ff9a44 100%);
+  --bg-avatar-2: linear-gradient(135deg, #00c6fb 0%, #005bea 100%);
+  --bg-avatar-3: linear-gradient(135deg, #f7bb97 0%, #dd5e89 100%);
+  --bg-avatar-4: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+  --bg-avatar-5: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+  --bg-avatar-6: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+  --bg-avatar-7: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
 `;
 
 export default darkThemeVars;
