@@ -1,5 +1,5 @@
-import { QUERY_KEY_CHATS, QUERY_KEY_MESSAGES } from '@/constants';
-import { Chat, Message, User } from '@/types';
+import { QUERY_KEY_MESSAGES } from '@/constants';
+import { Message, User } from '@/types';
 import queryClient from './queryClient';
 import accountCache from './accountCache';
 import chatsCache from './chatsCache';
@@ -26,36 +26,24 @@ const setCache = (
 
 const messagesCache = {
   add: (message: Message, partner: User) => {
-    const account = accountCache.get();
+    const isReceivedMessage = message.senderId === partner.id;
+    const chatExists = !!chatsCache.getChat(partner.id);
 
-    // Update unseen messages count of the target if the message is received message.
-    if (message.receiverId === account.id) {
+    if (!chatExists) {
+      chatsCache.add({
+        partner,
+        lastMessage: message,
+        unseenMessagesCount: isReceivedMessage ? 1 : 0,
+      });
+      return;
+    }
+
+    // If the message is a received message, update unseen messages count of the target chat,
+    if (isReceivedMessage) {
       chatsCache.incrementChatUnseenMessagesCount(partner.id);
     }
 
-    const existingChats = queryClient.getQueryData<Chat[] | undefined>([
-      QUERY_KEY_CHATS,
-    ]);
-
-    const chatExists = existingChats?.some(
-      (chat) => chat.partner.id === partner.id,
-    );
-
-    if (!chatExists) {
-      const newChat: Chat = {
-        partner,
-        lastMessage: message,
-        unseenMessagesCount: 1,
-      };
-      queryClient.setQueryData(
-        [QUERY_KEY_CHATS],
-        // No worry about order, chat display logic sort chats.
-        (chats: Chat[]) => (chats ? [...chats, newChat] : [newChat]),
-      );
-    }
-
     setCache(partner.id, (messages: Message[]) => [...messages, message]);
-
     chatsCache.updateChatLastMessage(partner.id);
   },
 

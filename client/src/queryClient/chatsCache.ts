@@ -9,6 +9,10 @@ const setCache = (setterFn: (chats: Chat[]) => Chat[]) => {
 };
 
 const chatsCache = {
+  add: (chat: Chat) => {
+    setCache((chats) => [...chats, chat]);
+  },
+
   incrementChatUnseenMessagesCount: (partnerId: number) => {
     setCache((chats) =>
       chats.map((chat) =>
@@ -56,6 +60,9 @@ const chatsCache = {
       .getQueryData<Chat[]>([QUERY_KEY_CHATS])
       ?.find((chat) => chat.partner.id === partnerId);
   },
+
+  getAllChats: (): Chat[] =>
+    queryClient.getQueryData<Chat[]>([QUERY_KEY_CHATS]) || [],
 
   handlePartnerConnect: (partnerId: number) => {
     setCache((chats) =>
