@@ -17,6 +17,7 @@ import useChatItemInfo from './useChatItemInfo';
 import Avatar from '@/components/Avatar';
 import MessagePreview from './MessagePreview';
 import { DoubleTickIcon, TickIcon } from '@/components/icons';
+import useLastMessage from './useLastMessage';
 
 interface ChatItemProps {
   chat: Chat;
@@ -24,7 +25,7 @@ interface ChatItemProps {
 }
 
 const ChatItem: FC<ChatItemProps> = ({ chat, index }) => {
-  const { lastMessage } = chat;
+  const lastMessage = useLastMessage(chat);
 
   const { id: selfId } = useAccount();
 
@@ -68,9 +69,13 @@ const ChatItem: FC<ChatItemProps> = ({ chat, index }) => {
 
           {lastMessage && isLastMessageOutgoing && (
             <MessageStatusContainer>
-              <TickIconContainer>
-                {lastMessage.isSeen ? <DoubleTickIcon /> : <TickIcon />}
-              </TickIconContainer>
+              {lastMessage.id > 0 ? (
+                <TickIconContainer>
+                  {lastMessage.isSeen ? <DoubleTickIcon /> : <TickIcon />}
+                </TickIconContainer>
+              ) : (
+                'sending...'
+              )}
             </MessageStatusContainer>
           )}
         </MessagePreviewContainer>

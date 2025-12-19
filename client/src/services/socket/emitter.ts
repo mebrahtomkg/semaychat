@@ -21,6 +21,9 @@ export const emitWithAck = async <Result>(
 ): Promise<Result> => {
   if (!socket) throw Error('Emitter socket not initialized!');
 
+  // Delay for testing in dev
+  // await new Promise<void>((resolve) => setTimeout(() => resolve(), 5000));
+
   const { status, message, data } = (await socket.emitWithAck(
     eventName,
     payload,
