@@ -47,6 +47,7 @@ export const ChatItemDateTime = styled.p`
 export const MessagePreviewContainer = styled.div`
   --msg-count-min-size: 1.7rem;
   display: flex;
+  justify-content: space-between;
 `;
 
 export const UnseenMessagesCount = styled.div`
@@ -72,4 +73,12 @@ export const HiddenUnseenMessagesCount = styled.div`
   visibility: hidden;
   min-width: var(--msg-count-min-size);
   background-color: aqua;
+`;
+
+export const MessageStatusContainer = styled.div``;
+
+export const TickIconContainer = styled.div`
+  width: 1.05rem;
+  transform: rotate(-45deg);
+  color: var(--fg-muted);
 `;
