@@ -81,6 +81,7 @@ const messagesCache = {
           : message,
       ),
     );
+    chatsCache.updateChatLastMessage(partnerId);
   },
 };
 
