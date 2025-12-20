@@ -26,25 +26,25 @@ const setCache = (
 
 const messagesCache = {
   add: (message: Message, partner: User) => {
+    setCache(partner.id, (messages: Message[]) => [...messages, message]);
+
     const isReceivedMessage = message.senderId === partner.id;
     const chatExists = !!chatsCache.getChat(partner.id);
 
-    if (!chatExists) {
+    if (chatExists) {
+      // If the message is a received message, update unseen messages count of the target chat,
+      if (isReceivedMessage) {
+        chatsCache.incrementChatUnseenMessagesCount(partner.id);
+      }
+
+      chatsCache.updateChatLastMessage(partner.id);
+    } else {
       chatsCache.add({
         partner,
         lastMessage: message,
         unseenMessagesCount: isReceivedMessage ? 1 : 0,
       });
-      return;
     }
-
-    // If the message is a received message, update unseen messages count of the target chat,
-    if (isReceivedMessage) {
-      chatsCache.incrementChatUnseenMessagesCount(partner.id);
-    }
-
-    setCache(partner.id, (messages: Message[]) => [...messages, message]);
-    chatsCache.updateChatLastMessage(partner.id);
   },
 
   update: (message: Message) => {
