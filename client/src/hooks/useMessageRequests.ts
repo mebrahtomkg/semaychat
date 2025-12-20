@@ -26,6 +26,14 @@ const useMessageRequests = <SelectorOutput>(
     return unsubscribe;
   }, [storeListener]);
 
+  // BUG FIX: If the selector is changed in anyway, update the value based on the selector.
+  useEffect(() => {
+    setValue((prevValue) => {
+      const newValue = selector(useMessageRequestsStore.getState());
+      return deepEqual(newValue, prevValue) ? prevValue : newValue;
+    });
+  }, [selector]);
+
   return value;
 };
 
