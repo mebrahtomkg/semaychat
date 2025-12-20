@@ -88,6 +88,7 @@ interface BaseMessageRequest {
 
 export interface TextMessageSendRequest extends BaseMessageRequest {
   requestType: 'TEXT_MESSAGE_SEND';
+  timestamp: number;
   payload: {
     receiver: User;
     content: string;
@@ -97,6 +98,7 @@ export interface TextMessageSendRequest extends BaseMessageRequest {
 
 export interface FileMessageSendRequest extends BaseMessageRequest {
   requestType: 'FILE_MESSAGE_SEND';
+  timestamp: number;
   payload: {
     receiver: User;
     fileId: number;

@@ -1,39 +1,41 @@
 import { FC } from 'react';
 import {
+  ClockIconContainer,
   MessageMetaStyled,
-  ProgressText,
   TickIconContainer,
   Time,
 } from './styles';
-import { DoubleTickIcon, TickIcon } from '@/components/icons';
+import { ClockIcon, DoubleTickIcon, TickIcon } from '@/components/icons';
 import { Message } from '@/types';
-import { useMessageInfo } from '../../hooks';
+import { useMessageInfo, useMessageStatus } from '../../hooks';
 
 interface MessageMetaProps {
   message: Message;
 }
 
 const MessageMeta: FC<MessageMetaProps> = ({ message }) => {
-  const { status, time, isOutgoing, type } = useMessageInfo(message);
+  const { time, isOutgoing, type } = useMessageInfo(message);
+
+  const status = useMessageStatus(message.id);
 
   const isImageOrVideo = type === 'photo' || type === 'video';
 
   return (
     <MessageMetaStyled onContextMenu={(e) => e.stopPropagation()}>
-      {status ? (
-        <ProgressText>{status}</ProgressText>
-      ) : (
-        <>
-          <Time $isImageOrVideo={isImageOrVideo} $isOutgoing={isOutgoing}>
-            {time}
-          </Time>
-          {isOutgoing && (
-            <TickIconContainer>
-              {message.isSeen ? <DoubleTickIcon /> : <TickIcon />}
-            </TickIconContainer>
-          )}
-        </>
-      )}
+      <Time $isImageOrVideo={isImageOrVideo} $isOutgoing={isOutgoing}>
+        {time}
+      </Time>
+
+      {isOutgoing &&
+        (status === 'sending' || status === 'updating' ? (
+          <ClockIconContainer>
+            <ClockIcon />
+          </ClockIconContainer>
+        ) : (
+          <TickIconContainer>
+            {message.isSeen ? <DoubleTickIcon /> : <TickIcon />}
+          </TickIconContainer>
+        ))}
     </MessageMetaStyled>
   );
 };

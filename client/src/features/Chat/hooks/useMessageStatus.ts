@@ -2,8 +2,10 @@ import { useMessageRequests } from '@/hooks';
 import { MessageRequest } from '@/types';
 import { useCallback, useMemo } from 'react';
 
-const useMessageStatus = (messageId: number, hasAttachment: boolean) => {
-  const selector = useCallback(
+type MessageStatus = 'sending' | 'updating' | 'deleting' | 'none';
+
+const useMessageStatus = (messageId: number): MessageStatus => {
+  const msgReqSelector = useCallback(
     (requests: MessageRequest[]) =>
       requests.filter(
         (req) =>
@@ -15,25 +17,23 @@ const useMessageStatus = (messageId: number, hasAttachment: boolean) => {
     [messageId],
   );
 
-  const request = useMessageRequests(selector);
+  const request = useMessageRequests(msgReqSelector);
 
-  const status = useMemo(() => {
-    // Pending messages status is just known to be 'sending...' or 'uploading...'.
-    if (messageId < 0) {
-      return hasAttachment ? 'Uploading...' : 'Sending...';
-    }
+  const status: MessageStatus = useMemo(() => {
+    // Pending messages status is just known to be 'sending'
+    if (messageId < 0) return 'sending';
 
     switch (request?.requestType) {
       case 'MESSAGE_UPDATE':
-        return 'Updating...';
+        return 'updating';
 
       case 'MESSAGE_DELETE':
-        return 'Deleting...';
+        return 'deleting';
 
       default:
-        return null;
+        return 'none';
     }
-  }, [messageId, hasAttachment, request?.requestType]);
+  }, [messageId, request?.requestType]);
 
   return status;
 };

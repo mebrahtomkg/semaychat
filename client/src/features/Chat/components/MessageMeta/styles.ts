@@ -34,7 +34,8 @@ export const TickIconContainer = styled.div`
   transform: rotate(-45deg);
 `;
 
-export const ProgressText = styled.span`
-  font-size: 0.85rem;
-  font-weight: 400;
+export const ClockIconContainer = styled.div`
+  display: inline-block;
+  margin-left: 0.3rem;
+  width: 0.9rem;
 `;

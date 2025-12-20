@@ -82,3 +82,8 @@ export const TickIconContainer = styled.div`
   transform: rotate(-45deg);
   color: var(--fg-muted);
 `;
+
+export const ClockIconContainer = styled.div`
+  width: 0.9rem;
+  color: var(--fg-muted);
+`;

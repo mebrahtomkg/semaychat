@@ -3,6 +3,7 @@ import {
   ChatItemDateTime,
   ChatItemInfoContainer,
   ChatItemStyled,
+  ClockIconContainer,
   HiddenUnseenMessagesCount,
   MessagePreviewContainer,
   MessageStatusContainer,
@@ -16,8 +17,9 @@ import { Chat } from '@/types';
 import useChatItemInfo from './useChatItemInfo';
 import Avatar from '@/components/Avatar';
 import MessagePreview from './MessagePreview';
-import { DoubleTickIcon, TickIcon } from '@/components/icons';
+import { ClockIcon, DoubleTickIcon, TickIcon } from '@/components/icons';
 import useLastMessage from './useLastMessage';
+import { useMessageStatus } from '@/features/Chat/hooks';
 
 interface ChatItemProps {
   chat: Chat;
@@ -26,6 +28,8 @@ interface ChatItemProps {
 
 const ChatItem: FC<ChatItemProps> = ({ chat, index }) => {
   const lastMessage = useLastMessage(chat);
+
+  const lastMessageStatus = useMessageStatus(lastMessage?.id || 0);
 
   const { id: selfId } = useAccount();
 
@@ -69,12 +73,15 @@ const ChatItem: FC<ChatItemProps> = ({ chat, index }) => {
 
           {lastMessage && isLastMessageOutgoing && (
             <MessageStatusContainer>
-              {lastMessage.id > 0 ? (
+              {lastMessageStatus === 'sending' ||
+              lastMessageStatus === 'updating' ? (
+                <ClockIconContainer>
+                  <ClockIcon />
+                </ClockIconContainer>
+              ) : (
                 <TickIconContainer>
                   {lastMessage.isSeen ? <DoubleTickIcon /> : <TickIcon />}
                 </TickIconContainer>
-              ) : (
-                'sending...'
               )}
             </MessageStatusContainer>
           )}

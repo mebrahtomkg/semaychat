@@ -9,7 +9,6 @@ import {
   isVideo,
 } from '../utils';
 import { API_BASE_URL } from '@/constants';
-import { useMessageStatus } from '.';
 import { getFileExtension } from '@/utils';
 
 const useMessageInfo = (message: Message) => {
@@ -27,11 +26,6 @@ const useMessageInfo = (message: Message) => {
   const dateTime = useMemo(
     () => (message.createdAt ? formatDateTime(message.createdAt) : ''),
     [message.createdAt],
-  );
-
-  const status = useMessageStatus(
-    message.id,
-    typeof message.attachment?.name === 'string',
   );
 
   const fileUrl = useMemo(
@@ -55,7 +49,6 @@ const useMessageInfo = (message: Message) => {
     type,
     isOutgoing,
     chatPartnerId,
-    status,
     time,
     dateTime,
     fileUrl,

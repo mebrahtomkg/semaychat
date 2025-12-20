@@ -35,6 +35,7 @@ export const addTextMessageSendRequest = (
   const request: TextMessageSendRequest = {
     requestType: 'TEXT_MESSAGE_SEND',
     requestId: getUniqueId(),
+    timestamp: Date.now(),
     payload,
   };
   addMessageRequest(request);
@@ -46,6 +47,7 @@ export const addFileMessageSendRequest = (
   const request: FileMessageSendRequest = {
     requestType: 'FILE_MESSAGE_SEND',
     requestId: getUniqueId(),
+    timestamp: Date.now(),
     payload,
   };
   addMessageRequest(request);

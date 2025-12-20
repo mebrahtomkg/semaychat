@@ -25,7 +25,7 @@ const createPendingMessage = (req: MessageRequest) => {
     senderId: account.id,
     content:
       req.requestType === 'TEXT_MESSAGE_SEND' ? req.payload.content : null,
-    createdAt: 0,
+    createdAt: req.timestamp,
     editedAt: 0,
     isSeen: false,
   };
