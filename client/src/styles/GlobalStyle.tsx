@@ -54,6 +54,17 @@ const styles = css`
     font-weight: 400;
   }
 
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  label {
+    line-height: 1.3;
+  }
+
   span {
     display: inline;
     margin: 0;
