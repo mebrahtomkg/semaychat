@@ -10,7 +10,6 @@ export const Time = styled.span<{
   $isImageOrVideo: boolean;
   $isOutgoing: boolean;
 }>`
-  margin-right: 0.1rem;
   line-height: 1;
   font-size: 0.7rem;
   font-weight: 600;
@@ -28,14 +27,16 @@ export const Time = styled.span<{
           `}
 `;
 
-export const TickIconContainer = styled.div`
+export const StatusIconContainer = styled.div`
   display: inline-block;
+  margin-left: 0.2rem;
   width: 1.05rem;
-  transform: rotate(-45deg);
 `;
 
 export const ClockIconContainer = styled.div`
-  display: inline-block;
-  margin-left: 0.3rem;
   width: 0.9rem;
+`;
+
+export const TickIconContainer = styled.div`
+  transform: rotate(-45deg);
 `;

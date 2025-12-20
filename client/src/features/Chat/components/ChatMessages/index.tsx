@@ -19,7 +19,7 @@ const ChatMessages: FC<ChatMessagesProps> = ({
         key={`${message.id}`}
         message={message}
         isLastInGroup={
-          !messages[index + 1] ||
+          messages[index + 1] &&
           messages[index + 1].senderId !== message.senderId
         }
         intersectionObserverRootRef={intersectionObserverRootRef}

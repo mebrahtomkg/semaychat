@@ -2,6 +2,7 @@ import { FC } from 'react';
 import {
   ClockIconContainer,
   MessageMetaStyled,
+  StatusIconContainer,
   TickIconContainer,
   Time,
 } from './styles';
@@ -20,22 +21,27 @@ const MessageMeta: FC<MessageMetaProps> = ({ message }) => {
 
   const isImageOrVideo = type === 'photo' || type === 'video';
 
+  const isPendingOrUpdating = status === 'sending' || status === 'updating';
+
   return (
     <MessageMetaStyled onContextMenu={(e) => e.stopPropagation()}>
       <Time $isImageOrVideo={isImageOrVideo} $isOutgoing={isOutgoing}>
         {time}
       </Time>
 
-      {isOutgoing &&
-        (status === 'sending' || status === 'updating' ? (
-          <ClockIconContainer>
-            <ClockIcon />
-          </ClockIconContainer>
-        ) : (
-          <TickIconContainer>
-            {message.isSeen ? <DoubleTickIcon /> : <TickIcon />}
-          </TickIconContainer>
-        ))}
+      {isOutgoing && (
+        <StatusIconContainer>
+          {isPendingOrUpdating ? (
+            <ClockIconContainer>
+              <ClockIcon />
+            </ClockIconContainer>
+          ) : (
+            <TickIconContainer>
+              {message.isSeen ? <DoubleTickIcon /> : <TickIcon />}
+            </TickIconContainer>
+          )}
+        </StatusIconContainer>
+      )}
     </MessageMetaStyled>
   );
 };
