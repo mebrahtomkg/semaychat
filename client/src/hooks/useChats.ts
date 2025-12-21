@@ -1,32 +1,67 @@
-import { Chat } from '@/types';
+import { Chat, MessageRequest } from '@/types';
 import { useQuery } from '@tanstack/react-query';
-import { ApiError, get } from '@/api';
+import { get } from '@/api';
 import { useMemo } from 'react';
+import { QUERY_KEY_CHATS } from '@/constants';
+import useMessageRequests from './useMessageRequests';
+import { createPendingMessage } from '@/utils';
 
-export const CHATS_QUERY_KEY = 'chats';
+const msgSendRequestsSelector = (requests: MessageRequest[]) =>
+  requests.filter(
+    (req) =>
+      req.requestType === 'TEXT_MESSAGE_SEND' ||
+      req.requestType === 'FILE_MESSAGE_SEND',
+  );
 
 const useChats = (): Chat[] => {
-  const { isError, data, error } = useQuery({
-    queryKey: [CHATS_QUERY_KEY],
+  const { data } = useQuery({
+    queryKey: [QUERY_KEY_CHATS],
     queryFn: () => get<Chat[]>('/chats'),
-    retry: (failureCount: number, error: Error) =>
-      error instanceof ApiError && error.status ? false : failureCount < 2,
   });
 
-  if (isError) {
-    console.error(error);
-  }
+  const msgSendRequests = useMessageRequests(msgSendRequestsSelector);
 
   const chats = useMemo(() => {
-    if (!data) return [];
+    const serverChats = data || [];
 
-    // Sort by recent
-    return data.sort((a, b) =>
-      b.lastMessage && a.lastMessage
-        ? b.lastMessage.createdAt - a.lastMessage.createdAt
-        : 0,
-    );
-  }, [data]);
+    // Use map to avoid duplicate chats
+    const map = new Map<number, Chat>();
+
+    serverChats.forEach((chat) => {
+      map.set(chat.partner.id, chat);
+    });
+
+    msgSendRequests.forEach((req) => {
+      map.set(req.payload.receiver.id, {
+        partner: req.payload.receiver,
+        lastMessage: createPendingMessage(req),
+      });
+    });
+
+    // Sort the chats:
+    const sortedChats = Array.from(map.values()).sort((a, b) => {
+      const aIsPending = a.lastMessage && a.lastMessage.id < 0;
+      const bIsPending = b.lastMessage && b.lastMessage.id < 0;
+
+      // Prioritize pending messages
+      if (aIsPending && !bIsPending) {
+        return -1; // 'a' (pending) comes before 'b' (not pending)
+      }
+      if (!aIsPending && bIsPending) {
+        return 1; // 'b' (pending) comes before 'a' (not pending)
+      }
+
+      // If both are pending or both are not pending, sort by createdAt (most recent first)
+      if (b.lastMessage && a.lastMessage) {
+        return b.lastMessage.createdAt - a.lastMessage.createdAt;
+      }
+
+      // Fallback for cases where lastMessage might be missing
+      return 0;
+    });
+
+    return sortedChats;
+  }, [data, msgSendRequests]);
 
   return chats;
 };

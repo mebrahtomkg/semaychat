@@ -18,7 +18,6 @@ import useChatItemInfo from './useChatItemInfo';
 import Avatar from '@/components/Avatar';
 import MessagePreview from './MessagePreview';
 import { ClockIcon, DoubleTickIcon, TickIcon } from '@/components/icons';
-import useLastMessage from './useLastMessage';
 import { useMessageStatus } from '@/features/Chat/hooks';
 
 interface ChatItemProps {
@@ -27,7 +26,7 @@ interface ChatItemProps {
 }
 
 const ChatItem: FC<ChatItemProps> = ({ chat, index }) => {
-  const lastMessage = useLastMessage(chat);
+  const lastMessage = chat.lastMessage;
 
   const lastMessageStatus = useMessageStatus(lastMessage?.id || 0);
 
