@@ -1,5 +1,5 @@
-import { QUERY_KEY_MESSAGES } from '@/constants';
-import { Message, User } from '@/types';
+import { QUERY_KEY_CHATS, QUERY_KEY_MESSAGES } from '@/constants';
+import { Chat, Message, User } from '@/types';
 import queryClient from './queryClient';
 import accountCache from './accountCache';
 import chatsCache from './chatsCache';
@@ -11,40 +11,50 @@ const getMessagePartnerId = (message: Message) => {
     : message.senderId;
 };
 
-const getCache = (partnerId: number) =>
-  queryClient.getQueryData<Message[]>([QUERY_KEY_MESSAGES, partnerId]) || [];
-
 const setCache = (
   partnerId: number,
   setterFn: (messages: Message[]) => Message[],
 ) => {
   queryClient.setQueryData<Message[]>(
     [QUERY_KEY_MESSAGES, partnerId],
-    (messages) => setterFn(messages || []),
+    (oldMessages) => {
+      const messages = setterFn(oldMessages || []);
+
+      // Update last message of the target chat.
+      queryClient.setQueryData<Chat[]>([QUERY_KEY_CHATS], (chats) =>
+        chats?.map((chat) =>
+          chat.partner.id === partnerId
+            ? {
+                ...chat,
+                lastMessage: messages[messages.length - 1],
+              }
+            : chat,
+        ),
+      );
+
+      return messages;
+    },
   );
 };
 
 const messagesCache = {
   add: (message: Message, partner: User) => {
-    setCache(partner.id, (messages: Message[]) => [...messages, message]);
-
     const isReceivedMessage = message.senderId === partner.id;
     const chatExists = !!chatsCache.getChat(partner.id);
 
-    if (chatExists) {
-      // If the message is a received message, update unseen messages count of the target chat,
-      if (isReceivedMessage) {
-        chatsCache.incrementChatUnseenMessagesCount(partner.id);
-      }
+    if (isReceivedMessage && chatExists) {
+      chatsCache.incrementChatUnseenMessagesCount(partner.id);
+    }
 
-      chatsCache.updateChatLastMessage(partner.id);
-    } else {
+    if (!chatExists) {
       chatsCache.add({
         partner,
         lastMessage: message,
         unseenMessagesCount: isReceivedMessage ? 1 : 0,
       });
     }
+
+    setCache(partner.id, (messages: Message[]) => [...messages, message]);
   },
 
   update: (message: Message) => {
@@ -54,14 +64,12 @@ const messagesCache = {
         oldMessage.id === message.id ? message : oldMessage,
       ),
     );
-    chatsCache.updateChatLastMessage(partnerId);
   },
 
   remove: (partnerId: number, messageId: number) => {
     setCache(partnerId, (messages: Message[]) =>
       messages.filter((message) => message.id !== messageId),
     );
-    chatsCache.updateChatLastMessage(partnerId);
   },
 
   markAsRead: (
@@ -81,7 +89,6 @@ const messagesCache = {
           : message,
       ),
     );
-    chatsCache.updateChatLastMessage(partnerId);
   },
 };
 
