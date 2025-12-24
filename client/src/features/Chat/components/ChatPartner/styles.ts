@@ -19,27 +19,26 @@ export const UserContainer = styled.div`
   cursor: pointer;
 `;
 
-export const CircularPhoto = styled.div`
-  width: 2.9rem;
-  height: 2.9rem;
-  overflow: hidden;
-  margin-right: 0.9rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
+export const NameContainer = styled.div`
+  margin-left: 0.9rem;
 `;
-
-export const NameContainer = styled.div``;
 
 export const Name = styled.h3`
   font-size: 1rem;
   font-weight: 500;
 `;
 
-export const Status = styled.span`
+export const Status = styled.span<{ $isOnline: boolean }>`
   display: block;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 500;
-  color: var(--fg-muted);
+
+  ${(props) =>
+    props.$isOnline
+      ? css`
+          color: var(--fg-user-status);
+        `
+      : css`
+          color: var(--fg-muted);
+        `}
 `;

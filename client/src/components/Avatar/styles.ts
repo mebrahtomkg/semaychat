@@ -5,8 +5,11 @@ export const AvatarContainer = styled.div`
   display: flex;
 `;
 
-export const AvatarStyled = styled.div<{ $variantIndex: number }>`
-  --avatar-width: 4rem;
+export const AvatarStyled = styled.div<{
+  $isSmall: boolean;
+  $variantIndex: number;
+}>`
+  --avatar-width: ${(props) => (props.$isSmall ? '2.9rem' : '4rem')};
   width: var(--avatar-width);
   height: var(--avatar-width);
   border-radius: 50%;

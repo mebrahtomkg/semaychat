@@ -33,6 +33,7 @@ const darkThemeVars = css`
   --bg-avatar-6: linear-gradient(135deg, #0097a7 0%, #7cb342 100%);
   --bg-avatar-7: linear-gradient(135deg, #f57c00 0%, #ff8f00 100%);
   --bg-unseen-msg-count: #00bcd4;
+  --fg-user-status: #00beff;
 `;
 
 export default darkThemeVars;

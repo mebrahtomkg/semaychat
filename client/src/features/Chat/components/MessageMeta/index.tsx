@@ -24,7 +24,7 @@ const MessageMeta: FC<MessageMetaProps> = ({ message }) => {
   const isPendingOrUpdating = status === 'sending' || status === 'updating';
 
   return (
-    <MessageMetaStyled onContextMenu={(e) => e.stopPropagation()}>
+    <MessageMetaStyled>
       <Time $isImageOrVideo={isImageOrVideo} $isOutgoing={isOutgoing}>
         {time}
       </Time>

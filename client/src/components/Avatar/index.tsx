@@ -14,6 +14,7 @@ interface AvatarProps {
   itemIndex?: number;
   isOnline?: boolean;
   imageUrl?: string;
+  isSmall?: boolean;
 }
 
 const Avatar: FC<AvatarProps> = ({
@@ -21,6 +22,7 @@ const Avatar: FC<AvatarProps> = ({
   itemIndex = 0,
   isOnline,
   imageUrl,
+  isSmall = false,
 }) => {
   const variantIndex = itemIndex % AVATAR_VARIANTS_COUNT;
 
@@ -29,7 +31,7 @@ const Avatar: FC<AvatarProps> = ({
 
   return (
     <AvatarContainer>
-      <AvatarStyled $variantIndex={variantIndex}>
+      <AvatarStyled $isSmall={isSmall} $variantIndex={variantIndex}>
         {imageSrc ? (
           <AvatarImage
             src={imageSrc}
