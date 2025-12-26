@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { CSSProperties, FC, useState } from 'react';
 import {
   CancelButton,
   ConfirmButton,
@@ -14,12 +14,14 @@ interface MessageDeleteConfirmDialogProps {
   isOutgoing: boolean;
   onDelete: (deleteForReceiver: boolean) => void;
   onClose: () => void;
+  animationStyle?: CSSProperties;
 }
 
 const MessageDeleteConfirmDialog: FC<MessageDeleteConfirmDialogProps> = ({
   isOutgoing,
   onDelete,
   onClose,
+  animationStyle,
 }) => {
   const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
   const toggleCheckBox = () => setIsCheckBoxChecked((prevValue) => !prevValue);
@@ -34,7 +36,7 @@ const MessageDeleteConfirmDialog: FC<MessageDeleteConfirmDialogProps> = ({
       onClick={(e) => e.stopPropagation()}
       onContextMenu={(e) => e.stopPropagation()}
     >
-      <ConfirmDialogStyled>
+      <ConfirmDialogStyled style={animationStyle}>
         <DialogTitle>Delete message</DialogTitle>
         <DialogMessage>
           Are you sure you want to delete this message?

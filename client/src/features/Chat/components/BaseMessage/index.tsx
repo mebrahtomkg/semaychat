@@ -27,7 +27,11 @@ import ContextMenu, {
   MenuItem,
   useContextMenu,
 } from '@/components/ContextMenu';
-import { ANIMATION_CONTEXT_MENU_FAST, WithAnimation } from '@/Animation';
+import {
+  ANIMATION_CONTEXT_MENU_FAST,
+  ANIMATION_DIALOG_FAST,
+  WithAnimation,
+} from '@/Animation';
 
 interface BaseMessageProps {
   message: Message;
@@ -193,13 +197,18 @@ const BaseMessage: FC<BaseMessageProps> = ({
         />
       </MessageContainer>
 
-      {isDeleteConfirmVisible && (
-        <MessageDeleteConfirmDialog
-          isOutgoing={isOutgoing}
-          onClose={closeDeleteConfirm}
-          onDelete={deleteMessage}
-        />
-      )}
+      <WithAnimation
+        isVisible={isDeleteConfirmVisible}
+        options={ANIMATION_DIALOG_FAST}
+        render={(style) => (
+          <MessageDeleteConfirmDialog
+            isOutgoing={isOutgoing}
+            onClose={closeDeleteConfirm}
+            onDelete={deleteMessage}
+            animationStyle={style}
+          />
+        )}
+      />
     </MessageStyled>
   );
 };
