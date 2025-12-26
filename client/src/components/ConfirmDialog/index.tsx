@@ -1,4 +1,10 @@
-import { FC, MouseEventHandler, ReactNode, useCallback } from 'react';
+import {
+  CSSProperties,
+  FC,
+  MouseEventHandler,
+  ReactNode,
+  useCallback,
+} from 'react';
 import {
   CancelButton,
   ConfirmButton,
@@ -17,6 +23,7 @@ interface ConfirmDialogProps {
   onConfirm: () => void;
   onClose: () => void;
   onCancel?: () => void;
+  animationStyle?: CSSProperties;
   children?: ReactNode;
 }
 
@@ -27,6 +34,7 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({
   onClose,
   onCancel,
   children,
+  animationStyle,
 }) => {
   const handleConfirm = useCallback(() => {
     onClose();
@@ -51,7 +59,7 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({
       onClick={handleOverlayClick}
       onContextMenu={(e) => e.stopPropagation()}
     >
-      <ConfirmDialogStyled>
+      <ConfirmDialogStyled style={animationStyle}>
         <DialogTitle>{title}</DialogTitle>
 
         <DialogMessage>{message}</DialogMessage>
@@ -59,7 +67,7 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({
         {children}
 
         <DialogButtonsContainer>
-          <CancelButton type="button" onClick={handleCancel}>
+          <CancelButton type="button" onClick={onClose}>
             Cancel
           </CancelButton>
 

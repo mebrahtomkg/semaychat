@@ -1,5 +1,5 @@
 import { ANIMATION_CONTEXT_MENU_FAST, WithAnimation } from '@/Animation';
-import { Checkbox, ConfirmDialog } from '@/components';
+import { Checkbox } from '@/components';
 import { MoreButton } from '@/components/buttons';
 import {
   AddContactIcon,
@@ -23,6 +23,7 @@ import {
 import { addChatDeleteRequest } from '@/store/useMessageRequestsStore';
 import { User } from '@/types';
 import { FC, useCallback, useMemo, useState } from 'react';
+import ConfirmDialog from '@/components/ConfirmDialog';
 
 interface ChatContextMenuProps {
   chatPartner: User;

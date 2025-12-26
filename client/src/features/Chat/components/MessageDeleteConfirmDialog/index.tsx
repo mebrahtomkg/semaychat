@@ -1,14 +1,6 @@
 import { CSSProperties, FC, useState } from 'react';
-import {
-  CancelButton,
-  ConfirmButton,
-  ConfirmDialogOverlay,
-  ConfirmDialogStyled,
-  DialogButtonsContainer,
-  DialogMessage,
-  DialogTitle,
-} from './styles';
 import CheckBox from './Checkbox';
+import ConfirmDialog from '@/components/ConfirmDialog';
 
 interface MessageDeleteConfirmDialogProps {
   isOutgoing: boolean;
@@ -32,32 +24,21 @@ const MessageDeleteConfirmDialog: FC<MessageDeleteConfirmDialogProps> = ({
   };
 
   return (
-    <ConfirmDialogOverlay
-      onClick={(e) => e.stopPropagation()}
-      onContextMenu={(e) => e.stopPropagation()}
+    <ConfirmDialog
+      title="Delete message"
+      message="Are you sure you want to delete this message?"
+      onConfirm={handleDelete}
+      onClose={onClose}
+      animationStyle={animationStyle}
     >
-      <ConfirmDialogStyled style={animationStyle}>
-        <DialogTitle>Delete message</DialogTitle>
-        <DialogMessage>
-          Are you sure you want to delete this message?
-        </DialogMessage>
-        {isOutgoing && (
-          <CheckBox
-            label={'Also delete for receiver'}
-            isChecked={isCheckBoxChecked}
-            onToggle={toggleCheckBox}
-          />
-        )}
-        <DialogButtonsContainer>
-          <CancelButton type="button" onClick={onClose}>
-            Cancel
-          </CancelButton>
-          <ConfirmButton type="button" onClick={handleDelete}>
-            Yes
-          </ConfirmButton>
-        </DialogButtonsContainer>
-      </ConfirmDialogStyled>
-    </ConfirmDialogOverlay>
+      {isOutgoing && (
+        <CheckBox
+          label="Also delete for receiver"
+          isChecked={isCheckBoxChecked}
+          onToggle={toggleCheckBox}
+        />
+      )}
+    </ConfirmDialog>
   );
 };
 

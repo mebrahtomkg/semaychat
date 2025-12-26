@@ -10,24 +10,26 @@ export const ConfirmDialogOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgb(0 0 0 / 37%);
+  background-color: transparent;
 `;
 
 export const ConfirmDialogStyled = styled.div`
   padding: 1rem;
   border-radius: 10px;
   background-color: var(--bg-primary);
+  border: 1px solid;
+  border-color: var(--fg-border);
 `;
 
 export const DialogTitle = styled.h3`
-  margin-bottom: 1.5rem;
-  font-size: 1.3rem;
+  margin-bottom: 1.2rem;
+  font-size: 1.2rem;
 `;
 
 export const DialogMessage = styled.p`
   margin-bottom: 1.5rem;
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 500;
 `;
 
 export const DialogButtonsContainer = styled.div`
@@ -39,11 +41,11 @@ export const DialogButtonsContainer = styled.div`
 const ActionButton = styled.button`
   padding: 0.5rem 1rem;
   border-radius: 6px;
-  font-size: 1.16rem;
-  line-height: 1;
+  font-size: 1rem;
   font-weight: 500;
   transition: background-color 0.2s ease-in-out;
-  color: var(--bg-action-hover);
+  color: var(--fg-action);
+
   &:hover {
     background-color: var(--bg-hover);
   }
