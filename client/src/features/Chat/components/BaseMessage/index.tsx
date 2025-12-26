@@ -4,7 +4,7 @@ import {
   EditIcon,
   ReplyIcon,
 } from '@/components/icons';
-import { FC, RefObject, useCallback, useMemo, useRef, useState } from 'react';
+import { FC, RefObject, useMemo, useRef } from 'react';
 import {
   AudioMessage,
   FileMessage,
@@ -12,7 +12,6 @@ import {
   TextMessage,
   VideoMessage,
 } from '..';
-import MessageDeleteConfirmDialog from '../MessageDeleteConfirmDialog';
 import {
   MessageContainer,
   MessageIntersectionObserverTarget,
@@ -32,6 +31,9 @@ import {
   ANIMATION_DIALOG_FAST,
   WithAnimation,
 } from '@/Animation';
+import ConfirmDialog from '@/components/ConfirmDialog';
+import CheckBox from '@/components/Checkbox';
+import useDeleteMessage from './useDeleteMessage';
 
 interface BaseMessageProps {
   message: Message;
@@ -45,22 +47,17 @@ const BaseMessage: FC<BaseMessageProps> = ({
   intersectionObserverRootRef,
 }) => {
   const messageInfo = useMessageInfo(message);
-
   const { type, isOutgoing } = messageInfo;
+  const { edit, reply, downloadFile } = useMessageActions(message);
 
-  const { edit, reply, downloadFile, deleteMessage } =
-    useMessageActions(message);
-
-  const [isDeleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
-  const openDeleteConfirm = useCallback(
-    () => setDeleteConfirmVisible(true),
-    [],
-  );
-
-  const closeDeleteConfirm = useCallback(
-    () => setDeleteConfirmVisible(false),
-    [],
-  );
+  const {
+    openDeleteConfirm,
+    isDeleteConfirmVisible,
+    isDeleteForReceiver,
+    toggleIsDeleteForReceiver,
+    handleMessageDelete,
+    closeDeleteConfirm,
+  } = useDeleteMessage(message);
 
   const {
     isContextMenuVisible,
@@ -148,9 +145,6 @@ const BaseMessage: FC<BaseMessageProps> = ({
     }
   }, [messageInfo, message, handleMoreButtonClick, type]);
 
-  const handleMessageContextMenu =
-    type === 'audio' || type === 'file' ? undefined : handleContextMenu;
-
   const intersectionObserverTargetRef = useRef<HTMLDivElement>(null);
 
   useMarkMessageAsRead(
@@ -163,6 +157,9 @@ const BaseMessage: FC<BaseMessageProps> = ({
     type === 'audio' || type === 'file' || type === 'photo'
       ? undefined
       : handleContextMenu;
+
+  const handleMessageContextMenu =
+    type === 'audio' || type === 'file' ? undefined : handleContextMenu;
 
   return (
     <MessageStyled $isOutgoing={isOutgoing} $isLastInGroup={isLastInGroup}>
@@ -201,12 +198,21 @@ const BaseMessage: FC<BaseMessageProps> = ({
         isVisible={isDeleteConfirmVisible}
         options={ANIMATION_DIALOG_FAST}
         render={(style) => (
-          <MessageDeleteConfirmDialog
-            isOutgoing={isOutgoing}
+          <ConfirmDialog
+            title="Delete message"
+            message="Are you sure you want to delete this message?"
+            onConfirm={handleMessageDelete}
             onClose={closeDeleteConfirm}
-            onDelete={deleteMessage}
             animationStyle={style}
-          />
+          >
+            {isOutgoing && (
+              <CheckBox
+                label="Also delete for receiver"
+                isChecked={isDeleteForReceiver}
+                onToggle={toggleIsDeleteForReceiver}
+              />
+            )}
+          </ConfirmDialog>
         )}
       />
     </MessageStyled>

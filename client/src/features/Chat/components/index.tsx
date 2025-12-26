@@ -2,7 +2,6 @@ export { default as AudioMessage } from './AudioMessage';
 export { default as BaseMessage } from './BaseMessage';
 export { default as FileMessage } from './FileMessage';
 export { default as FileSelector } from './FileSelector';
-export { default as MessageDeleteConfirmDialog } from './MessageDeleteConfirmDialog';
 export { default as MessageInput } from './MessageInput';
 export { default as MessageMeta } from './MessageMeta';
 export { default as PhotoMessage } from './PhotoMessage';
