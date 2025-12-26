@@ -17,6 +17,7 @@ const CheckBox: FC<CheckBoxProps> = ({ label, isChecked, onToggle }) => {
   return (
     <CheckBoxStyled>
       <BoxContainer>
+        {/** biome-ignore lint/a11y/useSemanticElements: <temp fix> */}
         <CheckBoxIconStyled
           role="checkbox"
           aria-checked={isChecked}

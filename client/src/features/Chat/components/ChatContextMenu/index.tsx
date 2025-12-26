@@ -1,5 +1,4 @@
 import { ANIMATION_CONTEXT_MENU_FAST, WithAnimation } from '@/Animation';
-import { Checkbox } from '@/components';
 import { MoreButton } from '@/components/buttons';
 import {
   AddContactIcon,
@@ -24,6 +23,7 @@ import { addChatDeleteRequest } from '@/store/useMessageRequestsStore';
 import { User } from '@/types';
 import { FC, useCallback, useMemo, useState } from 'react';
 import ConfirmDialog from '@/components/ConfirmDialog';
+import CheckBox from '@/components/Checkbox';
 
 interface ChatContextMenuProps {
   chatPartner: User;
@@ -82,7 +82,7 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
         onConfirm={deleteChat}
         onClose={closeConfirmDialog}
       >
-        <Checkbox
+        <CheckBox
           isChecked={deleteForReceiver}
           onToggle={toggleDeleteForReceiver}
           label="Also delete for receiver"

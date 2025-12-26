@@ -8,11 +8,13 @@ export const CheckBoxStyled = styled.div`
 `;
 
 export const BoxContainer = styled.div`
+  --checkbox-width: 1.2rem;
   position: relative;
-  width: 1.4rem;
-  height: 1.4rem;
-  margin-right: 0.8rem;
-  color: white;
+  width: var(--checkbox-width);
+  height: var(--checkbox-width);
+  margin-right: 0.7rem;
+  color: var(--fg-primary);
+  flex-shrink: 0;
 `;
 
 export const CheckBoxIconStyled = styled(CheckBoxIcon)<{
@@ -30,7 +32,7 @@ export const CheckBoxIconStyled = styled(CheckBoxIcon)<{
   ${(props) =>
     props.$isChecked
       ? css`
-          fill: blue;
+          fill: var(--bg-action);
         `
       : css`
           fill: currentColor;
@@ -46,8 +48,9 @@ export const CheckBoxTickIconStyled = styled(CheckBoxTickIcon)<{
   right: 0;
   bottom: 0;
   stroke-width: 0;
-  fill: blue;
+  fill: var(--bg-action);
   transition: transform 0.1s ease-in;
+  color: #fff;
   ${(props) =>
     props.$isChecked
       ? css`

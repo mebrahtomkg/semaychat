@@ -1,6 +1,6 @@
 import { CSSProperties, FC, useState } from 'react';
-import CheckBox from './Checkbox';
 import ConfirmDialog from '@/components/ConfirmDialog';
+import CheckBox from '@/components/Checkbox';
 
 interface MessageDeleteConfirmDialogProps {
   isOutgoing: boolean;
