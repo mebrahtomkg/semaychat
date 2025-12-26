@@ -40,3 +40,13 @@ export const ANIMATION_FADE_SUBTLE: AnimationOptions = {
     timingFunction: ['linear'],
   },
 };
+
+export const ANIMATION_CONTEXT_MENU_FAST: AnimationOptions = {
+  initialStyles: { opacity: 0, transform: 'translateY(-10px)' },
+  finalStyles: { opacity: 1, transform: 'translateY(0)' },
+  transition: {
+    property: ['transform', 'opacity'],
+    duration: [200, 200],
+    timingFunction: ['ease-out', 'ease-out'],
+  },
+};

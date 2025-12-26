@@ -1,4 +1,3 @@
-import ContextMenu, { useContextMenu } from '@/components/ContextMenu';
 import {
   DeleteIcon,
   DownloadIcon,
@@ -23,6 +22,12 @@ import { Message } from '@/types';
 import { useMessageActions, useMessageInfo } from '../../hooks';
 import useMarkMessageAsRead from './useMarkMessageAsRead';
 import ParentMessage from '../ParentMessage';
+import ContextMenu, {
+  IMenuItem,
+  MenuItem,
+  useContextMenu,
+} from '@/components/ContextMenu';
+import { ANIMATION_CONTEXT_MENU_FAST, WithAnimation } from '@/Animation';
 
 interface BaseMessageProps {
   message: Message;
@@ -55,30 +60,63 @@ const BaseMessage: FC<BaseMessageProps> = ({
 
   const {
     isContextMenuVisible,
-    onContextMenu,
-    onMoreButtonClick,
-    contextMenuControlProps,
+    handleContextMenu,
+    handleMoreButtonClick,
+    contextMenuPosition,
+    closeContextMenu,
   } = useContextMenu();
 
-  const contextMenuItems = useMemo(() => {
-    const items = [{ icon: <ReplyIcon />, label: 'Reply', action: reply }];
+  const menuItems = useMemo(() => {
+    const items: IMenuItem[] = [
+      <MenuItem
+        key={'reply'}
+        icon={<ReplyIcon />}
+        label="Reply"
+        action={reply}
+        onClose={closeContextMenu}
+      />,
+    ];
     if (type === 'text' && isOutgoing) {
-      items.push({ icon: <EditIcon />, label: 'Edit', action: edit });
+      items.push(
+        <MenuItem
+          key={'edit'}
+          icon={<EditIcon />}
+          label="Edit"
+          action={edit}
+          onClose={closeContextMenu}
+        />,
+      );
     }
     if (type !== 'text') {
-      items.push({
-        icon: <DownloadIcon />,
-        label: 'Save',
-        action: downloadFile,
-      });
+      items.push(
+        <MenuItem
+          key={'save'}
+          icon={<DownloadIcon />}
+          label="Save"
+          action={downloadFile}
+          onClose={closeContextMenu}
+        />,
+      );
     }
-    items.push({
-      icon: <DeleteIcon />,
-      label: 'Delete',
-      action: openDeleteConfirm,
-    });
+    items.push(
+      <MenuItem
+        key={'delete'}
+        icon={<DeleteIcon />}
+        label="Delete"
+        action={openDeleteConfirm}
+        onClose={closeContextMenu}
+      />,
+    );
     return items;
-  }, [reply, type, isOutgoing, edit, downloadFile, openDeleteConfirm]);
+  }, [
+    reply,
+    type,
+    isOutgoing,
+    edit,
+    downloadFile,
+    openDeleteConfirm,
+    closeContextMenu,
+  ]);
 
   const messageComponent = useMemo(() => {
     switch (type) {
@@ -93,21 +131,21 @@ const BaseMessage: FC<BaseMessageProps> = ({
           <AudioMessage
             messageInfo={messageInfo}
             message={message}
-            onMoreButtonClick={onMoreButtonClick}
+            onMoreButtonClick={handleMoreButtonClick}
           />
         );
       case 'file':
         return (
           <FileMessage
-            onMoreButtonClick={onMoreButtonClick}
+            onMoreButtonClick={handleMoreButtonClick}
             message={message}
           />
         );
     }
-  }, [messageInfo, message, onMoreButtonClick, type]);
+  }, [messageInfo, message, handleMoreButtonClick, type]);
 
-  const handleContextMenu =
-    type === 'audio' || type === 'file' ? undefined : onContextMenu;
+  const handleMessageContextMenu =
+    type === 'audio' || type === 'file' ? undefined : handleContextMenu;
 
   const intersectionObserverTargetRef = useRef<HTMLDivElement>(null);
 
@@ -117,10 +155,10 @@ const BaseMessage: FC<BaseMessageProps> = ({
     message,
   );
 
-  const handleClick =
+  const handleMessageClick =
     type === 'audio' || type === 'file' || type === 'photo'
       ? undefined
-      : onContextMenu;
+      : handleContextMenu;
 
   return (
     <MessageStyled $isOutgoing={isOutgoing} $isLastInGroup={isLastInGroup}>
@@ -128,8 +166,8 @@ const BaseMessage: FC<BaseMessageProps> = ({
         $isLastInGroup={isLastInGroup}
         $isOutgoing={isOutgoing}
         $messageType={type}
-        onClick={handleClick}
-        onContextMenu={handleContextMenu}
+        onClick={handleMessageClick}
+        onContextMenu={handleMessageContextMenu}
       >
         {message.parentMessage && (
           <ParentMessage message={message.parentMessage} />
@@ -137,12 +175,18 @@ const BaseMessage: FC<BaseMessageProps> = ({
 
         {messageComponent}
 
-        {isContextMenuVisible && (
-          <ContextMenu
-            menuItems={contextMenuItems}
-            controlProps={contextMenuControlProps}
-          />
-        )}
+        <WithAnimation
+          isVisible={isContextMenuVisible}
+          options={ANIMATION_CONTEXT_MENU_FAST}
+          render={(style) => (
+            <ContextMenu
+              menuItems={menuItems}
+              animationStyle={style}
+              position={contextMenuPosition}
+              onClose={closeContextMenu}
+            />
+          )}
+        />
 
         <MessageIntersectionObserverTarget
           ref={intersectionObserverTargetRef}

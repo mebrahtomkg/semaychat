@@ -1,15 +1,21 @@
-import React, { FC } from 'react';
+import { FC, ReactNode, useCallback } from 'react';
 import { MenuItemIconContainer, MenuItemLabel, MenuItemStyled } from './styles';
 
-interface MenuItemProps {
-  icon: React.ReactNode;
+export interface MenuItemProps {
+  icon: ReactNode;
   label: string;
-  onClick: () => void;
+  action: () => void;
+  onClose: () => void;
 }
 
-const MenuItem: FC<MenuItemProps> = ({ icon, label, onClick }) => {
+const MenuItem: FC<MenuItemProps> = ({ icon, label, action, onClose }) => {
+  const handleClick = useCallback(() => {
+    onClose();
+    action();
+  }, [onClose, action]);
+
   return (
-    <MenuItemStyled role="menuitem" onClick={onClick}>
+    <MenuItemStyled role="menuitem" onClick={handleClick}>
       <MenuItemIconContainer>{icon}</MenuItemIconContainer>
       <MenuItemLabel>{label}</MenuItemLabel>
     </MenuItemStyled>

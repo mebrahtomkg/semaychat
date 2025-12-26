@@ -1,9 +1,6 @@
+import { ANIMATION_CONTEXT_MENU_FAST, WithAnimation } from '@/Animation';
 import { Checkbox, ConfirmDialog } from '@/components';
 import { MoreButton } from '@/components/buttons';
-import ContextMenu, {
-  MenuItemDescriptor,
-  useContextMenu,
-} from '@/components/ContextMenu';
 import {
   AddContactIcon,
   BlockUserIcon,
@@ -11,6 +8,11 @@ import {
   RemoveContactIcon,
   UnblockUserIcon,
 } from '@/components/icons';
+import ContextMenu, {
+  IMenuItem,
+  MenuItem,
+  useContextMenu,
+} from '@/components/ContextMenu';
 import {
   useAddContact,
   useBlockUser,
@@ -29,8 +31,12 @@ interface ChatContextMenuProps {
 type Confirmation = 'delete-chat' | 'block-user' | null;
 
 const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
-  const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =
-    useContextMenu();
+  const {
+    isContextMenuVisible,
+    handleMoreButtonClick,
+    contextMenuPosition,
+    closeContextMenu,
+  } = useContextMenu();
 
   const [confirmation, setConfirmation] = useState<Confirmation>(null);
   const closeConfirmDialog = useCallback(() => setConfirmation(null), []);
@@ -114,40 +120,58 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
   }, [confirmation, deleteChatConfirmDialog, blockUserConfirmDialog]);
 
   const menuItemsList = useMemo(() => {
-    const menuItems: MenuItemDescriptor[] = [
-      {
-        icon: <DeleteIcon />,
-        label: 'Delete Chat',
-        action: startDeleteChatFlow,
-      },
+    const menuItems: IMenuItem[] = [
+      <MenuItem
+        key={'delete-chat'}
+        icon={<DeleteIcon />}
+        label="Delete Chat"
+        action={startDeleteChatFlow}
+        onClose={closeContextMenu}
+      />,
     ];
 
     if (isContact) {
-      menuItems.push({
-        icon: <RemoveContactIcon />,
-        label: 'Remove contact',
-        action: removeContact,
-      });
+      menuItems.push(
+        <MenuItem
+          key={'remove-contact'}
+          icon={<RemoveContactIcon />}
+          label="Remove contact"
+          action={removeContact}
+          onClose={closeContextMenu}
+        />,
+      );
     } else {
-      menuItems.push({
-        icon: <AddContactIcon />,
-        label: 'Add contacts',
-        action: addContact,
-      });
+      menuItems.push(
+        <MenuItem
+          key={'add-contact'}
+          icon={<AddContactIcon />}
+          label="Add contact"
+          action={addContact}
+          onClose={closeContextMenu}
+        />,
+      );
     }
 
     if (isBlocked) {
-      menuItems.push({
-        icon: <UnblockUserIcon />,
-        label: 'Unblock user',
-        action: unblockUser,
-      });
+      menuItems.push(
+        <MenuItem
+          key={'unblock-user'}
+          icon={<UnblockUserIcon />}
+          label="Unblock user"
+          action={unblockUser}
+          onClose={closeContextMenu}
+        />,
+      );
     } else {
-      menuItems.push({
-        icon: <BlockUserIcon />,
-        label: 'Block user',
-        action: startBlockUserFlow,
-      });
+      menuItems.push(
+        <MenuItem
+          key={'block-user'}
+          icon={<BlockUserIcon />}
+          label="Block user"
+          action={startBlockUserFlow}
+          onClose={closeContextMenu}
+        />,
+      );
     }
 
     return menuItems;
@@ -159,17 +183,26 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
     startBlockUserFlow,
     removeContact,
     unblockUser,
+    closeContextMenu,
   ]);
 
   return (
     <>
-      <MoreButton onClick={onMoreButtonClick} />
-      {isContextMenuVisible && (
-        <ContextMenu
-          menuItems={menuItemsList}
-          controlProps={contextMenuControlProps}
-        />
-      )}
+      <MoreButton onClick={handleMoreButtonClick} />
+
+      <WithAnimation
+        isVisible={isContextMenuVisible}
+        options={ANIMATION_CONTEXT_MENU_FAST}
+        render={(style) => (
+          <ContextMenu
+            menuItems={menuItemsList}
+            position={contextMenuPosition}
+            onClose={closeContextMenu}
+            animationStyle={style}
+          />
+        )}
+      />
+
       {activeConfirmDialogComponent}
     </>
   );

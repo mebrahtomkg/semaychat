@@ -5,7 +5,7 @@ import useAnimation from './useAnimation';
 interface WithAnimationProps {
   isVisible: boolean;
   options: AnimationOptions;
-  render: (animationStyle: CSSProperties) => ReactNode;
+  render: (animationStyle: CSSProperties | undefined) => ReactNode;
   onUnmount?: () => void;
 }
 

@@ -1,5 +1,4 @@
 import { FC, useMemo } from 'react';
-import ContextMenu, { useContextMenu } from '@/components/ContextMenu';
 import { DeleteIcon, DownloadIcon, ReplyIcon } from '@/components/icons';
 import {
   BackButton,
@@ -24,6 +23,12 @@ import {
 } from '../../hooks';
 import { getFileExtension } from '@/utils';
 import { FlexibleImage } from '@/components';
+import ContextMenu, {
+  IMenuItem,
+  MenuItem,
+  useContextMenu,
+} from '@/components/ContextMenu';
+import { ANIMATION_CONTEXT_MENU_FAST, WithAnimation } from '@/Animation';
 
 interface PhotoViewerProps {
   chatPartnerId: number;
@@ -46,8 +51,12 @@ const PhotoViewer: FC<PhotoViewerProps> = ({
     [chatMessages],
   );
 
-  const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =
-    useContextMenu();
+  const {
+    isContextMenuVisible,
+    handleMoreButtonClick,
+    contextMenuPosition,
+    closeContextMenu,
+  } = useContextMenu();
 
   const targetIndex = useMemo(() => {
     for (let i = 0; i < photoMessages.length; i++) {
@@ -71,13 +80,31 @@ const PhotoViewer: FC<PhotoViewerProps> = ({
   const { isImageLoadError, handleImageLoad, handleImageLoadError } =
     useImageLoader(fileUrl);
 
-  const options = useMemo(
+  const options: IMenuItem[] = useMemo(
     () => [
-      { icon: <ReplyIcon />, label: 'Reply', action: reply },
-      { icon: <DownloadIcon />, label: 'Save', action: downloadFile },
-      { icon: <DeleteIcon />, label: 'Delete', action: deleteMessage },
+      <MenuItem
+        key={'reply'}
+        icon={<ReplyIcon />}
+        label="Reply"
+        action={reply}
+        onClose={closeContextMenu}
+      />,
+      <MenuItem
+        key={'save'}
+        icon={<DownloadIcon />}
+        label="Save"
+        action={downloadFile}
+        onClose={closeContextMenu}
+      />,
+      <MenuItem
+        key={'delete'}
+        icon={<DeleteIcon />}
+        label="Delete"
+        action={deleteMessage}
+        onClose={closeContextMenu}
+      />,
     ],
-    [reply, downloadFile, deleteMessage],
+    [reply, downloadFile, deleteMessage, closeContextMenu],
   );
 
   const { fullName: partnerFullName } = useUser(chatPartnerId);
@@ -94,7 +121,7 @@ const PhotoViewer: FC<PhotoViewerProps> = ({
         )}
 
         {options.length > 0 && (
-          <MoreButton aria-label="Options" onClick={onMoreButtonClick} />
+          <MoreButton aria-label="Options" onClick={handleMoreButtonClick} />
         )}
       </PhotoHeaderSection>
 
@@ -127,12 +154,18 @@ const PhotoViewer: FC<PhotoViewerProps> = ({
         </PhotoMetaContainer>
       )}
 
-      {isContextMenuVisible && (
-        <ContextMenu
-          menuItems={options}
-          controlProps={contextMenuControlProps}
-        />
-      )}
+      <WithAnimation
+        isVisible={isContextMenuVisible}
+        options={ANIMATION_CONTEXT_MENU_FAST}
+        render={(style) => (
+          <ContextMenu
+            menuItems={options}
+            position={contextMenuPosition}
+            onClose={closeContextMenu}
+            animationStyle={style}
+          />
+        )}
+      />
     </PhotoViewerModal>
   );
 };

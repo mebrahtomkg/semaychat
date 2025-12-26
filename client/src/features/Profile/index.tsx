@@ -6,10 +6,6 @@ import {
   useCallback,
   useMemo,
 } from 'react';
-import ContextMenu, {
-  MenuItemDescriptor,
-  useContextMenu,
-} from '@/components/ContextMenu';
 import {
   BackButton,
   MoreButton,
@@ -50,7 +46,16 @@ import {
 import UserInfo from './UserInfo';
 import useUserProfilePhotos from './useUserProfilePhotos';
 import { FlexibleImage, NameInitial, TinySpinner } from '@/components';
-import { useAnimation } from '@/Animation';
+import {
+  ANIMATION_CONTEXT_MENU_FAST,
+  useAnimation,
+  WithAnimation,
+} from '@/Animation';
+import ContextMenu, {
+  IMenuItem,
+  MenuItem,
+  useContextMenu,
+} from '@/components/ContextMenu';
 
 interface ProfileBaseProps {
   user: User;
@@ -70,8 +75,12 @@ const ProfileBase: FC<ProfileBaseProps> = ({
   const { addContact } = useAddContact(user);
   const { removeContact } = useRemoveContact(user);
 
-  const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =
-    useContextMenu();
+  const {
+    isContextMenuVisible,
+    handleMoreButtonClick,
+    contextMenuPosition,
+    closeContextMenu,
+  } = useContextMenu();
 
   const { isFullScreenMode, toggleFullScreenMode, exitFullScreenMode } =
     useFullScreenPhoto();
@@ -90,44 +99,64 @@ const ProfileBase: FC<ProfileBaseProps> = ({
     useImageLoader(photoUrl);
 
   const options = useMemo(() => {
-    const items: MenuItemDescriptor[] = [];
+    const items: IMenuItem[] = [];
 
     if (!isFullScreenMode) {
       if (isBlocked) {
-        items.push({
-          icon: <UnblockUserIcon />,
-          label: 'Unblock user',
-          action: unblockUser,
-        });
+        items.push(
+          <MenuItem
+            key={'unblock-user'}
+            icon={<UnblockUserIcon />}
+            label="Unblock user"
+            action={unblockUser}
+            onClose={closeContextMenu}
+          />,
+        );
       } else {
-        items.push({
-          icon: <BlockUserIcon />,
-          label: 'Block user',
-          action: blockUser,
-        });
+        items.push(
+          <MenuItem
+            key={'block-user'}
+            icon={<BlockUserIcon />}
+            label="Block user"
+            action={blockUser}
+            onClose={closeContextMenu}
+          />,
+        );
       }
 
       if (isContact) {
-        items.push({
-          icon: <RemoveContactIcon />,
-          label: 'Remove contact',
-          action: removeContact,
-        });
+        items.push(
+          <MenuItem
+            key={'remove-contact'}
+            icon={<RemoveContactIcon />}
+            label="Remove contact"
+            action={removeContact}
+            onClose={closeContextMenu}
+          />,
+        );
       } else {
-        items.push({
-          icon: <AddContactIcon />,
-          label: 'Add contact',
-          action: addContact,
-        });
+        items.push(
+          <MenuItem
+            key={'add-contact'}
+            icon={<AddContactIcon />}
+            label="Add contact"
+            action={addContact}
+            onClose={closeContextMenu}
+          />,
+        );
       }
     }
 
     if (imageSrc) {
-      items.push({
-        icon: <DownloadIcon />,
-        label: 'Download',
-        action: downloadPhoto,
-      });
+      items.push(
+        <MenuItem
+          key={'download'}
+          icon={<DownloadIcon />}
+          label="Download"
+          action={downloadPhoto}
+          onClose={closeContextMenu}
+        />,
+      );
     }
 
     return items;
@@ -141,6 +170,7 @@ const ProfileBase: FC<ProfileBaseProps> = ({
     removeContact,
     addContact,
     downloadPhoto,
+    closeContextMenu,
   ]);
 
   const handleBackClick = (e: MouseEvent) => {
@@ -174,7 +204,7 @@ const ProfileBase: FC<ProfileBaseProps> = ({
               <PhotoIndexIndicator>{photoIndexIndicator}</PhotoIndexIndicator>
             )}
 
-            <MoreButton onClick={onMoreButtonClick} />
+            <MoreButton onClick={handleMoreButtonClick} />
           </PhotoHeaderSection>
 
           {isImageLoading && <TinySpinner />}
@@ -208,12 +238,18 @@ const ProfileBase: FC<ProfileBaseProps> = ({
             </PhotoMetaContainer>
           )}
 
-          {isContextMenuVisible && (
-            <ContextMenu
-              menuItems={options}
-              controlProps={contextMenuControlProps}
-            />
-          )}
+          <WithAnimation
+            isVisible={isContextMenuVisible}
+            options={ANIMATION_CONTEXT_MENU_FAST}
+            render={(style) => (
+              <ContextMenu
+                menuItems={options}
+                position={contextMenuPosition}
+                onClose={closeContextMenu}
+                animationStyle={style}
+              />
+            )}
+          />
         </ProfilePhotoStyled>
 
         <UserInfo user={user} />

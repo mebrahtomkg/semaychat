@@ -1,46 +1,51 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import {
+  CSSProperties,
+  FC,
+  MouseEvent,
+  ReactElement,
+  useCallback,
+  useMemo,
+} from 'react';
 import { ContextMenuOverlay, ContextMenuStyled } from './styles';
-import MenuItem from './MenuItem';
-import { ContextMenuControlProps, MenuItemDescriptor } from './types';
-
-export type { ContextMenuControlProps, MenuItemDescriptor } from './types';
+import { MenuItemProps } from './MenuItem';
+import useMenuPositionFixer from './useMenuPositionFixer';
+import { MenuPosition } from './types';
 
 export { default as useContextMenu } from './useContextMenu';
+export { default as MenuItem } from './MenuItem';
+export type IMenuItem = ReactElement<MenuItemProps>;
 
 interface ContextMenuProps {
-  menuItems: MenuItemDescriptor[];
-  controlProps: ContextMenuControlProps;
+  menuItems: IMenuItem[];
+  position: MenuPosition;
+  onClose: () => void;
+  animationStyle?: CSSProperties;
 }
 
-const ContextMenu: FC<ContextMenuProps> = ({ menuItems, controlProps }) => {
-  const { closeMenu, menuRef, menuStyles } = controlProps;
+const ContextMenu: FC<ContextMenuProps> = ({
+  menuItems,
+  position,
+  onClose,
+  animationStyle = {},
+}) => {
+  const { menuRef, positionStyle } = useMenuPositionFixer(position);
 
-  const executeMenuItemAction = useCallback(
-    (action: MenuItemDescriptor['action']) => {
-      closeMenu();
-      action();
+  const menuStyle = useMemo(
+    () => ({
+      ...positionStyle,
+      ...animationStyle,
+    }),
+    [positionStyle, animationStyle],
+  );
+
+  const handleOverlayClick = useCallback(
+    (e: MouseEvent<HTMLElement>) => {
+      e.stopPropagation();
+      e.preventDefault();
+      if (e.target === e.currentTarget) onClose();
     },
-    [closeMenu],
+    [onClose],
   );
-
-  const menuList = useMemo(
-    () =>
-      menuItems.map((menuItem, index) => (
-        <MenuItem
-          key={`${menuItem.label}-${index}`}
-          icon={menuItem.icon}
-          label={menuItem.label}
-          onClick={() => executeMenuItemAction(menuItem.action)}
-        />
-      )),
-    [menuItems, executeMenuItemAction],
-  );
-
-  const handleOverlayClick = (e: React.MouseEvent<HTMLElement>) => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (e.target === e.currentTarget) closeMenu();
-  };
 
   return (
     <ContextMenuOverlay onClick={handleOverlayClick}>
@@ -48,9 +53,9 @@ const ContextMenu: FC<ContextMenuProps> = ({ menuItems, controlProps }) => {
         ref={menuRef}
         role="menu"
         onContextMenu={(e) => e.stopPropagation()}
-        style={menuStyles}
+        style={menuStyle}
       >
-        {menuList}
+        {menuItems}
       </ContextMenuStyled>
     </ContextMenuOverlay>
   );

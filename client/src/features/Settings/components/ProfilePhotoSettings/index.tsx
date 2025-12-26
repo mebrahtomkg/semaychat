@@ -16,7 +16,6 @@ import {
 import { AddPhotoIcon, DeleteIcon, DownloadIcon } from '@/components/icons';
 import { FlexibleImage, Spinner } from '@/components';
 import ProfilePhotoUploader from '../ProfilePhotoUploader';
-import ContextMenu, { useContextMenu } from '@/components/ContextMenu';
 import {
   BackButton,
   MoreButton,
@@ -33,13 +32,22 @@ import {
 } from '@/hooks';
 import useSelfProfilePhoto from '../../hooks/useSelfProfilePhoto';
 import AddPhotoButton from '../AddPhotoButton';
-import { MenuItemDescriptor } from '@/components/ContextMenu/types';
+import ContextMenu, {
+  IMenuItem,
+  MenuItem,
+  useContextMenu,
+} from '@/components/ContextMenu';
+import { ANIMATION_CONTEXT_MENU_FAST, WithAnimation } from '@/Animation';
 
 const ProfilePhotoSettings = () => {
   const { fullName, nameInitials } = useAccountInfo();
 
-  const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =
-    useContextMenu();
+  const {
+    isContextMenuVisible,
+    handleMoreButtonClick,
+    contextMenuPosition,
+    closeContextMenu,
+  } = useContextMenu();
 
   const { isFullScreenMode, toggleFullScreenMode, exitFullScreenMode } =
     useFullScreenPhoto();
@@ -69,18 +77,34 @@ const ProfilePhotoSettings = () => {
     useImageLoader(photoUrl);
 
   const options = useMemo(() => {
-    const items: MenuItemDescriptor[] = [];
+    const items: IMenuItem[] = [];
     if (!isFullScreenMode) {
-      items.push({
-        icon: <AddPhotoIcon />,
-        label: 'Set Profile Photo',
-        action: triggerFileSelection,
-      });
+      items.push(
+        <MenuItem
+          key={'set-profile-photo'}
+          icon={<AddPhotoIcon />}
+          label="Set Profile Photo"
+          action={triggerFileSelection}
+          onClose={closeContextMenu}
+        />,
+      );
     }
     if (imageSrc) {
       items.push(
-        { icon: <DownloadIcon />, label: 'Save Photo', action: downloadPhoto },
-        { icon: <DeleteIcon />, label: 'Delete', action: deletePhoto },
+        <MenuItem
+          key={'save-photo'}
+          icon={<DownloadIcon />}
+          label="Save Photo"
+          action={downloadPhoto}
+          onClose={closeContextMenu}
+        />,
+        <MenuItem
+          key={'delete'}
+          icon={<DeleteIcon />}
+          label="Delete"
+          action={deletePhoto}
+          onClose={closeContextMenu}
+        />,
       );
     }
     return items;
@@ -90,6 +114,7 @@ const ProfilePhotoSettings = () => {
     imageSrc,
     downloadPhoto,
     deletePhoto,
+    closeContextMenu,
   ]);
 
   useEffect(() => {
@@ -119,7 +144,7 @@ const ProfilePhotoSettings = () => {
         {options.length > 0 && (
           <MoreButton
             aria-label="Open profile photo options"
-            onClick={onMoreButtonClick}
+            onClick={handleMoreButtonClick}
           />
         )}
       </PhotoHeaderSection>
@@ -187,12 +212,18 @@ const ProfilePhotoSettings = () => {
         />
       )}
 
-      {isContextMenuVisible && (
-        <ContextMenu
-          menuItems={options}
-          controlProps={contextMenuControlProps}
-        />
-      )}
+      <WithAnimation
+        isVisible={isContextMenuVisible}
+        options={ANIMATION_CONTEXT_MENU_FAST}
+        render={(style) => (
+          <ContextMenu
+            menuItems={options}
+            position={contextMenuPosition}
+            onClose={closeContextMenu}
+            animationStyle={style}
+          />
+        )}
+      />
     </ProfilePhotoSettingsStyled>
   );
 };

@@ -11,12 +11,14 @@ import { useImageLoader, useUnblockUser, useUserInfo } from '@/hooks';
 import { User } from '@/types';
 import { NameInitial } from '@/components';
 import { MoreIcon, SendIcon, UnblockUserIcon } from '@/components/icons';
-import ContextMenu, {
-  MenuItemDescriptor,
-  useContextMenu,
-} from '@/components/ContextMenu';
 import { useNavigate } from 'react-router';
 import { useAppStateStore } from '@/store';
+import ContextMenu, {
+  IMenuItem,
+  MenuItem,
+  useContextMenu,
+} from '@/components/ContextMenu';
+import { ANIMATION_CONTEXT_MENU_FAST, WithAnimation } from '@/Animation';
 
 interface BlockedUserProps {
   user: User;
@@ -28,8 +30,12 @@ const BlockedUser: FC<BlockedUserProps> = ({ user }) => {
   const { imageSrc, handleImageLoad, handleImageLoadError } =
     useImageLoader(photoUrl);
 
-  const { isContextMenuVisible, onMoreButtonClick, contextMenuControlProps } =
-    useContextMenu();
+  const {
+    isContextMenuVisible,
+    handleMoreButtonClick,
+    contextMenuPosition,
+    closeContextMenu,
+  } = useContextMenu();
 
   const closeSettingsModal = useAppStateStore(
     (state) => state.closeSettingsModal,
@@ -46,20 +52,24 @@ const BlockedUser: FC<BlockedUserProps> = ({ user }) => {
     navigate(userChatLink);
   }, [navigate, userChatLink, closeSettingsModal]);
 
-  const menuItems = useMemo<MenuItemDescriptor[]>(
+  const menuItems = useMemo<IMenuItem[]>(
     () => [
-      {
-        icon: <UnblockUserIcon />,
-        label: 'Unblock',
-        action: unblockUser,
-      },
-      {
-        icon: <SendIcon />,
-        label: 'Open in chat',
-        action: openInChat,
-      },
+      <MenuItem
+        key={'unblock'}
+        icon={<UnblockUserIcon />}
+        label="Unblock"
+        action={unblockUser}
+        onClose={closeContextMenu}
+      />,
+      <MenuItem
+        key={'open-in-chat'}
+        icon={<SendIcon />}
+        label="Open in chat"
+        action={openInChat}
+        onClose={closeContextMenu}
+      />,
     ],
-    [unblockUser, openInChat],
+    [unblockUser, openInChat, closeContextMenu],
   );
 
   return (
@@ -81,17 +91,23 @@ const BlockedUser: FC<BlockedUserProps> = ({ user }) => {
       <NameContainer>
         <Name>{fullName}</Name>
 
-        <MoreButtonStyled type="button" onClick={onMoreButtonClick}>
+        <MoreButtonStyled type="button" onClick={handleMoreButtonClick}>
           <MoreIcon />
         </MoreButtonStyled>
       </NameContainer>
 
-      {isContextMenuVisible && (
-        <ContextMenu
-          controlProps={contextMenuControlProps}
-          menuItems={menuItems}
-        />
-      )}
+      <WithAnimation
+        isVisible={isContextMenuVisible}
+        options={ANIMATION_CONTEXT_MENU_FAST}
+        render={(style) => (
+          <ContextMenu
+            menuItems={menuItems}
+            position={contextMenuPosition}
+            onClose={closeContextMenu}
+            animationStyle={style}
+          />
+        )}
+      />
     </BlockedUserStyled>
   );
 };
