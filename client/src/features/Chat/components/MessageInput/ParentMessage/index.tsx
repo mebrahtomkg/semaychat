@@ -6,9 +6,11 @@ import { CSSProperties, FC } from 'react';
 import {
   MessageContent,
   MessageDetails,
+  MessageDetailsContainer,
   MessageSender,
   MessageTypeIndicator,
   ParentMessageStyled,
+  TextualDetails,
 } from './styles';
 import { useMessageInfo } from '@/features/Chat/hooks';
 import PhotoThumbnail from '../../PhotoThumbnail';
@@ -44,21 +46,23 @@ const ParentMessage: FC<ParentMessageProps> = ({
 
   return (
     <ParentMessageStyled style={animationStyle}>
-      <MessageDetails>
-        {type === 'photo' && <PhotoThumbnail message={message} />}
+      <MessageDetailsContainer>
+        <MessageDetails>
+          {type === 'photo' && <PhotoThumbnail message={message} />}
 
-        <div>
-          <MessageSender>{senderFullName}</MessageSender>
+          <TextualDetails>
+            <MessageSender>{senderFullName}</MessageSender>
 
-          {content ? (
-            <MessageContent>{content}</MessageContent>
-          ) : (
-            <MessageTypeIndicator>
-              {formattedMessageTypes[type]}
-            </MessageTypeIndicator>
-          )}
-        </div>
-      </MessageDetails>
+            {content ? (
+              <MessageContent>{content}</MessageContent>
+            ) : (
+              <MessageTypeIndicator>
+                {formattedMessageTypes[type]}
+              </MessageTypeIndicator>
+            )}
+          </TextualDetails>
+        </MessageDetails>
+      </MessageDetailsContainer>
 
       <CloseButton onClick={resetMessageInputState} />
     </ParentMessageStyled>

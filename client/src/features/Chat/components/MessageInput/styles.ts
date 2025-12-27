@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const MessageInputContainer = styled.div`
   flex-grow: 1;
   max-width: 40rem;
-  overflow: hidden;
 `;
 
 export const MessageInputStyled = styled.div`
