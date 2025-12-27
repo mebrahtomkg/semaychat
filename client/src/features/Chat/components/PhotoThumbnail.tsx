@@ -1,8 +1,8 @@
 import { useImageLoader } from '@/hooks';
 import { Message } from '@/types';
 import { FC } from 'react';
-import { useMessageInfo } from '../../hooks';
 import styled from 'styled-components';
+import { useMessageInfo } from '../hooks';
 
 const ImageContainer = styled.div`
   position: relative;

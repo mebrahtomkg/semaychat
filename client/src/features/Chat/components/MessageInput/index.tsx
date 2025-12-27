@@ -1,11 +1,4 @@
-import {
-  FC,
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { FC, MouseEventHandler, useCallback, useEffect, useState } from 'react';
 import useFilesSelector from '../../hooks/useFilesSelector';
 import FileSelector from '../FileSelector';
 import SendButton from '../SendButton';
@@ -24,13 +17,9 @@ import {
   addMessageUpdateRequest,
   addTextMessageSendRequest,
 } from '@/store/useMessageRequestsStore';
-import { Message, User } from '@/types';
+import { User } from '@/types';
 import ParentMessage from './ParentMessage';
-import {
-  ANIMATION_CONTEXT_MENU_FAST,
-  ANIMATION_DIALOG_FAST,
-  WithAnimation,
-} from '@/Animation';
+import { ANIMATION_DIALOG_FAST, WithAnimation } from '@/Animation';
 
 interface MessageInputProps {
   chatPartner: User;

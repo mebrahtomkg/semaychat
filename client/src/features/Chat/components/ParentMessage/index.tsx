@@ -9,7 +9,7 @@ import {
 } from './styles';
 import { useMessageInfo } from '../../hooks';
 import { calculateFullName } from '@/utils';
-import PhotoThumbnail from './PhotoThumbnail';
+import PhotoThumbnail from '../PhotoThumbnail';
 
 const formattedMessageTypes: Record<MessageType, string> = {
   text: 'Text',
