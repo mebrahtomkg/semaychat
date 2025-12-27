@@ -1,10 +1,18 @@
-import { FC, MouseEventHandler, useCallback, useEffect, useState } from 'react';
+import {
+  FC,
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import useFilesSelector from '../../hooks/useFilesSelector';
 import FileSelector from '../FileSelector';
 import SendButton from '../SendButton';
 import {
   ActionButtonsContainer,
   GrowingTextArea,
+  MessageInputContainer,
   MessageInputStyled,
 } from './styles';
 import AttachFileButton from '../AttachFileButton';
@@ -16,8 +24,13 @@ import {
   addMessageUpdateRequest,
   addTextMessageSendRequest,
 } from '@/store/useMessageRequestsStore';
-import { User } from '@/types';
+import { Message, User } from '@/types';
 import ParentMessage from './ParentMessage';
+import {
+  ANIMATION_CONTEXT_MENU_FAST,
+  ANIMATION_DIALOG_FAST,
+  WithAnimation,
+} from '@/Animation';
 
 interface MessageInputProps {
   chatPartner: User;
@@ -102,11 +115,18 @@ const MessageInput: FC<MessageInputProps> = ({ chatPartner }) => {
   );
 
   return (
-    <>
+    <MessageInputContainer>
       {messageInputState.mode === 'reply' && (
-        <ParentMessage
-          message={messageInputState.message}
-          chatPartner={chatPartner}
+        <WithAnimation
+          isVisible={true}
+          options={ANIMATION_DIALOG_FAST}
+          render={(style) => (
+            <ParentMessage
+              message={messageInputState.message}
+              chatPartner={chatPartner}
+              animationStyle={style}
+            />
+          )}
         />
       )}
 
@@ -141,7 +161,7 @@ const MessageInput: FC<MessageInputProps> = ({ chatPartner }) => {
           />
         )}
       </MessageInputStyled>
-    </>
+    </MessageInputContainer>
   );
 };
 

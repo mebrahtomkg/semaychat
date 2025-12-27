@@ -1,15 +1,13 @@
 import styled from 'styled-components';
 
 export const ParentMessageStyled = styled.div`
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  height: 10rem;
-  padding: 0.7rem;
+  padding: 0.5rem;
+  margin-bottom: -3rem;
+  padding-bottom: 3.5rem;
   display: flex;
   justify-content: space-between;
   background-color: var(--bg-primary);
+  border-radius: 10px;
 `;
 
 export const MessageDetails = styled.div`

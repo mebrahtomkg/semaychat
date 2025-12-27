@@ -2,7 +2,7 @@ import { CloseButton } from '@/components/buttons';
 import { useAccountInfo, useUserInfo } from '@/hooks';
 import { resetMessageInputState } from '@/store/useMessageInputStateStore';
 import { Message, User } from '@/types';
-import { FC } from 'react';
+import { CSSProperties, FC } from 'react';
 import {
   MessageContent,
   MessageDetails,
@@ -13,9 +13,14 @@ import {
 interface ParentMessageProps {
   message: Message;
   chatPartner: User;
+  animationStyle?: CSSProperties;
 }
 
-const ParentMessage: FC<ParentMessageProps> = ({ message, chatPartner }) => {
+const ParentMessage: FC<ParentMessageProps> = ({
+  message,
+  chatPartner,
+  animationStyle,
+}) => {
   const { fullName: partnerFullName } = useUserInfo(chatPartner);
   const { id: selfId, fullName: selfFullName } = useAccountInfo();
 
@@ -23,7 +28,7 @@ const ParentMessage: FC<ParentMessageProps> = ({ message, chatPartner }) => {
     message.senderId === selfId ? selfFullName : partnerFullName;
 
   return (
-    <ParentMessageStyled>
+    <ParentMessageStyled style={animationStyle}>
       <MessageDetails>
         <MessageSender>{senderFullName}</MessageSender>
         <MessageContent>{message.content}</MessageContent>

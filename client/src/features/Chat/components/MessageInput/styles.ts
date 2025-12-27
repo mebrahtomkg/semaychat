@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 
-export const MessageInputStyled = styled.div`
-  position: relative;
+export const MessageInputContainer = styled.div`
   flex-grow: 1;
   max-width: 40rem;
+  overflow: hidden;
+`;
+
+export const MessageInputStyled = styled.div`
+  position: relative;
   display: flex;
-  margin-right: 10px;
   padding: 7px 10px 7px 23px;
   border-radius: 15px;
   cursor: text;
