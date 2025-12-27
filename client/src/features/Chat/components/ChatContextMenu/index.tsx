@@ -1,4 +1,8 @@
-import { ANIMATION_CONTEXT_MENU_FAST, WithAnimation } from '@/Animation';
+import {
+  ANIMATION_CONTEXT_MENU_FAST,
+  ANIMATION_DIALOG_FAST,
+  WithAnimation,
+} from '@/Animation';
 import { MoreButton } from '@/components/buttons';
 import {
   AddContactIcon,
@@ -25,11 +29,11 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import CheckBox from '@/components/Checkbox';
 
+type ActiveConfirmDialog = 'delete-chat' | 'block-user' | 'none';
+
 interface ChatContextMenuProps {
   chatPartner: User;
 }
-
-type Confirmation = 'delete-chat' | 'block-user' | null;
 
 const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
   const {
@@ -39,12 +43,18 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
     closeContextMenu,
   } = useContextMenu();
 
-  const [confirmation, setConfirmation] = useState<Confirmation>(null);
-  const closeConfirmDialog = useCallback(() => setConfirmation(null), []);
+  const [activeConfirmDialog, setActiveConfirmDialog] =
+    useState<ActiveConfirmDialog>('none');
 
-  const [deleteForReceiver, setDeleteForReceiver] = useState(false);
-  const toggleDeleteForReceiver = useCallback(
-    () => setDeleteForReceiver((prevValue) => !prevValue),
+  const closeConfirmDialog = useCallback(
+    () => setActiveConfirmDialog('none'),
+    [],
+  );
+
+  const [isDeleteForReceiver, setIsDeleteForReceiver] = useState(false);
+
+  const toggleIsDeleteForReceiver = useCallback(
+    () => setIsDeleteForReceiver((prevValue) => !prevValue),
     [],
   );
 
@@ -59,66 +69,20 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
     () =>
       addChatDeleteRequest({
         chatPartnerId: chatPartner.id,
-        deleteForReceiver,
+        deleteForReceiver: isDeleteForReceiver,
       }),
-    [chatPartner.id, deleteForReceiver],
+    [chatPartner.id, isDeleteForReceiver],
   );
 
   const startDeleteChatFlow = useCallback(() => {
-    setDeleteForReceiver(false);
-    setConfirmation('delete-chat');
+    setIsDeleteForReceiver(false);
+    setActiveConfirmDialog('delete-chat');
   }, []);
 
   const startBlockUserFlow = useCallback(
-    () => setConfirmation('block-user'),
+    () => setActiveConfirmDialog('block-user'),
     [],
   );
-
-  const deleteChatConfirmDialog = useMemo(
-    () => (
-      <ConfirmDialog
-        title="Delete Chat"
-        message="Are you sure to delete all messages in this chat?"
-        onConfirm={deleteChat}
-        onClose={closeConfirmDialog}
-      >
-        <CheckBox
-          isChecked={deleteForReceiver}
-          onToggle={toggleDeleteForReceiver}
-          label="Also delete for receiver"
-        />
-      </ConfirmDialog>
-    ),
-    [
-      deleteChat,
-      closeConfirmDialog,
-      deleteForReceiver,
-      toggleDeleteForReceiver,
-    ],
-  );
-
-  const blockUserConfirmDialog = useMemo(
-    () => (
-      <ConfirmDialog
-        title="Block User"
-        message="Are you sure to block the user?"
-        onConfirm={blockUser}
-        onClose={closeConfirmDialog}
-      />
-    ),
-    [blockUser, closeConfirmDialog],
-  );
-
-  const activeConfirmDialogComponent = useMemo(() => {
-    switch (confirmation) {
-      case 'delete-chat':
-        return deleteChatConfirmDialog;
-
-      case 'block-user':
-        return blockUserConfirmDialog;
-    }
-    return null;
-  }, [confirmation, deleteChatConfirmDialog, blockUserConfirmDialog]);
 
   const menuItemsList = useMemo(() => {
     const menuItems: IMenuItem[] = [
@@ -204,7 +168,39 @@ const ChatContextMenu: FC<ChatContextMenuProps> = ({ chatPartner }) => {
         )}
       />
 
-      {activeConfirmDialogComponent}
+      <WithAnimation
+        isVisible={activeConfirmDialog === 'delete-chat'}
+        options={ANIMATION_DIALOG_FAST}
+        render={(style) => (
+          <ConfirmDialog
+            title="Delete Chat"
+            message="Are you sure to delete all messages in this chat?"
+            onConfirm={deleteChat}
+            onClose={closeConfirmDialog}
+            animationStyle={style}
+          >
+            <CheckBox
+              isChecked={isDeleteForReceiver}
+              onToggle={toggleIsDeleteForReceiver}
+              label="Also delete for receiver"
+            />
+          </ConfirmDialog>
+        )}
+      />
+
+      <WithAnimation
+        isVisible={activeConfirmDialog === 'block-user'}
+        options={ANIMATION_DIALOG_FAST}
+        render={(style) => (
+          <ConfirmDialog
+            title="Block User"
+            message="Are you sure to block the user?"
+            onConfirm={blockUser}
+            onClose={closeConfirmDialog}
+            animationStyle={style}
+          />
+        )}
+      />
     </>
   );
 };
