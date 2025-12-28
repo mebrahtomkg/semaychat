@@ -1,19 +1,13 @@
 import styled, { css } from 'styled-components';
 
-export const ProfileModalOverlay = styled.div`
+export const ProfileModal = styled.div`
   position: fixed;
-  z-index: 2;
+  z-index: 1;
   top: 0;
   left: 0;
-  right: 0;
   bottom: 0;
-  background-color: 0000008f;
-  display: flex;
-  justify-content: center;
-`;
-
-export const ProfileModal = styled.div`
-  height: 100vh;
+  width: var(--big-modal-width);
+  overflow: hidden;
   overflow-x: hidden;
   overflow-y: auto;
   background-color: var(--bg-primary);
@@ -31,17 +25,12 @@ export const ProfilePhotoStyled = styled.div<{
           right: 0;
           bottom: 0;
           display: flex;
-          background-color: 0000008f;
+          background-color: #000000c2;
         `
       : css`
-          --profile-photo-width: 100vw;
-          @media (min-width: 425px) {
-            --profile-photo-width: 23rem;
-          }
-
           position: relative;
-          width: var(--profile-photo-width);
-          height: var(--profile-photo-width);
+          width: var(--big-modal-width);
+          height: var(--big-modal-width);
         `}
 `;
 

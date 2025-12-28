@@ -7,14 +7,14 @@ export const NameInitialsContainer = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: inherit;
-  background-color: #005d27;
+  background: var(--bg-avatar-0);
 `;
 
 export const NameInitials = styled.span`
-  line-height: 1.5;
-  font-size: 15rem;
-  font-weight: 600;
-  color: #e9e9e9;
+  line-height: 1;
+  font-size: 10rem;
+  font-weight: 500;
+  color: #fff;
 `;
 
 export const SmallNameInitialsContainer = styled.div`

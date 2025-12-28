@@ -5,7 +5,6 @@ import {
   NavMenuContainer,
   SettingsCategoryContainer,
   SettingsModal,
-  SettingsModalOverlay,
 } from './styles';
 import { useAppStateStore } from '@/store';
 import PrivacySettings from './components/PrivacySettings';
@@ -29,36 +28,34 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
   const [category, setCategory] = useState<SettingsCategory>('security');
 
   return (
-    <SettingsModalOverlay style={{ ...animationStyle, transform: undefined }}>
-      <SettingsModal ref={settingsModalRef} style={animationStyle}>
-        <NavMenuContainer>
-          <BackButton onClick={closeSettingsModal} />
+    <SettingsModal ref={settingsModalRef} style={animationStyle}>
+      <NavMenuContainer>
+        <BackButton onClick={closeSettingsModal} />
 
-          <NavMenu>
-            <TabButton
-              text="Security"
-              isActive={category === 'security'}
-              onClick={() => setCategory('security')}
-            />
-            <TabButton
-              text="Privacy"
-              isActive={category === 'privacy'}
-              onClick={() => setCategory('privacy')}
-            />
-          </NavMenu>
-        </NavMenuContainer>
+        <NavMenu>
+          <TabButton
+            text="Security"
+            isActive={category === 'security'}
+            onClick={() => setCategory('security')}
+          />
+          <TabButton
+            text="Privacy"
+            isActive={category === 'privacy'}
+            onClick={() => setCategory('privacy')}
+          />
+        </NavMenu>
+      </NavMenuContainer>
 
-        {category === 'security' && (
-          <SettingsCategoryContainer>
-            <PasswordSettings />
-            <BlockedUsers />
-          </SettingsCategoryContainer>
-        )}
-        {category === 'privacy' && (
-          <PrivacySettings parentModalRef={settingsModalRef} />
-        )}
-      </SettingsModal>
-    </SettingsModalOverlay>
+      {category === 'security' && (
+        <SettingsCategoryContainer>
+          <PasswordSettings />
+          <BlockedUsers />
+        </SettingsCategoryContainer>
+      )}
+      {category === 'privacy' && (
+        <PrivacySettings parentModalRef={settingsModalRef} />
+      )}
+    </SettingsModal>
   );
 };
 

@@ -1,11 +1,4 @@
-import {
-  CSSProperties,
-  FC,
-  MouseEvent,
-  MouseEventHandler,
-  useCallback,
-  useMemo,
-} from 'react';
+import { CSSProperties, FC, MouseEvent, useMemo } from 'react';
 import {
   BackButton,
   MoreButton,
@@ -37,37 +30,24 @@ import {
   PhotoMetaText,
 } from '@/styles';
 import { User } from '@/types';
-import {
-  Name,
-  ProfileModal,
-  ProfileModalOverlay,
-  ProfilePhotoStyled,
-} from './styles';
+import { Name, ProfileModal, ProfilePhotoStyled } from './styles';
 import UserInfo from './UserInfo';
 import useUserProfilePhotos from './useUserProfilePhotos';
 import { FlexibleImage, NameInitial, TinySpinner } from '@/components';
-import {
-  ANIMATION_CONTEXT_MENU_FAST,
-  useAnimation,
-  WithAnimation,
-} from '@/Animation';
+import { ANIMATION_CONTEXT_MENU_FAST, WithAnimation } from '@/Animation';
 import ContextMenu, {
   IMenuItem,
   MenuItem,
   useContextMenu,
 } from '@/components/ContextMenu';
 
-interface ProfileBaseProps {
+interface ProfileProps {
   user: User;
   onClose: (e: MouseEvent) => void;
   animationStyle?: CSSProperties;
 }
 
-const ProfileBase: FC<ProfileBaseProps> = ({
-  user,
-  onClose,
-  animationStyle,
-}) => {
+const Profile: FC<ProfileProps> = ({ user, onClose, animationStyle }) => {
   const { fullName, nameInitials, isBlocked, isContact } = useUserInfo(user);
 
   const { blockUser } = useBlockUser(user);
@@ -181,111 +161,66 @@ const ProfileBase: FC<ProfileBaseProps> = ({
     }
   };
 
-  const handleOverlayClick: MouseEventHandler<HTMLDivElement> = useCallback(
-    (e) => {
-      e.stopPropagation();
-      e.preventDefault();
-      if (e.target === e.currentTarget) onClose(e);
-    },
-    [onClose],
-  );
-
   return (
-    <ProfileModalOverlay
-      onClick={handleOverlayClick}
-      style={{ ...animationStyle, transform: undefined }}
-    >
-      <ProfileModal style={animationStyle}>
-        <ProfilePhotoStyled $isFullScreenMode={isFullScreenMode}>
-          <PhotoHeaderSection>
-            <BackButton onClick={handleBackClick} />
-
-            {photosCount > 1 && (
-              <PhotoIndexIndicator>{photoIndexIndicator}</PhotoIndexIndicator>
-            )}
-
-            <MoreButton onClick={handleMoreButtonClick} />
-          </PhotoHeaderSection>
-
-          {isImageLoading && <TinySpinner />}
-
-          {imageSrc ? (
-            <FlexibleImage
-              src={imageSrc}
-              onLoad={handleImageLoad}
-              alt="Profile Photo"
-              isBlur={isImageLoading}
-              onClick={toggleFullScreenMode}
-              isPhotoNavTarget={true}
-            />
-          ) : (
-            <NameInitial nameInitials={nameInitials} />
-          )}
+    <ProfileModal style={animationStyle}>
+      <ProfilePhotoStyled $isFullScreenMode={isFullScreenMode}>
+        <PhotoHeaderSection>
+          <BackButton onClick={handleBackClick} />
 
           {photosCount > 1 && (
-            <>
-              <PreviousButton onClick={handlePrevious} />
-              <NextButton onClick={handleNext} />
-            </>
+            <PhotoIndexIndicator>{photoIndexIndicator}</PhotoIndexIndicator>
           )}
 
-          {!isFullScreenMode && <Name>{fullName}</Name>}
+          <MoreButton onClick={handleMoreButtonClick} />
+        </PhotoHeaderSection>
 
-          {isFullScreenMode && photoDateTime && (
-            <PhotoMetaContainer>
-              <PhotoMetaText>{fullName} - profile photo</PhotoMetaText>
-              <PhotoMetaText>{photoDateTime}</PhotoMetaText>
-            </PhotoMetaContainer>
-          )}
+        {isImageLoading && <TinySpinner />}
 
-          <WithAnimation
-            isVisible={isContextMenuVisible}
-            options={ANIMATION_CONTEXT_MENU_FAST}
-            render={(style) => (
-              <ContextMenu
-                menuItems={options}
-                position={contextMenuPosition}
-                onClose={closeContextMenu}
-                animationStyle={style}
-              />
-            )}
+        {imageSrc ? (
+          <FlexibleImage
+            src={imageSrc}
+            onLoad={handleImageLoad}
+            alt="Profile Photo"
+            isBlur={isImageLoading}
+            onClick={toggleFullScreenMode}
+            isPhotoNavTarget={true}
           />
-        </ProfilePhotoStyled>
+        ) : (
+          <NameInitial nameInitials={nameInitials} />
+        )}
 
-        <UserInfo user={user} />
-      </ProfileModal>
-    </ProfileModalOverlay>
-  );
-};
+        {photosCount > 1 && (
+          <>
+            <PreviousButton onClick={handlePrevious} />
+            <NextButton onClick={handleNext} />
+          </>
+        )}
 
-interface ProfileProps extends Omit<ProfileBaseProps, 'animationStyle'> {
-  isVisible: boolean;
-}
+        {!isFullScreenMode && <Name>{fullName}</Name>}
 
-const Profile: FC<ProfileProps> = ({ isVisible, ...restProps }) => {
-  const animationOptions = {
-    initialStyles: {
-      opacity: '0.0',
-      transform: 'scale(0.3)',
-    },
-    finalStyles: {
-      opacity: '1.0',
-      transform: 'scale(0.99)',
-    },
-    transition: {
-      property: ['opacity', 'transform'],
-      duration: [300, 300],
-      timingFunction: ['ease-in-out', 'ease-in-out'],
-    },
-  };
+        {isFullScreenMode && photoDateTime && (
+          <PhotoMetaContainer>
+            <PhotoMetaText>{fullName} - profile photo</PhotoMetaText>
+            <PhotoMetaText>{photoDateTime}</PhotoMetaText>
+          </PhotoMetaContainer>
+        )}
 
-  const { isMounted, animationStyle } = useAnimation(
-    isVisible,
-    animationOptions,
-  );
+        <WithAnimation
+          isVisible={isContextMenuVisible}
+          options={ANIMATION_CONTEXT_MENU_FAST}
+          render={(style) => (
+            <ContextMenu
+              menuItems={options}
+              position={contextMenuPosition}
+              onClose={closeContextMenu}
+              animationStyle={style}
+            />
+          )}
+        />
+      </ProfilePhotoStyled>
 
-  return (
-    isMounted && <ProfileBase {...restProps} animationStyle={animationStyle} />
+      <UserInfo user={user} />
+    </ProfileModal>
   );
 };
 

@@ -7,7 +7,6 @@ import {
   NavMenuContainer,
   SettingsCategoryContainer,
   SettingsModal,
-  SettingsModalOverlay,
 } from './styles';
 import { useAppStateStore } from '@/store';
 import NameSettings from './components/NameSettings';
@@ -32,35 +31,33 @@ const Profile: FC<ProfileProps> = ({ animationStyle }) => {
   const [category, setCategory] = useState<ProfileCategory>('profilePhoto');
 
   return (
-    <SettingsModalOverlay style={{ ...animationStyle, transform: undefined }}>
-      <SettingsModal style={animationStyle}>
-        <NavMenuContainer>
-          <BackButton onClick={closeProfileModal} />
+    <SettingsModal style={animationStyle}>
+      <NavMenuContainer>
+        <BackButton onClick={closeProfileModal} />
 
-          <NavMenu>
-            <TabButton
-              text="Profile Photo"
-              isActive={category === 'profilePhoto'}
-              onClick={() => setCategory('profilePhoto')}
-            />
-            <TabButton
-              text="Account"
-              isActive={category === 'account'}
-              onClick={() => setCategory('account')}
-            />
-          </NavMenu>
-        </NavMenuContainer>
-        {category === 'profilePhoto' && <ProfilePhotoSettings />}
-        {category === 'account' && (
-          <SettingsCategoryContainer>
-            <NameSettings />
-            <UsernameSettings />
-            <SettingsItem value={email} label="Email" />
-            <BioSettings />
-          </SettingsCategoryContainer>
-        )}
-      </SettingsModal>
-    </SettingsModalOverlay>
+        <NavMenu>
+          <TabButton
+            text="Profile Photo"
+            isActive={category === 'profilePhoto'}
+            onClick={() => setCategory('profilePhoto')}
+          />
+          <TabButton
+            text="Account"
+            isActive={category === 'account'}
+            onClick={() => setCategory('account')}
+          />
+        </NavMenu>
+      </NavMenuContainer>
+      {category === 'profilePhoto' && <ProfilePhotoSettings />}
+      {category === 'account' && (
+        <SettingsCategoryContainer>
+          <NameSettings />
+          <UsernameSettings />
+          <SettingsItem value={email} label="Email" />
+          <BioSettings />
+        </SettingsCategoryContainer>
+      )}
+    </SettingsModal>
   );
 };
 

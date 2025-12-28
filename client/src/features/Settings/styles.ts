@@ -1,11 +1,5 @@
 import styled from 'styled-components';
 
-export const SettingsModalOverlay = styled.div`
-  position: fixed;
-  inset: 0;
-  background-color: transparent;
-`;
-
 export const SettingsModal = styled.div`
   position: absolute;
   inset: 0;

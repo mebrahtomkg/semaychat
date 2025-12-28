@@ -10,6 +10,7 @@ import { useResponsive, useUserInfo } from '@/hooks';
 import { User } from '@/types';
 import Profile from '@/features/Profile';
 import Avatar from '@/components/Avatar';
+import { ANIMATION_SLIDE_IN, WithAnimation } from '@/Animation';
 
 interface ChatPartnerProps {
   user: User;
@@ -42,10 +43,12 @@ const ChatPartner: FC<ChatPartnerProps> = ({ user }) => {
         </NameContainer>
       </UserContainer>
 
-      <Profile
+      <WithAnimation
         isVisible={isProfileVisible}
-        user={user}
-        onClose={closeProfile}
+        options={ANIMATION_SLIDE_IN}
+        render={(style) => (
+          <Profile user={user} onClose={closeProfile} animationStyle={style} />
+        )}
       />
     </ProfileLink>
   );
