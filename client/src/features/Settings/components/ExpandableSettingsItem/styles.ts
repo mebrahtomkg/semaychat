@@ -8,7 +8,7 @@ export const SettingsItemContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   border-radius: 15px;
-  background-color: #41414a;
+  background-color: var(--bg-secondary);
 
   &:hover {
     background-color: #545459;
