@@ -26,11 +26,13 @@ export const ProfilePhotoStyled = styled.div<{
           bottom: 0;
           display: flex;
           background-color: #000000c2;
+          color: #fff;
         `
       : css`
           position: relative;
           width: var(--big-modal-width);
           height: var(--big-modal-width);
+          color: #fff;
         `}
 `;
 

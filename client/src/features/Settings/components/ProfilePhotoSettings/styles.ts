@@ -11,6 +11,7 @@ export const ProfilePhotoSettingsStyled = styled.div<{
           display: flex;
           overflow: hidden;
           background-color: rgb(0 0 0 / 90%);
+          color: #fff;
         `
       : css`
           --profile-photo-modal-width: calc(var(--big-modal-width) - 2rem);
@@ -19,6 +20,7 @@ export const ProfilePhotoSettingsStyled = styled.div<{
           height: var(--profile-photo-modal-width);
           border-radius: 10px;
           background-color: var(--bg-secondary);
+          color: #fff;
         `}
 `;
 
@@ -29,14 +31,14 @@ export const NameInitialContainer = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: inherit;
-  background-color: #005d27;
+  background: var(--bg-avatar-0);
 `;
 
 export const NameInitial = styled.span`
-  line-height: 1.5;
-  font-size: 15rem;
-  font-weight: 600;
-  color: #e9e9e9;
+  line-height: 1;
+  font-size: 9rem;
+  font-weight: 500;
+  color: #fff;
 `;
 
 export const Name = styled.h3`
