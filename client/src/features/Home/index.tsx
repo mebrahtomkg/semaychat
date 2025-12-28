@@ -6,6 +6,7 @@ import { SearchInput } from '@/components';
 import useSearch from './useSearch';
 import { ChatItem } from './components';
 import BottomMenu from './components/BottomMenu';
+import { ANIMATION_SLIDE_IN, WithAnimation } from '@/Animation';
 
 const Home = () => {
   const isContactsModalVisible = useAppStateStore(
@@ -21,7 +22,12 @@ const Home = () => {
   // TODO: after the searchinput is focused show examples of how to search below the search bar
   return (
     <>
-      {isContactsModalVisible && <Contacts />}
+      <WithAnimation
+        isVisible={isContactsModalVisible}
+        options={ANIMATION_SLIDE_IN}
+        render={(style) => <Contacts animationStyle={style} />}
+      />
+
       <HomeStyled>
         <HeaderContainer>
           <SearchInput

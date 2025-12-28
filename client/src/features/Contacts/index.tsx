@@ -1,13 +1,22 @@
-import { ContactsContainer, ContactsModal, HeaderContainer } from './styles';
+import {
+  ContactsContainer,
+  ContactsModal,
+  HeaderContainer,
+  SearchContainer,
+} from './styles';
 import { useContacts, useResponsive } from '@/hooks';
 import { Contact } from './components';
 import { BackButton } from '@/components/buttons';
 import { useAppStateStore } from '@/store';
 import { SearchInput } from '@/components';
 import useSearchContacts from './useSearchContacts';
-import { useMemo } from 'react';
+import { CSSProperties, FC, useMemo } from 'react';
 
-const Contacts = () => {
+interface ContactsProps {
+  animationStyle?: CSSProperties;
+}
+
+const Contacts: FC<ContactsProps> = ({ animationStyle }) => {
   const contacts = useContacts();
 
   const { isLargeScreen } = useResponsive();
@@ -27,19 +36,21 @@ const Contacts = () => {
 
   // TODO: after the searchinput is focused show examples of how to search below the search bar
   return (
-    <ContactsModal $isLargeScreen={isLargeScreen}>
+    <ContactsModal style={animationStyle} $isLargeScreen={isLargeScreen}>
       <HeaderContainer>
         <BackButton onClick={closeContactsModal} />
 
-        <SearchInput
-          placeholder="Search contacts"
-          onChange={handleSearchInputChange}
-        />
+        <SearchContainer>
+          <SearchInput
+            placeholder="Search contacts"
+            onChange={handleSearchInputChange}
+          />
+        </SearchContainer>
       </HeaderContainer>
 
       <ContactsContainer>
-        {contactsToShow.map((contact) => (
-          <Contact key={`${contact.id}`} user={contact} />
+        {contactsToShow.map((contact, index) => (
+          <Contact key={`${contact.id}`} user={contact} index={index} />
         ))}
       </ContactsContainer>
     </ContactsModal>

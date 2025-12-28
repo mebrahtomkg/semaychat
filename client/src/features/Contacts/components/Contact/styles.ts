@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const ContactStyled = styled(Link)`
   margin: 0 0.2rem;
@@ -13,32 +13,32 @@ export const ContactStyled = styled(Link)`
   }
 `;
 
-export const ProfilePhotoContainer = styled.div`
-  width: 3.8rem;
-  height: 3.8rem;
-  margin-right: 0.7rem;
-  border-radius: 50%;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const Photo = styled.img`
-  width: 100%;
-`;
-
 export const NameContainer = styled.div`
   flex-grow: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.3rem;
+  margin-left: 0.6rem;
+  overflow: hidden;
 `;
 
 export const Name = styled.h3`
-  margin-right: 1rem;
-  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
   font-size: 1rem;
   font-weight: 500;
+`;
+
+export const Status = styled.span<{ $isOnline: boolean }>`
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+
+  ${(props) =>
+    props.$isOnline
+      ? css`
+          color: var(--fg-user-status);
+        `
+      : css`
+          color: var(--fg-muted);
+        `}
 `;

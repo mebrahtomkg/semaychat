@@ -1,4 +1,5 @@
 import { Contact, User } from '@/models';
+import socketUsersManager from '@/socket/socketUsersManager';
 import { applyUserPrivacy } from '@/utils';
 import { Request, Response, NextFunction } from 'express';
 
@@ -26,12 +27,20 @@ const listAllContacts = async (
 
       if (!user) throw new Error('Invalid user!');
 
-      return applyUserPrivacy(user, {
+      const filteredUser = applyUserPrivacy(user, {
         requesterIsBlocked: user.blockedUsers
           ? user.blockedUsers.length > 0
           : false,
         requesterIsContact: user.contacts ? user.contacts.length > 0 : false,
       });
+
+      if (filteredUser.lastSeenAt) {
+        filteredUser.isOnline = socketUsersManager.isOnline(
+          filteredUser.id as number,
+        );
+      }
+
+      return filteredUser;
     });
 
     res.status(200).json({

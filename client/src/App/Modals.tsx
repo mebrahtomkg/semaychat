@@ -1,17 +1,7 @@
-import { AnimationOptions, WithAnimation } from '@/Animation';
+import { ANIMATION_SLIDE_IN, WithAnimation } from '@/Animation';
 import Settings from '@/features/Settings';
 import Profile from '@/features/Settings/Profile';
 import { useAppStateStore } from '@/store';
-
-const ANIMATION_SLIDE_IN: AnimationOptions = {
-  initialStyles: { opacity: 0, transform: 'translate(0px, 20px)' },
-  finalStyles: { opacity: 1, transform: 'translate(0, 0)' },
-  transition: {
-    property: ['transform', 'opacity'],
-    duration: [200, 200],
-    timingFunction: ['ease-out', 'ease-out'],
-  },
-};
 
 const Modals = () => {
   const isSettingsModalVisible = useAppStateStore(

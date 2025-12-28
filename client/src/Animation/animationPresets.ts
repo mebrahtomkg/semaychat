@@ -50,3 +50,13 @@ export const ANIMATION_CONTEXT_MENU_FAST: AnimationOptions = {
     timingFunction: ['ease-out', 'ease-out'],
   },
 };
+
+export const ANIMATION_SLIDE_IN: AnimationOptions = {
+  initialStyles: { opacity: 0, transform: 'translate(0px, 20px)' },
+  finalStyles: { opacity: 1, transform: 'translate(0, 0)' },
+  transition: {
+    property: ['transform', 'opacity'],
+    duration: [200, 200],
+    timingFunction: ['ease-out', 'ease-out'],
+  },
+};

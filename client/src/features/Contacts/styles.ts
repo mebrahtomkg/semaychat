@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const ContactsModal = styled.div<{ $isLargeScreen: boolean }>`
   position: absolute;
@@ -7,28 +7,24 @@ export const ContactsModal = styled.div<{ $isLargeScreen: boolean }>`
   left: 0;
   right: 0;
   bottom: 0;
+  width: var(--big-modal-width);
   overflow: hidden;
   background-color: var(--bg-primary);
-
-  ${(props) =>
-    props.$isLargeScreen
-      ? css`
-          max-width: 19rem;
-          min-width: 19rem;
-        `
-      : css`
-          width: 100%;
-        `}
 `;
 
 export const HeaderContainer = styled.div`
   height: 3.5rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background-color: var(--bg-secondary);
   border-bottom: 1px solid;
   border-color: var(--fg-border);
+`;
+
+export const SearchContainer = styled.div`
+  flex-grow: 1;
+  padding: 0 0.7rem;
 `;
 
 export const ContactsContainer = styled.div`
