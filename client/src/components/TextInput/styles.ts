@@ -4,7 +4,7 @@ export const TextInputStyled = styled.div`
   --text-input-padding: 1rem;
   --text-input-font-size: 1rem;
   --text-input-border-color: var(--bg-action);
-  margin-bottom: 1.6rem;
+  margin-bottom: 0.7rem;
   background-color: inherit;
 `;
 

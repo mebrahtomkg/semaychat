@@ -32,27 +32,29 @@ const App = () => {
       <GlobalStyle />
 
       <AppThemeProvider>
-        {isLoggedIn ? (
-          <AppStyled>
-            <HeartbeatProcessor />
-            <AccountUpdateProcessor />
-            <MessageRequestsProcessor />
-            <AttachmentUploadProcessor />
+        <AppStyled>
+          {isLoggedIn ? (
+            <>
+              <HeartbeatProcessor />
+              <AccountUpdateProcessor />
+              <MessageRequestsProcessor />
+              <AttachmentUploadProcessor />
 
-            {isLargeScreen && <Home />}
+              {isLargeScreen && <Home />}
 
-            <PageContainer>
-              <Routes>
-                {<Route index element={!isLargeScreen ? <Home /> : null} />}
-                <Route path="/chat/:chatPartnerId" element={<Chat />} />
-              </Routes>
-            </PageContainer>
+              <PageContainer>
+                <Routes>
+                  {<Route index element={!isLargeScreen ? <Home /> : null} />}
+                  <Route path="/chat/:chatPartnerId" element={<Chat />} />
+                </Routes>
+              </PageContainer>
 
-            <Modals />
-          </AppStyled>
-        ) : (
-          <Guest />
-        )}
+              <Modals />
+            </>
+          ) : (
+            <Guest />
+          )}
+        </AppStyled>
       </AppThemeProvider>
     </>
   );
