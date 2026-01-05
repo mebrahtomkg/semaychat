@@ -1,135 +1,44 @@
-import { InputEventHandler, useRef, useState } from 'react';
-import { useAccountActions } from '@/hooks';
-import { Account } from '@/types';
 import {
-  checkConfirmPassword,
-  checkEmail,
-  checkName,
-  checkPassword,
-} from '../utils';
-import {
-  ActionButton,
   ButtonsContainer,
   FormLink,
   FormStyled,
   FormTitle,
   PrimaryButton,
 } from '../styles';
-import { post } from '@/api';
-import TextInput, { TextInputImperativeHandle } from '@/components/TextInput';
+import TextInput from '@/components/TextInput';
 import BackButton from './BackButton';
-
-type SignUpStep = 'first' | 'second';
+import useSignUp from './useSignUp';
 
 const SignUpForm = () => {
-  const [step, setStep] = useState<SignUpStep>('first');
-  const { setAccount } = useAccountActions();
+  const {
+    step,
 
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const emailInputRef = useRef<TextInputImperativeHandle | null>(null);
+    firstNameInputRef,
+    firstNameInfo,
+    handleFirstNameChange,
 
-  const [name, setName] = useState('');
-  const [nameError, setNameError] = useState('');
-  const nameInputRef = useRef<TextInputImperativeHandle | null>(null);
+    lastNameInputRef,
+    lastNameInfo,
+    handleLastNameChange,
 
-  const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const passwordInputRef = useRef<TextInputImperativeHandle | null>(null);
+    emailInputRef,
+    emailInfo,
+    handleEmailChange,
 
-  const [cfmPassword, setCfmPassword] = useState('');
-  const [cfmPasswordError, setCfmPasswordError] = useState('');
-  const cfmPasswordInputRef = useRef<TextInputImperativeHandle | null>(null);
+    handleNextClick,
 
-  const handleNameChange: InputEventHandler<HTMLInputElement> = (e) => {
-    setName(e.currentTarget.value);
-    setNameError('');
-  };
+    passwordInputRef,
+    passwordInfo,
+    handlePasswordChange,
 
-  const handleEmailChange: InputEventHandler<HTMLInputElement> = (e) => {
-    setEmail(e.currentTarget.value);
-    setEmailError('');
-  };
+    cfmPasswordInputRef,
+    cfmPasswordInfo,
+    handleCfmPasswordChange,
 
-  const handleNextClick = async () => {
-    const _name = name.trim();
-    const _email = email.trim();
+    handleBackClick,
 
-    const _nameError = checkName(_name);
-    const _emailError = checkEmail(_email);
-
-    if (_nameError || _emailError) {
-      if (_nameError) {
-        setNameError(_nameError);
-        nameInputRef.current?.focusInput();
-        nameInputRef.current?.animateInfo();
-      }
-      if (_emailError) {
-        setEmailError(_emailError);
-        emailInputRef.current?.animateInfo();
-        // if name had errors it would be the focused input already
-        if (!_nameError) {
-          emailInputRef.current?.focusInput();
-        }
-      }
-    } else {
-      setStep('second');
-    }
-  };
-
-  const handleBackClick = () => setStep('first');
-
-  const handlePasswordChange: InputEventHandler<HTMLInputElement> = (e) => {
-    setPassword(e.currentTarget.value);
-    setPasswordError('');
-  };
-
-  const handleCfmPasswordChange: InputEventHandler<HTMLInputElement> = (e) => {
-    setCfmPassword(e.currentTarget.value);
-    setCfmPasswordError('');
-  };
-
-  const handleSignup = async () => {
-    const _password = password.trim();
-    const _cfmPassword = cfmPassword.trim();
-
-    const _passwordError = checkPassword(_password);
-    let _cfmPasswordError = checkConfirmPassword(_cfmPassword);
-
-    if (!_cfmPasswordError && _cfmPassword !== _password) {
-      _cfmPasswordError = 'Passwords do not match.';
-    }
-
-    if (_passwordError || _cfmPasswordError) {
-      if (_passwordError) {
-        setPasswordError(_passwordError);
-        passwordInputRef.current?.focusInput();
-        passwordInputRef.current?.animateInfo();
-      }
-      if (_cfmPasswordError) {
-        setCfmPasswordError(_cfmPasswordError);
-        cfmPasswordInputRef.current?.animateInfo();
-        // if password had errors it would be the focused input already
-        if (!_passwordError) {
-          cfmPasswordInputRef.current?.focusInput();
-        }
-      }
-    } else {
-      try {
-        const data = await post<Account>('/auth/signup', {
-          firstName: name.trim(),
-          email: email.trim(),
-          password: _password,
-        });
-        setAccount(data);
-      } catch (err) {
-        setCfmPasswordError(
-          (err as Error).message || 'Unkown error happened while signup!',
-        );
-        cfmPasswordInputRef.current?.animateInfo();
-      }
-    }
-  };
+    handleSignup,
+  } = useSignUp();
 
   return (
     <FormStyled>
@@ -138,26 +47,37 @@ const SignUpForm = () => {
       {step === 'first' && (
         <>
           <TextInput
-            id="id-name"
-            label="Name"
+            id="id-first-name"
+            label="First Name"
             type="text"
-            name="name"
-            value={name}
-            onChange={handleNameChange}
-            ref={nameInputRef}
+            name="firstName"
+            value={firstNameInfo.value}
+            errorMessage={firstNameInfo.error}
+            onChange={handleFirstNameChange}
+            ref={firstNameInputRef}
             onEnter={handleNextClick}
-            errorMessage={nameError}
+          />
+          <TextInput
+            id="id-last-name"
+            label="Last Name"
+            type="text"
+            name="lastName"
+            value={lastNameInfo.value}
+            errorMessage={lastNameInfo.error}
+            onChange={handleLastNameChange}
+            ref={lastNameInputRef}
+            onEnter={handleNextClick}
           />
           <TextInput
             id="id-email"
             label="Email"
             type="email"
             name="email"
-            value={email}
+            value={emailInfo.value}
+            errorMessage={emailInfo.error}
             onChange={handleEmailChange}
             ref={emailInputRef}
             onEnter={handleNextClick}
-            errorMessage={emailError}
           />
 
           <ButtonsContainer>
@@ -176,22 +96,22 @@ const SignUpForm = () => {
             label="Password"
             type="password"
             name="password"
-            value={password}
+            value={passwordInfo.value}
+            errorMessage={passwordInfo.error}
             onChange={handlePasswordChange}
             ref={passwordInputRef}
             onEnter={handleSignup}
-            errorMessage={passwordError}
           />
           <TextInput
             id="id-confirm-password"
             label="Confirm Password"
             type="password"
             name="confirmPassword"
-            value={cfmPassword}
+            value={cfmPasswordInfo.value}
+            errorMessage={cfmPasswordInfo.error}
             onChange={handleCfmPasswordChange}
             ref={cfmPasswordInputRef}
             onEnter={handleSignup}
-            errorMessage={cfmPasswordError}
           />
 
           <ButtonsContainer>

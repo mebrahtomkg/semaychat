@@ -97,7 +97,7 @@ const LogInForm = () => {
       />
 
       <ButtonsContainer>
-        <FormLink to="../signup">Sign Up</FormLink>
+        <FormLink to="../signup">Create Account</FormLink>
 
         <PrimaryButton type="button" onClick={doLogin}>
           LogIn
