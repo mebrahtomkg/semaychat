@@ -8,6 +8,7 @@ import {
   FormLink,
   FormStyled,
   FormTitle,
+  PrimaryButton,
 } from '../styles';
 import { post } from '@/api';
 import TextInput, { TextInputImperativeHandle } from '@/components/TextInput';
@@ -98,9 +99,9 @@ const LogInForm = () => {
       <ButtonsContainer>
         <FormLink to="../signup">Sign Up</FormLink>
 
-        <ActionButton type="button" onClick={doLogin}>
+        <PrimaryButton type="button" onClick={doLogin}>
           LogIn
-        </ActionButton>
+        </PrimaryButton>
       </ButtonsContainer>
     </FormStyled>
   );

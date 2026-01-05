@@ -33,19 +33,10 @@ export const FormTitle = styled.h2`
   color: var(--fg-muted);
 `;
 
-export const InputGroup = styled.div`
-  margin-bottom: 1.5rem;
-`;
-
 export const ButtonsContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-`;
-
-export const FormOptionLinker = styled.div`
-  font-size: 1rem;
-  font-weight: 500;
 `;
 
 export const FormLink = styled(Link)`
@@ -61,7 +52,7 @@ export const FormLink = styled(Link)`
   }
 `;
 
-export const ActionButton = styled.button`
+export const PrimaryButton = styled.button`
   padding: 0.4rem 1.7rem;
   box-shadow: none;
   border: 1px solid;
@@ -70,16 +61,9 @@ export const ActionButton = styled.button`
   font-size: 1rem;
   font-weight: 500;
   color: var(--fg-primary);
-  background-color: transparent;
-`;
-
-export const DoneButton = styled.button`
-  --done-btn-width: 2.6rem;
-  width: var(--done-btn-width);
-  height: var(--done-btn-width);
-  padding: 0.3rem 0.3rem 0.4rem 0.5rem;
-  transform: rotate(-45deg);
   background-color: var(--bg-action);
-  color: #fff;
-  border-radius: 50%;
+
+  &:hover {
+    background-color: var(--bg-action-hover);
+  }
 `;

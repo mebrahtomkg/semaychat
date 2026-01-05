@@ -8,7 +8,10 @@ export const TextInputStyled = styled.div`
   background-color: inherit;
 `;
 
-export const TextInputViewPort = styled.div<{ $isFocused: boolean }>`
+export const TextInputViewPort = styled.div<{
+  $isFocused: boolean;
+  $isErrorMode: boolean;
+}>`
   position: relative;
   margin-bottom: 0.5rem;
   padding: var(--text-input-padding);
@@ -26,9 +29,20 @@ export const TextInputViewPort = styled.div<{ $isFocused: boolean }>`
       --text-input-border-color: var(--bg-action-hover);
     `}
 
-  &:hover {
-    --text-input-border-color: var(--bg-action-hover);
-  }
+  ${(props) =>
+    props.$isErrorMode &&
+    css`
+      --text-input-border-color: var(--fg-error);
+    `}
+
+  ${(props) =>
+    !props.$isErrorMode &&
+    css`
+      &:hover {
+        --text-input-border-color: var(--bg-action-hover);
+      }
+    `}
+
 
   outline-color: var(--text-input-border-color);
 `;

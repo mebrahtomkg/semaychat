@@ -93,9 +93,15 @@ const TextInput: FC<TextInputProps> = ({
 
   const info = errorMessage || helperText;
 
+  const isErrorMode = !!errorMessage;
+
   return (
     <TextInputStyled>
-      <TextInputViewPort onClick={focusInput} $isFocused={isFocused}>
+      <TextInputViewPort
+        $isErrorMode={isErrorMode}
+        onClick={focusInput}
+        $isFocused={isFocused}
+      >
         <LabelStyled htmlFor={id} $isAsLabel={!!value || isFocused}>
           {label}
         </LabelStyled>

@@ -13,6 +13,7 @@ import {
   FormLink,
   FormStyled,
   FormTitle,
+  PrimaryButton,
 } from '../styles';
 import { post } from '@/api';
 import TextInput, { TextInputImperativeHandle } from '@/components/TextInput';
@@ -161,9 +162,9 @@ const SignUpForm = () => {
 
           <ButtonsContainer>
             <FormLink to="../login">Log In</FormLink>
-            <ActionButton type="button" onClick={handleNextClick}>
+            <PrimaryButton type="button" onClick={handleNextClick}>
               Next
-            </ActionButton>
+            </PrimaryButton>
           </ButtonsContainer>
         </>
       )}
@@ -196,9 +197,9 @@ const SignUpForm = () => {
           <ButtonsContainer>
             <BackButton onClick={handleBackClick} />
 
-            <ActionButton type="button" onClick={handleSignup}>
+            <PrimaryButton type="button" onClick={handleSignup}>
               Sign Up
-            </ActionButton>
+            </PrimaryButton>
           </ButtonsContainer>
         </>
       )}
