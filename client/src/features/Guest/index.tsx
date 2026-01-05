@@ -9,7 +9,6 @@ const Guest = () => {
       <Logo>Semaychat</Logo>
 
       <Routes>
-        <Route index element={<LogInForm />} />
         <Route path="/*" element={<LogInForm />} />
         <Route path="/signup" element={<SignUpForm />} />
       </Routes>
