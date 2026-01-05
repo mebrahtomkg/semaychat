@@ -48,7 +48,7 @@ const SignUpForm = () => {
         <>
           <TextInput
             id="id-first-name"
-            label="First Name"
+            label="First name"
             type="text"
             name="firstName"
             value={firstNameInfo.value}
@@ -59,7 +59,7 @@ const SignUpForm = () => {
           />
           <TextInput
             id="id-last-name"
-            label="Last Name"
+            label="Last name (optional)"
             type="text"
             name="lastName"
             value={lastNameInfo.value}
@@ -70,7 +70,7 @@ const SignUpForm = () => {
           />
           <TextInput
             id="id-email"
-            label="Email"
+            label="Email address"
             type="email"
             name="email"
             value={emailInfo.value}

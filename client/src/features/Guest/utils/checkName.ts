@@ -6,7 +6,7 @@ const checkName = (name: string) => {
   }
 
   if (name.length === 0) {
-    return 'Name is rquired.';
+    return 'First Name is rquired.';
   }
 
   const regExp = /^[A-Za-z][A-Za-z ]*$/;

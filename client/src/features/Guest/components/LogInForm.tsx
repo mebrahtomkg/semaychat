@@ -3,7 +3,6 @@ import { useAccountActions } from '@/hooks';
 import { Account } from '@/types';
 import { checkEmail, checkPassword } from '../utils';
 import {
-  ActionButton,
   ButtonsContainer,
   FormLink,
   FormStyled,
@@ -35,24 +34,31 @@ const LogInForm = () => {
   };
 
   const doLogin = async () => {
-    const emailError = checkEmail(email);
-    if (emailError) {
-      setEmailError(emailError);
-      emailInputRef.current?.focusInput();
-      emailInputRef.current?.animateInfo();
-      return;
-    }
-
-    const passwordError = checkPassword(password);
-    if (passwordError) {
-      setPasswordError(passwordError);
-      passwordInputRef.current?.focusInput();
-      passwordInputRef.current?.animateInfo();
-      return;
-    }
-
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
+
+    const emailError = checkEmail(trimmedEmail);
+    const passwordError = checkPassword(trimmedPassword);
+
+    if (emailError || passwordError) {
+      if (emailError) {
+        setEmailError(emailError);
+        emailInputRef.current?.animateInfo();
+      }
+
+      if (passwordError) {
+        setPasswordError(passwordError);
+        passwordInputRef.current?.animateInfo();
+      }
+
+      if (emailError) {
+        emailInputRef.current?.focusInput();
+      } else {
+        passwordInputRef.current?.focusInput();
+      }
+
+      return;
+    }
 
     try {
       const data = await post<Account>('/auth/login', {
