@@ -91,7 +91,7 @@ const TextInput: FC<TextInputProps> = ({
 
   const focusInput = useCallback(() => inputRef.current?.focus(), []);
 
-  const info = errorMessage || helperText;
+  const info = errorMessage || helperText || '';
 
   const isErrorMode = !!errorMessage;
 
@@ -119,7 +119,9 @@ const TextInput: FC<TextInputProps> = ({
         />
       </TextInputViewPort>
 
-      <InfoContainer>{info && <Info ref={infoRef}>{info}</Info>}</InfoContainer>
+      <InfoContainer>
+        <Info ref={infoRef}>{info}</Info>
+      </InfoContainer>
     </TextInputStyled>
   );
 };
