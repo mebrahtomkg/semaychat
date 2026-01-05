@@ -101,8 +101,15 @@ export const InfoContainer = styled.div`
   margin-left: 0.2rem;
 `;
 
-export const Info = styled.p`
-  color: var(--fg-muted);
+export const Info = styled.p<{ $isErrorMode: boolean }>`
   font-size: 0.8rem;
   font-weight: 500;
+  ${(props) =>
+    props.$isErrorMode
+      ? css`
+          color: var(--fg-error);
+        `
+      : css`
+          color: var(--fg-muted);
+        `}
 `;

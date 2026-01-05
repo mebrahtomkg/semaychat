@@ -120,7 +120,9 @@ const TextInput: FC<TextInputProps> = ({
       </TextInputViewPort>
 
       <InfoContainer>
-        <Info ref={infoRef}>{info}</Info>
+        <Info $isErrorMode={isErrorMode} ref={infoRef}>
+          {info}
+        </Info>
       </InfoContainer>
     </TextInputStyled>
   );
