@@ -13,30 +13,16 @@ const SignUpForm = () => {
   const {
     step,
 
-    firstNameInputRef,
-    firstNameInfo,
-    handleFirstNameChange,
-
-    lastNameInputRef,
-    lastNameInfo,
-    handleLastNameChange,
-
-    emailInputRef,
-    emailInfo,
-    handleEmailChange,
+    firstNameInput,
+    lastNameInput,
+    emailInput,
 
     handleNextClick,
 
-    passwordInputRef,
-    passwordInfo,
-    handlePasswordChange,
-
-    cfmPasswordInputRef,
-    cfmPasswordInfo,
-    handleCfmPasswordChange,
+    passwordInput,
+    cfmPasswordInput,
 
     handleBackClick,
-
     handleSignup,
   } = useSignUp();
 
@@ -51,10 +37,10 @@ const SignUpForm = () => {
             label="First name"
             type="text"
             name="firstName"
-            value={firstNameInfo.value}
-            errorMessage={firstNameInfo.error}
-            onChange={handleFirstNameChange}
-            ref={firstNameInputRef}
+            value={firstNameInput.value}
+            errorMessage={firstNameInput.error}
+            onChange={firstNameInput.handleChange}
+            ref={firstNameInput.inputRef}
             onEnter={handleNextClick}
           />
           <TextInput
@@ -62,10 +48,10 @@ const SignUpForm = () => {
             label="Last name (optional)"
             type="text"
             name="lastName"
-            value={lastNameInfo.value}
-            errorMessage={lastNameInfo.error}
-            onChange={handleLastNameChange}
-            ref={lastNameInputRef}
+            value={lastNameInput.value}
+            errorMessage={lastNameInput.error}
+            onChange={lastNameInput.handleChange}
+            ref={lastNameInput.inputRef}
             onEnter={handleNextClick}
           />
           <TextInput
@@ -73,10 +59,10 @@ const SignUpForm = () => {
             label="Email address"
             type="email"
             name="email"
-            value={emailInfo.value}
-            errorMessage={emailInfo.error}
-            onChange={handleEmailChange}
-            ref={emailInputRef}
+            value={emailInput.value}
+            errorMessage={emailInput.error}
+            onChange={emailInput.handleChange}
+            ref={emailInput.inputRef}
             onEnter={handleNextClick}
           />
 
@@ -96,10 +82,10 @@ const SignUpForm = () => {
             label="Password"
             type="password"
             name="password"
-            value={passwordInfo.value}
-            errorMessage={passwordInfo.error}
-            onChange={handlePasswordChange}
-            ref={passwordInputRef}
+            value={passwordInput.value}
+            errorMessage={passwordInput.error}
+            onChange={passwordInput.handleChange}
+            ref={passwordInput.inputRef}
             onEnter={handleSignup}
           />
           <TextInput
@@ -107,10 +93,10 @@ const SignUpForm = () => {
             label="Confirm Password"
             type="password"
             name="confirmPassword"
-            value={cfmPasswordInfo.value}
-            errorMessage={cfmPasswordInfo.error}
-            onChange={handleCfmPasswordChange}
-            ref={cfmPasswordInputRef}
+            value={cfmPasswordInput.value}
+            errorMessage={cfmPasswordInput.error}
+            onChange={cfmPasswordInput.handleChange}
+            ref={cfmPasswordInput.inputRef}
             onEnter={handleSignup}
           />
 

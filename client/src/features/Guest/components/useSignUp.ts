@@ -1,4 +1,4 @@
-import { InputEventHandler, useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useAccountActions } from '@/hooks';
 import { Account } from '@/types';
 import {
@@ -8,82 +8,24 @@ import {
   checkPassword,
 } from '../utils';
 import { post } from '@/api';
-import { TextInputImperativeHandle } from '@/components/TextInput';
+import useTextInput from '@/components/TextInput/useTextInput';
 
 type SignUpStep = 'first' | 'second';
-
-interface InputInfo {
-  value: string;
-  error: string;
-}
 
 const useSignUp = () => {
   const { setAccount } = useAccountActions();
   const [step, setStep] = useState<SignUpStep>('first');
 
-  const firstNameInputRef = useRef<TextInputImperativeHandle | null>(null);
-  const lastNameInputRef = useRef<TextInputImperativeHandle | null>(null);
-  const emailInputRef = useRef<TextInputImperativeHandle | null>(null);
-  const passwordInputRef = useRef<TextInputImperativeHandle | null>(null);
-  const cfmPasswordInputRef = useRef<TextInputImperativeHandle | null>(null);
-
-  const [firstNameInfo, setFirstNameInfo] = useState<InputInfo>({
-    value: '',
-    error: '',
-  });
-
-  const [lastNameInfo, setLastNameInfo] = useState<InputInfo>({
-    value: '',
-    error: '',
-  });
-
-  const [emailInfo, setEmailInfo] = useState<InputInfo>({
-    value: '',
-    error: '',
-  });
-
-  const [passwordInfo, setPasswordInfo] = useState<InputInfo>({
-    value: '',
-    error: '',
-  });
-
-  const [cfmPasswordInfo, setCfmPasswordInfo] = useState<InputInfo>({
-    value: '',
-    error: '',
-  });
-
-  const handleFirstNameChange: InputEventHandler<HTMLInputElement> =
-    useCallback(
-      (e) =>
-        setFirstNameInfo({
-          value: e.currentTarget.value,
-          error: '',
-        }),
-      [],
-    );
-
-  const handleLastNameChange: InputEventHandler<HTMLInputElement> = useCallback(
-    (e) =>
-      setLastNameInfo({
-        value: e.currentTarget.value,
-        error: '',
-      }),
-    [],
-  );
-
-  const handleEmailChange: InputEventHandler<HTMLInputElement> = useCallback(
-    (e) =>
-      setEmailInfo({
-        value: e.currentTarget.value,
-        error: '',
-      }),
-    [],
-  );
+  const firstNameInput = useTextInput();
+  const lastNameInput = useTextInput();
+  const emailInput = useTextInput();
+  const passwordInput = useTextInput();
+  const cfmPasswordInput = useTextInput();
 
   const handleNextClick = useCallback(async () => {
-    const firstName = firstNameInfo.value.trim();
-    const lastName = lastNameInfo.value.trim();
-    const email = emailInfo.value.trim();
+    const firstName = firstNameInput.value.trim();
+    const lastName = lastNameInput.value.trim();
+    const email = emailInput.value.trim();
 
     const firstNameError = checkName(firstName);
     const lastNameError = lastName ? checkName(lastName) : ''; // Since last name is optional
@@ -96,53 +38,41 @@ const useSignUp = () => {
     }
 
     if (firstNameError) {
-      setFirstNameInfo((prev) => ({ ...prev, error: firstNameError }));
-      firstNameInputRef.current?.animateInfo();
+      firstNameInput.setError(firstNameError);
     }
 
     if (lastNameError) {
-      setLastNameInfo((prev) => ({ ...prev, error: lastNameError }));
-      lastNameInputRef.current?.animateInfo();
+      lastNameInput.setError(lastNameError);
     }
 
     if (emailError) {
-      setEmailInfo((prev) => ({ ...prev, error: emailError }));
-      emailInputRef.current?.animateInfo();
+      emailInput.setError(emailError);
     }
 
     if (firstNameError) {
-      firstNameInputRef.current?.focusInput();
+      firstNameInput.focusInput();
     } else if (lastNameError) {
-      lastNameInputRef.current?.focusInput();
+      lastNameInput.focusInput();
     } else {
-      emailInputRef.current?.focusInput();
+      emailInput.focusInput();
     }
-  }, [firstNameInfo.value, lastNameInfo.value, emailInfo.value]);
+  }, [
+    firstNameInput.value,
+    lastNameInput.value,
+    emailInput.value,
+    firstNameInput.setError,
+    lastNameInput.setError,
+    emailInput.setError,
+    firstNameInput.focusInput,
+    lastNameInput.focusInput,
+    emailInput.focusInput,
+  ]);
 
   const handleBackClick = useCallback(() => setStep('first'), []);
 
-  const handlePasswordChange: InputEventHandler<HTMLInputElement> = useCallback(
-    (e) =>
-      setPasswordInfo({
-        value: e.currentTarget.value,
-        error: '',
-      }),
-    [],
-  );
-
-  const handleCfmPasswordChange: InputEventHandler<HTMLInputElement> =
-    useCallback(
-      (e) =>
-        setCfmPasswordInfo({
-          value: e.currentTarget.value,
-          error: '',
-        }),
-      [],
-    );
-
   const handleSignup = useCallback(async () => {
-    const password = passwordInfo.value.trim();
-    const cfmPassword = cfmPasswordInfo.value.trim();
+    const password = passwordInput.value.trim();
+    const cfmPassword = cfmPasswordInput.value.trim();
 
     const passwordError = checkPassword(password);
     let cfmPasswordError = checkConfirmPassword(cfmPassword);
@@ -153,24 +83,22 @@ const useSignUp = () => {
 
     if (passwordError || cfmPasswordError) {
       if (passwordError) {
-        setPasswordInfo((prev) => ({ ...prev, error: passwordError }));
-        passwordInputRef.current?.focusInput();
-        passwordInputRef.current?.animateInfo();
+        passwordInput.setError(passwordError);
+        passwordInput.focusInput();
       }
       if (cfmPasswordError) {
-        setCfmPasswordInfo((prev) => ({ ...prev, error: cfmPasswordError }));
-        cfmPasswordInputRef.current?.animateInfo();
+        cfmPasswordInput.setError(cfmPasswordError);
         // if password had errors it would be the focused input already
         if (!passwordError) {
-          cfmPasswordInputRef.current?.focusInput();
+          cfmPasswordInput.focusInput();
         }
       }
     } else {
       try {
         const data = await post<Account>('/auth/signup', {
-          firstName: firstNameInfo.value.trim(), // first name was validated in the first step
-          lastName: lastNameInfo.value.trim(), // last name was validated in the first step
-          email: emailInfo.value.trim(), // email was validated in the first step
+          firstName: firstNameInput.value.trim(), // first name was validated in the first step
+          lastName: lastNameInput.value.trim(), // last name was validated in the first step
+          email: emailInput.value.trim(), // email was validated in the first step
           password: password,
         });
         setAccount(data);
@@ -178,46 +106,35 @@ const useSignUp = () => {
         const error =
           (err as Error).message || 'Unkown error happened while signup!';
 
-        setCfmPasswordInfo((prev) => ({ ...prev, error }));
-        cfmPasswordInputRef.current?.animateInfo();
+        cfmPasswordInput.setError(error);
       }
     }
   }, [
-    passwordInfo.value,
-    cfmPasswordInfo.value,
-    firstNameInfo.value,
-    lastNameInfo.value,
-    emailInfo.value,
+    passwordInput.value,
+    cfmPasswordInput.value,
+    passwordInput.setError,
+    cfmPasswordInput.setError,
+    passwordInput.focusInput,
+    cfmPasswordInput.focusInput,
+    firstNameInput.value,
+    lastNameInput.value,
+    emailInput.value,
     setAccount,
   ]);
 
   return {
     step,
 
-    firstNameInputRef,
-    firstNameInfo,
-    handleFirstNameChange,
-
-    lastNameInputRef,
-    lastNameInfo,
-    handleLastNameChange,
-
-    emailInputRef,
-    emailInfo,
-    handleEmailChange,
+    firstNameInput,
+    lastNameInput,
+    emailInput,
 
     handleNextClick,
 
-    passwordInputRef,
-    passwordInfo,
-    handlePasswordChange,
-
-    cfmPasswordInputRef,
-    cfmPasswordInfo,
-    handleCfmPasswordChange,
+    passwordInput,
+    cfmPasswordInput,
 
     handleBackClick,
-
     handleSignup,
   };
 };
