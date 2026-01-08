@@ -5,8 +5,8 @@ import {
   FormStyled,
   FormTitle,
   PrimaryButton,
-} from '../styles';
-import BackButton from './BackButton';
+} from '../../styles';
+import BackButton from '../BackButton';
 import useSignUp from './useSignUp';
 
 const SignUpForm = () => {
