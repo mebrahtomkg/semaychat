@@ -11,7 +11,9 @@ import { Spinner } from '@/components';
 import { checkUsername } from './utils';
 import { useAccount, useUpdateAccount } from '@/hooks';
 import EditorModal from '../EditorModal';
-import TextInput, { TextInputImperativeHandle } from '@/components/TextInput';
+import TextInput, {
+  TextInputImperativeHandle,
+} from '@/components/TextInputLegacy';
 
 interface UsernameEditorProps {
   onClose: () => void;

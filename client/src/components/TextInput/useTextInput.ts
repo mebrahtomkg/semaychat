@@ -1,32 +1,43 @@
-import { TextInputImperativeHandle } from '@/components/TextInput';
-import { InputEventHandler, useCallback, useRef, useState } from 'react';
+import { useCallback, useRef } from 'react';
+import { TextInputImperativeHandle } from './types';
+import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
-const useTextInput = () => {
-  const inputRef = useRef<TextInputImperativeHandle | null>(null);
-  const [value, setValue] = useState('');
-  const [error, setError] = useState('');
+const useTextInput = <TFieldValues extends FieldValues>(
+  inputName: Path<TFieldValues>,
+  useFormReturnProps: UseFormReturn<TFieldValues>,
+) => {
+  const imperativeRef = useRef<TextInputImperativeHandle | null>(null);
 
-  const handleChange: InputEventHandler<HTMLInputElement> = useCallback((e) => {
-    setValue(e.currentTarget.value);
-    setError('');
-  }, []);
+  const {
+    register,
+    formState: { errors },
+    getValues,
+  } = useFormReturnProps;
+
+  const { ref, onChange, name, onBlur } = register(inputName);
 
   const focusInput = useCallback(() => {
-    inputRef.current?.focusInput();
+    imperativeRef.current?.focus();
   }, []);
 
-  const setErrorAndAnimateInfo = useCallback((err: string) => {
-    setError(err);
-    inputRef.current?.animateInfo();
+  const shakeError = useCallback(() => {
+    imperativeRef.current?.shakeError();
   }, []);
+
+  const defaultValue = getValues(inputName) || '';
 
   return {
-    inputRef,
-    value,
-    error,
-    handleChange,
-    setError: setErrorAndAnimateInfo,
+    props: {
+      name,
+      defaultValue,
+      inputRef: ref,
+      imperativeRef,
+      onChange,
+      onBlur,
+      error: errors[inputName]?.message,
+    },
     focusInput,
+    shakeError,
   };
 };
 

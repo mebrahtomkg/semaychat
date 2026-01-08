@@ -10,7 +10,9 @@ import {
   PrimaryButton,
 } from '../styles';
 import { post } from '@/api';
-import TextInput, { TextInputImperativeHandle } from '@/components/TextInput';
+import TextInput, {
+  TextInputImperativeHandle,
+} from '@/components/TextInputLegacy';
 
 const LogInForm = () => {
   const { setAccount } = useAccountActions();

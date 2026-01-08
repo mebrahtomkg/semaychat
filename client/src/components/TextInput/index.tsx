@@ -1,8 +1,10 @@
 import {
   FC,
-  FormEventHandler,
+  FocusEventHandler,
   HTMLInputTypeAttribute,
+  InputEventHandler,
   KeyboardEventHandler,
+  RefCallback,
   RefObject,
   useCallback,
   useImperativeHandle,
@@ -17,23 +19,24 @@ import {
   TextInputStyled,
   TextInputViewPort,
 } from './styles';
+import { TextInputImperativeHandle } from './types';
+import { ChangeHandler } from 'react-hook-form';
 
-export interface TextInputImperativeHandle {
-  focusInput: () => void;
-  animateInfo: () => void;
-}
+export { default as useTextInput } from './useTextInput';
 
 interface TextInputProps {
   id: string;
   label: string;
   type: HTMLInputTypeAttribute;
   name: string;
-  value: string;
-  onChange: FormEventHandler<HTMLInputElement>;
-  ref: RefObject<TextInputImperativeHandle | null>;
-  onEnter?: KeyboardEventHandler<HTMLInputElement>;
-  helperText?: string;
-  errorMessage?: string;
+  onChange: ChangeHandler;
+  onBlur: ChangeHandler;
+  imperativeRef: RefObject<TextInputImperativeHandle | null>;
+  inputRef: RefCallback<HTMLInputElement | null>;
+  defaultValue: string;
+  onEnter?: () => void;
+  info?: string;
+  error?: string;
 }
 
 const TextInput: FC<TextInputProps> = ({
@@ -41,36 +44,54 @@ const TextInput: FC<TextInputProps> = ({
   label,
   type,
   name,
-  value,
   onChange,
-  ref,
+  onBlur,
+  imperativeRef,
+  inputRef,
+  defaultValue,
   onEnter,
-  helperText,
-  errorMessage,
+  info,
+  error,
 }) => {
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const localInputRef = useRef<HTMLInputElement | null>(null);
+
   const infoRef = useRef<HTMLParagraphElement | null>(null);
+  const [value, setValue] = useState(defaultValue);
+
+  const handleInputRef: RefCallback<HTMLInputElement | null> = useCallback(
+    (input) => {
+      localInputRef.current = input;
+      inputRef(input);
+    },
+    [inputRef],
+  );
 
   const [isFocused, setIsFocused] = useState(false);
   const handleFocus = useCallback(() => setIsFocused(true), []);
-  const handleBlur = useCallback(() => setIsFocused(false), []);
+  const handleBlur: FocusEventHandler<HTMLInputElement> = useCallback(
+    (e) => {
+      onBlur(e);
+      setIsFocused(false);
+    },
+    [onBlur],
+  );
 
   useImperativeHandle<
     TextInputImperativeHandle,
     TextInputImperativeHandle
-  >(ref, () => {
+  >(imperativeRef, () => {
     return {
-      focusInput() {
-        inputRef.current?.focus();
+      focus() {
+        localInputRef.current?.focus();
       },
 
-      animateInfo() {
+      shakeError() {
         infoRef.current?.animate(
           [
             { transform: 'translateX(0rem)' },
             { transform: 'translateX(0.8rem)' },
-            { transform: 'translateX(0rem)' },
-            { transform: 'translateX(0.8rem)' },
+            { transform: 'translateX(-0.8rem)' },
+            { transform: 'translateX(0.4rem)' },
             { transform: 'translateX(0rem)' },
           ],
           700,
@@ -79,21 +100,28 @@ const TextInput: FC<TextInputProps> = ({
     };
   }, []);
 
-  const handleKeyDown = useCallback<KeyboardEventHandler<HTMLInputElement>>(
+  const handleInput: InputEventHandler<HTMLInputElement> = useCallback(
+    (e) => {
+      const newValue = e.currentTarget.value;
+      setValue(newValue);
+      onChange(e);
+    },
+    [onChange],
+  );
+
+  const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback(
     (e) => {
       if (onEnter && e.key === 'Enter') {
         e.preventDefault();
-        onEnter(e);
+        onEnter();
       }
     },
     [onEnter],
   );
 
-  const focusInput = useCallback(() => inputRef.current?.focus(), []);
+  const focusInput = useCallback(() => localInputRef.current?.focus(), []);
 
-  const info = errorMessage || helperText || '';
-
-  const isErrorMode = !!errorMessage;
+  const isErrorMode = !!error;
 
   return (
     <TextInputStyled>
@@ -110,18 +138,20 @@ const TextInput: FC<TextInputProps> = ({
           id={id}
           type={type}
           name={name}
-          value={value}
-          ref={inputRef}
+          defaultValue={defaultValue}
+          ref={handleInputRef}
           onKeyDown={handleKeyDown}
-          onInput={onChange}
+          onInput={handleInput}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          aria-invalid={isErrorMode}
+          aria-describedby={`${id}-error`}
         />
       </TextInputViewPort>
 
       <InfoContainer>
-        <Info $isErrorMode={isErrorMode} ref={infoRef}>
-          {info}
+        <Info id={`${id}-error`} $isErrorMode={isErrorMode} ref={infoRef}>
+          {error || info || ''}
         </Info>
       </InfoContainer>
     </TextInputStyled>

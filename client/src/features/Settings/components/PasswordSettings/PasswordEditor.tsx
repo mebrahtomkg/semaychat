@@ -9,7 +9,9 @@ import {
 } from 'react';
 import EditorModal from '../EditorModal';
 import { Spinner } from '@/components';
-import TextInput, { TextInputImperativeHandle } from '@/components/TextInput';
+import TextInput, {
+  TextInputImperativeHandle,
+} from '@/components/TextInputLegacy';
 import { useUpdateAccount } from '@/hooks';
 import {
   checkConfirmPassword,

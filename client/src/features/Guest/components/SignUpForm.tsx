@@ -1,3 +1,4 @@
+import TextInput from '@/components/TextInput';
 import {
   ButtonsContainer,
   FormLink,
@@ -5,7 +6,6 @@ import {
   FormTitle,
   PrimaryButton,
 } from '../styles';
-import TextInput from '@/components/TextInput';
 import BackButton from './BackButton';
 import useSignUp from './useSignUp';
 
@@ -33,36 +33,27 @@ const SignUpForm = () => {
       {step === 'first' && (
         <>
           <TextInput
+            key="key-first-name"
             id="id-first-name"
             label="First name"
             type="text"
-            name="firstName"
-            value={firstNameInput.value}
-            errorMessage={firstNameInput.error}
-            onChange={firstNameInput.handleChange}
-            ref={firstNameInput.inputRef}
+            {...firstNameInput.props}
             onEnter={handleNextClick}
           />
           <TextInput
+            key="key-last-name"
             id="id-last-name"
             label="Last name (optional)"
             type="text"
-            name="lastName"
-            value={lastNameInput.value}
-            errorMessage={lastNameInput.error}
-            onChange={lastNameInput.handleChange}
-            ref={lastNameInput.inputRef}
+            {...lastNameInput.props}
             onEnter={handleNextClick}
           />
           <TextInput
+            key="key-email"
             id="id-email"
             label="Email address"
             type="email"
-            name="email"
-            value={emailInput.value}
-            errorMessage={emailInput.error}
-            onChange={emailInput.handleChange}
-            ref={emailInput.inputRef}
+            {...emailInput.props}
             onEnter={handleNextClick}
           />
 
@@ -78,25 +69,19 @@ const SignUpForm = () => {
       {step === 'second' && (
         <>
           <TextInput
+            key="key-password"
             id="id-password"
             label="Password"
             type="password"
-            name="password"
-            value={passwordInput.value}
-            errorMessage={passwordInput.error}
-            onChange={passwordInput.handleChange}
-            ref={passwordInput.inputRef}
+            {...passwordInput.props}
             onEnter={handleSignup}
           />
           <TextInput
+            key="key-confirm-password"
             id="id-confirm-password"
             label="Confirm Password"
             type="password"
-            name="confirmPassword"
-            value={cfmPasswordInput.value}
-            errorMessage={cfmPasswordInput.error}
-            onChange={cfmPasswordInput.handleChange}
-            ref={cfmPasswordInput.inputRef}
+            {...cfmPasswordInput.props}
             onEnter={handleSignup}
           />
 

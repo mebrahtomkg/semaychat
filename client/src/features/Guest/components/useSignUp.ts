@@ -1,14 +1,16 @@
 import { useCallback, useState } from 'react';
 import { useAccountActions } from '@/hooks';
 import { Account } from '@/types';
-import {
-  checkConfirmPassword,
-  checkEmail,
-  checkName,
-  checkPassword,
-} from '../utils';
 import { post } from '@/api';
-import useTextInput from '@/components/TextInput/useTextInput';
+import { useTextInput } from '@/components/TextInput';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  FirstSignUpFormSchema,
+  firstSignUpFormSchema,
+  SecondSignUpFormSchema,
+  secondSignUpFormSchema,
+} from './schema';
 
 type SignUpStep = 'first' | 'second';
 
@@ -16,111 +18,69 @@ const useSignUp = () => {
   const { setAccount } = useAccountActions();
   const [step, setStep] = useState<SignUpStep>('first');
 
-  const firstNameInput = useTextInput();
-  const lastNameInput = useTextInput();
-  const emailInput = useTextInput();
-  const passwordInput = useTextInput();
-  const cfmPasswordInput = useTextInput();
+  const firstForm = useForm<FirstSignUpFormSchema>({
+    resolver: zodResolver(firstSignUpFormSchema),
+    mode: 'onBlur',
+  });
 
-  const handleNextClick = useCallback(async () => {
-    const firstName = firstNameInput.value.trim();
-    const lastName = lastNameInput.value.trim();
-    const email = emailInput.value.trim();
+  const secondForm = useForm<SecondSignUpFormSchema>({
+    resolver: zodResolver(secondSignUpFormSchema),
+    mode: 'onBlur',
+  });
 
-    const firstNameError = checkName(firstName);
-    const lastNameError = lastName ? checkName(lastName) : ''; // Since last name is optional
-    const emailError = checkEmail(email);
+  const firstNameInput = useTextInput('firstName', firstForm);
+  const lastNameInput = useTextInput('lastName', firstForm);
+  const emailInput = useTextInput('email', firstForm);
 
-    // If no any error go to next step. i.e passwords input stage
-    if (!(firstNameError || lastNameError || emailError)) {
-      setStep('second');
-      return;
-    }
+  const passwordInput = useTextInput('password', secondForm);
+  const cfmPasswordInput = useTextInput('confirmPassword', secondForm);
 
-    if (firstNameError) {
-      firstNameInput.setError(firstNameError);
-    }
+  const handleNextClick = useCallback(
+    firstForm.handleSubmit(
+      () => setStep('second'),
 
-    if (lastNameError) {
-      lastNameInput.setError(lastNameError);
-    }
-
-    if (emailError) {
-      emailInput.setError(emailError);
-    }
-
-    if (firstNameError) {
-      firstNameInput.focusInput();
-    } else if (lastNameError) {
-      lastNameInput.focusInput();
-    } else {
-      emailInput.focusInput();
-    }
-  }, [
-    firstNameInput.value,
-    lastNameInput.value,
-    emailInput.value,
-    firstNameInput.setError,
-    lastNameInput.setError,
-    emailInput.setError,
-    firstNameInput.focusInput,
-    lastNameInput.focusInput,
-    emailInput.focusInput,
-  ]);
+      (errors) => {
+        if (errors.firstName) firstNameInput.shakeError();
+        if (errors.lastName) lastNameInput.shakeError();
+        if (errors.email) emailInput.shakeError();
+      },
+    ),
+    [],
+  );
 
   const handleBackClick = useCallback(() => setStep('first'), []);
 
-  const handleSignup = useCallback(async () => {
-    const password = passwordInput.value.trim();
-    const cfmPassword = cfmPasswordInput.value.trim();
+  const handleSignup = useCallback(
+    secondForm.handleSubmit(
+      async (formData) => {
+        try {
+          const firstFormValues = firstForm.getValues();
 
-    const passwordError = checkPassword(password);
-    let cfmPasswordError = checkConfirmPassword(cfmPassword);
+          const data = await post<Account>('/auth/signup', {
+            firstName: firstFormValues.firstName.trim(),
+            lastName: firstFormValues.lastName?.trim(),
+            email: firstFormValues.email.trim(),
+            password: formData.password,
+          });
+          setAccount(data);
+        } catch (err) {
+          const error = (err as Error).message || 'Signup failed';
 
-    if (!cfmPasswordError && cfmPassword !== password) {
-      cfmPasswordError = 'Passwords do not match.';
-    }
-
-    if (passwordError || cfmPasswordError) {
-      if (passwordError) {
-        passwordInput.setError(passwordError);
-        passwordInput.focusInput();
-      }
-      if (cfmPasswordError) {
-        cfmPasswordInput.setError(cfmPasswordError);
-        // if password had errors it would be the focused input already
-        if (!passwordError) {
-          cfmPasswordInput.focusInput();
+          secondForm.setError('confirmPassword', {
+            type: 'server',
+            message: error,
+          });
+          cfmPasswordInput.shakeError();
         }
-      }
-    } else {
-      try {
-        const data = await post<Account>('/auth/signup', {
-          firstName: firstNameInput.value.trim(), // first name was validated in the first step
-          lastName: lastNameInput.value.trim(), // last name was validated in the first step
-          email: emailInput.value.trim(), // email was validated in the first step
-          password: password,
-        });
-        setAccount(data);
-      } catch (err) {
-        const error =
-          (err as Error).message || 'Unkown error happened while signup!';
+      },
 
-        cfmPasswordInput.setError(error);
-      }
-    }
-  }, [
-    passwordInput.value,
-    cfmPasswordInput.value,
-    passwordInput.setError,
-    cfmPasswordInput.setError,
-    passwordInput.focusInput,
-    cfmPasswordInput.focusInput,
-    firstNameInput.value,
-    lastNameInput.value,
-    emailInput.value,
-    setAccount,
-  ]);
+      (errors) => {
+        if (errors.password) passwordInput.shakeError();
+        if (errors.confirmPassword) cfmPasswordInput.shakeError();
+      },
+    ),
+    [],
+  );
 
   return {
     step,

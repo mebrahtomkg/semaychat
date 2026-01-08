@@ -10,7 +10,9 @@ import {
 import { useAccount } from '@/hooks';
 import { checkFirstName, checkLastName } from './utils';
 import { addAccountUpdateRequest } from '@/store/useAccountUpdateRequestStore';
-import TextInput, { TextInputImperativeHandle } from '@/components/TextInput';
+import TextInput, {
+  TextInputImperativeHandle,
+} from '@/components/TextInputLegacy';
 import EditorModal from '../EditorModal';
 
 interface NameEditorProps {
