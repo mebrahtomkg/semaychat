@@ -1,14 +1,14 @@
 import { InputEventHandler, useRef, useState } from 'react';
 import { useAccountActions } from '@/hooks';
 import { Account } from '@/types';
-import { checkEmail, checkPassword } from '../utils';
+import { checkEmail, checkPassword } from '../../utils';
 import {
   ButtonsContainer,
   FormLink,
   FormStyled,
   FormTitle,
   PrimaryButton,
-} from '../styles';
+} from '../../styles';
 import { post } from '@/api';
 import TextInput, {
   TextInputImperativeHandle,
