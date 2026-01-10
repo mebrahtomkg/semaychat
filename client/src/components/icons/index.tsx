@@ -37,3 +37,4 @@ export { default as SelectedIcon } from './SelectedIcon';
 export { default as TickIcon } from '@/assets/icons/tick.svg';
 export { default as DoubleTickIcon } from '@/assets/icons/doubleTick.svg';
 export { default as ClockIcon } from '@/assets/icons/clock.svg';
+export { default as SpinnerIcon } from '@/assets/icons/spinner.svg';

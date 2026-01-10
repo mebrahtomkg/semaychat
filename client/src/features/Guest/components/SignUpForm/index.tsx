@@ -8,6 +8,7 @@ import {
 } from '../../styles';
 import BackButton from '../BackButton';
 import useSignUp from './useSignUp';
+import SubmitButton from '../SubmitButton';
 
 const SignUpForm = () => {
   const {
@@ -24,6 +25,8 @@ const SignUpForm = () => {
 
     handleBackClick,
     handleSignup,
+
+    isPending,
   } = useSignUp();
 
   return (
@@ -88,9 +91,11 @@ const SignUpForm = () => {
           <ButtonsContainer>
             <BackButton onClick={handleBackClick} />
 
-            <PrimaryButton type="button" onClick={handleSignup}>
-              Sign Up
-            </PrimaryButton>
+            <SubmitButton
+              text="Sign Up"
+              onClick={handleSignup}
+              isSubmitting={isPending}
+            />
           </ButtonsContainer>
         </>
       )}

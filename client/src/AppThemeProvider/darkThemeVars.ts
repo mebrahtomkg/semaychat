@@ -20,6 +20,7 @@ const darkThemeVars = css`
   --bg-secondary: #3c3c41;
   --bg-action: #019abe;
   --bg-action-hover: #01a9d0;
+  --bg-action-disabled: #003643;
   --bg-hover: #2b2b31;
   --bg-msg-sent: #005599;
   --bg-msg-received: #2b2b31;

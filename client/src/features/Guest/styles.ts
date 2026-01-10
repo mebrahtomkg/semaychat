@@ -54,6 +54,8 @@ export const FormLink = styled(Link)`
 
 export const PrimaryButton = styled.button`
   padding: 0.4rem 1.7rem;
+  display: flex;
+  align-items: center;
   box-shadow: none;
   border: 1px solid;
   border-color: var(--bg-action);

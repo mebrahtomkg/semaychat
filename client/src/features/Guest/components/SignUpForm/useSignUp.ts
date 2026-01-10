@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import { useAccountActions } from '@/hooks';
 import { Account } from '@/types';
 import { post } from '@/api';
 import { useTextInput } from '@/components/TextInput';
@@ -11,11 +10,13 @@ import {
   SecondSignUpFormSchema,
   secondSignUpFormSchema,
 } from './schema';
+import { useMutation } from '@tanstack/react-query';
+import queryClient from '@/queryClient';
+import { QUERY_KEY_ACCOUNT } from '@/constants';
 
 type SignUpStep = 'first' | 'second';
 
 const useSignUp = () => {
-  const { setAccount } = useAccountActions();
   const [step, setStep] = useState<SignUpStep>('first');
 
   const firstForm = useForm<FirstSignUpFormSchema>({
@@ -50,29 +51,35 @@ const useSignUp = () => {
 
   const handleBackClick = useCallback(() => setStep('first'), []);
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: () => {
+      const { firstName, lastName, email } = firstForm.getValues();
+      const { password } = secondForm.getValues();
+      return post<Account>('/auth/signup', {
+        firstName: firstName.trim(),
+        lastName: lastName?.trim(),
+        email: email.trim(),
+        password: password,
+      });
+    },
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: [QUERY_KEY_ACCOUNT] });
+    },
+    onError: (err) => {
+      secondForm.setError('confirmPassword', {
+        type: 'server',
+        message: err.message || 'Signup failed',
+      });
+      cfmPasswordInput.shakeError();
+    },
+    onSuccess(data) {
+      queryClient.setQueryData([QUERY_KEY_ACCOUNT], data);
+    },
+  });
+
   const handleSignup = useCallback(
     secondForm.handleSubmit(
-      async (formData) => {
-        try {
-          const firstFormValues = firstForm.getValues();
-
-          const data = await post<Account>('/auth/signup', {
-            firstName: firstFormValues.firstName.trim(),
-            lastName: firstFormValues.lastName?.trim(),
-            email: firstFormValues.email.trim(),
-            password: formData.password,
-          });
-          setAccount(data);
-        } catch (err) {
-          const error = (err as Error).message || 'Signup failed';
-
-          secondForm.setError('confirmPassword', {
-            type: 'server',
-            message: error,
-          });
-          cfmPasswordInput.shakeError();
-        }
-      },
+      () => mutate(),
 
       (errors) => {
         if (errors.password) passwordInput.shakeError();
@@ -96,6 +103,8 @@ const useSignUp = () => {
 
     handleBackClick,
     handleSignup,
+
+    isPending,
   };
 };
 
