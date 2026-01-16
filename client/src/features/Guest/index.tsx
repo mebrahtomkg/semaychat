@@ -1,18 +1,20 @@
 import { Route, Routes } from 'react-router';
-import { GuestStyled, Logo } from './styles';
+import { GuestContainer, GuestStyled, Logo } from './styles';
 import LogInForm from './components/LogInForm';
 import SignUpForm from './components/SignUpForm';
 
 const Guest = () => {
   return (
-    <GuestStyled>
-      <Logo>Semaychat</Logo>
+    <GuestContainer>
+      <GuestStyled>
+        <Logo>SemayChat</Logo>
 
-      <Routes>
-        <Route path="/*" element={<LogInForm />} />
-        <Route path="/signup" element={<SignUpForm />} />
-      </Routes>
-    </GuestStyled>
+        <Routes>
+          <Route path="/*" element={<LogInForm />} />
+          <Route path="/signup" element={<SignUpForm />} />
+        </Routes>
+      </GuestStyled>
+    </GuestContainer>
   );
 };
 

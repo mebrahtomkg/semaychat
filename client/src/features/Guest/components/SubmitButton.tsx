@@ -4,7 +4,7 @@ import Spinner from './Spinner';
 
 const SubmitButtonStyled = styled.button<{ $isDisabled: boolean }>`
   height: 2.5rem;
-  padding: 0rem 1.2rem;
+  padding: 0rem 1.7rem;
   display: flex;
   align-items: center;
   box-shadow: none;

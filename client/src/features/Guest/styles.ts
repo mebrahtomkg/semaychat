@@ -1,11 +1,35 @@
 import { Link } from 'react-router';
 import styled from 'styled-components';
 
-export const GuestStyled = styled.div`
+export const GuestContainer = styled.div`
   width: 100vw;
   height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
+  background-color: var(--bg-page);
+  background-image:
+    radial-gradient(
+      circle at center,
+      rgba(7, 197, 242, 0.15) 0%,
+      rgba(0, 0, 0, 0.4) 60%,
+      rgba(0, 0, 0, 0.9) 100%
+    ),
+    radial-gradient(#763ed9c7 1px, transparent 1px),
+    radial-gradient(#0894b6bd 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    20px 20px,
+    20px 20px;
+  background-position:
+    0 0,
+    0 0,
+    10px 10px;
+  background-attachment: fixed;
+`;
+
+export const GuestStyled = styled.div`
+  min-height: 100vh;
+  padding: 1rem 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,16 +37,25 @@ export const GuestStyled = styled.div`
 `;
 
 export const FormStyled = styled.div`
-  min-width: 20rem;
-  background-color: var(--bg-page);
-  padding: 2rem;
+  width: 19rem;
   border-radius: 10px;
+  background-color: rgba(11, 13, 20, 0.85);
+  backdrop-filter: blur(5px);
+  padding: 2rem;
+
+  @media (min-width: 375px) {
+    width: 20rem;
+  }
 `;
 
 export const Logo = styled.h1`
-  font-size: 2.2rem;
-  font-weight: 500;
+  font-size: 2.5rem;
+  font-weight: 700;
   margin-bottom: 2rem;
+  background: linear-gradient(135deg, #00beff 0%, #cd01f0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   color: var(--fg-action);
 `;
 
@@ -40,7 +73,7 @@ export const ButtonsContainer = styled.div`
 `;
 
 export const FormLink = styled(Link)`
-  margin-right: 2.5rem;
+  margin-right: 1rem;
   color: var(--fg-action);
   font-size: 1.1rem;
   font-weight: 500;

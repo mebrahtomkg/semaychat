@@ -62,9 +62,12 @@ const SignUpForm = () => {
 
           <ButtonsContainer>
             <FormLink to="../login">Log In</FormLink>
-            <PrimaryButton type="button" onClick={handleNextClick}>
-              Next
-            </PrimaryButton>
+
+            <SubmitButton
+              text="Next"
+              onClick={handleNextClick}
+              isSubmitting={false}
+            />
           </ButtonsContainer>
         </>
       )}
@@ -82,7 +85,7 @@ const SignUpForm = () => {
           <TextInput
             key="key-confirm-password"
             id="id-confirm-password"
-            label="Confirm Password"
+            label="Confirm password"
             type="password"
             {...cfmPasswordInput.props}
             onEnter={handleSignup}
