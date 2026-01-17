@@ -39,7 +39,7 @@ export const GuestStyled = styled.div`
 export const FormStyled = styled.div`
   width: 19rem;
   border-radius: 10px;
-  background-color: rgba(11, 13, 20, 0.85);
+  background-color: rgb(11 13 20 / 94%);
   backdrop-filter: blur(5px);
   padding: 2rem;
 
@@ -54,26 +54,22 @@ export const Logo = styled.div`
   line-height: 1;
   font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 2rem;
-  background: linear-gradient(135deg, #00beff 0%, #cd01f0 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: var(--fg-action);
-  backdrop-filter: blur(2px);
+  margin-bottom: 1.5rem;
+  color: #019abe;
+  backdrop-filter: blur(1px);
 `;
 
 export const LogoContainer = styled.div`
-  width: 5rem;
+  width: 4.5rem;
   aspect-ratio: 1/1;
-  margin-right: 0.4rem;
+  margin-right: 0.5rem;
 `;
 
 export const FormTitle = styled.h2`
   margin-bottom: 2rem;
   font-size: 1.5rem;
   font-weight: 500;
-  color: var(--fg-muted);
+  color: #ffffffc9;
 `;
 
 export const ButtonsContainer = styled.div`

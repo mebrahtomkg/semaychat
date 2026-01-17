@@ -7,7 +7,6 @@ const SubmitButtonStyled = styled.button<{ $isDisabled: boolean }>`
   padding: 0rem 1.7rem;
   display: flex;
   align-items: center;
-  box-shadow: none;
   border-radius: 4px;
 
   ${(props) =>
@@ -18,6 +17,7 @@ const SubmitButtonStyled = styled.button<{ $isDisabled: boolean }>`
         `
       : css`
           background-color: var(--bg-action);
+          box-shadow: 0 0 5px rgba(8, 148, 182, 0.4);
 
           &:hover {
             background-color: var(--bg-action-hover);
