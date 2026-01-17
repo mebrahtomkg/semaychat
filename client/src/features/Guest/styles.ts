@@ -48,7 +48,10 @@ export const FormStyled = styled.div`
   }
 `;
 
-export const Logo = styled.h1`
+export const Logo = styled.div`
+  display: flex;
+  align-items: center;
+  line-height: 1;
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 2rem;
@@ -57,6 +60,13 @@ export const Logo = styled.h1`
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: var(--fg-action);
+  backdrop-filter: blur(2px);
+`;
+
+export const LogoContainer = styled.div`
+  width: 5rem;
+  aspect-ratio: 1/1;
+  margin-right: 0.4rem;
 `;
 
 export const FormTitle = styled.h2`
