@@ -3,14 +3,19 @@ import { FC, MouseEventHandler } from 'react';
 import { BackIcon } from '@/components/icons';
 
 const BackButtonStyled = styled.button`
-  margin-right: 2.5rem;
-  padding: 0.5rem 0.7rem;
+  margin-right: 1rem;
+  height: 2.9rem;
+  padding: 0rem 1rem;
   display: flex;
   align-items: center;
   box-shadow: none;
-  border-radius: 4px;
-  color: var(--fg-action);
+  border-radius: 7px;
+  color: #04b1ff;
   background-color: transparent;
+
+  &:hover {
+    background-color: #141a29;
+  }
 `;
 
 const BackIconWrapper = styled.div`
