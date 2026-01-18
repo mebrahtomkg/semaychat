@@ -41,7 +41,7 @@ export const FormStyled = styled.div`
   border-radius: 10px;
   background-color: rgb(11 13 20 / 94%);
   backdrop-filter: blur(5px);
-  padding: 2rem;
+  padding: 1.8rem;
 
   @media (min-width: 375px) {
     width: 20rem;
@@ -51,44 +51,64 @@ export const FormStyled = styled.div`
 export const Logo = styled.div`
   display: flex;
   align-items: center;
-  line-height: 1;
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   color: #019abe;
   backdrop-filter: blur(1px);
 `;
 
-export const LogoContainer = styled.div`
-  width: 4.5rem;
+export const LogoIconContainer = styled.div`
+  width: 4.2rem;
   aspect-ratio: 1/1;
   margin-right: 0.5rem;
 `;
 
-export const FormTitle = styled.h2`
-  margin-bottom: 2rem;
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: #ffffffc9;
+export const LogoText = styled.span`
+  display: block;
+  line-height: 1;
+  font-size: 2.4rem;
+  font-weight: 700;
 `;
 
-export const ButtonsContainer = styled.div`
+export const FormTitle = styled.h2`
+  width: 100%;
+  margin-bottom: 1.8rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #ffffffd4;
+`;
+
+export const FormLinkContainer = styled.div`
+  margin-top: 1.7rem;
+  width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
 `;
 
 export const FormLink = styled(Link)`
-  margin-right: 1rem;
-  color: var(--fg-action);
-  font-size: 1.1rem;
+  color: #0ebee8;
+  font-size: 1.2rem;
   font-weight: 500;
   text-decoration: underline;
-
   &:hover {
     text-decoration: underline;
-    color: #16cdde;
+    color: #00ceff;
   }
+`;
+
+export const LinkInfo = styled.span`
+  display: block;
+  margin-right: 0.8rem;
+  font-size: 0.95rem;
+  color: #e6e8eb;
+`;
+
+export const ButtonsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const PrimaryButton = styled.button`

@@ -1,8 +1,9 @@
 import {
-  ButtonsContainer,
   FormLink,
+  FormLinkContainer,
   FormStyled,
   FormTitle,
+  LinkInfo,
 } from '../../styles';
 import TextInput from '@/components/TextInput';
 import useLogIn from './useLogIn';
@@ -33,15 +34,15 @@ const LogInForm = () => {
         onEnter={handleLogIn}
       />
 
-      <ButtonsContainer>
-        <FormLink to="../signup">Create Account</FormLink>
+      <SubmitButton
+        text="Login"
+        onClick={handleLogIn}
+        isSubmitting={isPending}
+      />
 
-        <SubmitButton
-          text="Login"
-          onClick={handleLogIn}
-          isSubmitting={isPending}
-        />
-      </ButtonsContainer>
+      <FormLinkContainer>
+        <FormLink to="../signup">Create Account</FormLink>
+      </FormLinkContainer>
     </FormStyled>
   );
 };

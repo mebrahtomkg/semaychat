@@ -3,12 +3,12 @@ import { FC, MouseEventHandler } from 'react';
 import Spinner from './Spinner';
 
 const SubmitButtonStyled = styled.button<{ $isDisabled: boolean }>`
-  height: 2.5rem;
-  padding: 0rem 1.7rem;
+  width: 100%;
+  height: 2.9rem;
   display: flex;
   align-items: center;
-  border-radius: 4px;
-
+  justify-content: center;
+  border-radius: 7px;
   ${(props) =>
     props.$isDisabled
       ? css`
@@ -27,8 +27,8 @@ const SubmitButtonStyled = styled.button<{ $isDisabled: boolean }>`
 
 export const ButtonText = styled.p`
   margin-right: 0.5rem;
-  color: var(--fg-primary);
-  font-size: 1rem;
+  color: #ffffff;
+  font-size: 1.1rem;
   font-weight: 500;
 `;
 
@@ -43,11 +43,17 @@ const SubmitButton: FC<SubmitButtonProps> = ({
   onClick,
   isSubmitting,
 }) => {
+  const handleClick: MouseEventHandler = (e) => {
+    if (!isSubmitting) {
+      onClick(e);
+    }
+  };
+
   return (
     <SubmitButtonStyled
       $isDisabled={isSubmitting}
       type="button"
-      onClick={onClick}
+      onClick={handleClick}
     >
       <ButtonText>{text}</ButtonText>
 

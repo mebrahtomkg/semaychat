@@ -2,8 +2,10 @@ import TextInput from '@/components/TextInput';
 import {
   ButtonsContainer,
   FormLink,
+  FormLinkContainer,
   FormStyled,
   FormTitle,
+  LinkInfo,
 } from '../../styles';
 import BackButton from '../BackButton';
 import useSignUp from './useSignUp';
@@ -59,15 +61,16 @@ const SignUpForm = () => {
             onEnter={handleNextClick}
           />
 
-          <ButtonsContainer>
-            <FormLink to="../login">Log In</FormLink>
+          <SubmitButton
+            text="Next"
+            onClick={handleNextClick}
+            isSubmitting={false}
+          />
 
-            <SubmitButton
-              text="Next"
-              onClick={handleNextClick}
-              isSubmitting={false}
-            />
-          </ButtonsContainer>
+          <FormLinkContainer>
+            <LinkInfo>Already have an account?</LinkInfo>
+            <FormLink to="../login">Log In</FormLink>
+          </FormLinkContainer>
         </>
       )}
 

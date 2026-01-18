@@ -4,7 +4,7 @@ export const TextInputStyled = styled.div`
   --text-input-padding: 1rem;
   --text-input-font-size: 1rem;
   --text-input-border-color: var(--bg-action);
-  margin-bottom: 0.9rem;
+  margin-bottom: 0.6rem;
   background-color: inherit;
 `;
 
@@ -13,7 +13,7 @@ export const TextInputViewPort = styled.div<{
   $isErrorMode: boolean;
 }>`
   position: relative;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   padding: var(--text-input-padding);
   background-color: inherit;
   height: 3.4rem;

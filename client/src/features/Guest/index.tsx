@@ -1,5 +1,11 @@
 import { Route, Routes } from 'react-router';
-import { GuestContainer, GuestStyled, Logo, LogoContainer } from './styles';
+import {
+  GuestContainer,
+  GuestStyled,
+  Logo,
+  LogoIconContainer,
+  LogoText,
+} from './styles';
 import LogInForm from './components/LogInForm';
 import SignUpForm from './components/SignUpForm';
 import { LogoIcon } from '@/components/icons';
@@ -9,10 +15,10 @@ const Guest = () => {
     <GuestContainer>
       <GuestStyled>
         <Logo>
-          <LogoContainer>
+          <LogoIconContainer>
             <LogoIcon />
-          </LogoContainer>
-          SemayChat
+          </LogoIconContainer>
+          <LogoText>SemayChat</LogoText>
         </Logo>
 
         <Routes>
