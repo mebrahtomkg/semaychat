@@ -3,7 +3,6 @@ import {
   FormLinkContainer,
   FormStyled,
   FormTitle,
-  LinkInfo,
 } from '../../styles';
 import TextInput from '@/components/TextInput';
 import useLogIn from './useLogIn';
@@ -14,7 +13,7 @@ const LogInForm = () => {
 
   return (
     <FormStyled>
-      <FormTitle>LogIn</FormTitle>
+      <FormTitle>Log In</FormTitle>
 
       <TextInput
         key="key-email"
@@ -35,7 +34,7 @@ const LogInForm = () => {
       />
 
       <SubmitButton
-        text="Login"
+        text="Log In"
         onClick={handleLogIn}
         isSubmitting={isPending}
       />
