@@ -110,21 +110,3 @@ export const ButtonsContainer = styled.div`
   align-items: center;
   justify-content: center;
 `;
-
-export const PrimaryButton = styled.button`
-  padding: 0.4rem 1.7rem;
-  display: flex;
-  align-items: center;
-  box-shadow: none;
-  border: 1px solid;
-  border-color: var(--bg-action);
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--fg-primary);
-  background-color: var(--bg-action);
-
-  &:hover {
-    background-color: var(--bg-action-hover);
-  }
-`;
