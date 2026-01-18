@@ -27,23 +27,23 @@ router.get(
       const users = await User.bulkCreate([
         {
           firstName: 'Tom',
-          email: 't@e.c',
-          password: await hashPassword('tttt'),
+          email: 't@e.com',
+          password: await hashPassword('tttttt'),
         },
         {
           firstName: 'Edge',
-          email: 'e@e.c',
-          password: await hashPassword('eeee'),
+          email: 'e@e.com',
+          password: await hashPassword('eeeeee'),
         },
         {
           firstName: 'Firefox',
-          email: 'f@e.c',
-          password: await hashPassword('ffff'),
+          email: 'f@e.com',
+          password: await hashPassword('ffffff'),
         },
         {
           firstName: 'Safari',
-          email: 's@e.c',
-          password: await hashPassword('ssss'),
+          email: 's@e.com',
+          password: await hashPassword('ssssss'),
         },
         {
           firstName: 'Opera',

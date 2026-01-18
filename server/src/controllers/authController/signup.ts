@@ -27,6 +27,9 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
       });
     }
 
+    const lastName =
+      typeof body.lastName === 'string' ? body.lastName.trim() : undefined;
+
     const email = typeof body.email === 'string' ? body.email.trim() : null;
 
     if (!checkEmail(email)) {
@@ -52,7 +55,12 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
 
     const pwdHash = await hashPassword(password);
 
-    const user = await User.create({ email, password: pwdHash, firstName });
+    const user = await User.create({
+      email,
+      password: pwdHash,
+      firstName,
+      lastName,
+    });
 
     const token = createAuthToken(user.id);
 
