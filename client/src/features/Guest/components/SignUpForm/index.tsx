@@ -4,7 +4,6 @@ import {
   FormLink,
   FormStyled,
   FormTitle,
-  PrimaryButton,
 } from '../../styles';
 import BackButton from '../BackButton';
 import useSignUp from './useSignUp';
