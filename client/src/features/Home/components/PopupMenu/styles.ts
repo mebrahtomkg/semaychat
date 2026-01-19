@@ -23,7 +23,7 @@ export const MenuItemButton = styled.button`
   align-items: center;
 
   &:hover {
-    background-color: var(--bg-hover);
+    background-color: var(--bg-secondary-hover);
   }
 `;
 

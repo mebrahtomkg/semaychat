@@ -18,6 +18,7 @@ const lightThemeVars = css`
   --bg-page: #ffffff;
   --bg-primary: #f6f6f8;
   --bg-secondary: #dfdfe5;
+  --bg-secondary-hover: #cdcdd4;
   --bg-action: #019abe;
   --bg-action-hover: #08b4dd;
   --bg-action-disabled: #01a9d0;
