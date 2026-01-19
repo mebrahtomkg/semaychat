@@ -1,7 +1,25 @@
 import styled from 'styled-components';
-import { CenteredModal } from '@/styles';
 
-export const PhotoUploaderModal = styled(CenteredModal)``;
+export const PhotoUploaderOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #00000082;
+`;
+
+export const PhotoUploaderStyled = styled.div`
+  padding: 1rem;
+  border-radius: 15px;
+  border: 1px solid;
+  background-color: var(--bg-primary);
+  border-color: var(--fg-border);
+`;
 
 export const ModalHeader = styled.div`
   margin-bottom: 1rem;

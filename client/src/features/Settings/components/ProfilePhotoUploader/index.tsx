@@ -1,22 +1,25 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import {
   ModalFooter,
   ModalHeader,
-  PhotoUploaderModal,
   CropOverlayMask,
   CroppingViewport,
   LoadingText,
   LoadingTextContainer,
   PositionableImage,
+  PhotoUploaderOverlay,
+  PhotoUploaderStyled,
 } from './styles';
 import { Spinner } from '@/components';
 import useImageCropper from './useImageCropper';
 import ZoomSlider from './ZoomSlider';
-import useProfilePhotoUploader from './useProfilePhotoUploader';
-import { FullScreenOverlay, ModalTitle } from '@/styles';
+import { ModalTitle } from '@/styles';
 import { CloseButton } from '@/components/buttons';
 import ErrorBanner from '../ErrorBanner';
 import UploadButton from '../UploadButton';
+import useZoomController from './useZoomController';
+import usePhotoLoader from './usePhotoLoader';
+import usePhotoUploader from './usePhotoUploader';
 
 interface ProfilePhotoUploaderProps {
   file: File;
@@ -27,73 +30,96 @@ const ProfilePhotoUploader: FC<ProfilePhotoUploaderProps> = ({
   file,
   onClose,
 }) => {
+  const { imageWidth, zoomPercentage, updateZoomPercentage, handleWheel } =
+    useZoomController();
+
   const {
     croppingViewportRef,
-    positionableImageRef,
-    positionableImageStyle,
-    handlePositionableImageLoad,
-    isPositionableImageLoaded,
-    handleMouseDownOnMask,
-    handleTouchStartOnMask,
-    adjustZoomOnWheelEvent,
-    zoomPercentage,
-    updateZoomPercentage,
+    imageRef,
+    imagePosition,
+    isImageDragging,
+    handleImageLoad,
+    isImageLoaded,
+    handleMouseDown,
+    handleTouchStart,
     cropImage,
   } = useImageCropper();
 
-  const { error, imageSrc, uploadPhoto, isUploading } = useProfilePhotoUploader(
-    { file, onClose, imageCropperFunc: cropImage },
+  const imageStyle = useMemo(
+    () => ({
+      transform: `translate(${imagePosition.x}px, ${imagePosition.y}px)`,
+      width: `${imageWidth}%`,
+      transition: !isImageDragging ? 'transform 0.7s ease-in-out' : 'none',
+    }),
+    [imagePosition.x, imagePosition.y, imageWidth, isImageDragging],
   );
+
+  const { error: loadingError, imageSrc } = usePhotoLoader(file);
+
+  const {
+    error: uploadingError,
+    uploadPhoto,
+    isUploading,
+  } = usePhotoUploader(cropImage, onClose, file.name);
+
+  const error = loadingError || uploadingError;
 
   if (error) return <ErrorBanner error={error} onClose={onClose} />;
 
   if (!imageSrc) return null;
 
   return (
-    <FullScreenOverlay $zIndex={300}>
-      <PhotoUploaderModal aria-modal="true">
+    <PhotoUploaderOverlay>
+      <PhotoUploaderStyled aria-modal="true">
         <ModalHeader>
           <ModalTitle>Drag to reposition</ModalTitle>
+
           <CloseButton
             ariaLabel="Close Profile Photo Uploader"
             onClick={onClose}
           />
         </ModalHeader>
+
         <CroppingViewport ref={croppingViewportRef}>
           <CropOverlayMask
             draggable={false}
-            onMouseDown={handleMouseDownOnMask}
-            onTouchStart={handleTouchStartOnMask}
-            onWheel={adjustZoomOnWheelEvent}
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
+            onWheel={handleWheel}
           />
-          {!isPositionableImageLoaded && (
+
+          {!isImageLoaded && (
             <LoadingTextContainer>
               <LoadingText>Processing image...</LoadingText>
             </LoadingTextContainer>
           )}
+
           <PositionableImage
-            ref={positionableImageRef}
+            ref={imageRef}
             src={imageSrc}
             alt="Positionable profile photo"
-            style={positionableImageStyle}
+            style={imageStyle}
             draggable={false}
-            onLoad={handlePositionableImageLoad}
+            onLoad={handleImageLoad}
           />
         </CroppingViewport>
+
         <ModalFooter>
           <ZoomSlider
             zoomPercentage={zoomPercentage}
             onZoomPercentageUpdate={updateZoomPercentage}
-            onWheel={adjustZoomOnWheelEvent}
+            onWheel={handleWheel}
           />
+
           <UploadButton
-            isDisabled={isUploading || !isPositionableImageLoaded}
+            isDisabled={isUploading || !isImageLoaded}
             onClick={uploadPhoto}
           />
         </ModalFooter>
+
         {isUploading && <Spinner />}
-      </PhotoUploaderModal>
-    </FullScreenOverlay>
+      </PhotoUploaderStyled>
+    </PhotoUploaderOverlay>
   );
 };
 

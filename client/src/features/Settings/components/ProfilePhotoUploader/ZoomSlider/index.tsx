@@ -1,10 +1,17 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  WheelEventHandler,
+} from 'react';
 import { SliderProgress, SliderThumb, ZoomSliderTrack } from './styles';
 
 interface ZoomSliderProps {
   zoomPercentage: number;
   onZoomPercentageUpdate: (percentage: number) => void;
-  onWheel: (e: unknown) => void;
+  onWheel: WheelEventHandler;
 }
 
 const ZoomSlider: FC<ZoomSliderProps> = ({
@@ -13,11 +20,8 @@ const ZoomSlider: FC<ZoomSliderProps> = ({
   onWheel,
 }) => {
   const [thumbX, setThumbX] = useState<number>(0);
-
   const isDragging = useRef<boolean>(false);
-
   const trackRef = useRef<HTMLDivElement | null>(null);
-
   const thumbRef = useRef<HTMLDivElement | null>(null);
 
   const startThumbDrag = () => {

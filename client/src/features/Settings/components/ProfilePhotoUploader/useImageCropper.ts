@@ -1,21 +1,14 @@
 import {
+  MouseEventHandler,
   SyntheticEvent,
+  TouchEventHandler,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react';
-import useZoomController from './useZoomController';
 
 const useImageCropper = () => {
-  const {
-    imageWidth,
-    zoomPercentage,
-    updateZoomPercentage,
-    adjustZoomOnWheelEvent,
-  } = useZoomController();
-
   const croppingViewportRef = useRef<HTMLDivElement | null>(null);
 
   const imageRef = useRef<HTMLImageElement | null>(null);
@@ -90,7 +83,7 @@ const useImageCropper = () => {
 
   const cropImage = useCallback(
     () =>
-      new Promise((resolve, reject) => {
+      new Promise<Blob | null>((resolve, reject) => {
         if (!imageRef.current || !croppingViewportRef.current) {
           reject('Failed to get DOM elements while cropping image.');
           return;
@@ -160,37 +153,25 @@ const useImageCropper = () => {
     };
   }, [updateImagePosition, handlePointerUp]);
 
-  const handleMouseDown = useCallback(
-    (e: MouseEvent) => startImageDrag(e.clientX, e.clientY),
+  const handleMouseDown: MouseEventHandler = useCallback(
+    (e) => startImageDrag(e.clientX, e.clientY),
     [startImageDrag],
   );
 
-  const handleTouchStart = useCallback(
-    (e: TouchEvent) =>
-      startImageDrag(e.touches[0].clientX, e.touches[0].clientY),
+  const handleTouchStart: TouchEventHandler = useCallback(
+    (e) => startImageDrag(e.touches[0].clientX, e.touches[0].clientY),
     [startImageDrag],
-  );
-
-  const imageStyle = useMemo(
-    () => ({
-      transform: `translate(${imagePosition.x}px, ${imagePosition.y}px)`,
-      width: `${imageWidth}%`,
-      transition: !isDragging.current ? 'transform 0.7s ease-in-out' : 'none',
-    }),
-    [imagePosition, imageWidth],
   );
 
   return {
     croppingViewportRef,
-    positionableImageRef: imageRef,
-    positionableImageStyle: imageStyle,
-    handlePositionableImageLoad: handleImageLoad,
-    isPositionableImageLoaded: isImageLoaded,
-    handleMouseDownOnMask: handleMouseDown,
-    handleTouchStartOnMask: handleTouchStart,
-    adjustZoomOnWheelEvent,
-    zoomPercentage,
-    updateZoomPercentage,
+    imageRef,
+    imagePosition,
+    isImageDragging: isDragging.current,
+    handleImageLoad,
+    isImageLoaded,
+    handleMouseDown,
+    handleTouchStart,
     cropImage,
   };
 };

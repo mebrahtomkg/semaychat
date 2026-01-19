@@ -1,10 +1,10 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, WheelEventHandler } from 'react';
 
 const useZoomController = () => {
   const [zoomPercentage, setZoomPercentage] = useState(0);
 
-  const adjustZoomOnWheelEvent = useCallback(
-    (e: WheelEvent) => {
+  const handleWheel: WheelEventHandler<HTMLDivElement> = useCallback(
+    (e) => {
       const direction = e.deltaY < 0 ? 1 : -1;
       const step = 5 * direction;
       const newZoomPercentage = Math.max(
@@ -24,7 +24,7 @@ const useZoomController = () => {
     imageWidth,
     zoomPercentage,
     updateZoomPercentage: setZoomPercentage,
-    adjustZoomOnWheelEvent,
+    handleWheel,
   };
 };
 
