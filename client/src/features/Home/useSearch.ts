@@ -2,17 +2,16 @@ import { useContacts } from '@/hooks';
 import useChats from '@/hooks/useChats';
 import { Chat } from '@/types';
 import { InputEventHandler, useCallback, useEffect, useState } from 'react';
+import useEnoughChats from './useEnoughChats';
 
 const useSearch = () => {
-  const chats = useChats();
-  const contacts = useContacts();
-
+  const chats = useEnoughChats();
   const [query, setQuery] = useState<string>('');
   const [searchResults, setSearchResults] = useState<Chat[]>([]);
 
   const handleSearchInputChange: InputEventHandler<HTMLInputElement> =
     useCallback((e) => {
-      const { value } = e.currentTarget;
+      const value = e.currentTarget.value;
       setQuery(value.trim().toLowerCase());
     }, []);
 
@@ -25,17 +24,8 @@ const useSearch = () => {
       }
     });
 
-    contacts.forEach((contact) => {
-      if (
-        contact.firstName.toLowerCase().startsWith(query) &&
-        !result.some((chat) => chat.partner.id === contact.id)
-      ) {
-        result.push({ partner: contact });
-      }
-    });
-
     setSearchResults(result);
-  }, [query, chats, contacts]);
+  }, [query, chats]);
 
   const isSearchMode = !!query;
 
