@@ -42,8 +42,8 @@ const BlockedUsers = () => {
             </HeaderSection>
 
             <BlockedUsersContainer>
-              {blockedUsers.map((user) => (
-                <BlockedUser key={`${user.id}`} user={user} />
+              {blockedUsers.map((user, index) => (
+                <BlockedUser key={`${user.id}`} user={user} index={index} />
               ))}
             </BlockedUsersContainer>
           </BlockedUsersStyled>

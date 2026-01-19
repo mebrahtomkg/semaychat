@@ -1,13 +1,15 @@
 import styled from 'styled-components';
 
 export const BlockedUsersStyled = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  right: 0;
   bottom: 0;
-  z-index: 5;
-  padding: 0 1rem;
+  padding: 1rem;
+  height: 100vh;
+  width: var(--big-modal-width);
+  min-width: var(--big-modal-width);
+  overflow: hidden;
   background-color: var(--bg-primary);
 `;
 

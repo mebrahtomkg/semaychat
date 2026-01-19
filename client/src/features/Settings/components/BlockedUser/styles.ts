@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const BlockedUserStyled = styled.div`
   margin: 0 0.2rem;
-  padding: 0.6rem 1rem;
+  padding: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -14,24 +14,8 @@ export const BlockedUserStyled = styled.div`
   }
 `;
 
-export const ProfilePhotoContainer = styled.div`
-  --profile-photo-width: 3.8rem;
-  width: var(--profile-photo-width);
-  min-width: var(--profile-photo-width);
-  height: var(--profile-photo-width);
-  margin-right: 0.7rem;
-  border-radius: 50%;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const Photo = styled.img`
-  width: 100%;
-`;
-
 export const NameContainer = styled.div`
+  margin-left: 0.8rem;
   flex-grow: 1;
   overflow: hidden;
   display: flex;

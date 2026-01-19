@@ -4,12 +4,9 @@ import {
   MoreButtonStyled,
   Name,
   NameContainer,
-  Photo,
-  ProfilePhotoContainer,
 } from './styles';
-import { useImageLoader, useUnblockUser, useUserInfo } from '@/hooks';
+import { useUnblockUser, useUserInfo } from '@/hooks';
 import { User } from '@/types';
-import { NameInitial } from '@/components';
 import { MoreIcon, SendIcon, UnblockUserIcon } from '@/components/icons';
 import { useNavigate } from 'react-router';
 import { useAppStateStore } from '@/store';
@@ -19,16 +16,15 @@ import ContextMenu, {
   useContextMenu,
 } from '@/components/ContextMenu';
 import { ANIMATION_CONTEXT_MENU_FAST, WithAnimation } from '@/Animation';
+import Avatar from '@/components/Avatar';
 
 interface BlockedUserProps {
   user: User;
+  index: number;
 }
 
-const BlockedUser: FC<BlockedUserProps> = ({ user }) => {
+const BlockedUser: FC<BlockedUserProps> = ({ user, index }) => {
   const { fullName, nameInitials, photoUrl } = useUserInfo(user);
-
-  const { imageSrc, handleImageLoad, handleImageLoadError } =
-    useImageLoader(photoUrl);
 
   const {
     isContextMenuVisible,
@@ -74,19 +70,7 @@ const BlockedUser: FC<BlockedUserProps> = ({ user }) => {
 
   return (
     <BlockedUserStyled onClick={openInChat}>
-      {imageSrc ? (
-        <ProfilePhotoContainer>
-          <Photo
-            src={imageSrc}
-            onLoad={handleImageLoad}
-            onError={handleImageLoadError}
-          />
-        </ProfilePhotoContainer>
-      ) : (
-        <ProfilePhotoContainer>
-          <NameInitial isSmall={true} nameInitials={nameInitials} />
-        </ProfilePhotoContainer>
-      )}
+      <Avatar initials={nameInitials} imageUrl={photoUrl} itemIndex={index} />
 
       <NameContainer>
         <Name>{fullName}</Name>
