@@ -1,31 +1,3 @@
-import { getFileExtension } from '@/utils';
-
-const IMAGE_EXTENSIONS = [
-  'jpg',
-  'jpeg',
-  'png',
-  'gif',
-  'bmp',
-  'tiff',
-  'tif',
-  'webp',
-  'svg',
-  'ico',
-  'heif',
-  'heic',
-  'apng',
-  'avif',
-  'jp2',
-  'j2k',
-  'hdr',
-];
-
-export const isImageFile = (fileName: string) => {
-  const extension = getFileExtension(fileName);
-  if (typeof extension !== 'string') return false;
-  return IMAGE_EXTENSIONS.includes(extension.toLowerCase());
-};
-
 /**
  * Returns size in appropriate unit(bytes, kilobytes, megabytes and
  * gigabytes) of the provided size.

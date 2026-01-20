@@ -5,7 +5,8 @@ import {
   useRef,
   useState,
 } from 'react';
-import { getSizeInAppropriateUnit, isImageFile } from './utils';
+import { getSizeInAppropriateUnit } from './utils';
+import z from 'zod';
 
 const MIN_IMAGE_FILE_SIZE = 1 * 1024;
 const MAX_IMAGE_FILE_SIZE = 5 * 1024 * 1024;
@@ -19,13 +20,14 @@ const IMAGE_ERRORS = {
                     Maximum size is ${getSizeInAppropriateUnit(MAX_IMAGE_FILE_SIZE)}.`,
 };
 
-const validateImageFile = (file: File) => {
-  if (!(file instanceof File)) return IMAGE_ERRORS.INVALID_FILE;
-  if (!isImageFile(file.name)) return IMAGE_ERRORS.INVALID_FILE_TYPE;
-  if (file.size < MIN_IMAGE_FILE_SIZE) return IMAGE_ERRORS.SIZE_TOO_SMALL;
-  if (file.size > MAX_IMAGE_FILE_SIZE) return IMAGE_ERRORS.SIZE_TOO_BIG;
-  return null;
-};
+const imageFileSchema = z
+  .file(IMAGE_ERRORS.INVALID_FILE)
+  .mime(
+    ['image/png', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp'],
+    IMAGE_ERRORS.INVALID_FILE_TYPE,
+  )
+  .min(MIN_IMAGE_FILE_SIZE, IMAGE_ERRORS.SIZE_TOO_SMALL)
+  .max(MAX_IMAGE_FILE_SIZE, IMAGE_ERRORS.SIZE_TOO_BIG);
 
 const usePhotoLoader = (file: File, onImageLoad: () => void) => {
   const objUrlRef = useRef<string | null>(null);
@@ -34,13 +36,13 @@ const usePhotoLoader = (file: File, onImageLoad: () => void) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fileError = validateImageFile(file);
-    if (fileError) {
-      setError(fileError);
-    } else {
-      const url = URL.createObjectURL(file);
+    const result = imageFileSchema.safeParse(file);
+    if (result.success) {
+      const url = URL.createObjectURL(result.data);
       objUrlRef.current = url;
       setImageSrc(url);
+    } else {
+      setError(result.error.issues[0].message);
     }
 
     return () => {
