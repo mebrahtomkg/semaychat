@@ -20,6 +20,7 @@ import UploadButton from '../UploadButton';
 import useZoomController from './useZoomController';
 import usePhotoLoader from './usePhotoLoader';
 import usePhotoUploader from './usePhotoUploader';
+import useImagePositioning from './useImagePositioning';
 
 interface ProfilePhotoUploaderProps {
   file: File;
@@ -37,32 +38,52 @@ const ProfilePhotoUploader: FC<ProfilePhotoUploaderProps> = ({
     croppingViewportRef,
     imageRef,
     imagePosition,
-    isImageDragging,
-    handleImageLoad,
-    isImageLoaded,
+    isDraggingRef,
+    recenterImage,
     handleMouseDown,
     handleTouchStart,
+  } = useImagePositioning();
+
+  const {
     cropImage,
-  } = useImageCropper();
+    isCropping,
+    error: croppingError,
+  } = useImageCropper({
+    croppingViewportRef,
+    imageRef,
+    imagePosition,
+  });
+
+  const {
+    imageSrc,
+    handleImageLoad,
+    isImageLoaded,
+    handleImageLoadError,
+    error: loadingError,
+  } = usePhotoLoader(file, recenterImage);
+
+  const {
+    uploadPhoto,
+    isUploading,
+    error: uploadingError,
+  } = usePhotoUploader({
+    cropImage,
+    onSuccess: onClose,
+    fileName: file.name,
+  });
 
   const imageStyle = useMemo(
     () => ({
       transform: `translate(${imagePosition.x}px, ${imagePosition.y}px)`,
       width: `${imageWidth}%`,
-      transition: !isImageDragging ? 'transform 0.7s ease-in-out' : 'none',
+      transition: !isDraggingRef.current
+        ? 'transform 0.7s ease-in-out'
+        : 'none',
     }),
-    [imagePosition.x, imagePosition.y, imageWidth, isImageDragging],
+    [imagePosition.x, imagePosition.y, imageWidth, isDraggingRef.current],
   );
 
-  const { error: loadingError, imageSrc } = usePhotoLoader(file);
-
-  const {
-    error: uploadingError,
-    uploadPhoto,
-    isUploading,
-  } = usePhotoUploader(cropImage, onClose, file.name);
-
-  const error = loadingError || uploadingError;
+  const error = loadingError || croppingError || uploadingError;
 
   if (error) return <ErrorBanner error={error} onClose={onClose} />;
 
@@ -101,6 +122,7 @@ const ProfilePhotoUploader: FC<ProfilePhotoUploaderProps> = ({
             style={imageStyle}
             draggable={false}
             onLoad={handleImageLoad}
+            onError={handleImageLoadError}
           />
         </CroppingViewport>
 
@@ -112,12 +134,12 @@ const ProfilePhotoUploader: FC<ProfilePhotoUploaderProps> = ({
           />
 
           <UploadButton
-            isDisabled={isUploading || !isImageLoaded}
+            isDisabled={!isImageLoaded || isCropping || isUploading}
             onClick={uploadPhoto}
           />
         </ModalFooter>
 
-        {isUploading && <Spinner />}
+        {(isCropping || isUploading) && <Spinner />}
       </PhotoUploaderStyled>
     </PhotoUploaderOverlay>
   );

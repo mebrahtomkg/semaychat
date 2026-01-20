@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import {
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { getSizeInAppropriateUnit, isImageFile } from './utils';
 
 const MIN_IMAGE_FILE_SIZE = 1 * 1024;
@@ -21,9 +27,10 @@ const validateImageFile = (file: File) => {
   return null;
 };
 
-const usePhotoLoader = (file: File) => {
+const usePhotoLoader = (file: File, onImageLoad: () => void) => {
   const objUrlRef = useRef<string | null>(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -41,8 +48,28 @@ const usePhotoLoader = (file: File) => {
     };
   }, [file]);
 
+  const handleImageLoad = useCallback(
+    (e: SyntheticEvent<HTMLImageElement>) => {
+      setIsImageLoaded(true);
+      URL.revokeObjectURL(e.currentTarget.src);
+      onImageLoad();
+    },
+    [onImageLoad],
+  );
+
+  const handleImageLoadError = useCallback(
+    (e: SyntheticEvent<HTMLImageElement>) => {
+      URL.revokeObjectURL(e.currentTarget.src);
+      setError('Failed to load photo.');
+    },
+    [],
+  );
+
   return {
     imageSrc,
+    handleImageLoad,
+    handleImageLoadError,
+    isImageLoaded,
     error,
   };
 };

@@ -1,95 +1,39 @@
-import {
-  MouseEventHandler,
-  SyntheticEvent,
-  TouchEventHandler,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { RefObject, useCallback, useState } from 'react';
 
-const useImageCropper = () => {
-  const croppingViewportRef = useRef<HTMLDivElement | null>(null);
+const CROPPING_ERRORS = {
+  CROPPING_FAILED: 'Image cropping failed. Please try again.',
+};
 
-  const imageRef = useRef<HTMLImageElement | null>(null);
+interface Position {
+  x: number;
+  y: number;
+}
 
-  const [imagePosition, setImagePosition] = useState({ x: 0, y: 0 });
+interface ImageCropperOptions {
+  croppingViewportRef: RefObject<HTMLDivElement | null>;
+  imageRef: RefObject<HTMLImageElement | null>;
+  imagePosition: Position;
+}
 
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
+const useImageCropper = ({
+  croppingViewportRef,
+  imageRef,
+  imagePosition,
+}: ImageCropperOptions) => {
+  const [isCropping, setIsCropping] = useState(false);
+  const [error, setError] = useState<string>('');
 
-  const isDragging = useRef(false);
-
-  const dragStartPositionsRef = useRef({
-    imagePosition: { x: 0, y: 0 },
-    pointerPosition: { x: 0, y: 0 },
-  });
-
-  const startImageDrag = useCallback(
-    (clientX: number, clientY: number) => {
-      dragStartPositionsRef.current = {
-        imagePosition: { x: imagePosition.x, y: imagePosition.y },
-        pointerPosition: { x: clientX, y: clientY },
-      };
-      isDragging.current = true;
-    },
-    [imagePosition],
-  );
-
-  const updateImagePosition = useCallback(
-    (clientX: number, clientY: number) => {
-      if (!isDragging.current) return;
-      const { imagePosition: imgPosition, pointerPosition } =
-        dragStartPositionsRef.current;
-      const xDistance = clientX - pointerPosition.x;
-      const yDistance = clientY - pointerPosition.y;
-      setImagePosition({
-        x: imgPosition.x + xDistance,
-        y: imgPosition.y + yDistance,
-      });
-    },
-    [],
-  );
-
-  const recenterImage = useCallback(() => {
-    if (!croppingViewportRef.current || !imageRef.current) return;
-    const viewportRect = croppingViewportRef.current.getBoundingClientRect();
-    const imageRect = imageRef.current.getBoundingClientRect();
-    const newX = (viewportRect.width - imageRect.width) / 2;
-    const newY = (viewportRect.height - imageRect.height) / 2;
-    setImagePosition({ x: Math.round(newX), y: Math.round(newY) });
-  }, []);
-
-  const handleImageLoad = useCallback(
-    (e: SyntheticEvent<HTMLImageElement>) => {
-      setIsImageLoaded(true);
-      URL.revokeObjectURL(e.currentTarget.src);
-      recenterImage();
-    },
-    [recenterImage],
-  );
-
-  const snapImageToCenterIfOutOfBounds = useCallback(() => {
-    if (!croppingViewportRef.current || !imageRef.current) return;
-    const viewportRect = croppingViewportRef.current.getBoundingClientRect();
-    const imageRect = imageRef.current.getBoundingClientRect();
-    const threshold = 0.25;
-    const isOutOfBounds =
-      imageRect.left + imageRect.width * threshold >= viewportRect.right ||
-      imageRect.right - imageRect.width * threshold <= viewportRect.left ||
-      imageRect.top + imageRect.height * threshold >= viewportRect.bottom ||
-      imageRect.bottom - imageRect.height * threshold <= viewportRect.top;
-    if (isOutOfBounds) recenterImage();
-  }, [recenterImage]);
-
-  const cropImage = useCallback(
+  const cropImageAsync = useCallback(
     () =>
       new Promise<Blob | null>((resolve, reject) => {
         if (!imageRef.current || !croppingViewportRef.current) {
           reject('Failed to get DOM elements while cropping image.');
           return;
         }
+
         const viewportRect =
           croppingViewportRef.current.getBoundingClientRect();
+
         const image = imageRef.current;
         const imageRect = image.getBoundingClientRect();
 
@@ -125,55 +69,28 @@ const useImageCropper = () => {
 
         canvas.toBlob((blob) => resolve(blob), 'image/png');
       }),
-    [imagePosition],
+    [croppingViewportRef.current, imageRef.current, imagePosition],
   );
 
-  const handlePointerUp = useCallback(() => {
-    isDragging.current = false;
-    snapImageToCenterIfOutOfBounds();
-  }, [snapImageToCenterIfOutOfBounds]);
+  const cropImage = useCallback(async () => {
+    setIsCropping(true);
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) =>
-      updateImagePosition(e.clientX, e.clientY);
+    // Important! Let the UI update (the setIsCropping state) before entering in to heavy task.
+    await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const handleTouchMove = (e: TouchEvent) =>
-      updateImagePosition(e.touches[0].clientX, e.touches[0].clientY);
+    let blob: Blob | null = null;
+    try {
+      blob = await cropImageAsync();
+    } catch (err) {
+      console.error(err);
+      setError(CROPPING_ERRORS.CROPPING_FAILED);
+    }
+    setIsCropping(false);
 
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('touchmove', handleTouchMove);
-    document.addEventListener('mouseup', handlePointerUp);
-    document.addEventListener('touchend', handlePointerUp);
+    return blob;
+  }, [cropImageAsync]);
 
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('touchmove', handleTouchMove);
-      document.removeEventListener('mouseup', handlePointerUp);
-      document.removeEventListener('touchend', handlePointerUp);
-    };
-  }, [updateImagePosition, handlePointerUp]);
-
-  const handleMouseDown: MouseEventHandler = useCallback(
-    (e) => startImageDrag(e.clientX, e.clientY),
-    [startImageDrag],
-  );
-
-  const handleTouchStart: TouchEventHandler = useCallback(
-    (e) => startImageDrag(e.touches[0].clientX, e.touches[0].clientY),
-    [startImageDrag],
-  );
-
-  return {
-    croppingViewportRef,
-    imageRef,
-    imagePosition,
-    isImageDragging: isDragging.current,
-    handleImageLoad,
-    isImageLoaded,
-    handleMouseDown,
-    handleTouchStart,
-    cropImage,
-  };
+  return { cropImage, isCropping, error };
 };
 
 export default useImageCropper;

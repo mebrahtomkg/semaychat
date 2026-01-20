@@ -29,7 +29,7 @@ export const CenteredModal = styled.div`
   border-radius: 15px;
   border: 1px solid;
   background-color: var(--bg-primary);
-  border-color: var(--fg-bright);
+  border-color: var(--fg-border);
 `;
 
 export const NormalButton = styled.button``;
@@ -69,6 +69,7 @@ export const IconButton = styled.button`
 export const ModalTitle = styled.h1`
   margin-left: 1rem;
   font-size: 1.4rem;
+  color: var(--fg-primary);
 `;
 
 export const PhotoHeaderSection = styled.div`
