@@ -90,6 +90,7 @@ const useImageDragging = ({
 
   const handleTouchMove = useCallback(
     (e: TouchEvent) => {
+      e.preventDefault(); // Stops page scrolling and zooming
       updateImagePosition(e.touches[0].clientX, e.touches[0].clientY);
     },
     [updateImagePosition],
@@ -98,7 +99,9 @@ const useImageDragging = ({
   const handleTouchStart: TouchEventHandler = useCallback(
     (e) => {
       startDrag(e.touches[0].clientX, e.touches[0].clientY);
-      document.addEventListener('touchmove', handleTouchMove);
+      document.addEventListener('touchmove', handleTouchMove, {
+        passive: false,
+      });
     },
     [startDrag, handleTouchMove],
   );
