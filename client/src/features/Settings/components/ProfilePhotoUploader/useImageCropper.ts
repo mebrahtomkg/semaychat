@@ -54,6 +54,8 @@ const useImageCropper = ({
         canvas.height = viewportRect.height;
         const ctx = canvas.getContext('2d');
         if (ctx) {
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
           ctx.drawImage(
             image,
             sourceX,
