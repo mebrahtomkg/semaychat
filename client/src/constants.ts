@@ -1,6 +1,10 @@
 import { Theme } from './types';
 
-export const API_BASE_URL = window.API_URL;
+export const IS_PRODUCTION = window.IS_PRODUCTION;
+
+export const API_BASE_URL = IS_PRODUCTION
+  ? window.API_URL
+  : `${document.location.protocol}//${document.location.hostname}:3000/api`;
 
 export const DEFAULT_THEME: Theme = 'dark';
 

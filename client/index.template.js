@@ -1,4 +1,4 @@
-const { PUBLIC_PATH, API_URL } = require('./constants');
+const { IS_PRODUCTION, PUBLIC_PATH, API_URL } = require('./constants');
 
 module.exports = (
   /**@type {{
@@ -21,6 +21,7 @@ module.exports = (
        </style>
       
        <script>
+          window.IS_PRODUCTION = ${IS_PRODUCTION ? 'true' : 'false'};
           window.API_URL = '${API_URL}';
           window.SERVICE_WORKER_URL = '${PUBLIC_PATH}${serviceWorkerFile}';
        </script>
