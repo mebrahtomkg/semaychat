@@ -1,13 +1,9 @@
 import { RefObject, useCallback, useState } from 'react';
+import { Position } from './types';
 
 const CROPPING_ERRORS = {
   CROPPING_FAILED: 'Image cropping failed. Please try again.',
 };
-
-interface Position {
-  x: number;
-  y: number;
-}
 
 interface ImageCropperOptions {
   croppingViewportRef: RefObject<HTMLDivElement | null>;
