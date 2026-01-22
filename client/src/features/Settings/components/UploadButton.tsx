@@ -1,27 +1,42 @@
 import { FC } from 'react';
-import styled from 'styled-components';
-import { DisabledPrimaryButton, PrimaryButton } from '../../../styles';
+import styled, { css } from 'styled-components';
+import { TickIcon } from '@/components/icons';
 
-const BUTTON_TEXT = 'Upload';
+const UploadButtonEnabled = styled.div<{ $isDisabled: boolean }>`
+  width: 3rem;
+  aspect-ratio: 1/1;
+  padding: 0.5rem 0.6rem;
+  transform: rotate(-45deg);
+  color: #fff;
+  border-radius: 50%;
 
-const UploadButtonEnabled = styled(PrimaryButton)`
-  padding: 0.5rem 1rem;
-`;
-
-const UploadButtonDisabled = styled(DisabledPrimaryButton)`
-  padding: 0.5rem 1rem;
+  ${(props) =>
+    props.$isDisabled
+      ? css`
+          background-color: var(--bg-action-disabled);
+        `
+      : css`
+          background-color: var(--bg-action);
+          &:hover {
+            background-color: var(--bg-action-hover);
+          }
+        `}
 `;
 
 interface UploadButtonProps {
-  isDisabled: boolean;
   onClick: () => void;
+  isDisabled: boolean;
 }
 
-const UploadButton: FC<UploadButtonProps> = ({ isDisabled, onClick }) => {
-  return isDisabled ? (
-    <UploadButtonDisabled disabled={true}>{BUTTON_TEXT}</UploadButtonDisabled>
-  ) : (
-    <UploadButtonEnabled onClick={onClick}>{BUTTON_TEXT}</UploadButtonEnabled>
+const UploadButton: FC<UploadButtonProps> = ({ onClick, isDisabled }) => {
+  const handleClick = () => {
+    if (!isDisabled) onClick();
+  };
+
+  return (
+    <UploadButtonEnabled onClick={handleClick} $isDisabled={isDisabled}>
+      <TickIcon />
+    </UploadButtonEnabled>
   );
 };
 

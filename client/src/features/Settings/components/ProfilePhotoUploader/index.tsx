@@ -10,11 +10,11 @@ import {
   PhotoUploaderStyled,
   CropOverlayMaskHole,
   CropOverlayMaskContainer,
+  ModalTitle,
 } from './styles';
 import { Spinner } from '@/components';
 import useImageCropper from './useImageCropper';
 import ZoomSlider from './ZoomSlider';
-import { ModalTitle } from '@/styles';
 import { CloseButton } from '@/components/buttons';
 import ErrorBanner from '../ErrorBanner';
 import UploadButton from '../UploadButton';

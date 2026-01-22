@@ -25,20 +25,28 @@ export const ModalHeader = styled.div`
   margin-bottom: 1rem;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+`;
+
+export const ModalTitle = styled.h1`
+  font-size: 1.4rem;
+  color: var(--fg-primary);
 `;
 
 export const CroppingViewport = styled.div`
   position: relative;
-  margin: 1rem;
-  width: calc(100vw - 6rem);
-  max-width: 400px;
-  height: calc(100vw - 6rem);
-  max-height: 400px;
+  margin-bottom: 1rem;
+  --cropping-area-size: calc(100vw - 3rem);
+  --cropping-area-max-size: 25rem;
+  width: var(--cropping-area-size);
+  max-width: var(--cropping-area-max-size);
+  height: var(--cropping-area-size);
+  max-height: var(--cropping-area-max-size);
   overflow: hidden;
   border-radius: 5px;
   border: 1px solid;
   background-color: inherit;
-  border-color: inherit;
+  border-color: var(--fg-border);
 `;
 
 export const CropOverlayMaskContainer = styled.div`
@@ -83,6 +91,10 @@ export const LoadingText = styled.p`
 `;
 
 export const ModalFooter = styled.div`
-  padding: 0 2rem;
+  padding: 0 0.5rem;
   display: flex;
+
+  @media (min-width: 500px) {
+    padding: 0 2rem;
+  }
 `;
