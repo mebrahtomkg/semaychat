@@ -2,13 +2,14 @@ import { FC, useMemo } from 'react';
 import {
   ModalFooter,
   ModalHeader,
-  CropOverlayMask,
   CroppingViewport,
   LoadingText,
   LoadingTextContainer,
   PositionableImage,
   PhotoUploaderOverlay,
   PhotoUploaderStyled,
+  CropOverlayMaskHole,
+  CropOverlayMaskContainer,
 } from './styles';
 import { Spinner } from '@/components';
 import useImageCropper from './useImageCropper';
@@ -21,6 +22,7 @@ import useZoomController from './useZoomController';
 import usePhotoLoader from './usePhotoLoader';
 import usePhotoUploader from './usePhotoUploader';
 import useImagePositioning from './useImagePositioning';
+import { MaskIcon } from '@/components/icons';
 
 interface ProfilePhotoUploaderProps {
   file: File;
@@ -102,7 +104,11 @@ const ProfilePhotoUploader: FC<ProfilePhotoUploaderProps> = ({
         </ModalHeader>
 
         <CroppingViewport ref={croppingViewportRef}>
-          <CropOverlayMask
+          <CropOverlayMaskContainer draggable={false}>
+            <MaskIcon />
+          </CropOverlayMaskContainer>
+
+          <CropOverlayMaskHole
             draggable={false}
             onMouseDown={handleMouseDown}
             onTouchStart={handleTouchStart}

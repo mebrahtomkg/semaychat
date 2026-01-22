@@ -39,3 +39,4 @@ export { default as DoubleTickIcon } from '@/assets/icons/doubleTick.svg';
 export { default as ClockIcon } from '@/assets/icons/clock.svg';
 export { default as SpinnerIcon } from '@/assets/icons/spinner.svg';
 export { default as LogoIcon } from '@/assets/icons/logo.svg';
+export { default as MaskIcon } from '@/assets/icons/mask.svg';

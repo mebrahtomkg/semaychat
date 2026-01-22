@@ -41,19 +41,20 @@ export const CroppingViewport = styled.div`
   border-color: inherit;
 `;
 
-export const CropOverlayMask = styled.div`
+export const CropOverlayMaskContainer = styled.div`
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   z-index: 10;
-  border: 10px solid;
+  background-color: transparent;
+  color: rgb(255 255 255 / 20%);
+  user-select: none;
+`;
+
+export const CropOverlayMaskHole = styled.div`
+  position: absolute;
+  inset: 0.5rem;
+  z-index: 15;
   border-radius: 50%;
-  outline-style: solid;
-  outline-width: 10000px;
-  outline-color: #00000070;
-  border-color: #00000070;
   background-color: transparent;
   user-select: none;
   cursor: move;
