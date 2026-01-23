@@ -74,6 +74,28 @@ const useZoomSlider = ({
     };
   }, [updateZoomPercentage, endDrag]);
 
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      const key = e.key;
+      if (!(key === 'ArrowLeft' || key === 'ArrowRight')) return;
+      const direction = key === 'ArrowLeft' ? -1 : 1;
+      const step = 5 * direction;
+      const newZoomPercentage = Math.max(
+        0,
+        Math.min(100, zoomPercentage + step),
+      );
+      onZoomPercentageUpdate(newZoomPercentage);
+    },
+    [zoomPercentage, onZoomPercentageUpdate],
+  );
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
   const thumbStyle = useMemo(
     () => ({
       left: `${zoomPercentage}%`,
