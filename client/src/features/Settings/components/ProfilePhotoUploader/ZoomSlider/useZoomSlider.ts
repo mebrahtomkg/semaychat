@@ -4,7 +4,6 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
 } from 'react';
 
 interface ZoomSliderOptions {
@@ -17,8 +16,6 @@ const useZoomSlider = ({
   onZoomPercentageUpdate,
 }: ZoomSliderOptions) => {
   const trackRef = useRef<HTMLDivElement | null>(null);
-  const thumbRef = useRef<HTMLDivElement | null>(null);
-  const [thumbX, setThumbX] = useState<number>(0);
   const isDraggingRef = useRef(false);
 
   const startDrag = useCallback(() => {
@@ -77,24 +74,15 @@ const useZoomSlider = ({
     };
   }, [updateZoomPercentage, endDrag]);
 
-  useEffect(() => {
-    if (!trackRef.current || !thumbRef.current) return;
-    const trackWidth = trackRef.current.getBoundingClientRect().width;
-    const thumbWidth = thumbRef.current.getBoundingClientRect().width;
-    const newThumbX = (zoomPercentage / 100) * trackWidth - thumbWidth / 2;
-    setThumbX(Math.round(newThumbX));
-  }, [zoomPercentage]);
-
   const thumbStyle = useMemo(
     () => ({
-      transform: `translateX(${thumbX}px)`,
+      left: `${zoomPercentage}%`,
     }),
-    [thumbX],
+    [zoomPercentage],
   );
 
   return {
     trackRef,
-    thumbRef,
     handleTrackClick,
     handlePointerDown: startDrag,
     thumbStyle,

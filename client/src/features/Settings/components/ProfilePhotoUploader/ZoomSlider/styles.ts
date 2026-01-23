@@ -23,6 +23,7 @@ export const SliderThumb = styled.div`
   position: absolute;
   width: 1.5rem;
   aspect-ratio: 1/1;
+  margin-left: -0.75rem;
   border-radius: 50%;
   user-select: none;
   cursor: pointer;

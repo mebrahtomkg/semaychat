@@ -13,13 +13,8 @@ const ZoomSlider: FC<ZoomSliderProps> = ({
   onZoomPercentageUpdate,
   onWheel,
 }) => {
-  const {
-    trackRef,
-    thumbRef,
-    handleTrackClick,
-    handlePointerDown,
-    thumbStyle,
-  } = useZoomSlider({ zoomPercentage, onZoomPercentageUpdate });
+  const { trackRef, handleTrackClick, handlePointerDown, thumbStyle } =
+    useZoomSlider({ zoomPercentage, onZoomPercentageUpdate });
 
   return (
     <ZoomSliderTrack
@@ -38,7 +33,6 @@ const ZoomSlider: FC<ZoomSliderProps> = ({
       <SliderThumb
         aria-label="Slider thumb"
         draggable="false"
-        ref={thumbRef}
         onMouseDown={handlePointerDown}
         onTouchStart={handlePointerDown}
         style={thumbStyle}
