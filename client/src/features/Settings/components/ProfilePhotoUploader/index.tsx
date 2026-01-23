@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, TouchEventHandler, useCallback, useMemo } from 'react';
 import {
   ModalFooter,
   ModalHeader,
@@ -33,8 +33,13 @@ const ProfilePhotoUploader: FC<ProfilePhotoUploaderProps> = ({
   file,
   onClose,
 }) => {
-  const { imageWidth, zoomPercentage, updateZoomPercentage, handleWheel } =
-    useZoomController();
+  const {
+    imageWidth,
+    zoomPercentage,
+    updateZoomPercentage,
+    handleWheel,
+    handleTouchStart: handleMultiTouchStart,
+  } = useZoomController();
 
   const {
     croppingViewportRef,
@@ -43,7 +48,7 @@ const ProfilePhotoUploader: FC<ProfilePhotoUploaderProps> = ({
     isDraggingRef,
     recenterImage,
     handleMouseDown,
-    handleTouchStart,
+    handleTouchStart: handleSingleTouchStart,
   } = useImagePositioning();
 
   const {
@@ -85,6 +90,17 @@ const ProfilePhotoUploader: FC<ProfilePhotoUploaderProps> = ({
     [imagePosition.x, imagePosition.y, imageWidth, isDraggingRef.current],
   );
 
+  const handleTouchStart: TouchEventHandler = useCallback(
+    (e) => {
+      if (e.touches.length > 1) {
+        handleMultiTouchStart(e);
+      } else {
+        handleSingleTouchStart(e);
+      }
+    },
+    [handleMultiTouchStart, handleSingleTouchStart],
+  );
+
   const error = loadingError || croppingError || uploadingError;
 
   if (error) return <ErrorBanner error={error} onClose={onClose} />;
@@ -103,7 +119,10 @@ const ProfilePhotoUploader: FC<ProfilePhotoUploaderProps> = ({
           />
         </ModalHeader>
 
-        <CroppingViewport ref={croppingViewportRef}>
+        <CroppingViewport
+          ref={croppingViewportRef}
+          onTouchStart={handleTouchStart}
+        >
           <CropOverlayMaskContainer draggable={false}>
             <MaskIcon />
           </CropOverlayMaskContainer>
@@ -111,7 +130,6 @@ const ProfilePhotoUploader: FC<ProfilePhotoUploaderProps> = ({
           <CropOverlayMaskHole
             draggable={false}
             onMouseDown={handleMouseDown}
-            onTouchStart={handleTouchStart}
             onWheel={handleWheel}
           />
 
