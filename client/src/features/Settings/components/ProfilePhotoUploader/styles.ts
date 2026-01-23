@@ -11,6 +11,7 @@ export const PhotoUploaderOverlay = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #00000082;
+  touch-action: none;
 `;
 
 export const PhotoUploaderStyled = styled.div`
@@ -19,6 +20,7 @@ export const PhotoUploaderStyled = styled.div`
   border: 1px solid;
   background-color: var(--bg-primary);
   border-color: var(--fg-border);
+  touch-action: none;
 `;
 
 export const ModalHeader = styled.div`
@@ -47,6 +49,7 @@ export const CroppingViewport = styled.div`
   border: 1px solid;
   background-color: inherit;
   border-color: var(--fg-border);
+  touch-action: none;
 `;
 
 export const CropOverlayMaskContainer = styled.div`
@@ -56,6 +59,7 @@ export const CropOverlayMaskContainer = styled.div`
   background-color: transparent;
   color: rgb(255 255 255 / 20%);
   user-select: none;
+  touch-action: none;
 `;
 
 export const CropOverlayMaskHole = styled.div`
@@ -66,6 +70,7 @@ export const CropOverlayMaskHole = styled.div`
   background-color: transparent;
   user-select: none;
   cursor: move;
+  touch-action: none;
 `;
 
 export const PositionableImage = styled.img`
