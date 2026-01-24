@@ -1,6 +1,8 @@
 import { RefObject, useCallback, useState } from 'react';
 import { Position } from './types';
 
+const OUTPUT_SIZE = 1024;
+
 const CROPPING_ERRORS = {
   CROPPING_FAILED: 'Image cropping failed. Please try again.',
 };
@@ -42,12 +44,12 @@ const useImageCropper = ({
         const sourceWidth = viewportRect.width * pixelRatioX;
         const sourceHeight = viewportRect.height * pixelRatioY;
 
-        const destWidth = viewportRect.width;
-        const destHeight = viewportRect.height;
+        const destWidth = OUTPUT_SIZE;
+        const destHeight = OUTPUT_SIZE;
 
         const canvas = document.createElement('canvas');
-        canvas.width = viewportRect.width;
-        canvas.height = viewportRect.height;
+        canvas.width = OUTPUT_SIZE;
+        canvas.height = OUTPUT_SIZE;
         const ctx = canvas.getContext('2d');
         if (ctx) {
           ctx.imageSmoothingEnabled = true;
