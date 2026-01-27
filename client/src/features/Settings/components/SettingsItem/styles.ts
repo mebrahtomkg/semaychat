@@ -10,7 +10,7 @@ export const SettingsItemStyled = styled.div<{ $isLast?: boolean }>`
     !props.$isLast &&
     css`
       border-bottom: 1px solid;
-      border-color: var(--fg-border);
+      border-color: var(--bg-secondary-hover);
     `}
 `;
 

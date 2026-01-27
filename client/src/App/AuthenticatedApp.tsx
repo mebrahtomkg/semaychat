@@ -5,7 +5,6 @@ import {
   HeartbeatProcessor,
   MessageRequestsProcessor,
 } from '@/processors';
-import { PageContainer } from './styles';
 import { Route, Routes } from 'react-router';
 import Chat from '@/features/Chat';
 import { useIsMobile } from '@/hooks';
@@ -34,12 +33,10 @@ const AuthenticatedApp = () => {
 
       {!isMobile && <Home />}
 
-      <PageContainer>
-        <Routes>
-          <Route index element={isMobile ? <Home /> : null} />
-          <Route path="/chat/:chatPartnerId" element={<Chat />} />
-        </Routes>
-      </PageContainer>
+      <Routes>
+        <Route index element={isMobile ? <Home /> : null} />
+        <Route path="/chat/:chatPartnerId" element={<Chat />} />
+      </Routes>
 
       <WithAnimation
         isVisible={isSettingsModalVisible}

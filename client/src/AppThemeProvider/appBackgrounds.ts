@@ -16,7 +16,7 @@ export const darkBackground = css`
   background-color: #000000;
   background-image:
     radial-gradient(#045d85 1px, transparent 1px),
-    radial-gradient(#812204 1px, transparent 1px);
+    radial-gradient(#505f01 1px, transparent 1px);
   background-size: 20px 20px;
   background-position:
     0 0,
