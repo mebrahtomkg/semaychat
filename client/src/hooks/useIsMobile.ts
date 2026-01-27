@@ -1,16 +1,18 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+const isMobileWidth = (width: number) => width < 768; // any screen less than tablet
 
 const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(true); // Mobile first approch
-  const prevWidthRef = useRef(0);
+  const [isMobile, setIsMobile] = useState(isMobileWidth(window.innerWidth));
+  const prevWidthRef = useRef(window.innerWidth);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
       const prevWidth = prevWidthRef.current;
       prevWidthRef.current = width;
-      const wasMobile = prevWidth < 768;
-      const _isMobile = width < 768;
+      const wasMobile = isMobileWidth(prevWidth);
+      const _isMobile = isMobileWidth(width);
       // Do state update only if neccessary to avoid unwanted rerender
       if (_isMobile !== wasMobile) setIsMobile(_isMobile);
     };
