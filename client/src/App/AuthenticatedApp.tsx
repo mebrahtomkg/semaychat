@@ -8,14 +8,14 @@ import {
 import { PageContainer } from './styles';
 import { Route, Routes } from 'react-router';
 import Chat from '@/features/Chat';
-import { useResponsive } from '@/hooks';
+import { useIsMobile } from '@/hooks';
 import { ANIMATION_SLIDE_IN, WithAnimation } from '@/Animation';
 import { useAppStateStore } from '@/store';
 import Settings from '@/features/Settings';
 import Profile from '@/features/Settings/Profile';
 
 const AuthenticatedApp = () => {
-  const { isLargeScreen } = useResponsive();
+  const isMobile = useIsMobile();
 
   const isSettingsModalVisible = useAppStateStore(
     (state) => state.isSettingsModalVisible,
@@ -32,11 +32,11 @@ const AuthenticatedApp = () => {
       <MessageRequestsProcessor />
       <AttachmentUploadProcessor />
 
-      {isLargeScreen && <Home />}
+      {!isMobile && <Home />}
 
       <PageContainer>
         <Routes>
-          <Route index element={!isLargeScreen ? <Home /> : null} />
+          <Route index element={isMobile ? <Home /> : null} />
           <Route path="/chat/:chatPartnerId" element={<Chat />} />
         </Routes>
       </PageContainer>

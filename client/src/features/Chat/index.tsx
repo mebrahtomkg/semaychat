@@ -1,5 +1,5 @@
 import BackLink from '@/components/BackLink';
-import { useResponsive, useUserFetcher } from '@/hooks';
+import { useIsMobile, useUserFetcher } from '@/hooks';
 import { type FC, useRef, useCallback } from 'react';
 import { useParams } from 'react-router';
 import {
@@ -28,7 +28,7 @@ const Chat: FC = () => {
 
   const messagesListContainerRef = useRef<HTMLDivElement>(null);
 
-  const { isLargeScreen } = useResponsive();
+  const isMobile = useIsMobile();
 
   const chat = useChat(chatPartnerId);
 
@@ -47,7 +47,7 @@ const Chat: FC = () => {
   return (
     <ChatStyled>
       <ChatHeader>
-        {!isLargeScreen && <BackLink />}
+        {isMobile && <BackLink />}
 
         {chatPartner && <ChatPartner user={chatPartner} />}
 

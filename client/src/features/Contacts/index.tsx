@@ -4,7 +4,7 @@ import {
   HeaderContainer,
   SearchContainer,
 } from './styles';
-import { useContacts, useResponsive } from '@/hooks';
+import { useContacts } from '@/hooks';
 import { Contact } from './components';
 import { BackButton } from '@/components/buttons';
 import { useAppStateStore } from '@/store';
@@ -18,8 +18,6 @@ interface ContactsProps {
 
 const Contacts: FC<ContactsProps> = ({ animationStyle }) => {
   const contacts = useContacts();
-
-  const { isLargeScreen } = useResponsive();
 
   const closeContactsModal = useAppStateStore(
     (state) => state.closeContactsModal,
@@ -36,7 +34,7 @@ const Contacts: FC<ContactsProps> = ({ animationStyle }) => {
 
   // TODO: after the searchinput is focused show examples of how to search below the search bar
   return (
-    <ContactsModal style={animationStyle} $isLargeScreen={isLargeScreen}>
+    <ContactsModal style={animationStyle}>
       <HeaderContainer>
         <BackButton onClick={closeContactsModal} />
 

@@ -1,15 +1,12 @@
 import styled, { css } from 'styled-components';
 
-export const ProfileLink = styled.div<{ $isLargeScreen: boolean }>`
-  ${(props) =>
-    props.$isLargeScreen
-      ? css`
-          margin-left: 1rem;
-        `
-      : css`
-          margin-left: 3rem;
-        `}
+export const ProfileLink = styled.div`
   flex-grow: 2;
+  margin-left: 3rem;
+
+  @media (min-width: 768px) {
+    margin-left: 1rem;
+  }
 `;
 
 export const UserContainer = styled.div`

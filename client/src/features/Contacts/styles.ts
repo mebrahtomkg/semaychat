@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ContactsModal = styled.div<{ $isLargeScreen: boolean }>`
+export const ContactsModal = styled.div`
   position: absolute;
   z-index: 1;
   top: 0;
