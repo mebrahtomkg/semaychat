@@ -21,12 +21,10 @@ const useSignUp = () => {
 
   const firstForm = useForm<FirstSignUpFormSchema>({
     resolver: zodResolver(firstSignUpFormSchema),
-    mode: 'onBlur',
   });
 
   const secondForm = useForm<SecondSignUpFormSchema>({
     resolver: zodResolver(secondSignUpFormSchema),
-    mode: 'onBlur',
   });
 
   const firstNameInput = useTextInput('firstName', firstForm);

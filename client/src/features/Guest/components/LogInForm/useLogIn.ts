@@ -12,7 +12,6 @@ import { logInFormSchema, LogInFormSchema } from './schema';
 const useLogIn = () => {
   const logInForm = useForm<LogInFormSchema>({
     resolver: zodResolver(logInFormSchema),
-    mode: 'onBlur',
   });
 
   const emailInput = useTextInput('email', logInForm);

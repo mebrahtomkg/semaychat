@@ -6,7 +6,6 @@ export const GuestContainer = styled.div`
   height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: var(--bg-page);
   background-image:
     radial-gradient(
       circle at center,
@@ -52,7 +51,7 @@ export const Logo = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
-  color: #019abe;
+  color: var(--bg-action);
   backdrop-filter: blur(1px);
 `;
 
@@ -87,13 +86,13 @@ export const FormLinkContainer = styled.div`
 `;
 
 export const FormLink = styled(Link)`
-  color: #0ebee8;
+  color: var(--fg-action);
   font-size: 1.2rem;
   font-weight: 500;
   text-decoration: underline;
   &:hover {
     text-decoration: underline;
-    color: #00ceff;
+    color: #c4b0ff;
   }
 `;
 
