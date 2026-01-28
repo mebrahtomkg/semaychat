@@ -1,24 +1,22 @@
-import { useEffect, useRef, useState } from 'react';
-
-const isMobileWidth = (width: number) => width < 768; // any screen less than tablet
+import { useState, useLayoutEffect } from 'react';
 
 const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(isMobileWidth(window.innerWidth));
-  const prevWidthRef = useRef(window.innerWidth);
+  const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      const prevWidth = prevWidthRef.current;
-      prevWidthRef.current = width;
-      const wasMobile = isMobileWidth(prevWidth);
-      const _isMobile = isMobileWidth(width);
-      // Do state update only if neccessary to avoid unwanted rerender
-      if (_isMobile !== wasMobile) setIsMobile(_isMobile);
+  useLayoutEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 767px)'); // any screen less than tablet
+
+    setIsMobile(mediaQuery.matches);
+
+    const handleMediaQueryChange = (event: MediaQueryListEvent) => {
+      setIsMobile(event.matches);
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    mediaQuery.addEventListener('change', handleMediaQueryChange);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleMediaQueryChange);
+    };
   }, []);
 
   return isMobile;
