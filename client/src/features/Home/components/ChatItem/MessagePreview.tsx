@@ -19,7 +19,7 @@ const MessageTypeIndicator = styled.p`
   line-height: 1.3;
   font-size: 1rem;
   font-weight: 500;
-  color: var(--bg-action);
+  color: var(--fg-action);
 `;
 
 const formattedMessageTypes: Record<MessageType, string> = {

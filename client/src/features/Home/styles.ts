@@ -22,7 +22,6 @@ export const HeaderContainer = styled.div`
 
 export const ChatListContainer = styled.div`
   height: 100vh;
-  padding-top: 1rem;
   padding-bottom: calc(var(--bottom-menu-height) + 6rem);
   overflow-y: scroll;
   overflow-x: hidden;

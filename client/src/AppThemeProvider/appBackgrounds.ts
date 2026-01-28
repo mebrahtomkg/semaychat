@@ -13,13 +13,7 @@ export const lightBackground = css`
 `;
 
 export const darkBackground = css`
-  background-color: #000000;
-  background-image:
-    radial-gradient(#045d85 1px, transparent 1px),
-    radial-gradient(#505f01 1px, transparent 1px);
-  background-size: 20px 20px;
-  background-position:
-    0 0,
-    10px 10px;
-  background-attachment: local;
+  background-color: #0f172a;
+  background-image: linear-gradient(to bottom right, #0f172a, #1e1b4b);
+  background-attachment: fixed;
 `;

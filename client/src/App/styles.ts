@@ -9,6 +9,6 @@ export const AppStyled = styled.div`
   --bottom-menu-height: 3.7rem;
 
   @media (min-width: 768px) {
-    --big-modal-width: 22rem;
+    --big-modal-width: 22.5rem;
   }
 `;

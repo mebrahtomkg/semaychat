@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 export const ChatItemStyled = styled(Link)`
   margin: 0 0.2rem;
-  padding: 0.6rem 1rem;
+  padding: 0rem 0.5rem;
   display: flex;
   align-items: center;
-  border-radius: 10px;
+  border-radius: 7px;
   cursor: pointer;
   color: var(--fg-primary);
 
@@ -17,13 +17,19 @@ export const ChatItemStyled = styled(Link)`
 
 export const ChatItemInfoContainer = styled.div`
   position: relative;
+  height: 5.1rem;
   margin-left: 0.6rem;
   flex-grow: 3;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-bottom: 1px solid;
+  border-color: var(--bg-hover);
 `;
 
 export const NameContainer = styled.div`
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
   display: flex;
   justify-content: space-between;
 `;
@@ -45,17 +51,14 @@ export const ChatItemDateTime = styled.p`
 `;
 
 export const MessagePreviewContainer = styled.div`
-  --msg-count-min-size: 1.7rem;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 export const UnseenMessagesCount = styled.div`
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  padding: 0.4rem;
-  aspect-ratio: 1/1;
+  --msg-count-min-size: 1.7rem;
+  padding: 0.3rem;
   border-radius: 50%;
   min-width: var(--msg-count-min-size);
   min-height: var(--msg-count-min-size);
@@ -66,13 +69,6 @@ export const UnseenMessagesCount = styled.div`
   font-weight: 500;
   color: #fff;
   background-color: var(--bg-unseen-msg-count);
-`;
-
-// we just wanna the width placeholder. since UnseenMessagesCount is positioned absolute
-export const HiddenUnseenMessagesCount = styled.div`
-  visibility: hidden;
-  min-width: var(--msg-count-min-size);
-  background-color: aqua;
 `;
 
 export const MessageStatusContainer = styled.div``;

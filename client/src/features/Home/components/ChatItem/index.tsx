@@ -4,7 +4,6 @@ import {
   ChatItemInfoContainer,
   ChatItemStyled,
   ClockIconContainer,
-  HiddenUnseenMessagesCount,
   MessagePreviewContainer,
   MessageStatusContainer,
   Name,
@@ -62,12 +61,7 @@ const ChatItem: FC<ChatItemProps> = ({ chat, index }) => {
           {lastMessage && <MessagePreview message={lastMessage} />}
 
           {unseenMessagesCount > 0 && (
-            <>
-              <HiddenUnseenMessagesCount>
-                {unseenMessagesCount}
-              </HiddenUnseenMessagesCount>
-              <UnseenMessagesCount>{unseenMessagesCount}</UnseenMessagesCount>
-            </>
+            <UnseenMessagesCount>{unseenMessagesCount}</UnseenMessagesCount>
           )}
 
           {lastMessage && isLastMessageOutgoing && (
