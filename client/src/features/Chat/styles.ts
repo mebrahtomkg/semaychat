@@ -37,7 +37,7 @@ export const ChatMessagesListContainer = styled.div`
 
 export const ChatMessagesList = styled.div`
   flex-grow: 1;
-  max-width: 40rem;
+  max-width: 36.5rem;
   overflow: hidden;
   margin-top: auto;
   padding: 0 1rem;

@@ -40,13 +40,13 @@ export const AvatarImage = styled.img`
 export const OnlineIndicator = styled.div`
   --online-indicator-size: 12px;
   position: absolute;
-  bottom: 4px;
-  right: 3px;
+  bottom: 0px;
+  right: 0px;
   width: var(--online-indicator-size);
   height: var(--online-indicator-size);
   border-radius: 50%;
   outline-style: solid;
   outline-width: 1px;
-  outline-color: #70707d;
-  background-color: #4caf50;
+  outline-color: #646464;
+  background-color: #89ff00;
 `;
