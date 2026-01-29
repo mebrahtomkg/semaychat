@@ -6,3 +6,5 @@ export { default as editMessage } from './editMessage';
 export { default as markMessageAsRead } from './markMessageAsRead';
 export { default as updateUsersLastSeenTime } from './updateUsersLastSeenTime';
 export { default as getUserStatusObservers } from './getUserStatusObservers';
+export { default as createNewUser } from './createNewUser';
+export { default as seedDemoData } from './seedDemoData';

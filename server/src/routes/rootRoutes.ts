@@ -1,15 +1,11 @@
 import express, { NextFunction, Request, Response } from 'express';
-import sequelize from '@/config/db';
-import { hashPassword } from '@/utils';
-
-//Needed to run association by just including '..models/index.js'
 import { User } from '@/models';
 
 const router = express.Router();
 
 router.get('/', async (_req: Request, res: Response, next: NextFunction) => {
   try {
-    // Hit database to check database health
+    // Hit database to check database health too.
     await User.findByPk(1);
 
     res.status(200).send('semaychat server is running.');
@@ -17,94 +13,5 @@ router.get('/', async (_req: Request, res: Response, next: NextFunction) => {
     next(err);
   }
 });
-
-router.get(
-  '/setup',
-  async (_req: Request, res: Response, next: NextFunction) => {
-    try {
-      await sequelize.sync({ force: true });
-
-      const users = await User.bulkCreate([
-        {
-          firstName: 'Tom',
-          email: 't@e.com',
-          password: await hashPassword('tttttt'),
-        },
-        {
-          firstName: 'Edge',
-          email: 'e@e.com',
-          password: await hashPassword('eeeeee'),
-        },
-        {
-          firstName: 'Firefox',
-          email: 'f@e.com',
-          password: await hashPassword('ffffff'),
-        },
-        {
-          firstName: 'Safari',
-          email: 's@e.com',
-          password: await hashPassword('ssssss'),
-        },
-        {
-          firstName: 'Opera',
-          email: 'o@e.c',
-          password: await hashPassword('oooo'),
-        },
-        {
-          firstName: 'Bravo',
-          email: 'b2@e.c',
-          password: await hashPassword('bbbb'),
-        },
-        {
-          firstName: 'Jackson',
-          email: 'b3@e.c',
-          password: await hashPassword('bbbb'),
-        },
-        {
-          firstName: 'Merit',
-          email: 'b4@e.c',
-          password: await hashPassword('bbbb'),
-        },
-        {
-          firstName: 'Abrham',
-          email: 'b5@e.c',
-          password: await hashPassword('bbbb'),
-        },
-        {
-          firstName: 'Sansa',
-          email: 'b6@e.c',
-          password: await hashPassword('bbbb'),
-        },
-        {
-          firstName: 'Sofiya',
-          email: 'b7@e.c',
-          password: await hashPassword('bbbb'),
-        },
-        {
-          firstName: 'Taiwen',
-          email: 'b8@e.c',
-          password: await hashPassword('bbbb'),
-        },
-        {
-          firstName: 'Muez',
-          email: 'b9@e.c',
-          password: await hashPassword('bbbb'),
-        },
-        {
-          firstName: 'Bob',
-          email: 'b10@e.c',
-          password: await hashPassword('bbbb'),
-        },
-      ]);
-
-      res.status(200).json({
-        message: `Models were synchronized successfully. eg. ${User.tableName}`,
-        users,
-      });
-    } catch (err) {
-      next(err);
-    }
-  },
-);
 
 export default router;

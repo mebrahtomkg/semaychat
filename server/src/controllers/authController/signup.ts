@@ -1,66 +1,40 @@
 import { User } from '@/models';
-import { checkEmail, checkFirstName, checkPassword } from './utils';
 import { Request, Response, NextFunction } from 'express';
-import { createAuthToken, filterUserData, hashPassword } from '@/utils';
+import { createAuthToken, filterUserData } from '@/utils';
 import {
   AUTH_TOKEN_AGE,
   AUTH_TOKEN_COOKIE_NAME,
   IS_PRODUCTION,
 } from '@/config/general';
+import { signUpSchema } from '@/schemas';
+import { createNewUser } from '@/services';
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (req.userId) {
-      return res.status(400).json({
+      res.status(400).json({
         message: 'You are already signedup',
       });
+      return;
     }
 
-    const { body } = req;
+    const parseResult = signUpSchema.safeParse(req.body);
 
-    const firstName =
-      typeof body.firstName === 'string' ? body.firstName.trim() : null;
-
-    if (!checkFirstName(firstName)) {
-      return res.status(400).json({
-        message: 'Invalid Name.',
+    if (!parseResult.success) {
+      res.status(400).json({
+        message: parseResult.error.issues[0].message,
       });
+      return;
     }
 
-    const lastName =
-      typeof body.lastName === 'string' ? body.lastName.trim() : undefined;
-
-    const email = typeof body.email === 'string' ? body.email.trim() : null;
-
-    if (!checkEmail(email)) {
-      return res.status(400).json({
-        message: 'Invalid Email.',
-      });
-    }
-
-    const password =
-      typeof body.password === 'string' ? body.password.trim() : null;
-
-    if (!checkPassword(password)) {
-      return res.status(400).json({
-        message: 'Password invalid or too short.',
-      });
-    }
-
-    if (await User.findOne({ where: { email } })) {
-      return res.status(409).json({
+    if (await User.findOne({ where: { email: parseResult.data.email } })) {
+      res.status(409).json({
         message: 'The eamil already exists.',
       });
+      return;
     }
 
-    const pwdHash = await hashPassword(password);
-
-    const user = await User.create({
-      email,
-      password: pwdHash,
-      firstName,
-      lastName,
-    });
+    const user = await createNewUser(parseResult.data);
 
     const token = createAuthToken(user.id);
 
