@@ -1,20 +1,27 @@
 import { SignUpSchema } from '@/schemas';
 
-export const demoUsers: SignUpSchema[] = [
+interface DemoUser extends SignUpSchema {
+  photos?: string[];
+}
+
+export const demoUsers: DemoUser[] = [
   {
     firstName: 'Tom',
     email: 't@e.com',
     password: 'tttttt',
+    photos: ['demo.8.9.png', '1770202732756-BoOXeVyTGIxEcohfAZUV.png'],
   },
   {
     firstName: 'Edge',
     email: 'e@e.com',
     password: 'eeeeee',
+    photos: ['1770206170218-QL8wo2cluNQRWad1AoI1.png'],
   },
   {
     firstName: 'Firefox',
     email: 'f@e.com',
     password: 'ffffff',
+    photos: [],
   },
   {
     firstName: 'Safari',
