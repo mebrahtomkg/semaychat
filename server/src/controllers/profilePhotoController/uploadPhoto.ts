@@ -7,6 +7,7 @@ import storage from '@/config/storage';
 import multer from 'multer';
 import path from 'node:path';
 import { createProfilePhoto } from '@/services';
+import sequelize from '@/config/db';
 
 const UPLOAD_ERRORS = {
   fileTypeError: 'Invalid file type! Only image is allowed',
@@ -75,13 +76,18 @@ const uploadPhoto = async (req: Request, res: Response, next: NextFunction) => {
 
     const { path: filePath, size, originalname } = file;
 
+    const transaction = await sequelize.transaction();
+
     try {
       const profilePhoto = await createProfilePhoto({
         userId: req.userId,
         name: path.basename(filePath),
         originalname,
         size,
+        transaction,
       });
+
+      await transaction.commit();
 
       res.status(200).json({
         success: true,
@@ -89,6 +95,7 @@ const uploadPhoto = async (req: Request, res: Response, next: NextFunction) => {
         message: 'Profile photo uploaded successfully',
       });
     } catch (err) {
+      await transaction.rollback();
       await storage.deleteFile(PROFILE_PHOTOS_BUCKET, filePath);
       throw err;
     }

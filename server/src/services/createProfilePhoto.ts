@@ -1,39 +1,31 @@
-import sequelize from '@/config/db';
 import { ProfilePhoto, User } from '@/models';
+import { Transaction } from 'sequelize';
 
 interface Options {
   userId: number;
   name: string;
   originalname: string;
   size: number;
+  transaction: Transaction;
 }
 
 const createProfilePhoto = async (options: Options) => {
-  const { userId, name, originalname, size } = options;
+  const { userId, name, originalname, size, transaction } = options;
 
-  const transaction = await sequelize.transaction();
+  const profilePhoto = await ProfilePhoto.create(
+    { userId, name, originalname, size },
+    { transaction },
+  );
 
-  try {
-    const profilePhoto = await ProfilePhoto.create(
-      { userId, name, originalname, size },
-      { transaction },
-    );
+  await User.update(
+    { profilePhotoId: profilePhoto.id },
+    {
+      where: { id: userId },
+      transaction,
+    },
+  );
 
-    await User.update(
-      { profilePhotoId: profilePhoto.id },
-      {
-        where: { id: userId },
-        transaction,
-      },
-    );
-
-    await transaction.commit();
-
-    return profilePhoto;
-  } catch (err) {
-    await transaction.rollback();
-    throw err;
-  }
+  return profilePhoto;
 };
 
 export default createProfilePhoto;

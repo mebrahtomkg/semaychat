@@ -30,7 +30,7 @@ export const demoUsers: DemoUser[] = [
   },
   {
     firstName: 'Opera',
-    email: 'o@e.c',
+    email: 'o@e.com',
     password: 'oooo',
   },
   {
