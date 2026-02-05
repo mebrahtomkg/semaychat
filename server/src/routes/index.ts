@@ -6,3 +6,4 @@ export { default as messageRoutes } from './messageRoutes';
 export { default as profilePhotoRoutes } from './profilePhotoRoutes';
 export { default as rootRoutes } from './rootRoutes';
 export { default as userRoutes } from './userRoutes';
+export { default as adminRoutes } from './adminRoutes';

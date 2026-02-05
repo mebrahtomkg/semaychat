@@ -1,5 +1,6 @@
 import { authGuard, errorHandler, performAuth } from '@/middlewares';
 import {
+  adminRoutes,
   authRoutes,
   blockedUserRoutes,
   chatRoutes,
@@ -36,6 +37,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(performAuth);
 app.use('/', rootRoutes);
+app.use('/admin', adminRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', authGuard, userRoutes);
 app.use('/api/profile-photos', authGuard, profilePhotoRoutes);
