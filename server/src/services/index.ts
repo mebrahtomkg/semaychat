@@ -9,3 +9,4 @@ export { default as getUserStatusObservers } from './getUserStatusObservers';
 export { default as createNewUser } from './createNewUser';
 export { default as seedDemoData } from './seedDemoData';
 export { default as createProfilePhoto } from './createProfilePhoto';
+export { default as resetDatabase } from './resetDatabase';

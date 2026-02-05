@@ -4,6 +4,7 @@ import { createNewUser, createProfilePhoto } from '@/services';
 
 const seedDemoData = async () => {
   console.log('Starting demo data seeding...');
+  const startTime = Date.now();
 
   const transaction = await sequelize.transaction();
 
@@ -28,7 +29,9 @@ const seedDemoData = async () => {
 
     await transaction.commit();
 
-    console.log('Demo data seeded successfully.');
+    console.log(
+      `Seeded ${demoUsers.length} demo users successfully in ${Date.now() - startTime}ms.`,
+    );
   } catch (error) {
     await transaction.rollback();
     console.error('Demo data seeding failed: ', error);
