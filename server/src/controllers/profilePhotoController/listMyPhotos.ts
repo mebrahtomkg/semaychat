@@ -1,4 +1,4 @@
-import { ProfilePhoto } from '../../models';
+import { ProfilePhoto } from '@/models';
 import { Request, Response, NextFunction } from 'express';
 
 const listMyPhotos = async (

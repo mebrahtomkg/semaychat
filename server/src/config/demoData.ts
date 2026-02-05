@@ -24,7 +24,12 @@ export const demoUsers: DemoUser[] = [
     lastName: 'Yohannes',
     email: 'abeba@e.com',
     password: 'aaaaaa',
-    photos: [],
+    photos: [
+      'demo-abeba-1.png',
+      'demo-abeba-2.png',
+      'demo-abeba-3.png',
+      'demo-abeba-4.png',
+    ],
   },
   {
     firstName: 'Sarah',

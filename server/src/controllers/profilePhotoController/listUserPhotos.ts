@@ -1,4 +1,4 @@
-import ProfilePhoto from '../../models/ProfilePhoto';
+import { ProfilePhoto } from '@/models';
 import { Request, Response, NextFunction } from 'express';
 
 const listUserPhotos = async (
@@ -18,7 +18,11 @@ const listUserPhotos = async (
       });
     }
 
-    const profilePhotos = await ProfilePhoto.findAll({ where: { userId } });
+    const profilePhotos = await ProfilePhoto.findAll({
+      where: { userId },
+      order: [['createdAt', 'DESC']],
+      limit: 200,
+    });
 
     res.status(200).json({
       success: true,
