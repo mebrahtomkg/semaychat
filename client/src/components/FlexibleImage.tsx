@@ -15,7 +15,7 @@ export const FlexibleImageStyled = styled.img<{ $isBlur?: boolean }>`
   height: 100%;
   object-fit: contain;
   cursor: pointer;
-  filter: ${(props) => (props.$isBlur ? 'blur(15px)' : 'none')};
+  filter: ${(props) => (props.$isBlur ? 'blur(10px)' : 'none')};
   &:focus {
     outline-style: none;
     border: none;

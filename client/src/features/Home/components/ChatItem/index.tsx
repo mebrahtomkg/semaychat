@@ -18,6 +18,7 @@ import Avatar from '@/components/Avatar';
 import MessagePreview from './MessagePreview';
 import { ClockIcon, DoubleTickIcon, TickIcon } from '@/components/icons';
 import { useMessageStatus } from '@/features/Chat/hooks';
+import { useNavigate } from 'react-router';
 
 interface ChatItemProps {
   chat: Chat;
@@ -25,6 +26,8 @@ interface ChatItemProps {
 }
 
 const ChatItem: FC<ChatItemProps> = ({ chat, index }) => {
+  const navigate = useNavigate();
+
   const lastMessage = chat.lastMessage;
 
   const lastMessageStatus = useMessageStatus(lastMessage?.id || 0);
@@ -41,8 +44,12 @@ const ChatItem: FC<ChatItemProps> = ({ chat, index }) => {
 
   const isLastMessageOutgoing = lastMessage && lastMessage.senderId === selfId;
 
+  const handleClick = () => {
+    navigate(`/chat/${chat.partner.id}`);
+  };
+
   return (
-    <ChatItemStyled to={`/chat/${chat.partner.id}`}>
+    <ChatItemStyled type="button" onClick={handleClick}>
       <Avatar
         initials={nameInitials}
         itemIndex={index}

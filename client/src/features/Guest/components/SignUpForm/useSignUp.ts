@@ -13,10 +13,13 @@ import {
 import { useMutation } from '@tanstack/react-query';
 import queryClient from '@/queryClient';
 import { QUERY_KEY_ACCOUNT } from '@/constants';
+import { useNavigate } from 'react-router';
 
 type SignUpStep = 'first' | 'second';
 
 const useSignUp = () => {
+  const navigate = useNavigate();
+
   const [step, setStep] = useState<SignUpStep>('first');
 
   const firstForm = useForm<FirstSignUpFormSchema>({
@@ -72,6 +75,7 @@ const useSignUp = () => {
     },
     onSuccess(data) {
       queryClient.setQueryData([QUERY_KEY_ACCOUNT], data);
+      navigate('/');
     },
   });
 

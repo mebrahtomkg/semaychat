@@ -30,10 +30,16 @@ import {
   PhotoMetaText,
 } from '@/styles';
 import { User } from '@/types';
-import { Name, ProfileModal, ProfilePhotoStyled } from './styles';
+import {
+  FetchingProgress,
+  Name,
+  ProfileModal,
+  ProfilePhotoStyled,
+  ProgressSpinner,
+} from './styles';
 import UserInfo from './UserInfo';
 import useUserProfilePhotos from './useUserProfilePhotos';
-import { FlexibleImage, NameInitial, TinySpinner } from '@/components';
+import { FlexibleImage, NameInitial } from '@/components';
 import { ANIMATION_CONTEXT_MENU_FAST, WithAnimation } from '@/Animation';
 import ContextMenu, {
   IMenuItem,
@@ -174,7 +180,11 @@ const Profile: FC<ProfileProps> = ({ user, onClose, animationStyle }) => {
           <MoreButton onClick={handleMoreButtonClick} />
         </PhotoHeaderSection>
 
-        {isImageLoading && <TinySpinner />}
+        {isImageLoading && (
+          <FetchingProgress>
+            <ProgressSpinner />
+          </FetchingProgress>
+        )}
 
         {imageSrc ? (
           <FlexibleImage

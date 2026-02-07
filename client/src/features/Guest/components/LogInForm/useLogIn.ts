@@ -8,8 +8,11 @@ import { useMutation } from '@tanstack/react-query';
 import queryClient from '@/queryClient';
 import { QUERY_KEY_ACCOUNT } from '@/constants';
 import { logInFormSchema, LogInFormSchema } from './schema';
+import { useNavigate } from 'react-router';
 
 const useLogIn = () => {
+  const navigate = useNavigate();
+
   const logInForm = useForm<LogInFormSchema>({
     resolver: zodResolver(logInFormSchema),
   });
@@ -37,6 +40,7 @@ const useLogIn = () => {
     },
     onSuccess(data) {
       queryClient.setQueryData([QUERY_KEY_ACCOUNT], data);
+      navigate('/');
     },
   });
 

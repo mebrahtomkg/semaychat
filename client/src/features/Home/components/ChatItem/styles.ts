@@ -1,14 +1,14 @@
-import { Link } from 'react-router';
 import styled from 'styled-components';
 
-export const ChatItemStyled = styled(Link)`
-  margin: 0 0.2rem;
-  padding: 0rem 0.5rem;
+export const ChatItemStyled = styled.button`
+  width: 100%;
+  padding: 0rem 0.7rem 0rem 1rem;
   display: flex;
   align-items: center;
-  border-radius: 7px;
   cursor: pointer;
   color: var(--fg-primary);
+  border-bottom: 1px solid;
+  border-color: var(--bg-hover);
 
   &:hover {
     background-color: var(--bg-hover);
@@ -24,8 +24,6 @@ export const ChatItemInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-bottom: 1px solid;
-  border-color: var(--bg-hover);
 `;
 
 export const NameContainer = styled.div`

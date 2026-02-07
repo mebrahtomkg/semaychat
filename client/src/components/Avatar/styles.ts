@@ -9,10 +9,10 @@ export const AvatarStyled = styled.div<{
   $isSmall: boolean;
   $variantIndex: number;
 }>`
-  --avatar-width: ${(props) => (props.$isSmall ? '2.9rem' : '3.8rem')};
+  --avatar-width: ${(props) => (props.$isSmall ? '2.7rem' : '3.4rem')};
   width: var(--avatar-width);
   height: var(--avatar-width);
-  border-radius: 20px;
+  border-radius: 18px;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -27,7 +27,7 @@ export const AvatarStyled = styled.div<{
 `;
 
 export const AvatarInitials = styled.span`
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 600;
   color: #ffffff;
   text-transform: uppercase;
