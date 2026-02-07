@@ -30,3 +30,10 @@ export const BlockedUsersContainer = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
 `;
+
+export const NoBlockedUsersInfo = styled.p`
+  padding: 5rem 4rem;
+  font-size: 1.2rem;
+  text-align: center;
+  font-weight: 500;
+`;

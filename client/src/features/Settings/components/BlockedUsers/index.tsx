@@ -2,6 +2,7 @@ import {
   BlockedUsersContainer,
   BlockedUsersStyled,
   HeaderSection,
+  NoBlockedUsersInfo,
   Title,
 } from './styles';
 import { useBlockedUsers } from '@/hooks';
@@ -42,9 +43,13 @@ const BlockedUsers = () => {
             </HeaderSection>
 
             <BlockedUsersContainer>
-              {blockedUsers.map((user, index) => (
-                <BlockedUser key={`${user.id}`} user={user} index={index} />
-              ))}
+              {blockedUsers.length > 0 ? (
+                blockedUsers.map((user, index) => (
+                  <BlockedUser key={`${user.id}`} user={user} index={index} />
+                ))
+              ) : (
+                <NoBlockedUsersInfo>{`You haven't blocked any user.`}</NoBlockedUsersInfo>
+              )}
             </BlockedUsersContainer>
           </BlockedUsersStyled>
         )}

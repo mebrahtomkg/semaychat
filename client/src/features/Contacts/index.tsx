@@ -2,6 +2,8 @@ import {
   ContactsContainer,
   ContactsModal,
   HeaderContainer,
+  NoContactsAdditionalInfo,
+  NoContactsInfo,
   SearchContainer,
 } from './styles';
 import { useContacts } from '@/hooks';
@@ -47,9 +49,18 @@ const Contacts: FC<ContactsProps> = ({ animationStyle }) => {
       </HeaderContainer>
 
       <ContactsContainer>
-        {contactsToShow.map((contact, index) => (
-          <Contact key={`${contact.id}`} user={contact} index={index} />
-        ))}
+        {contactsToShow.length > 0 ? (
+          contactsToShow.map((contact, index) => (
+            <Contact key={`${contact.id}`} user={contact} index={index} />
+          ))
+        ) : (
+          <>
+            <NoContactsInfo>You have no contacts yet.</NoContactsInfo>
+            <NoContactsAdditionalInfo>
+              You can add any user from the users/chats list to your contacts.
+            </NoContactsAdditionalInfo>
+          </>
+        )}
       </ContactsContainer>
     </ContactsModal>
   );

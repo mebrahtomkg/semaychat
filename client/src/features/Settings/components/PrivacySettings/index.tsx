@@ -1,8 +1,5 @@
 import { FC, RefObject, useCallback, useMemo, useRef, useState } from 'react';
-import {
-  SettingsCategoryContainer,
-  SettingsCategoryContainerBox,
-} from '../../styles';
+import { SettingsCategoryContainerBox } from '../../styles';
 import { useAccount } from '@/hooks';
 import { PRIVACY_SETTINGS } from './constants';
 import { ANIMATION_DIALOG_FAST, WithAnimation } from '@/Animation';
@@ -52,13 +49,12 @@ const PrivacySettings: FC<PrivacySettingsProps> = ({ parentModalRef }) => {
 
   const privacySettingsElements = useMemo(
     () =>
-      PRIVACY_SETTINGS.map((setting, index) => (
+      PRIVACY_SETTINGS.map((setting) => (
         <ExpandableSettingsItem
           key={`${setting.title}`}
           title={setting.title}
           description={VISIBILITY_OPTION_LABELS[account[setting.settingkey]]}
           onClick={() => openPrivacyEditor(setting)}
-          isLast={index === PRIVACY_SETTINGS.length - 1}
         />
       )),
     [account, openPrivacyEditor],

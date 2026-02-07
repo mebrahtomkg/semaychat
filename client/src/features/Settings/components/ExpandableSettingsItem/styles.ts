@@ -11,7 +11,7 @@ export const SettingsItemContainer = styled.div`
   background-color: var(--bg-secondary);
 
   &:hover {
-    background-color: #545459;
+    background-color: var(--bg-secondary-hover);
   }
 `;
 

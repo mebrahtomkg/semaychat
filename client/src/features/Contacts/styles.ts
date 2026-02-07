@@ -42,3 +42,17 @@ export const ContactsContainer = styled.div`
     background-color: var(--bg-hover);
   }
 `;
+
+export const NoContactsInfo = styled.p`
+  padding: 2.5rem 0rem 1rem 0rem;
+  font-size: 1.3rem;
+  text-align: center;
+  font-weight: 500;
+`;
+
+export const NoContactsAdditionalInfo = styled.p`
+  padding: 0rem 1rem;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: 500;
+`;
