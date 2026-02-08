@@ -9,7 +9,7 @@ const ContentPreview = styled.p`
   text-overflow: ellipsis;
   font-size: 1rem;
   font-weight: 500;
-  color: var(--fg-muted);
+  color: var(--fg-secondary);
 `;
 
 const MessageTypeIndicator = styled.p`

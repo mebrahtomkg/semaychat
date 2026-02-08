@@ -9,7 +9,6 @@ const SmallMoreButtonStyled = styled.button`
   min-width: var(--small-more-btn-size);
   height: var(--small-more-btn-size);
   padding: 0.55rem;
-  color: var(--fg-primary);
   border-radius: inherit;
 `;
 

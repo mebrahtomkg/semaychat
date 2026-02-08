@@ -4,7 +4,7 @@ const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useLayoutEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 767px)'); // any screen less than tablet
+    const mediaQuery = window.matchMedia('(max-width: 744px)');
 
     setIsMobile(mediaQuery.matches);
 

@@ -21,13 +21,16 @@ export const NameContainer = styled.div`
 `;
 
 export const Name = styled.h3`
+  line-height: 1;
+  margin-bottom: 0.3rem;
+  color: var(--fg-primary);
   font-size: 1rem;
   font-weight: 500;
 `;
 
 export const Status = styled.span<{ $isOnline: boolean }>`
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 500;
 
   ${(props) =>
@@ -36,6 +39,6 @@ export const Status = styled.span<{ $isOnline: boolean }>`
           color: var(--fg-user-status);
         `
       : css`
-          color: var(--fg-muted);
+          color: var(--fg-secondary);
         `}
 `;

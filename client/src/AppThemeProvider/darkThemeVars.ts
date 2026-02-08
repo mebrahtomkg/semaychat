@@ -1,8 +1,8 @@
 import { css } from 'styled-components';
 
 const darkThemeVars = css`
-  --fg-primary: #f8fafc;
-  --fg-secondary: #cbd5e1;
+  --fg-primary: #f9fbfc;
+  --fg-secondary: #c3ceda;
   --fg-muted: #94a3b8;
   --fg-icon: #f8fafc;
   --fg-border: rgba(148, 163, 184, 0.2);
@@ -11,8 +11,10 @@ const darkThemeVars = css`
   --fg-msg-received: #f1f5f9;
   --fg-msg-sent-time: #ddd6fe;
   --fg-msg-received-time: #94a3b8;
-  --fg-msg-parent-sender: #ac91ff;
-  --fg-msg-parent-type: #7f41ff;
+  --fg-msg-sent-parent-sender: #c9a9ff;
+  --fg-msg-received-parent-sender: #ac91ff;
+  --fg-msg-sent-parent-type: #aaa6ff;
+  --fg-msg-received-parent-type: #cbb2ff;
   --fg-action: #a78bfa;
   --fg-user-status: #a78bfa;
   --bg-page: #0f172a;
@@ -23,9 +25,10 @@ const darkThemeVars = css`
   --bg-action-hover: #8b5cf6;
   --bg-action-disabled: #4c1d95;
   --bg-hover: #27354c;
-  --bg-msg-sent: #571faf;
+  --bg-msg-sent: #5320a2;
   --bg-msg-received: #334155;
-  --bg-msg-parent: rgb(0 0 0 / 35%);
+  --bg-msg-sent-parent: #37166c;
+  --bg-msg-received-parent: #202a37;
   --bg-scrollbar: rgba(148, 163, 184, 0.1);
   --bg-scrollbar-thumb: rgba(148, 163, 184, 0.2);
   --bg-avatar-0: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);

@@ -171,7 +171,10 @@ const BaseMessage: FC<BaseMessageProps> = ({
         onContextMenu={handleMessageContextMenu}
       >
         {message.parentMessage && (
-          <ParentMessage message={message.parentMessage} />
+          <ParentMessage
+            message={message.parentMessage}
+            isParentOfOutgoingMessage={isOutgoing}
+          />
         )}
 
         {messageComponent}

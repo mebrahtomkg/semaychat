@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ChatItemStyled = styled.button`
   width: 100%;
-  padding: 0rem 0.7rem 0rem 1rem;
+  padding: 0.1rem 0.7rem 0.1rem 1rem;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -45,7 +45,7 @@ export const ChatItemDateTime = styled.p`
   white-space: nowrap;
   font-size: 0.8rem;
   font-weight: 500;
-  color: var(--fg-muted);
+  color: var(--fg-secondary);
 `;
 
 export const MessagePreviewContainer = styled.div`
@@ -74,10 +74,10 @@ export const MessageStatusContainer = styled.div``;
 export const TickIconContainer = styled.div`
   width: 1.05rem;
   transform: rotate(-45deg);
-  color: var(--fg-muted);
+  color: var(--fg-secondary);
 `;
 
 export const ClockIconContainer = styled.div`
   width: 0.9rem;
-  color: var(--fg-muted);
+  color: var(--fg-secondary);
 `;

@@ -21,9 +21,13 @@ const formattedMessageTypes: Record<MessageType, string> = {
 
 interface ParentMessageProps {
   message: Message;
+  isParentOfOutgoingMessage: boolean;
 }
 
-const ParentMessage: FC<ParentMessageProps> = ({ message }) => {
+const ParentMessage: FC<ParentMessageProps> = ({
+  message,
+  isParentOfOutgoingMessage,
+}) => {
   const { chatPartnerId, type } = useMessageInfo(message);
 
   const { content } = message;
@@ -47,15 +51,19 @@ const ParentMessage: FC<ParentMessageProps> = ({ message }) => {
     message.senderId === selfId ? selfFullName : partnerFullName;
 
   return (
-    <ParentMessageStyled>
+    <ParentMessageStyled $isParentOfOutgoingMessage={isParentOfOutgoingMessage}>
       {type === 'photo' && <PhotoThumbnail message={message} />}
 
       <div>
-        <MessageSender>{senderFullName}</MessageSender>
+        <MessageSender $isParentOfOutgoingMessage={isParentOfOutgoingMessage}>
+          {senderFullName}
+        </MessageSender>
         {content ? (
           <MessageContent>{content}</MessageContent>
         ) : (
-          <MessageTypeIndicator>
+          <MessageTypeIndicator
+            $isParentOfOutgoingMessage={isParentOfOutgoingMessage}
+          >
             {formattedMessageTypes[type]}
           </MessageTypeIndicator>
         )}

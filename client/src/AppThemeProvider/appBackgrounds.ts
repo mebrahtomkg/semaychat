@@ -1,15 +1,10 @@
 import { css } from 'styled-components';
 
 export const lightBackground = css`
-  background-color: #ffffff;
-  background-image:
-    radial-gradient(#c7e4f0 1px, transparent 1px),
-    radial-gradient(#f0c1d1 1px, transparent 1px);
-  background-size: 20px 20px;
-  background-position:
-    0 0,
-    10px 10px;
-  background-attachment: local;
+  background-color: #f8fafc;
+  /* Subtle gradient from white top-left to very light slate bottom-right */
+  background-image: linear-gradient(to bottom right, #ffffff, #f1f5f9);
+  background-attachment: fixed;
 `;
 
 export const darkBackground = css`
