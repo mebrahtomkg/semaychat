@@ -159,14 +159,6 @@ const styles = css`
     right: 2vw;
     background: rgb(25, 29, 41);
   }
-
-  .theme-transition * {
-    transition:
-      background-color 700ms ease-in-out,
-      color 700ms ease-in-out,
-      outline-color 700ms ease-in-out,
-      border-color 700ms ease-in-out;
-  }
 `;
 
 const GlobalStyle = createGlobalStyle` 
