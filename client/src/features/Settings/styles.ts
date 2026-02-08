@@ -21,13 +21,16 @@ export const NavMenuContainer = styled.div`
   margin-bottom: 1.5rem;
 `;
 
-export const NavMenu = styled.div`
+export const TabbedMenu = styled.div`
   margin-left: 1rem;
   flex-grow: 2;
   display: flex;
   padding: 2px;
   border-radius: 12px;
   background-color: var(--bg-secondary);
+  outline-style: solid;
+  outline-width: 1px;
+  outline-color: var(--fg-border);
 `;
 
 export const SettingsCategoryContainer = styled.div`

@@ -17,6 +17,7 @@ const lightThemeVars = css`
   --fg-msg-received-parent-type: #005ada;
   --fg-action: #7c3aed;
   --fg-user-status: #10b981;
+  --fg-tab: #5e00ff;
   --bg-page: #f8fafc;
   --bg-primary: #ffffff;
   --bg-secondary: #f1f5f9;

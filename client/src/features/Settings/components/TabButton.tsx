@@ -5,14 +5,19 @@ const TabButtonStyled = styled.button<{ $isActive: boolean }>`
   flex-grow: 1;
   font-size: 1rem;
   font-weight: 500;
-  color: white;
   padding: 0.45rem 1.3rem;
   border-radius: inherit;
+
   ${(props) =>
-    props.$isActive &&
-    css`
-      background-color: var(--bg-action);
-    `}
+    props.$isActive
+      ? css`
+          background-color: var(--bg-action);
+          color: white;
+        `
+      : css`
+          color: var(--fg-tab);
+          background-color: transparent;
+        `}
 `;
 
 interface TabButtonProps {

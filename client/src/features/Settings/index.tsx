@@ -1,10 +1,10 @@
 import { BackButton } from '@/components/buttons';
 import { useRef, useState, type CSSProperties, type FC } from 'react';
 import {
-  NavMenu,
   NavMenuContainer,
   SettingsCategoryContainer,
   SettingsModal,
+  TabbedMenu,
 } from './styles';
 import { useAppStateStore } from '@/store';
 import PrivacySettings from './components/PrivacySettings';
@@ -32,7 +32,7 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
       <NavMenuContainer>
         <BackButton onClick={closeSettingsModal} />
 
-        <NavMenu>
+        <TabbedMenu>
           <TabButton
             text="Security"
             isActive={category === 'security'}
@@ -43,7 +43,7 @@ const Settings: FC<SettingsProps> = ({ animationStyle }) => {
             isActive={category === 'privacy'}
             onClick={() => setCategory('privacy')}
           />
-        </NavMenu>
+        </TabbedMenu>
       </NavMenuContainer>
 
       {category === 'security' && (

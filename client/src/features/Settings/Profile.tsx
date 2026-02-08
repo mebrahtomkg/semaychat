@@ -3,10 +3,10 @@ import { useAccountInfo } from '@/hooks';
 import { useState, type CSSProperties, type FC } from 'react';
 import ProfilePhotoSettings from './components/ProfilePhotoSettings';
 import {
-  NavMenu,
   NavMenuContainer,
   SettingsCategoryContainer,
   SettingsModal,
+  TabbedMenu,
 } from './styles';
 import { useAppStateStore } from '@/store';
 import NameSettings from './components/NameSettings';
@@ -35,7 +35,7 @@ const Profile: FC<ProfileProps> = ({ animationStyle }) => {
       <NavMenuContainer>
         <BackButton onClick={closeProfileModal} />
 
-        <NavMenu>
+        <TabbedMenu>
           <TabButton
             text="Profile Photo"
             isActive={category === 'profilePhoto'}
@@ -46,7 +46,7 @@ const Profile: FC<ProfileProps> = ({ animationStyle }) => {
             isActive={category === 'account'}
             onClick={() => setCategory('account')}
           />
-        </NavMenu>
+        </TabbedMenu>
       </NavMenuContainer>
       {category === 'profilePhoto' && <ProfilePhotoSettings />}
       {category === 'account' && (
