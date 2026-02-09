@@ -34,3 +34,4 @@ export { default as useElementPosition } from './useElementPosition';
 export { default as useMessageUtils } from './useMessageUtils';
 export { default as useMessageRequests } from './useMessageRequests';
 export { default as useIsMobile } from './useIsMobile';
+export { default as useTimeout } from './useTimeout';
