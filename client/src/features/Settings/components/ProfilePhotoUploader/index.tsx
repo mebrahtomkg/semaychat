@@ -163,7 +163,7 @@ const ProfilePhotoUploader: FC<ProfilePhotoUploaderProps> = ({
           />
         </ModalFooter>
 
-        {(isCropping || isUploading) && <Spinner />}
+        {(isCropping || isUploading) && <Spinner onCancelOperation={onClose} />}
       </PhotoUploaderStyled>
     </PhotoUploaderOverlay>
   );

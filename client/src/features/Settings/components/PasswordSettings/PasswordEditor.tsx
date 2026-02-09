@@ -175,7 +175,7 @@ const PasswordEditor: FC<PasswordEditorProps> = ({
         errorMessage={currentPasswordError}
       />
 
-      {isPending && <Spinner />}
+      {isPending && <Spinner onCancelOperation={onClose} />}
     </EditorModal>
   );
 };

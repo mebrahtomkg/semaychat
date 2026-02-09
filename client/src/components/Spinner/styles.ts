@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
-export const SpinnerModal = styled.div`
+export const SpinnerOverlay = styled.div`
   position: fixed;
   z-index: 400;
   top: 0;
@@ -14,26 +14,52 @@ export const SpinnerModal = styled.div`
 `;
 
 export const SpinnerStyled = styled.div`
-  width: 160px;
-  height: 160px;
+  width: 10rem;
+  aspect-ratio: 1/1;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #272d43;
-  border-radius: 25px;
+  background: var(--bg-primary);
+  border-radius: 20px;
+  border: 1px solid;
+  border-color: var(--fg-border);
 `;
 
-const rotate = keyframes`${css`
+export const DotsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const pulse = keyframes`${css`
   0% {
-    transform: rotate(0deg);
+    transform: scale(0.4);
+    opacity: 0.2;
+  }
+
+  50% {
+    transform: scale(1);
+    opacity: 1;
   }
 
   100% {
-    transform: rotate(360deg);
+    transform: scale(0.4);
+    opacity: 0.2;
   }
 `}
 `;
 
-export const SpinnerCanvas = styled.canvas`
-  animation: 1s linear infinite ${rotate};
+export const Dot = styled.div<{ $delay: number }>`
+  margin: 0 0.25rem;
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--bg-action-hover);
+  border-radius: 50%;
+  transform: scale(0.4);
+  opacity: 0.3;
+  animation-iteration-count: infinite;
+  animation-duration: 1400ms;
+  animation-delay: ${(props) => props.$delay}ms;
+  animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  animation-name: ${pulse};
 `;

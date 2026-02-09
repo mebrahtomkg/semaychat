@@ -14,7 +14,7 @@ import {
   PhotoMetaText,
 } from '@/styles';
 import { AddPhotoIcon, DeleteIcon, DownloadIcon } from '@/components/icons';
-import { FlexibleImage, Spinner } from '@/components';
+import { FlexibleImage } from '@/components';
 import ProfilePhotoUploader from '../ProfilePhotoUploader';
 import {
   BackButton,
@@ -65,13 +65,8 @@ const ProfilePhotoSettings = () => {
   const { currentIndex, handleNext, handlePrevious, photoIndexIndicator } =
     usePhotoNavigation(photosCount, 0, true);
 
-  const {
-    photoUrl,
-    photoDateTime,
-    isDoingRequest,
-    downloadPhoto,
-    deletePhoto,
-  } = useSelfProfilePhoto(profilePhotos[currentIndex]);
+  const { photoUrl, photoDateTime, downloadPhoto, deletePhoto } =
+    useSelfProfilePhoto(profilePhotos[currentIndex]);
 
   const { isImageLoading, imageSrc, handleImageLoad, handleImageLoadError } =
     useImageLoader(photoUrl);
@@ -195,8 +190,6 @@ const ProfilePhotoSettings = () => {
         onChange={handleFileChange}
         style={{ display: 'none' }}
       />
-
-      {isDoingRequest && <Spinner />}
 
       {isFullScreenMode && photoDateTime && (
         <PhotoMetaContainer>

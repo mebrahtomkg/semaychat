@@ -29,7 +29,7 @@ const UsernameEditor: FC<UsernameEditorProps> = ({
   const [usernameError, setUsernameError] = useState<string>('');
   const textInputRef = useRef<TextInputImperativeHandle | null>(null);
 
-  const { updateAccount, isPending, isSuccess, isError, error } =
+  const { updateAccount, isPending, isSuccess, isError, error, abort } =
     useUpdateAccount();
 
   const updateUsername = () => {
@@ -65,6 +65,11 @@ const UsernameEditor: FC<UsernameEditorProps> = ({
     if (isError) setUsernameError(error.message);
   }, [isError, error?.message]);
 
+  const cancelOperation = () => {
+    abort();
+    onClose();
+  };
+
   return (
     <EditorModal
       title="Edit Username"
@@ -85,7 +90,7 @@ const UsernameEditor: FC<UsernameEditorProps> = ({
         errorMessage={usernameError}
       />
 
-      {isPending && <Spinner />}
+      {isPending && <Spinner onCancelOperation={cancelOperation} />}
     </EditorModal>
   );
 };
