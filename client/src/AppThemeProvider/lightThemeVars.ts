@@ -5,7 +5,7 @@ const lightThemeVars = css`
   --fg-secondary: #475569;
   --fg-muted: #94a3b8;
   --fg-icon: #334155;
-  --fg-border: #e2e8f0;
+  --fg-border: #c4cedb;
   --fg-error: #ef4444;
   --fg-msg-sent: #ffffff;
   --fg-msg-received: #0f172a;

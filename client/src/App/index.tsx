@@ -3,23 +3,29 @@ import { GlobalStyle } from '@/styles';
 import { AppStyled } from './styles';
 import { useAuth } from '@/hooks';
 import useSocket from '@/hooks/useSocket';
-import { Spinner } from '@/components';
 import AppThemeProvider from '@/AppThemeProvider';
 import AuthenticatedApp from './AuthenticatedApp';
+import SplashScreen from '@/components/SplashScreen';
 
 const App = () => {
   useSocket();
 
   const { isLoading, isLoggedIn } = useAuth();
 
-  if (isLoading) return <Spinner />;
-
   return (
     <>
       <GlobalStyle />
 
       <AppThemeProvider>
-        <AppStyled>{isLoggedIn ? <AuthenticatedApp /> : <Guest />}</AppStyled>
+        <AppStyled>
+          {isLoading ? (
+            <SplashScreen />
+          ) : isLoggedIn ? (
+            <AuthenticatedApp />
+          ) : (
+            <Guest />
+          )}
+        </AppStyled>
       </AppThemeProvider>
     </>
   );
