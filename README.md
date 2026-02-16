@@ -18,7 +18,9 @@ The platform provides a comprehensive suite of features designed for a modern me
 
 - **Multiple Profile Photos:** A sophisticated profile system supporting multiple profile pictures and a history of past profile images.
 
-- **Privacy Control:** Granular privacy controls allowing users to manage visibility and interaction permissions.
+- **Profile Photo Upload & Cropping:** A dedicated tool for personalizing profile pictures. It allows users to upload, zoom, and drag photos within a circular mask to get the perfect crop before saving.
+
+- **Privacy Control:** A robust, granular privacy management system that allows users to independently control the visibility of their email address, "last seen" status, and profile photos. It also includes permissions to restrict who can initiate messages. These settings are managed through an intuitive modal interface with three distinct levels of visibility: **Everybody**, **My Contacts**, and **Only Me**.
 
 - **User Blocking:** Users can block other users, preventing unwanted interactions.
 
@@ -61,6 +63,8 @@ The technology stack selection was strategic, prioritizing type safety, modulari
 The architecture is designed to manage the complexity inherent in a large-scale messaging application, where state synchronization, performance, scalability, and data integrity are paramount.
 
 - **Queue-Based Message Request System:** When a user types a message and hits send, the API request isn't triggered directly—that approach is left to toy chat applications. Instead, to achieve true UI responsiveness and robust message delivery, the application decouples user actions from immediate API calls. This allows users to navigate to different chats without worrying if their message has been sent. Actions like sending, editing, or deleting messages are transformed into "request" objects and pushed into a global `Zustand` store queue. Dedicated, independent background processors then sequentially pick up these requests, execute the necessary network operations (e.g., `Socket.io` for real-time events, `HTTP multipart` for file uploads), and update the local cache upon success. This architecture ensures strict message ordering (`FIFO`), maintains UI fluidity, automatically retries pending messages upon network restoration, and keeps requests active even if the user navigates between different chats.
+
+- **Touch-Optimized Photo Positioning & Cropping System:** The application features a custom-built system specifically for selecting and adjusting profile photos. This system is designed to work perfectly on mobile devices, providing full support for "pinch-to-zoom" and smooth touch-based dragging to reposition the image. It intelligently handles multiple inputs simultaneously—allowing users to zoom with a slider, a mouse wheel, or their fingers—while maintaining the image's center point. Once the user is satisfied with the position, the system uses an off-screen canvas to generate a high-quality, perfectly cropped version of the photo for upload, ensuring the final result looks sharp on all devices.
 
 - **Viewport-Aware Context Menu System:** The app has its own custom low-level highly intelligent context menu UI component. This decoupled context menu system provides a robust and flexible solution for displaying contextual actions. It supports multiple triggering mechanisms, including traditional right-click and anchor-based interactions (such as a triple-dot icon). At its core, the system incorporates a specialized `Positioning Engine` (powered by `useMenuPositionFixer`). This engine intelligently monitors viewport boundaries and dynamically calculates the optimal menu placement. Its primary function is to prevent screen overflow by automatically flipping the menu's display direction when the trigger event occurs near the edge of the screen, ensuring the menu is always fully visible and accessible to the user.
 
