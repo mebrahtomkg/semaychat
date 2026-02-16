@@ -20,6 +20,8 @@ The platform provides a comprehensive suite of features designed for a modern me
 
 - **Profile Photo Upload & Cropping:** A dedicated tool for personalizing profile pictures. It allows users to upload, zoom, and drag photos within a circular mask to get the perfect crop before saving.
 
+- **Dual-Option Media Storage:** The system supports two distinct storage mechanisms for handling profile photos and message attachments. It is possible to choose between local disk storage (optimized for self-hosting and private servers) or Supabase cloud storage (optimized for global scalability).
+
 - **Privacy Control:** A robust, granular privacy management system that allows users to independently control the visibility of their email address, "last seen" status, and profile photos. It also includes permissions to restrict who can initiate messages. These settings are managed through an intuitive modal interface with three distinct levels of visibility: **Everybody**, **My Contacts**, and **Only Me**.
 
 - **User Blocking:** Users can block other users, preventing unwanted interactions.
@@ -31,6 +33,8 @@ The platform provides a comprehensive suite of features designed for a modern me
 - **Ability to Clear Messaging History:** Users can delete individual messages, entire chats, and even delete messages on the receiver's side for privacy reasons.
 
 - **Theming:** The application supports both dark and light themes seamlessly.
+
+- **Infrastructure Agnosticism:** The system is engineered to be environment-independent, allowing users to toggle between local development setups and production-grade cloud services (like Supabase and PostgreSQL) through simple configuration(env vars) changes without altering the core business logic.
 
 ## 3. Technologies Used
 
@@ -73,6 +77,13 @@ The architecture is designed to manage the complexity inherent in a large-scale 
 - **High-Performance Theming Architecture:** The application implements a "**Zero-Lag**" theming system. Instead of prop-drilling theme objects, the `AppThemeProvider` dynamically injects `CSS` variable blocks into the document root based on the user's preference. Components consume these variables directly (e.g., `` `color: var(--fg-primary)` ``), meaning theme toggling (Light/Dark) is handled entirely by the browser's `CSS` engine rather than `React`'s reconciliation process.
 
 - **Custom-Hook-Based Logic Abstraction:** The system utilizes a specialized hook architecture to decouple UI components from complex side effects. This includes `Ref-based Cleanup` for memory-safe timers and media URLs, `Reference Stability` via deep-comparison hooks to prevent unnecessary re-renders, and `Optimistic UI` patterns that ensure the interface responds instantly while background synchronization handles server reconciliation.
+
+- **Flexible Storage Architecture (Local Disk & Supabase):** The application is built with a provider-based storage abstraction specifically for managing **Profile Photos** and **Message Files**. The system allows switching between local and cloud environments simply by changing the `STORAGE_TYPE` environment variable:
+
+  1.  **Local Disk Storage (`localdisk`):** Files are stored directly on the server's filesystem. While commonly used for local development, this provider is production-ready for cloud deployments using persistent volumes (such as Docker Volumes or AWS EBS), providing a fully self-hosted media solution.
+  2.  **Supabase Storage (`supabase`):** Files are streamed to Supabase buckets, providing a managed cloud solution that scales effortlessly without occupying server disk space.
+
+  This is implemented through a common `IStorageProvider` interface and custom `multer` storage engines (`LocalDiskStorageEngine` and `SupabaseStorageEngine`), ensuring that regardless of the storage medium, files are handled as high-performance streams with randomized naming to prevent collisions.
 
 - **Modular Scalability:** The project is structured into over 400 frontend modules and 120 server-side modules. This high degree of decoupling allows for independent scaling of features and simplifies the maintenance of complex logic.
 
