@@ -28,13 +28,13 @@ The platform provides a comprehensive suite of features designed for a modern me
 
 - **Relationship Management:** Comprehensive contact management systems, allowing users to add others to their contacts list.
 
+- **Secure JWT Authentication:** Industry-standard authentication using JSON Web Tokens (JWT) stored in `httpOnly` and `Secure` cookies to prevent XSS and ensure session integrity.
+
 - **Persistent State:** All conversations and media history are persisted, ensuring a continuous experience across devices and browser refreshes.
 
 - **Ability to Clear Messaging History:** Users can delete individual messages, entire chats, and even delete messages on the receiver's side for privacy reasons.
 
 - **Theming:** The application supports both dark and light themes seamlessly.
-
-- **Infrastructure Agnosticism:** The system is engineered to be environment-independent, allowing users to toggle between local development setups and production-grade cloud services (like Supabase and PostgreSQL) through simple configuration(env vars) changes without altering the core business logic.
 
 ## 3. Technologies Used
 
@@ -85,8 +85,10 @@ The architecture is designed to manage the complexity inherent in a large-scale 
 
   This is implemented through a common `IStorageProvider` interface and custom `multer` storage engines (`LocalDiskStorageEngine` and `SupabaseStorageEngine`), ensuring that regardless of the storage medium, files are handled as high-performance streams with randomized naming to prevent collisions.
 
-- **Modular Scalability:** The project is structured into over 400 frontend modules and 120 server-side modules. This high degree of decoupling allows for independent scaling of features and simplifies the maintenance of complex logic.
+- **Environment-Agnostic Configuration Architecture:** The system is engineered with a strict separation between core business logic and infrastructure dependencies. By leveraging a centralized environment configuration layer, the platform can seamlessly toggle between local development setups (e.g., SQLite, local disk storage) and production-grade cloud ecosystems (e.g., PostgreSQL, Supabase) via simple environment variable changes. This abstraction ensures that the application remains portable and resilient, requiring zero code modifications to adapt to different deployment scales or hosting providers.
 
-- **Persistence Strategy:** The backend utilizes an abstraction layer for data persistence. This allows the application to handle complex relational queries (such as contact blocking and multi-profile management) with optimized performance across different `SQL` dialects.
+- **Multi-Layered Authentication Strategy:** The system employs a sophisticated two-stage authentication process that separates identity resolution from access enforcement. A global identification middleware (`performAuth`) runs on every request, gracefully verifying JWTs from secure cookies and attaching user identity to the request object without interrupting the flow. This is followed by a strict enforcement layer (`authGuard`), which is selectively deployed as a gatekeeper for protected API routes, ensuring a seamless yet highly secure user experience.
+
+- **Modular Scalability:** The project is structured into over 400 frontend modules and 120 server-side modules. This high degree of decoupling allows for independent scaling of features and simplifies the maintenance of complex logic.
 
 - **State Synchronization:** The frontend architecture is designed to handle `optimistic updates`, where the UI responds instantly to user actions while the background synchronization layer ensures the server and database are updated in tandem.
