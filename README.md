@@ -171,7 +171,9 @@ pnpm run prettier:format
 
 This project requires **zero configuration** to get started. However, it is highly configurable via environment variables to suit production-grade deployments.
 
-To customize the application, create a `.env` file in the `server` directory, and use the following environment variables.
+### 6.1 Backend (Server) Configuration
+
+To customize the backend of the app, create a `.env` file in the `server` directory, and use the following environment variables.
 
 - **`JWT_SECRET_KEY`**: Secret key used to sign JSON Web Tokens for authentication.
 
@@ -216,3 +218,17 @@ To customize the application, create a `.env` file in the `server` directory, an
 - **`SUPABASE_SERVICE_ROLE_KEY`**: Supabase Service Role API key. (Required if storage is `supabase`)
 
 - **`ADMIN_SECRET_KEY`**: A secret key required to perform administrative tasks remotely via API. (Required if there is a desire to perform administrative tasks via API)
+
+### 6.2 Frontend (Client) Configuration
+
+To customize the frontend of the app, create a `.env` file in the `client` directory using the following environment variables:
+
+- **`API_URL`**: The base API URL of the app backend. This value is injected into the `window` object and the `Service Worker` to handle API requests and media fetching.
+
+  - **In Development:** This option is ignored. The app uses a **Smart API Discovery Mode**. It automatically points to the current network hostname on port 3000 (e.g., if the frontend is served at `http://localhost:8080`, the `API_URL` becomes `http://localhost:3000/api`; if the frontend is served at `http://192.168.1.5:8080`, the `API_URL` becomes `http://192.168.1.5:3000/api`). This allows a developer to test the app on real mobile devices connected to the same Wi-Fi or hotspot without manual configuration.
+
+  - **In Production:** This value is required and is used by the UI and Service Worker to handle all API requests and media fetching.
+
+- **`PUBLIC_PATH`**: Defines the base path for all frontend assets and the `Service Worker` registration. Use this if hosting the application in a subdirectory.
+
+  - **Default:** `/`
