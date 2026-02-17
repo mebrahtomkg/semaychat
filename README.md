@@ -103,7 +103,7 @@ The architecture is designed to manage the complexity inherent in a large-scale 
 
 ## 5. Getting Started
 
-Follow these steps to run SemayChat locally in development mode.
+Follow these steps to run **SemayChat** locally in development mode.
 
 ### Prerequisites
 
@@ -113,15 +113,15 @@ Follow these steps to run SemayChat locally in development mode.
 ### Installation
 
 1. **Clone the repository** and navigate to the project root.
-2. **Install root dependencies** In the root project run:
+2. **Install root dependencies:** In the root project run:
    ```bash
    pnpm install
    ```
-3. **Install backend(server) dependencies** Navigate to the `server` directory and run:
+3. **Install backend(server) dependencies:** Navigate to the `server` directory and run:
    ```bash
    pnpm install
    ```
-4. **Install frontend(client) dependencies** Navigate to the `client` directory and run:
+4. **Install frontend(client) dependencies:** Navigate to the `client` directory and run:
    ```bash
    pnpm install
    ```
@@ -168,3 +168,51 @@ pnpm run prettier:format
 ```
 
 ## 6. Configuration
+
+This project requires **zero configuration** to get started. However, it is highly configurable via environment variables to suit production-grade deployments.
+
+To customize the application, create a `.env` file in the `server` directory, and use the following environment variables.
+
+- **`JWT_SECRET_KEY`**: Secret key used to sign JSON Web Tokens for authentication.
+
+  - Default: `temp-secret-key-1`
+
+- **`ALLOWED_ORIGINS`**: Comma-separated list of allowed CORS origins. In production, ensure this is explicitly set to your frontend domain to prevent unauthorized cross-origin requests.
+
+  - Default: `http://localhost:8080` in development
+
+- **`DATABASE_DIALECT`**: The database system to use.
+
+  - Options:
+
+    1. `sqlite`: Ideal for local development or small private instances. No external setup is required. The database file is stored locally.
+
+    2. `postgres`: Recommended for production. The system automatically enables SSL with `rejectUnauthorized: false` to support cloud providers like Render or Railway.
+
+  - Default: `sqlite`
+
+- **`SQLITE_DATABASE_DIR`**: Absolute path to the directory where the SQLite database file will be stored.
+
+  - Default: `server/database`
+
+- **`POSTGRES_DATABASE_URI`**: The connection string for PostgreSQL. (Required if dialect is `postgres`)
+
+- **`STORAGE_TYPE`**: Mechanism for storing media (photos/files).
+
+  - Options:
+
+    1. `localdisk`: Files are stored in the directory specified by `STORAGE_DIR`. The system automatically creates and manages sub-directories for `profile-photos` and `message-files`.
+
+    2. `supabase`: Recommended for scalability. You must create two private buckets in your Supabase project named `profile-photos` and `message-files` for the integration to function correctly.
+
+  - Default: `localdisk`
+
+- **`STORAGE_DIR`**: Absolute path for local file storage.
+
+  - Default: `server/storage`
+
+- **`SUPABASE_URL`**: Your Supabase project URL. (Required if storage is `supabase`)
+
+- **`SUPABASE_SERVICE_ROLE_KEY`**: Supabase Service Role API key. (Required if storage is `supabase`)
+
+- **`ADMIN_SECRET_KEY`**: A secret key required to perform administrative tasks remotely via API. (Required if there is a desire to perform administrative tasks via API)
