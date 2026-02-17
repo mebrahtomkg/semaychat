@@ -100,3 +100,71 @@ The architecture is designed to manage the complexity inherent in a large-scale 
 - **Modular Scalability:** The project is structured into over 400 frontend modules and 120 server-side modules. This high degree of decoupling allows for independent scaling of features and simplifies the maintenance of complex logic.
 
 - **State Synchronization:** The frontend architecture is designed to handle `optimistic updates`, where the UI responds instantly to user actions while the background synchronization layer ensures the server and database are updated in tandem.
+
+## 5. Getting Started
+
+Follow these steps to run SemayChat locally in development mode.
+
+### Prerequisites
+
+- **Node.js:** Version `20.18.1` or higher.
+- **pnpm:** This project uses `pnpm` as the package manager.
+
+### Installation
+
+1. **Clone the repository** and navigate to the project root.
+2. **Install root dependencies** In the root project run:
+   ```bash
+   pnpm install
+   ```
+3. **Install backend(server) dependencies** Navigate to the `server` directory and run:
+   ```bash
+   pnpm install
+   ```
+4. **Install frontend(client) dependencies** Navigate to the `client` directory and run:
+   ```bash
+   pnpm install
+   ```
+
+### Database Initialization
+
+Before running the server for the first time, initialize the database schema. This command creates the necessary tables based on the Sequelize models:
+
+```bash
+# Inside the server directory
+pnpm run db:reset
+```
+
+Note: This will drop existing tables and recreate them. Use with caution.
+
+### Running the Application
+
+You will need to run the backend and frontend simultaneously in separate terminals.
+
+**Start the Backend:** Navigate to the `server` directory and run:
+
+```bash
+pnpm run dev
+```
+
+**Start the Frontend:** Navigate to the `client` directory and run:
+
+```bash
+pnpm run dev
+```
+
+The application will be accessible at the address provided by the Rspack dev server (typically `http://localhost:8080`).
+
+### Code Quality
+
+From the **root** directory, you can run the following to maintain code standards:
+
+```bash
+# Run Biome linter
+pnpm run lint
+
+# Format code with Prettier
+pnpm run prettier:format
+```
+
+## 6. Configuration
