@@ -5,7 +5,7 @@
 **SemayChat** is a high-performance, resilient, real-time communication platform engineered for reliability, privacy, and seamless data synchronization. It is designed to serve as a strong foundation for private messaging, offering a self-hosted alternative to centralized communication tools. The system is built with a focus on architectural integrity, ensuring that the interface remains fluid and the data remains consistent, even under the demands of complex media handling and on unreliable networks.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/08ba9551-303a-4a5b-8ba1-7f71e303a3b2" alt="SemayChat App Preview" width="100%" style="max-width: 900px; border-radius: 10px; border: 1px solid #30363d;">
+  <img src="https://github.com/user-attachments/assets/08ba9551-303a-4a5b-8ba1-7f71e303a3b2" alt="SemayChat App Preview" width="800">
 </p>
 
 ## 2. Features
