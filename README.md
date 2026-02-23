@@ -120,7 +120,7 @@ The architecture is designed to manage the complexity inherent in a large-scale 
 
   This is implemented through a common `IStorageProvider` interface and custom `multer` storage engines (`LocalDiskStorageEngine` and `SupabaseStorageEngine`), ensuring that regardless of the storage medium, files are handled as high-performance streams with randomized naming to prevent collisions.
 
-- **Service-Worker-Driven Media Caching:** To achieve near-instantaneous media delivery and minimize redundant network overhead, the platform implements a specialized Service Worker caching layer. This system utilizes a **Cache-First** strategy specifically scoped to high-bandwidth assets, including message attachments and profile photos. By intercepting fetch requests at the network level, the Service Worker serves previously accessed media directly from the browser's `Cache Storage` API. The implementation features a robust lifecycle management engine that handles manual cache versioning, immediate activation via `skipWaiting()` and `clients.claim()`.
+- **Service-Worker-Driven Media Caching:** To achieve near-instantaneous media delivery and minimize redundant network overhead, the platform implements a specialized Service Worker caching layer. This system utilizes a **Cache-First** strategy specifically scoped to high-bandwidth assets, including message attachments and profile photos. By intercepting fetch requests at the network level, the Service Worker serves previously accessed media directly from the browser's `Cache Storage` API. The implementation features a robust lifecycle management engine that handles manual cache versioning, immediate activation via `skipWaiting()` and `clients.claim()`. To avoid stale files, the backend generates unique names for assets—such as message attachments and profile photos—by combining a `Date.now()` timestamp with `10+` random characters. This ensures each file has a distinct identity, facilitating robust caching via the Service Worker.
 
 - **Environment-Agnostic Configuration Architecture:** The system is engineered with a strict separation between core business logic and infrastructure dependencies. By leveraging a centralized environment configuration layer, the platform can seamlessly toggle between local development setups (e.g., SQLite, local disk storage) and production-grade cloud ecosystems (e.g., PostgreSQL, Supabase) via simple environment variable changes. This abstraction ensures that the application remains portable and resilient, requiring zero code modifications to adapt to different deployment scales or hosting providers.
 
@@ -218,9 +218,9 @@ To customize the backend of the app, create a `.env` file in the `server` direct
 
   - Options:
 
-    1. `sqlite`: Ideal for local development or small private instances. No external setup is required. The database file is stored locally.
+    1. `sqlite`: Ideal for local development. No external setup is required. The database file is stored locally.
 
-    2. `postgres`: Recommended for production. The system automatically enables SSL with `rejectUnauthorized: false` to support cloud providers like Render or Railway.
+    2. `postgres`: Recommended for production.
 
   - Default: `sqlite`
 
@@ -248,7 +248,7 @@ To customize the backend of the app, create a `.env` file in the `server` direct
 
 - **`SUPABASE_SERVICE_ROLE_KEY`**: Supabase Service Role API key. (Required if storage is `supabase`)
 
-- **`ADMIN_SECRET_KEY`**: A secret key required to perform administrative tasks remotely via API. (Required if there is a desire to perform administrative tasks via API)
+- **`ADMIN_SECRET_KEY`**: A secret key required to perform administrative tasks remotely via API. (Required if there is a desire to perform administrative tasks via API). Not recommended in production.
 
 ### 7.2 Frontend (Client) Configuration
 
