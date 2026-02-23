@@ -40,7 +40,34 @@ The platform provides a comprehensive suite of features designed for a modern me
 
 - **Theming:** The application supports both dark and light themes seamlessly.
 
-## 3. Technologies Used
+## 3. Live Demo & Distributed Architecture
+
+The live demo serves as a reference for a **distributed, cloud-native architecture**. It demonstrates that SemayChat is a resilient system capable of operating across geographically separated infrastructure providers while maintaining sub-second latency.
+
+### 3.1 Deployment Stack
+
+- **Frontend (Edge Layer):** Hosted on **Cloudflare Pages** via an automated **CI/CD pipeline**. Every push to the main branch triggers an atomic build, distributing the UI across Cloudflare’s global edge network for instant loading.
+
+- **Backend (Compute Layer):** Deployed on **Render** using a managed deployment workflow. The backend handles real-time socket connections and API logic, integrated into a continuous delivery pipeline for seamless updates.
+
+- **Database (Persistence Layer):** **PostgreSQL** hosted on **Supabase**. This provides a managed, high-performance relational database that eliminates manual maintenance and ensures data consistency at scale.
+
+- **Storage (Object Layer):** **Supabase Buckets** are used for scalable storage of **message attachments** and **profile photos**. To maintain security and centralized control, the **Node.js backend acts as a streaming gateway**.
+
+- **Seamless Media Piping:** When a user uploads or requests a file, the Node.js server pipes the data directly between the client and Supabase. This process is entirely seamless; files are never stored on the Node.js server—even temporarily—ensuring high performance and zero disk-space overhead on the compute layer.
+
+- **Service Monitoring:** Integrated with **UptimeRobot** for continuous health auditing. This system monitors service availability and provides real-time alerts to ensure high-reliability standards.
+
+### 3.2 Distributed System Proof-of-Concept
+
+The production instance proves the platform's ability to function as a **decoupled distributed system**. By separating the UI (Cloudflare), the Logic (Render), and the Data/Storage (Supabase), the architecture eliminates single points of failure. This setup demonstrates how each component can scale independently based on demand.
+
+### 3.3 Explore the Live Demo
+
+**Access the fully functional production instance here:**
+**[SemayChat Live Demo](https://semaychat.pages.dev)**
+
+## 4. Technologies Used
 
 The technology stack selection was strategic, prioritizing type safety, modularity, and database flexibility. Each technology serves a specific, well-defined purpose in the application's lifecycle.
 
@@ -66,7 +93,7 @@ The technology stack selection was strategic, prioritizing type safety, modulari
 
 - **`Zod`:** `Zod` is used as a schema validation tool and library.
 
-## 4. Architectural Details
+## 5. Architectural Details
 
 The architecture is designed to manage the complexity inherent in a large-scale messaging application, where state synchronization, performance, scalability, and data integrity are paramount.
 
@@ -105,7 +132,7 @@ The architecture is designed to manage the complexity inherent in a large-scale 
 
 - **State Synchronization:** The frontend architecture is designed to handle `optimistic updates`, where the UI responds instantly to user actions while the background synchronization layer ensures the server and database are updated in tandem.
 
-## 5. Getting Started
+## 6. Getting Started
 
 Follow these steps to run **SemayChat** locally in development mode.
 
@@ -171,11 +198,11 @@ pnpm run lint
 pnpm run prettier:format
 ```
 
-## 6. Configuration
+## 7. Configuration
 
 This project requires **zero configuration** to get started. However, it is highly configurable via environment variables to suit production-grade deployments.
 
-### 6.1 Backend (Server) Configuration
+### 7.1 Backend (Server) Configuration
 
 To customize the backend of the app, create a `.env` file in the `server` directory, and use the following environment variables.
 
@@ -223,7 +250,7 @@ To customize the backend of the app, create a `.env` file in the `server` direct
 
 - **`ADMIN_SECRET_KEY`**: A secret key required to perform administrative tasks remotely via API. (Required if there is a desire to perform administrative tasks via API)
 
-### 6.2 Frontend (Client) Configuration
+### 7.2 Frontend (Client) Configuration
 
 To customize the frontend of the app, create a `.env` file in the `client` directory using the following environment variables:
 
